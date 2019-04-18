@@ -194,7 +194,7 @@ end`);
           this.right = this.literal1.right;
         });
 
-        it('should activate the operator, lhs, and rhs when down is pressed', async function () {
+        it('should activate the operator', async function () {
           click(this.literal1);
           await wait(DELAY);
           keyDown("ArrowDown");
@@ -208,7 +208,11 @@ end`);
           await wait(DELAY);
           keyDown("Enter");
           await wait(DELAY);
+        });
 
+        it('should activate the lhs', async function() {
+          click(this.op);
+          await wait(DELAY);
           keyDown("ArrowDown");
           await wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
@@ -220,7 +224,11 @@ end`);
           await wait(DELAY);
           keyDown("Enter");
           await wait(DELAY);
+        });
 
+        it('should activate the rhs', async function() {
+          click(this.left);
+          await wait(DELAY);
           keyDown("ArrowDown");
           await wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
@@ -288,7 +296,7 @@ end`);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).not.toBe(this.fun_name);
           expect(this.activeNode()).toBe(this.body);
-        });
+        }, 15000);
       });
     };
     test("fun f(x): x + 3 end");
