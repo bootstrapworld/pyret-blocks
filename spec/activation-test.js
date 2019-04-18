@@ -114,6 +114,7 @@ describe('The CodeMirrorBlocks Class', function() {
       
       keyDown("Enter");
       await wait(DELAY);
+      // this has failed
       expect(this.literal1.isEditable()).toBe(true);
     });
 
@@ -124,8 +125,10 @@ describe('The CodeMirrorBlocks Class', function() {
       
       keyDown("Enter");
       await wait(DELAY);
+      // this has failed before
       expect(this.literal1.isEditable()).toBe(true);
       insertText("sugarPlums");
+      await wait(DELAY);
       
       keyDown("Escape");
       await wait(DELAY);
@@ -140,8 +143,10 @@ describe('The CodeMirrorBlocks Class', function() {
       
       keyDown("Enter");
       await wait(DELAY);
+      // has failed before
       expect(this.literal1.isEditable()).toBe(true);
       insertText("sugarPlums");
+      await wait(DELAY);
       
       keyDown("Q", {altKey: true});
       await wait(DELAY);
@@ -168,7 +173,7 @@ describe('The CodeMirrorBlocks Class', function() {
       expect(this.cmb.getValue()).toBe('\n54');
       expect(this.activeNode().id).toBe(this.literal2.id);
       expect(this.activeNode().hash).toBe(this.literal2.hash);
-    });
+    }, 15000);
 
     it('should remove multiple selected nodes on cut', async function() {
       click(this.literal1);
@@ -204,7 +209,9 @@ describe('The CodeMirrorBlocks Class', function() {
 
     it('up-arrow should navigate to the previous visible node, but not beyond the tree', async function() {
       click(this.firstRoot);
+      await wait(DELAY);
       keyDown("ArrowLeft", {}, this.firstRoot);
+      await wait(DELAY);
       click(this.secondRoot);
       await wait(DELAY);
       expect(this.activeNode()).toBe(this.secondRoot);
@@ -223,7 +230,9 @@ describe('The CodeMirrorBlocks Class', function() {
 
     it('down-arrow should navigate to the next sibling, but not beyond the tree', async function() {
       click(this.firstRoot);
+      await wait(DELAY);
       keyDown("ArrowLeft", {}, this.firstRoot);
+      await wait(DELAY);
       click(this.thirdRoot.args[1].args[0]);
       await wait(DELAY);
       expect(this.activeNode()).toBe(this.thirdRoot.args[1].args[0]);
@@ -241,8 +250,11 @@ describe('The CodeMirrorBlocks Class', function() {
 
     it('left-arrow should collapse a block, if it can be', async function() {
       click(this.firstRoot);
+      await wait(DELAY);
       keyDown("ArrowLeft", {}, this.firstRoot);
+      await wait(DELAY);
       click(this.firstRoot);
+      await wait(DELAY);
       keyDown("ArrowLeft", {}, this.firstRoot);
       await wait(DELAY);
       expect(this.firstRoot.element.getAttribute("aria-expanded")).toBe("false");
@@ -322,7 +334,7 @@ describe('The CodeMirrorBlocks Class', function() {
       await wait(DELAY);
       expect(this.activeNode()).toBe(this.funcSymbol);
       expect(this.firstRoot.element.getAttribute("aria-expanded")).toBe("true");
-    });
+    }, 15000);
 
     it('home should activate the first visible node', async function() {
       click(this.firstRoot);
@@ -354,7 +366,7 @@ describe('The CodeMirrorBlocks Class', function() {
     });
   });
 
-  describe("when dealing with node selection, ", function() {
+  describe("when dealing with node selection,", function() {
     beforeEach(function() {
       this.cmb.setValue('11\n54\n(+ 1 2)');
       let ast = this.cmb.getAst();
@@ -435,7 +447,7 @@ describe('The CodeMirrorBlocks Class', function() {
       expect(this.expr.element.getAttribute("aria-selected")).toBe('true');
       expect(this.activeNode()).toBe(this.expr);
       expect(this.selectedNodes().length).toBe(2);
-    });
+    }, 15000);
 
     it('selecting a parent, then child should just select the parent ', async function() {
       click(this.expr);
