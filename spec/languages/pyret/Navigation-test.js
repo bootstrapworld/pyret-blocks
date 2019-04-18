@@ -537,7 +537,7 @@ end`);
             keyDown("Enter");
             await wait(DELAY);
           }
-        });
+        }, 15000);
       });
     };
     test('[list: 1, 2, 3]');

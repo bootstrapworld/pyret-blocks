@@ -56,7 +56,7 @@ describe('The CodeMirrorBlocks Class', function () {
       this.editor.markText(child.from, child.to, { className: "error" });
       expect(child.element.className).toMatch(/error/);
       expect(this.expression.element.className).not.toMatch(/error/);
-    });
+    }, 15000);
 
     it("it should allow you to set a title value", function () {
       this.editor.markText(this.expression.from, this.expression.to, { title: "woot" });
@@ -84,7 +84,7 @@ describe('The CodeMirrorBlocks Class', function () {
       it("should return all marks with getAllMarks", function () {
         let marks = this.editor.getAllMarks();
         expect(marks.length).toBe(2);
-      });
+      }, 15000);
     });
 
     describe("which spits out TextMark-like objects,", function () {
