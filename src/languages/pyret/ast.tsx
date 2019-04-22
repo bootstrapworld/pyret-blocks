@@ -5,7 +5,7 @@ import Args from '../../components/Args';
 import * as P from '../../pretty';
 
 import { ASTNode, pluralize, enumerateList } from '../../ast';
-import {DropTarget} from '../../components/DropTarget';
+import {DropTarget, DropTargetSibling} from '../../components/DropTarget';
 import { Literal } from '../../nodes';
 
 // Binop ABlank Bind Func Sekwence Var Assign Let
@@ -141,6 +141,67 @@ export class Func extends ASTNode {
   }
 }
 
+export class Lambda extends ASTNode {
+  name: ASTNode | null;
+  args: ASTNode[];
+  retAnn: ASTNode | null;
+  doc: string | null;
+  body: ASTNode;
+  block: boolean
+
+  constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
+    // TODO change this from function definition?
+    super(from, to, 'functionDefinition', ['name', 'args', 'retAnn', 'body'], options);
+    this.name = name;
+    this.args = args;
+    this.retAnn = retAnn;
+    this.doc = doc;
+    this.body = body;
+    this.block = block;
+    super.hash = super.computeHash();
+  }
+
+  longDescription(level) {
+    return `a func expression with ${this.name.describe(level)}, ${this.args} and ${this.body.describe(level)}`;
+  }
+
+  pretty() {
+    // TODO: show doc
+    let retAnn = this.retAnn ? P.horz(" -> ", this.retAnn) : "";
+    let header_ending = (this.block)? " block:" : ":";
+    let prefix = (this.name == null)? ["lam("] : ["lam ", this.name, "("];
+    let header = P.ifFlat(
+      P.horz(P.horzArray(prefix), P.sepBy(", ", "", this.args), ")", retAnn, header_ending),
+      P.vert(P.horzArray(prefix),
+             P.horz(INDENT, P.sepBy(", ", "", this.args), ")", retAnn, ":")));
+    // either one line or multiple; helper for joining args together
+    return P.ifFlat(
+      P.horz(header, " ", this.body, " end"),
+      P.vert(header,
+             P.horz(INDENT, this.body),
+             "end"));
+  }
+
+  render(props) {
+    // TODO: show doc
+    let name = (this.name == null)? null : this.name.reactElement();
+    let body = this.body.reactElement();
+    let args = <Args>{this.args}</Args>;
+    let header_ending = <span>
+      {(this.retAnn == null && this.block == false)? <DropTarget />
+      : <>{this.retAnn != null? this.retAnn : <DropTarget />} {this.block ? "block" : <DropTarget />}</>}
+    </span>
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-operator">
+          lam&nbsp;{name}({args}){header_ending}:
+        </span>
+        {body}
+      </Node>
+    );
+  }
+}
+
 export class Block extends ASTNode {
   stmts: ASTNode[];
   name: string;
@@ -161,13 +222,22 @@ export class Block extends ASTNode {
   }
 
   render(props) {
-    // TODO: This probably doesn't render well; need vertical alignment
-    // vertically aligns when not in a node,
-    // but then keyboard navigation is lost
+    const NEWLINE = <br />;
+    let statements = [];
+    this.stmts.forEach((element, key) => {
+      let span = <span key={key}>
+        <DropTarget />
+        {NEWLINE}
+        <DropTargetSibling  node={element} left={true} right={true} />
+        {NEWLINE}
+      </span>
+      statements.push(span);
+    });
+    statements.push(<DropTarget key={this.stmts.length} />);
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
-        <span className="blocks-arguments"><Args>{this.stmts}</Args></span>
+        <span className="blocks-arguments">{statements}</span>
       </Node>
     )
   }
@@ -387,9 +457,18 @@ export class Tuple extends ASTNode {
   }
 
   render(props) {
+    let fields = [];
+    this.fields.forEach((child, index) => {
+      if (index != 0) {
+        fields.push(";");
+      }
+      fields.push(child.reactElement());
+    });
     return (
       <Node node={this} {...props}>
-        <span className="blocks-operator">{"{"}<Args>{this.fields}</Args>{"}"}</span>
+        <span className="blocks-operator">
+          {"{"}{fields}{"}"}
+        </span>
       </Node>
     );
   }
@@ -604,8 +683,116 @@ export class LoadTable extends ASTNode {
         <span className="blocks-args">
           <Args>{this.rows}</Args>
         </span>
-        {this.sources.map(e => e.reactElement())}
+        {this.sources.map((e, i) => e.reactElement({key: i}))}
     </Node>
     );
+  }
+}
+
+export class Paren extends ASTNode {
+  expr: ASTNode;
+  constructor(from, to, expr, options) {
+    super(from, to, 'paren', ['expr'], options);
+    this.expr = expr;
+    super.hash = super.computeHash();
+  }
+
+  longDescription(level) {
+    return `${this.expr.describe(level)} in parentheses`;
+  }
+
+  pretty() {
+    let inner = this.expr.pretty();
+    return P.ifFlat(
+      P.horz("(", inner, ")"),
+      P.vert("(", P.horz(INDENT, inner), ")")
+    );
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-operator">
+          ({this.expr.reactElement()})
+      </span>
+      </Node>
+    );
+  }
+}
+
+export class IfPipe extends ASTNode {
+  branches: ASTNode[];
+  blocky: boolean;
+  constructor(from, to, branches, blocky, options) {
+    super(from, to, 'condExpression', ['branches'], options);
+    this.branches = branches;
+    this.blocky = blocky;
+    super.hash = hashObject(['ifPipe', ...(this.branches.map(c => c.hash)), this.blocky]);
+  }
+
+  longDescription(level) {
+    return `${enumerateList(this.branches, level)} in an if pipe`;
+  }
+
+  pretty() {
+    let prefix = "ask:";
+    let suffix = "end";
+    let branches = P.sepBy("", "", this.branches);
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
+  }
+
+  render(props) {
+    let branches = this.branches.map((branch, index) => branch.reactElement({key: index}));
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-operator">
+          ask:
+        </span>
+        <div className="blocks-cond-table">
+          {branches}
+        </div>
+      </Node>
+    );
+  }
+}
+
+export class IfPipeBranch extends ASTNode {
+  test: ASTNode;
+  body: ASTNode;
+  constructor(from, to, test, body, options) {
+    super(from, to, 'condClause', ['test', 'body'], options);
+    this.test = test;
+    this.body = body;
+    super.hash = super.computeHash();
+  }
+
+  longDescription(level) {
+    return `${this.test.describe(level)} testing with ${this.body.describe(level)} body in an if pipe`;
+  }
+
+  pretty() {
+    let prefix = "|";
+    let intermediate = "then:";
+    let test = this.test.pretty();
+    let body = this.body.pretty();
+    return P.sepBy(" ", "", [prefix, test, intermediate, body]);
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-cond-row">
+          <div className="blocks-cond-predicate">
+            {this.test.reactElement()}
+          </div>
+          <div className="blocks-cond-result">
+            {this.body.reactElement()}
+          </div>
+        </div>
+      </Node>
+    )
   }
 }
