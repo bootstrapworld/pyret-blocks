@@ -2,7 +2,7 @@
   "name": "pyret-blocks",
   "version": "0.1.0",
   "description": "Pyret language for use in CodeMirror Blocks",
-  "main": "CodeMirrorBlocks.js",
+  "main": "src/languages/pyret/index.js",
   "engines": {
     "node": ">=6.x",
     "npm": ">=3.x"
@@ -11,7 +11,7 @@
     "babel-core": "^6.26.3",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
-    "codemirror-blocks": "git://github.com/bootstrapworld/codemirror-blocks.git#master",
+    "codemirror-blocks": "git://github.com/bootstrapworld/codemirror-blocks.git#ptw/integrate-with-cpo",
     "codemirror": "5.46.0",
     "diff": "^4.0.1",
     "event-emitter": "^0.3.5",

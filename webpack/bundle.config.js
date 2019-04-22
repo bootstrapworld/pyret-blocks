@@ -7,15 +7,15 @@ var baseConfig = require('./base.config.js');
 var configs = [
   _.extend({}, baseConfig(), {
     entry: {
-      "CodeMirrorBlocks": ['./src/languages/wescheme/index.js', './src/CodeMirrorBlocks.js']
+      "PyretLangBlocks": ['./src/languages/pyret/index.js']
     },
     output: {
       path: path.resolve(__dirname, '..', "dist"),
       filename: "[name].js",
-      library: ["CodeMirrorBlocks"]
+      library: ["PyretLangBlocks"]
     },
     externals: {
-      'codemirror': 'CodeMirror',
+      // 'codemirror': 'CodeMirror',
     }
   })
 ];
@@ -49,7 +49,7 @@ configs = configs.concat(
 configs.push(
   _.extend({}, baseConfig({extractCSS:true}), {
     entry: {
-      "blocks": './src/less/blocks.less'
+      "blocks": './src/languages/pyret/style.less'
     },
     output: {
       path: path.resolve(__dirname, '..', "dist"),

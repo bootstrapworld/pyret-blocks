@@ -21,23 +21,14 @@ module.exports = function(env, argv) {
   return _.extend({}, baseConfig, {
     devtool: 'cheap-module-source-map',
     entry: {
-      "new-editor-example": './example/new-editor-example.js',
       "new-pyret-editor-example": './example/new-pyret-editor-example.js'
     },
     module: _.extend({}, baseConfig.module, {
       rules: baseConfig.module.rules.concat([
-        { test: /\.rkt$/, use: 'raw-loader' },
         { test: /\.arr$/, use: 'raw-loader' }
       ])
     }),
     plugins: baseConfig.plugins.concat([
-      new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebpackPlugin({
-        filename: 'new-editor.html',
-        template: 'example/new-editor.html',
-        inject: 'body',
-        chunks: ['commons','new-editor-example'],
-      }),
       new HtmlWebpackPlugin({
         filename: 'new-pyret-editor.html',
         template: 'example/new-pyret-editor.html',

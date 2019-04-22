@@ -39,11 +39,7 @@ module.exports = function(config) {
         include: [
           path.resolve(__dirname, '..', 'example'),
           path.resolve(__dirname, '..', 'src'),
-          path.resolve(__dirname, '..', 'node_modules', 'wescheme-js', 'src'),
           path.resolve(__dirname, '..', 'spec')
-        ],
-        exclude: [
-          path.resolve(__dirname, '..', 'node_modules', 'wescheme-js', 'src', 'runtime', 'js-numbers.js')
         ],
         enforce: "pre",
         loader: "babel-loader?cacheDirectory=true",
