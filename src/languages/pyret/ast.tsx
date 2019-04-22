@@ -1,12 +1,12 @@
 import React from 'react';
 import hashObject from 'object-hash';
-import Node from '../../components/Node';
-import Args from '../../components/Args';
-import * as P from '../../pretty';
+import Node from '../../../node_modules/codemirror-blocks/src/components/Node';
+import Args from '../../../node_modules/codemirror-blocks/src/components/Args';
+import * as P from '../../../node_modules/codemirror-blocks/src/pretty';
 
-import { ASTNode, pluralize, enumerateList } from '../../ast';
-import {DropTarget, DropTargetSibling} from '../../components/DropTarget';
-import { Literal } from '../../nodes';
+import { ASTNode, pluralize, enumerateList } from '../../../node_modules/codemirror-blocks/src/ast';
+import {DropTarget, DropTargetSibling} from '../../../node_modules/codemirror-blocks/src/components/DropTarget';
+import { Literal } from '../../../node_modules/codemirror-blocks/src/nodes';
 
 // Binop ABlank Bind Func Sekwence Var Assign Let
 
