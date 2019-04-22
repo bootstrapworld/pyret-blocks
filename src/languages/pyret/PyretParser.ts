@@ -4,10 +4,10 @@ import * as TR from "./pyret-lang/translate-parse-tree.js";
 import {
   AST,
   ASTNode
-} from '../../ast';
+} from '../../../node_modules/codemirror-blocks/src/ast';
 import {
   Literal, 
-} from '../../nodes';
+} from '../../../node_modules/codemirror-blocks/src/nodes';
 import {Binop,
   Assign,
   Bind,
