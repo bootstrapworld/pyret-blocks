@@ -1,12 +1,19 @@
 import React from 'react';
 import hashObject from 'object-hash';
-import Node from '../../../node_modules/codemirror-blocks/src/components/Node';
-import Args from '../../../node_modules/codemirror-blocks/src/components/Args';
-import * as P from '../../../node_modules/codemirror-blocks/src/pretty';
+import {Node, Args, AST, DT, Nodes, Pretty} from '../../../node_modules/codemirror-blocks/dist/CodeMirrorBlocks-min.js';
+const {P} = Pretty;
 
-import { ASTNode, pluralize, enumerateList } from '../../../node_modules/codemirror-blocks/src/ast';
-import {DropTarget, DropTargetSibling} from '../../../node_modules/codemirror-blocks/src/components/DropTarget';
-import { Literal } from '../../../node_modules/codemirror-blocks/src/nodes';
+const {pluralize, enumerateList} = AST;
+const {DropTarget, DropTargetSibling} = DT;
+interface ASTNode {
+  describe: (any) => any;
+  reactElement: (key?) => any;
+  pretty: () => any;
+  hash: any;
+};
+
+type Literal = ASTNode;
+
 
 // Binop ABlank Bind Func Sekwence Var Assign Let
 

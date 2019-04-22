@@ -1,5 +1,6 @@
 import PyretParser from './PyretParser';
-import {addLanguage} from '../../../node_modules/codemirror-blocks/src/languages/';
+import {Languages} from '../../../node_modules/codemirror-blocks';
+const {addLanguage} = Languages;
 require('./style.less');
 
 export default addLanguage(
