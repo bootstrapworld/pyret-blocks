@@ -5,15 +5,6 @@ const {P} = Pretty;
 
 const {pluralize, enumerateList} = AST;
 const {DropTarget, DropTargetSibling} = DT;
-interface ASTNode {
-  describe: (any) => any;
-  reactElement: (key?) => any;
-  pretty: () => any;
-  hash: any;
-};
-
-type Literal = ASTNode;
-
 
 // Binop ABlank Bind Func Sekwence Var Assign Let
 
@@ -21,10 +12,10 @@ type Literal = ASTNode;
 
 const INDENT = P.txt("  ");
 
-export class Binop extends ASTNode {
-  op: ASTNode;
-  left: ASTNode;
-  right: ASTNode;
+export class Binop extends AST.ASTNode {
+  op: AST.ASTNode;
+  left: AST.ASTNode;
+  right: AST.ASTNode;
 
   constructor(from, to, op, left, right, options = {}) {
     super(from, to, 'binop', ['op', 'left', 'right'], options);
@@ -39,7 +30,7 @@ export class Binop extends ASTNode {
     return `a ${this.op.describe(level)} expression with ${this.left.describe(level)} and ${this.right.describe(level)}`;
   }
 
-  pretty(): P.Doc {
+  pretty(): Pretty.Doc {
     return P.ifFlat(P.horz(this.left, " ", this.op, " ", this.right),
                     P.vert(this.left, P.horz(" ", this.op, " ", this.right)));
   }
@@ -57,11 +48,11 @@ export class Binop extends ASTNode {
   }
 }
 
-export class Bind extends ASTNode {
-  ann: ASTNode | null;
-  ident: Literal;
+export class Bind extends AST.ASTNode {
+  ann: AST.ASTNode | null;
+  ident: Nodes.Literal;
 
-  constructor(from, to, id: Literal, ann, options = {}) {
+  constructor(from, to, id: Nodes.Literal, ann, options = {}) {
     super(from, to, 'bind', ['ident', 'ann'], options);
     this.ident = id;
     this.ann = ann;
@@ -89,12 +80,12 @@ export class Bind extends ASTNode {
   }
 }
 
-export class Func extends ASTNode {
-  name: ASTNode;
-  args: ASTNode[];
-  retAnn: ASTNode | null;
+export class Func extends AST.ASTNode {
+  name: AST.ASTNode;
+  args: AST.ASTNode[];
+  retAnn: AST.ASTNode | null;
   doc: string | null;
-  body: ASTNode;
+  body: AST.ASTNode;
   block: boolean
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
@@ -148,12 +139,12 @@ export class Func extends ASTNode {
   }
 }
 
-export class Lambda extends ASTNode {
-  name: ASTNode | null;
-  args: ASTNode[];
-  retAnn: ASTNode | null;
+export class Lambda extends AST.ASTNode {
+  name: AST.ASTNode | null;
+  args: AST.ASTNode[];
+  retAnn: AST.ASTNode | null;
   doc: string | null;
-  body: ASTNode;
+  body: AST.ASTNode;
   block: boolean
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
@@ -209,8 +200,8 @@ export class Lambda extends ASTNode {
   }
 }
 
-export class Block extends ASTNode {
-  stmts: ASTNode[];
+export class Block extends AST.ASTNode {
+  stmts: AST.ASTNode[];
   name: string;
 
   constructor(from, to, stmts, name, options = {}) {
@@ -250,9 +241,9 @@ export class Block extends ASTNode {
   }
 }
 
-export class Let extends ASTNode {
-  ident: ASTNode; // really Bind
-  rhs: ASTNode;
+export class Let extends AST.ASTNode {
+  ident: AST.ASTNode; // really Bind
+  rhs: AST.ASTNode;
 
   constructor(from, to, id, rhs, options = {}) {
     super(from, to, 'let', ['ident', 'rhs'], options);
@@ -284,9 +275,9 @@ export class Let extends ASTNode {
   }
 }
 
-export class Var extends ASTNode {
-  ident: Literal;
-  rhs: ASTNode;
+export class Var extends AST.ASTNode {
+  ident: Nodes.Literal;
+  rhs: AST.ASTNode;
 
   constructor(from, to, id, rhs, options = {}) {
     super(from, to, 'var', ['ident', 'rhs'], options);
@@ -318,9 +309,9 @@ export class Var extends ASTNode {
   }
 }
 
-export class Assign extends ASTNode {
-  ident: Literal;
-  rhs: ASTNode;
+export class Assign extends AST.ASTNode {
+  ident: Node.Literal;
+  rhs: AST.ASTNode;
 
   constructor(from, to, id, rhs, options = {}) {
     super(from, to, 'assign', ['ident', 'rhs'], options);
@@ -351,10 +342,10 @@ export class Assign extends ASTNode {
   }
 }
 
-export class Construct extends ASTNode {
+export class Construct extends AST.ASTNode {
   modifier: any; // TODO: what is this?
-  construktor: ASTNode;
-  values: ASTNode[];
+  construktor: AST.ASTNode;
+  values: AST.ASTNode[];
 
   constructor(from, to, modifier, construktor, values, options = {}) {
     super(from, to, 'constructor', ['modifier', 'construktor', 'values'], options);
@@ -391,9 +382,9 @@ export class Construct extends ASTNode {
   }
 }
 
-export class FunctionApp extends ASTNode {
-  func: ASTNode;
-  args: ASTNode[];
+export class FunctionApp extends AST.ASTNode {
+  func: AST.ASTNode;
+  args: AST.ASTNode[];
 
   constructor(from, to, func, args, options={}) {
     super(from, to, 'functionApp', ['func', 'args'], options);
@@ -438,8 +429,8 @@ export class FunctionApp extends ASTNode {
 }
 
 // could maybe combine this with list to make generic data structure pyret block
-export class Tuple extends ASTNode {
-  fields: ASTNode[];
+export class Tuple extends AST.ASTNode {
+  fields: AST.ASTNode[];
 
   constructor(from, to, fields, options = {}) {
     super(from, to, 'tuple', ['fields'], options);
@@ -481,9 +472,9 @@ export class Tuple extends ASTNode {
   }
 }
 
-export class TupleGet extends ASTNode {
-  base: ASTNode;
-  index: ASTNode;
+export class TupleGet extends AST.ASTNode {
+  base: AST.ASTNode;
+  index: AST.ASTNode;
 
   constructor(from, to, base, index, options = {}) {
     super(from, to, 'let', ['base', 'index'], options);
@@ -519,9 +510,9 @@ export class TupleGet extends ASTNode {
   }
 }
 
-export class Check extends ASTNode {
+export class Check extends AST.ASTNode {
   name: string | null;
-  body: ASTNode;
+  body: AST.ASTNode;
   keyword_check: boolean;
 
   constructor(from, to, name, body, keyword_check, options = {}) {
@@ -561,11 +552,11 @@ export class Check extends ASTNode {
   }
 }
 
-export class CheckTest extends ASTNode {
-  op: ASTNode;
-  refinement: ASTNode;
-  lhs: ASTNode;
-  rhs: ASTNode | null;
+export class CheckTest extends AST.ASTNode {
+  op: AST.ASTNode;
+  refinement: AST.ASTNode;
+  lhs: AST.ASTNode;
+  rhs: AST.ASTNode | null;
   
   constructor(from, to, check_op, refinement, lhs, rhs, options={}) {
     super(from, to, 'functionApp', ['op', 'refinement', 'lhs', 'rhs'], options);
@@ -613,9 +604,9 @@ export class CheckTest extends ASTNode {
   }
 }
 
-export class Bracket extends ASTNode {
-  base: ASTNode;
-  index: ASTNode;
+export class Bracket extends AST.ASTNode {
+  base: AST.ASTNode;
+  index: AST.ASTNode;
 
   constructor(from, to, base, index, options = {}) {
     super(from, to, 'let', ['base', 'index'], options);
@@ -651,9 +642,9 @@ export class Bracket extends ASTNode {
   }
 }
 
-export class LoadTable extends ASTNode {
-  rows: ASTNode[];
-  sources: ASTNode[];
+export class LoadTable extends AST.ASTNode {
+  rows: AST.ASTNode[];
+  sources: AST.ASTNode[];
 
   constructor(from, to, rows, sources, options={}) {
     super(from, to, 'functionApp', ['rows', 'sources'], options);
@@ -696,8 +687,8 @@ export class LoadTable extends ASTNode {
   }
 }
 
-export class Paren extends ASTNode {
-  expr: ASTNode;
+export class Paren extends AST.ASTNode {
+  expr: AST.ASTNode;
   constructor(from, to, expr, options) {
     super(from, to, 'paren', ['expr'], options);
     this.expr = expr;
@@ -727,8 +718,8 @@ export class Paren extends ASTNode {
   }
 }
 
-export class IfPipe extends ASTNode {
-  branches: ASTNode[];
+export class IfPipe extends AST.ASTNode {
+  branches: AST.ASTNode[];
   blocky: boolean;
   constructor(from, to, branches, blocky, options) {
     super(from, to, 'condExpression', ['branches'], options);
@@ -766,9 +757,9 @@ export class IfPipe extends ASTNode {
   }
 }
 
-export class IfPipeBranch extends ASTNode {
-  test: ASTNode;
-  body: ASTNode;
+export class IfPipeBranch extends AST.ASTNode {
+  test: AST.ASTNode;
+  body: AST.ASTNode;
   constructor(from, to, test, body, options) {
     super(from, to, 'condClause', ['test', 'body'], options);
     this.test = test;

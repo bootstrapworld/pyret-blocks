@@ -29,7 +29,7 @@ import {Binop,
   Var,
 } from "./ast";
 
-interface Position {
+export interface Position {
   line: number;
   ch: number;
 }
