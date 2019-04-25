@@ -1,6 +1,6 @@
 import React from 'react';
 import hashObject from 'object-hash';
-import {Node, Args, AST, DT, Nodes, Pretty} from '../../../node_modules/codemirror-blocks/dist/CodeMirrorBlocks-min.js';
+import {Node, Args, AST, DT, Nodes, Pretty} from 'codemirror-blocks';
 const {P} = Pretty;
 
 const {pluralize, enumerateList} = AST;
