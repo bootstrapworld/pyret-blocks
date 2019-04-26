@@ -1,10 +1,12 @@
 import React from 'react';
 import hashObject from 'object-hash';
-import {Node, Args, AST, DT, Nodes, Pretty} from 'codemirror-blocks';
-const {P} = Pretty;
+import CodeMirrorBlocks from 'codemirror-blocks';
+console.log(CodeMirrorBlocks);
 
-const {pluralize, enumerateList} = AST;
-const {DropTarget, DropTargetSibling} = DT;
+const {P} = CodeMirrorBlocks.Pretty;
+
+const {pluralize, enumerateList} = CodeMirrorBlocks.AST;
+const {DropTarget, DropTargetSibling} = CodeMirrorBlocks.DropTarget;
 
 // Binop ABlank Bind Func Sekwence Var Assign Let
 
@@ -12,10 +14,10 @@ const {DropTarget, DropTargetSibling} = DT;
 
 const INDENT = P.txt("  ");
 
-export class Binop extends AST.ASTNode {
-  op: AST.ASTNode;
-  left: AST.ASTNode;
-  right: AST.ASTNode;
+export class Binop extends CodeMirrorBlocks.AST.ASTNode {
+  op: CodeMirrorBlocks.AST.ASTNode;
+  left: CodeMirrorBlocks.AST.ASTNode;
+  right: CodeMirrorBlocks.AST.ASTNode;
 
   constructor(from, to, op, left, right, options = {}) {
     super(from, to, 'binop', ['op', 'left', 'right'], options);
@@ -30,29 +32,29 @@ export class Binop extends AST.ASTNode {
     return `a ${this.op.describe(level)} expression with ${this.left.describe(level)} and ${this.right.describe(level)}`;
   }
 
-  pretty(): Pretty.Doc {
+  pretty(): CodeMirrorBlocks.Pretty.Doc {
     return P.ifFlat(P.horz(this.left, " ", this.op, " ", this.right),
                     P.vert(this.left, P.horz(" ", this.op, " ", this.right)));
   }
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {this.op.reactElement()}
         </span>
         {this.left.reactElement()}
         {this.right.reactElement()}
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Bind extends AST.ASTNode {
-  ann: AST.ASTNode | null;
-  ident: Nodes.Literal;
+export class Bind extends CodeMirrorBlocks.AST.ASTNode {
+  ann: CodeMirrorBlocks.AST.ASTNode | null;
+  ident: CodeMirrorBlocks.Nodes.Literal;
 
-  constructor(from, to, id: Nodes.Literal, ann, options = {}) {
+  constructor(from, to, id: CodeMirrorBlocks.Nodes.Literal, ann, options = {}) {
     super(from, to, 'bind', ['ident', 'ann'], options);
     this.ident = id;
     this.ann = ann;
@@ -72,20 +74,20 @@ export class Bind extends AST.ASTNode {
   }
 
   render(props) {
-    return <Node node={this} {...props}>
+    return <CodeMirrorBlocks.Node node={this} {...props}>
       {(this.ann === null) ? <span className="blocks-operator">{this.ident.reactElement()}</span>
         :
         (<span className="blocks-operator">{this.ident.reactElement()} :: {this.ann.reactElement()}</span>)
-      }</Node>
+      }</CodeMirrorBlocks.Node>
   }
 }
 
-export class Func extends AST.ASTNode {
-  name: AST.ASTNode;
-  args: AST.ASTNode[];
-  retAnn: AST.ASTNode | null;
+export class Func extends CodeMirrorBlocks.AST.ASTNode {
+  name: CodeMirrorBlocks.AST.ASTNode;
+  args: CodeMirrorBlocks.AST.ASTNode[];
+  retAnn: CodeMirrorBlocks.AST.ASTNode | null;
   doc: string | null;
-  body: AST.ASTNode;
+  body: CodeMirrorBlocks.AST.ASTNode;
   block: boolean
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
@@ -123,28 +125,28 @@ export class Func extends AST.ASTNode {
     // TODO: show doc
     let name = this.name.reactElement();
     let body = this.body.reactElement();
-    let args = <Args>{this.args}</Args>;
+    let args = <CodeMirrorBlocks.Args>{this.args}</CodeMirrorBlocks.Args>;
     let header_ending = <span>
       {(this.retAnn == null && this.block == false)? <DropTarget />
       : <>{this.retAnn != null? this.retAnn : <DropTarget />} {this.block ? "block" : <DropTarget />}</>}
     </span>
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           fun&nbsp;{name}({args}){header_ending}:
         </span>
         {body}
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Lambda extends AST.ASTNode {
-  name: AST.ASTNode | null;
-  args: AST.ASTNode[];
-  retAnn: AST.ASTNode | null;
+export class Lambda extends CodeMirrorBlocks.AST.ASTNode {
+  name: CodeMirrorBlocks.AST.ASTNode | null;
+  args: CodeMirrorBlocks.AST.ASTNode[];
+  retAnn: CodeMirrorBlocks.AST.ASTNode | null;
   doc: string | null;
-  body: AST.ASTNode;
+  body: CodeMirrorBlocks.AST.ASTNode;
   block: boolean
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
@@ -184,24 +186,24 @@ export class Lambda extends AST.ASTNode {
     // TODO: show doc
     let name = (this.name == null)? null : this.name.reactElement();
     let body = this.body.reactElement();
-    let args = <Args>{this.args}</Args>;
+    let args = <CodeMirrorBlocks.Args>{this.args}</CodeMirrorBlocks.Args>;
     let header_ending = <span>
       {(this.retAnn == null && this.block == false)? <DropTarget />
       : <>{this.retAnn != null? this.retAnn : <DropTarget />} {this.block ? "block" : <DropTarget />}</>}
     </span>
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           lam&nbsp;{name}({args}){header_ending}:
         </span>
         {body}
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Block extends AST.ASTNode {
-  stmts: AST.ASTNode[];
+export class Block extends CodeMirrorBlocks.AST.ASTNode {
+  stmts: CodeMirrorBlocks.AST.ASTNode[];
   name: string;
 
   constructor(from, to, stmts, name, options = {}) {
@@ -234,16 +236,16 @@ export class Block extends AST.ASTNode {
     statements.push(<DropTarget key={this.stmts.length} />);
     // include name here? is it ever a time when it's not block?
     return (
-      <Node node = {this} {...props}>
+      <CodeMirrorBlocks.Node node = {this} {...props}>
         <span className="blocks-arguments">{statements}</span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     )
   }
 }
 
-export class Let extends AST.ASTNode {
-  ident: AST.ASTNode; // really Bind
-  rhs: AST.ASTNode;
+export class Let extends CodeMirrorBlocks.AST.ASTNode {
+  ident: CodeMirrorBlocks.AST.ASTNode; // really Bind
+  rhs: CodeMirrorBlocks.AST.ASTNode;
 
   constructor(from, to, id, rhs, options = {}) {
     super(from, to, 'let', ['ident', 'rhs'], options);
@@ -266,18 +268,18 @@ export class Let extends AST.ASTNode {
   render(props) {
     let identifier = this.ident.reactElement();
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {identifier} &nbsp;=&nbsp; {this.rhs.reactElement()}
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Var extends AST.ASTNode {
-  ident: Nodes.Literal;
-  rhs: AST.ASTNode;
+export class Var extends CodeMirrorBlocks.AST.ASTNode {
+  ident: CodeMirrorBlocks.Nodes.Literal;
+  rhs: CodeMirrorBlocks.AST.ASTNode;
 
   constructor(from, to, id, rhs, options = {}) {
     super(from, to, 'var', ['ident', 'rhs'], options);
@@ -299,19 +301,19 @@ export class Var extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">VAR</span>
         <span className="blocks-args">
-          <Args>{[this.ident, this.rhs]}</Args>
+          <CodeMirrorBlocks.Args>{[this.ident, this.rhs]}</CodeMirrorBlocks.Args>
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Assign extends AST.ASTNode {
-  ident: Node.Literal;
-  rhs: AST.ASTNode;
+export class Assign extends CodeMirrorBlocks.AST.ASTNode {
+  ident: CodeMirrorBlocks.Node.Literal;
+  rhs: CodeMirrorBlocks.AST.ASTNode;
 
   constructor(from, to, id, rhs, options = {}) {
     super(from, to, 'assign', ['ident', 'rhs'], options);
@@ -333,19 +335,19 @@ export class Assign extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {this.ident.reactElement()} := {this.rhs.reactElement()}
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Construct extends AST.ASTNode {
+export class Construct extends CodeMirrorBlocks.AST.ASTNode {
   modifier: any; // TODO: what is this?
-  construktor: AST.ASTNode;
-  values: AST.ASTNode[];
+  construktor: CodeMirrorBlocks.AST.ASTNode;
+  values: CodeMirrorBlocks.AST.ASTNode[];
 
   constructor(from, to, modifier, construktor, values, options = {}) {
     super(from, to, 'constructor', ['modifier', 'construktor', 'values'], options);
@@ -372,19 +374,19 @@ export class Construct extends AST.ASTNode {
 
   render(props) {
     let construktor = this.construktor.reactElement();
-    let values = <Args>{this.values}</Args>;
+    let values = <CodeMirrorBlocks.Args>{this.values}</CodeMirrorBlocks.Args>;
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">{construktor}</span>
         {values}
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class FunctionApp extends AST.ASTNode {
-  func: AST.ASTNode;
-  args: AST.ASTNode[];
+export class FunctionApp extends CodeMirrorBlocks.AST.ASTNode {
+  func: CodeMirrorBlocks.AST.ASTNode;
+  args: CodeMirrorBlocks.AST.ASTNode[];
 
   constructor(from, to, func, args, options={}) {
     super(from, to, 'functionApp', ['func', 'args'], options);
@@ -416,21 +418,21 @@ export class FunctionApp extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
-          <Args>{[this.func]}</Args>
+          <CodeMirrorBlocks.Args>{[this.func]}</CodeMirrorBlocks.Args>
         </span>
         <span className="blocks-args">
-          <Args>{this.args}</Args>
+          <CodeMirrorBlocks.Args>{this.args}</CodeMirrorBlocks.Args>
         </span>
-    </Node>
+    </CodeMirrorBlocks.Node>
     );
   }
 }
 
 // could maybe combine this with list to make generic data structure pyret block
-export class Tuple extends AST.ASTNode {
-  fields: AST.ASTNode[];
+export class Tuple extends CodeMirrorBlocks.AST.ASTNode {
+  fields: CodeMirrorBlocks.AST.ASTNode[];
 
   constructor(from, to, fields, options = {}) {
     super(from, to, 'tuple', ['fields'], options);
@@ -463,18 +465,18 @@ export class Tuple extends AST.ASTNode {
       fields.push(child.reactElement());
     });
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {"{"}{fields}{"}"}
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class TupleGet extends AST.ASTNode {
-  base: AST.ASTNode;
-  index: AST.ASTNode;
+export class TupleGet extends CodeMirrorBlocks.AST.ASTNode {
+  base: CodeMirrorBlocks.AST.ASTNode;
+  index: CodeMirrorBlocks.AST.ASTNode;
 
   constructor(from, to, base, index, options = {}) {
     super(from, to, 'let', ['base', 'index'], options);
@@ -499,20 +501,20 @@ export class TupleGet extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {this.base.reactElement()}{".{"}{this.index.reactElement()}{"}"}
         </span>
         <span className="block-args">
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Check extends AST.ASTNode {
+export class Check extends CodeMirrorBlocks.AST.ASTNode {
   name: string | null;
-  body: AST.ASTNode;
+  body: CodeMirrorBlocks.AST.ASTNode;
   keyword_check: boolean;
 
   constructor(from, to, name, body, keyword_check, options = {}) {
@@ -540,23 +542,23 @@ export class Check extends AST.ASTNode {
     console.log("?", this.body);
     let body = this.body.reactElement();
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {"check" + (this.name != null ? " " + this.name : "")}
         </span>
         <span className="blocks-args">
           {body}
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class CheckTest extends AST.ASTNode {
-  op: AST.ASTNode;
-  refinement: AST.ASTNode;
-  lhs: AST.ASTNode;
-  rhs: AST.ASTNode | null;
+export class CheckTest extends CodeMirrorBlocks.AST.ASTNode {
+  op: CodeMirrorBlocks.AST.ASTNode;
+  refinement: CodeMirrorBlocks.AST.ASTNode;
+  lhs: CodeMirrorBlocks.AST.ASTNode;
+  rhs: CodeMirrorBlocks.AST.ASTNode | null;
   
   constructor(from, to, check_op, refinement, lhs, rhs, options={}) {
     super(from, to, 'functionApp', ['op', 'refinement', 'lhs', 'rhs'], options);
@@ -591,7 +593,7 @@ export class CheckTest extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {this.op.reactElement()}
         </span>
@@ -599,14 +601,14 @@ export class CheckTest extends AST.ASTNode {
           {this.lhs.reactElement()}
           {this.rhs ? this.rhs.reactElement() : null}
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Bracket extends AST.ASTNode {
-  base: AST.ASTNode;
-  index: AST.ASTNode;
+export class Bracket extends CodeMirrorBlocks.AST.ASTNode {
+  base: CodeMirrorBlocks.AST.ASTNode;
+  index: CodeMirrorBlocks.AST.ASTNode;
 
   constructor(from, to, base, index, options = {}) {
     super(from, to, 'let', ['base', 'index'], options);
@@ -631,20 +633,20 @@ export class Bracket extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           {this.base.reactElement()} [ {this.index.reactElement()}]
         </span>
         <span className="block-args">
         </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class LoadTable extends AST.ASTNode {
-  rows: AST.ASTNode[];
-  sources: AST.ASTNode[];
+export class LoadTable extends CodeMirrorBlocks.AST.ASTNode {
+  rows: CodeMirrorBlocks.AST.ASTNode[];
+  sources: CodeMirrorBlocks.AST.ASTNode[];
 
   constructor(from, to, rows, sources, options={}) {
     super(from, to, 'functionApp', ['rows', 'sources'], options);
@@ -674,21 +676,21 @@ export class LoadTable extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           load-table
         </span>
         <span className="blocks-args">
-          <Args>{this.rows}</Args>
+          <CodeMirrorBlocks.Args>{this.rows}</CodeMirrorBlocks.Args>
         </span>
         {this.sources.map((e, i) => e.reactElement({key: i}))}
-    </Node>
+    </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class Paren extends AST.ASTNode {
-  expr: AST.ASTNode;
+export class Paren extends CodeMirrorBlocks.AST.ASTNode {
+  expr: CodeMirrorBlocks.AST.ASTNode;
   constructor(from, to, expr, options) {
     super(from, to, 'paren', ['expr'], options);
     this.expr = expr;
@@ -709,17 +711,17 @@ export class Paren extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           ({this.expr.reactElement()})
       </span>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class IfPipe extends AST.ASTNode {
-  branches: AST.ASTNode[];
+export class IfPipe extends CodeMirrorBlocks.AST.ASTNode {
+  branches: CodeMirrorBlocks.AST.ASTNode[];
   blocky: boolean;
   constructor(from, to, branches, blocky, options) {
     super(from, to, 'condExpression', ['branches'], options);
@@ -745,21 +747,21 @@ export class IfPipe extends AST.ASTNode {
   render(props) {
     let branches = this.branches.map((branch, index) => branch.reactElement({key: index}));
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <span className="blocks-operator">
           ask:
         </span>
         <div className="blocks-cond-table">
           {branches}
         </div>
-      </Node>
+      </CodeMirrorBlocks.Node>
     );
   }
 }
 
-export class IfPipeBranch extends AST.ASTNode {
-  test: AST.ASTNode;
-  body: AST.ASTNode;
+export class IfPipeBranch extends CodeMirrorBlocks.AST.ASTNode {
+  test: CodeMirrorBlocks.AST.ASTNode;
+  body: CodeMirrorBlocks.AST.ASTNode;
   constructor(from, to, test, body, options) {
     super(from, to, 'condClause', ['test', 'body'], options);
     this.test = test;
@@ -781,7 +783,7 @@ export class IfPipeBranch extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
+      <CodeMirrorBlocks.Node node={this} {...props}>
         <div className="blocks-cond-row">
           <div className="blocks-cond-predicate">
             {this.test.reactElement()}
@@ -790,7 +792,7 @@ export class IfPipeBranch extends AST.ASTNode {
             {this.body.reactElement()}
           </div>
         </div>
-      </Node>
+      </CodeMirrorBlocks.Node>
     )
   }
 }
