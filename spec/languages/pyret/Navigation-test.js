@@ -1,4 +1,4 @@
-import CodeMirrorBlocks from 'codemirror-blocks';
+import CodeMirrorBlocks from '../../../node_modules/codemirror-blocks';
 import pyret from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 import { store } from './store';

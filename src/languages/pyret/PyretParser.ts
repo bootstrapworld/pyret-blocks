@@ -5,7 +5,7 @@ import {
   AST,
   ASTNode,
   Nodes, 
-} from 'codemirror-blocks';
+} from '../../../node_modules/codemirror-blocks';
 import {
   Assign,
   Bind,

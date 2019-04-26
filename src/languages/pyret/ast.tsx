@@ -1,6 +1,6 @@
 import React from 'react';
 import hashObject from 'object-hash';
-import {AST, Pretty, DT, Node, Args, Nodes} from 'codemirror-blocks';
+import {AST, Pretty, DT, Node, Args, Nodes} from '../../../node_modules/codemirror-blocks';
 
 const P = Pretty;
 
