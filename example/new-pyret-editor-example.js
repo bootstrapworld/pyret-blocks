@@ -1,15 +1,11 @@
-import CodeMirrorBlocks from 'codemirror-blocks';
 import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
 import pyret from '../src/languages/pyret';
-//import bigExampleCode from './ast-test.rkt';
+import CodeMirrorBlocks from 'codemirror-blocks';
 
-
-//const smallExampleCode = `(+ 1 2) ;comment\n(+ 3 4)`;
 const smallExampleCode = `1 + 2`;
 
 const useBigCode = true;
-//const exampleCode = useBigCode ? bigExampleCode : smallExampleCode;
 const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
