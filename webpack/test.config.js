@@ -10,8 +10,10 @@ if (envConfig.runCoverage) {
   rules.push({
     test: /\.js/,
     use: 'istanbul-instrumenter-loader',
-    include: path.resolve(__dirname, '..', 'src'),
-    exclude: /node_modules/
+    include: [
+      path.resolve(__dirname, '..', 'src'),
+      path.resolve(__dirname, '..', 'node_modules'),
+    ],
   });
 }
 
