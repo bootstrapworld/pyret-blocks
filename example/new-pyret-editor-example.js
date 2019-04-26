@@ -1,5 +1,5 @@
 // import pyret from '../node_modules/codemirror-blocks';
-import CodeMirrorBlocks from '../node_modules/codemirror-blocks/dist/CodeMirrorBlocks';
+import CodeMirrorBlocks from 'codemirror-blocks';
 import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
 //import bigExampleCode from './ast-test.rkt';
