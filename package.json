@@ -12,7 +12,7 @@
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
     "codemirror": "5.46.0",
-    "codemirror-blocks": "git://github.com/bootstrapworld/codemirror-blocks.git#ptw/integrate-with-cpo",
+    "codemirror-blocks": "file:../codemirror-blocks",
     "diff": "^4.0.1",
     "event-emitter": "^0.3.5",
     "icss-utils": "^4.1.0",
