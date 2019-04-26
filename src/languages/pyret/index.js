@@ -5,7 +5,7 @@ require('./style.less');
 
 export default addLanguage(
   {
-    id: 'pyret',
+    id: 'pyret-sep',
     name: 'Pyret',
     description: 'The Pyret language',
     getParser() {
