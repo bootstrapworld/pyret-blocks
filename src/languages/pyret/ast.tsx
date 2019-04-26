@@ -20,7 +20,6 @@ export class Binop extends AST.ASTNode {
 
   constructor(from, to, op, left, right, options = {}) {
     super(from, to, 'binop', ['op', 'left', 'right'], options);
-    // op is just a string, so not a part of children
     this.op = op;
     this.left = left;
     this.right = right;
