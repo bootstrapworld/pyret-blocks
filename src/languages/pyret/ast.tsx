@@ -1,9 +1,10 @@
 import React from 'react';
 import hashObject from 'object-hash';
-import CodeMirrorBlocks from 'codemirror-blocks';
+import {CodeMirrorBlocks, AST, Pretty} from 'codemirror-blocks';
 console.log(CodeMirrorBlocks);
+console.log(AST);
 
-const {P} = CodeMirrorBlocks.Pretty;
+const {P} = Pretty;
 
 const {pluralize, enumerateList} = CodeMirrorBlocks.AST;
 const {DropTarget, DropTargetSibling} = CodeMirrorBlocks.DropTarget;
@@ -14,7 +15,7 @@ const {DropTarget, DropTargetSibling} = CodeMirrorBlocks.DropTarget;
 
 const INDENT = P.txt("  ");
 
-export class Binop extends CodeMirrorBlocks.AST.ASTNode {
+export class Binop extends AST.ASTNode {
   op: CodeMirrorBlocks.AST.ASTNode;
   left: CodeMirrorBlocks.AST.ASTNode;
   right: CodeMirrorBlocks.AST.ASTNode;
