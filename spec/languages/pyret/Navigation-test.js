@@ -1,7 +1,7 @@
-import CodeMirrorBlocks from '../../../src/CodeMirrorBlocks';
+import CodeMirrorBlocks from 'codemirror-blocks';
 import pyret from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-import { store } from '../../../src/store';
+import { store } from './store';
 import { wait, cleanupAfterTest } from '../../support/test-utils';
 import {
   click,

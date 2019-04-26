@@ -1,5 +1,4 @@
-import PyretParser from 'codemirror-blocks/languages/pyret/PyretParser';
-import _wescheme from '../../../src/languages/wescheme';
+import PyretParser from '../../../src/languages/pyret/PyretParser';
 
 describe("The Pyret Parser,", function() {
   beforeEach(function() {
