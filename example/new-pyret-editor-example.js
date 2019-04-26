@@ -1,7 +1,7 @@
-import './example-page.less';
-import dsExampleCode from './bootstrap-ds.arr';
 import pyret from '../src/languages/pyret';
 import CodeMirrorBlocks from 'codemirror-blocks';
+import './example-page.less';
+import dsExampleCode from './bootstrap-ds.arr';
 
 const smallExampleCode = `1 + 2`;
 

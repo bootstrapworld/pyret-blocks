@@ -49,7 +49,7 @@ configs = configs.concat(
 configs.push(
   _.extend({}, baseConfig({extractCSS:true}), {
     entry: {
-      "blocks": './src/languages/pyret/style.less'
+      "blocks": './src/languages/pyret/blocks.less'
     },
     output: {
       path: path.resolve(__dirname, '..', "dist"),
