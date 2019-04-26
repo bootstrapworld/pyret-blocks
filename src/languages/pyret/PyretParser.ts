@@ -3,14 +3,13 @@ import * as P from "./pyret-lang/pyret-parser.js";
 import * as TR from "./pyret-lang/translate-parse-tree.js";
 import {
   AST,
-  ASTNode
+  ASTNode,
+  Nodes, 
 } from 'codemirror-blocks';
 import {
-  Literal, 
-} from 'codemirror-blocks';
-import {Binop,
   Assign,
   Bind,
+  Binop,
   Block,
   Bracket,
   Check,
@@ -75,7 +74,7 @@ const opLookup = {
   "and": "and",
   "or":  "or",
   // TODO: check ops
-  "is": (loc, _node) => new Literal(loc.from, loc.to, 'is', 'check-op'),
+  "is": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is', 'check-op'),
 };
 
 type AField = any;
@@ -114,7 +113,7 @@ const nodeTypes = {
   // data Name
   // 's-underscore': function(l: Loc) {},
   "s-name": function (pos: Loc, str: string) {
-    return new Literal(
+    return new Nodes.Literal(
       pos.from,
       pos.to,
       str,
@@ -128,7 +127,7 @@ const nodeTypes = {
   // data Program
   "s-program": function(_pos: Loc, _prov: any, _provTy: any, _impt: any, body: Block) {
     let rootNodes = body.stmts;
-    return new AST(rootNodes);
+    return new AST.AST(rootNodes);
   },
 
   // data Import
@@ -206,7 +205,7 @@ const nodeTypes = {
     return new Func(
       pos.from,
       pos.to,
-      new Literal(fun_from, fun_to, name, 'function'),
+      new Nodes.Literal(fun_from, fun_to, name, 'function'),
       args.map(a => idToLiteral(a)),
       ann,
       doc,
@@ -247,7 +246,7 @@ const nodeTypes = {
     return new Binop(
       pos.from,
       pos.to,
-      new Literal(opPos.from, opPos.to, op, 'operator'),
+      new Nodes.Literal(opPos.from, opPos.to, op, 'operator'),
       left,
       right,
       {'aria-label': `${left} ${name} ${right}`});
@@ -267,7 +266,7 @@ const nodeTypes = {
     console.log(arguments);
     let fun_from = { line: l.from.line, ch: l.from.ch + 4 };
     let fun_to = {line: l.from.line, ch: fun_from.ch + name.length};
-    let real_name = (name == "")? null : new Literal(fun_from, fun_to, name, 'lambda');
+    let real_name = (name == "")? null : new Nodes.Literal(fun_from, fun_to, name, 'lambda');
     return new Lambda(
       l.from,
       l.to,
@@ -291,7 +290,7 @@ const nodeTypes = {
   "s-tuple-get": function(pos: Loc, lhs: ASTNode, index: number, index_pos: Loc) {
     console.log(arguments);
     return new TupleGet(
-      pos.from, pos.to, lhs, new Literal(index_pos.from, index_pos.to, index, "number"), {'aria-label': `${index} element of ${lhs} tuple`}
+      pos.from, pos.to, lhs, new Nodes.Literal(index_pos.from, index_pos.to, index, "number"), {'aria-label': `${index} element of ${lhs} tuple`}
     )
   },
   // "s-obj": function(l: Loc, fields: Member[]) {},
@@ -311,7 +310,7 @@ const nodeTypes = {
   // "s-prim-app": function(pos: Loc, fun: string, args: Expr[]) {},
   // "s-prim-val": function(pos: Loc, name: string) {},
   "s-id": function(pos: Loc, str: Name) {
-    return new Literal(
+    return new Nodes.Literal(
       pos.from,
       pos.to,
       str,
@@ -320,7 +319,7 @@ const nodeTypes = {
   },
   "s-id-var": function(pos: Loc, str: Name) {
     // TODO make sure this is correct
-    return new Literal(
+    return new Nodes.Literal(
       pos.from,
       pos.to,
       "!" + str,
@@ -331,7 +330,7 @@ const nodeTypes = {
   // "s-undefined": function(pos: Loc) {},
   // "s-srcloc": function(pos: Loc, loc: Loc) {},
   "s-num": function(pos: Loc, x: Number) {
-    return new Literal(
+    return new Nodes.Literal(
       pos.from,
       pos.to,
       x,
@@ -340,7 +339,7 @@ const nodeTypes = {
   },
   // "s-frac": function(l: Loc, num: number, den: number) {},
   "s-bool": function(pos: Loc, value: boolean) {
-    let ret = new Literal(
+    let ret = new Nodes.Literal(
       pos.from,
       pos.to,
       value,
@@ -351,7 +350,7 @@ const nodeTypes = {
   },
   "s-str": function(pos: Loc, value: string) {
     console.log(arguments);
-    return new Literal(
+    return new Nodes.Literal(
       pos.from,
       pos.to,
       "\"" + value + "\"",
@@ -361,14 +360,14 @@ const nodeTypes = {
   },
   's-dot': function(pos: Loc, base: any, method: string) {
     console.log(arguments);
-    return new Literal(
+    return new Nodes.Literal(
       pos.from, pos.to, base.toString() + "." + method, 'method', {'aria-label': `${method} on data ${base}`}
     )
   },
   's-get-bang': function (pos: Loc, obj: Expr, field: string) {
     // TODO make sure correct
     console.log(arguments);
-    return new Literal(
+    return new Nodes.Literal(
       pos.from, pos.to, obj.toString() + "." + field, 'method', {'aria-label': `${field} on data ${obj}`}
     )
   },
@@ -428,7 +427,7 @@ const nodeTypes = {
   // examples of this _other have been ABlank...
   's-field-name': function(pos: Loc, name: string, _other: any) {
     console.log(arguments);
-    return new Literal(
+    return new Nodes.Literal(
       pos.from, pos.to, name, 'field-name', {'aria-label': `${name} field`}
     );
   },
@@ -468,7 +467,7 @@ end
   // 's-sanitize': function(l: Loc, name: Name, sanitizer: Expr) {},
   's-table-src': function (pos: Loc, source: any) {
     console.log(arguments);
-    return new Literal(
+    return new Nodes.Literal(
       pos.from, pos.to, source, 'table-source', {'aria-label': `${source}, a table source`}
     )
   },
@@ -505,7 +504,7 @@ end
   },
   // 'a-any': function(l: Loc) {},
   "a-name": function(pos: Loc, id: Name) {
-    return new Literal(
+    return new Nodes.Literal(
       pos.from,
       pos.to,
       id,
@@ -528,9 +527,9 @@ end
   // 'a-field': function(l: Loc, name: string, ann: Ann) {},
 }
 
-function idToLiteral(id: Bind): Literal {
+function idToLiteral(id: Bind): Nodes.Literal {
   let name = id.ident.value;
-  return new Literal(
+  return new Nodes.Literal(
     (id as ASTNode).from, (id as ASTNode).to, (id.ann != null)? name + " :: " + id.ann : name, {'aria-label': name}
   )
 }
