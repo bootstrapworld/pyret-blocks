@@ -1,5 +1,5 @@
-import pyret from '../src/languages/pyret';
 import CodeMirrorBlocks from 'codemirror-blocks';
+import pyret from '../src/languages/pyret';
 import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
 
