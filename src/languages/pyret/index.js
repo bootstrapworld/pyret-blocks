@@ -1,9 +1,7 @@
 import PyretParser from './PyretParser';
-import {Languages} from '../../../node_modules/codemirror-blocks';
-const {addLanguage} = Languages;
 require('./style.less');
 
-export default addLanguage(
+export default 
   {
     id: 'Pyret',
     name: 'Pyret',
@@ -17,4 +15,4 @@ export default addLanguage(
         lockNodesOfType: ['comment']
       };
     },
-  });
+  };
