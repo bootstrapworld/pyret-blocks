@@ -1,5 +1,4 @@
-import CodeMirrorBlocks from 'codemirror-blocks';
-import pyret from '../src/languages/pyret';
+import PyretCMB from '../src/languages/pyret';
 import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
 
@@ -10,7 +9,7 @@ const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
 const container = document.getElementById('cmb-editor');
-const editor = new CodeMirrorBlocks(container, {value: exampleCode, collapseAll: false}, pyret);
+const editor = PyretCMB(container, {value: exampleCode, collapseAll: false});
 editor.setBlockMode(true);
 
 // for debugging purposes

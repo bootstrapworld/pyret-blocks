@@ -20,7 +20,7 @@ export const language = {
 console.log(language);
 console.log(language.getParser());
 
-export const store = Store;
+export const store = Store.store;
 
 const constructor = (container, options) => new CodeMirrorBlocks(container, options, language);
 export default constructor;
