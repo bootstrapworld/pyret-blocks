@@ -1,5 +1,4 @@
-import CodeMirrorBlocks, {store} from '../../../node_modules/codemirror-blocks';
-import pyret from '../../../src/languages/pyret';
+import CMB, {store} from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 import { wait, cleanupAfterTest } from '../../support/test-utils';
 import {
@@ -20,7 +19,7 @@ describe('The CodeMirrorBlocks Class', function () {
     `;
     document.body.insertAdjacentHTML('afterbegin', fixture);
     const container = document.getElementById('cmb-editor');
-    this.cmb = new CodeMirrorBlocks(container, { collapseAll: false, value: "" }, pyret);
+    this.cmb = CMB(container, { collapseAll: false, value: "" });
     this.cmb.setBlockMode(true);
 
     this.activeNode = () => this.cmb.getFocusedNode();
