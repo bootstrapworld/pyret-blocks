@@ -43,6 +43,7 @@ describe('The CodeMirrorBlocks Class', function () {
     });
 
     it('should activate load-spreadsheet and then url when down is pressed', async function () {
+      console.log("START");
       click(this.literal1);
       await wait(DELAY);
       keyDown("ArrowDown");
