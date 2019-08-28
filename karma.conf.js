@@ -21,17 +21,18 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['parallel', 'jasmine'],
+    frameworks: ['parallel', 'jasmine', 'karma-typescript'],
 
     parallelOptions: {
-      // executors: , // Defaults to cpu-count - 1
+      executors: envConfig.isCI ? 1 : 1, // undefined: defaults to cpu-count - 1
       shardStrategy: 'round-robin'
       // shardStrategy: 'description-length'
       // shardStrategy: 'custom'
       // customShardStrategy: function(config) {
       //   config.executors // number, the executors set above
       //   config.shardIndex // number, the specific index for the shard currently running
-      //   config.description // string, the name of the top-level describe string. Useful //     for determining how to shard the current specs
+      //   config.description // string, the name of the top-level describe string. Useful 
+      //     for determining how to shard the current specs
       //   return config.
       // }
     },
@@ -60,13 +61,13 @@ module.exports = function(config) {
       noInfo: true
     },
     client: {
-      // don't log console output in our test console
+      // should we log console output in our test console?
       captureConsole: false,
       jasmine: {
         timeoutInterval: 30000
       }
     },
-    // reporters: ["karma-typescript"],
+    reporters: ["dots"],
 /*
     reporters: reporters,
     coverageReporter: {
@@ -90,18 +91,19 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_ERROR,
+    logLevel: config.LOG_WARN,
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ envConfig.isCI ? 'ChromeTravisCI' : envConfig.devBrowser ],
+    //browsers: [ envConfig.isCI ? 'ChromeTravisCI' : envConfig.devBrowser ],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeTravisCI: {
         base: 'Chrome',
-        flags: ['--no-sandbox']
+        flags: ['--no-sandbox', '--headless', '--no-proxy-server', '--remote-debugging-port=9222']
       }
     },
 

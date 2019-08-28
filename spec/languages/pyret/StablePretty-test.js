@@ -1,5 +1,7 @@
 import CMB, {store} from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
+import { TeardownAfterTest } from 'CodeMirror-Blocks';
+import { wait } from '../../support/test-utils.js';
 
 import {
   _click,
@@ -9,7 +11,6 @@ import {
   insertText,
 } from '../../support/simulate';
 
-import {_wait, cleanupAfterTest} from '../../support/test-utils';
 
 // ms delay to let the DOM catch up before testing
 const DELAY = 500;
@@ -28,7 +29,7 @@ describe('The CodeMirrorBlocks Class', function() {
   });
 
   afterEach(function() {
-    cleanupAfterTest('root', store);
+    TeardownAfterTest();
   });
 
   describe('testing method', function() {

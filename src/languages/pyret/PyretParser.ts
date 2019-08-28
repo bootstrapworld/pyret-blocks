@@ -4,28 +4,43 @@ import * as TR from "./pyret-lang/translate-parse-tree.js";
 import {
   AST,
   ASTNode,
-  Nodes, 
-} from '../../../node_modules/codemirror-blocks';
-import {
+  Nodes,
+} from 'CodeMirror-Blocks';
+const {
+  Blank,
+} = Nodes
+import {Binop,
   Assign,
+  ArrowArgnames,
   Bind,
-  Binop,
   Block,
   Bracket,
   Check,
   CheckTest,
   Construct,
+  Contract,
+  DataField,
+  For,
+  ForBind,
   Func,
   FunctionApp,
+  IfBranch,
   IfPipe,
   IfPipeBranch,
+  Include,
   Lambda,
   Let,
   LoadTable,
   Paren,
+  SpecialImport,
+  Reactor,
   Tuple,
   TupleGet,
   Var,
+  When,
+  IfExpression,
+  IfElseExpression,
+  AnnotationApp,
 } from "./ast";
 
 export interface Position {
@@ -56,6 +71,10 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
   };
 }
 
+const checkOP = 'check-op';
+
+const ariaLabel = "aria-label";
+
 const opLookup = {
   "+":   "+",
   "-":   "-",
@@ -74,11 +93,19 @@ const opLookup = {
   "and": "and",
   "or":  "or",
   // TODO: check ops
-  "is": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is', 'check-op'),
+  "is": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is', checkOP),
+  "is=~": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is=~', checkOP),
+  "is-not=~": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is-not=~', checkOP),
+  "is-not==": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is-not==', checkOP),
+  "raises": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'raises', 'raises'),
+  "satisfies": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'satisfies', 'satisfies'),
+  "is-not<=>": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is-not<=>', checkOP),
+  "is-not": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is-not', checkOP),
+  "is<=>": (loc, _node) => new Nodes.Literal(loc.from, loc.to, 'is<=>', checkOP),
 };
 
 type AField = any;
-type Ann = String;
+type Ann = Nodes.Literal;
 type CasesBind = any;
 type CasesBindType = any;
 type CasesBranch = any;
@@ -90,12 +117,11 @@ type DefinedType = any;
 type DefinedValue = any;
 type Expr = ASTNode;
 type FieldName = any;
-type ForBind = any;
 type Hint = any;
-type IfBranch = any;
 type ImportType = Number;
 type LetBind = any;
 type LetrecBind = any;
+type LoadTableSpec = any;
 type Member = any;
 type Name = String;
 type ProvidedAlias = any;
@@ -108,16 +134,21 @@ type Variant = any;
 type VariantMember = any;
 type VariantMemberType = any;
 
+const DEBUG = false;
 
 const nodeTypes = {
   // data Name
-  // 's-underscore': function(l: Loc) {},
+  's-underscore': function(l: Loc) {
+    return new Nodes.Literal(
+      l.from, l.to, '_', 's-underscore', {[ariaLabel]: `underscore identifier`}
+    );
+  },
   "s-name": function (pos: Loc, str: string) {
     return new Nodes.Literal(
       pos.from,
       pos.to,
       str,
-      'symbol',
+      's-name',
       {'aria-label': `${str}, a name`});
   },
   // 's-global': function(s: string) {},
@@ -125,13 +156,16 @@ const nodeTypes = {
   // 's-atom': function(base: string, serial: number) {},
 
   // data Program
-  "s-program": function(_pos: Loc, _prov: any, _provTy: any, _impt: any, body: Block) {
-    let rootNodes = body.stmts;
+  "s-program": function(_pos: Loc, _prov: any, _provTy: any, imports: ASTNode[], body: Block) {
+    let rootNodes = imports.concat(body.stmts);
     return new AST.AST(rootNodes);
   },
 
   // data Import
-  // "s-include": function(pos: Loc, mod: ImportType) {},
+  "s-include": function(pos: Loc, mod: ImportType) {
+    if (DEBUG) console.log(arguments);
+    return new Include(pos.from, pos.to, mod, {'aria-label': `include statement`});
+  },
   // "s-import": function(pos: Loc, file: ImportType, name: Name) {},
   // "s-import-types": function(pos: Loc, file: ImportType, name: Name, types: Name) {},
   // "s-import-fields": function(pos: Loc, fields: Name[], file: ImportType) {},
@@ -158,8 +192,23 @@ const nodeTypes = {
   "s-provide-types-none": function(_l: Loc) { return null; },
 
   // data ImportType
-  // "s-const-import": function(l: Loc, mod: string) {},
-  // "s-special-import": function(l: Loc, kind: string, args: string[]) {},
+  "s-const-import": function(l: Loc, mod: string) {
+    if(DEBUG) console.log(arguments);
+    return new Nodes.Literal(l.from, l.to, mod, "const-import");
+  },
+  "s-special-import": function(l: Loc, kind: string, args: string[]) {
+    if(DEBUG) console.log(arguments);
+    let kind_literal = new Nodes.Literal(l.from, l.to, kind, "special-import", {"aria-label": `${kind} import`});
+    let args_literals = args.map(e => new Nodes.Literal(l.from, l.to, '"' + e + '"', 'string', {"aria-label": `import piece`}));
+
+    // then seems likely to be of name, url format... anytime when it's not?
+    if (args.length == 2) {
+      args_literals[0].options["aria-label"] = "resource name";
+      args_literals[1].options["aria-label"] = "resource url";
+    }
+    return new SpecialImport(l.from, l.to, kind_literal, args_literals,
+      {'aria-label': `special import`});
+  },
 
   // data Hint
   // "h-use-loc": function(l: Loc) {},
@@ -183,7 +232,9 @@ const nodeTypes = {
 
   // data Expr
   // "s-module": function(l: Loc, answer: XPathExpression, defined_values: DefinedValue[], defined_types: DefinedType[], provided_values: Expr, provided_types: AField[], checks: Expr) {},
-  // "s-template": function(l: Loc) {},
+  "s-template": function(l: Loc) {
+    return new Blank(l.from, l.to, null, "blank", {[ariaLabel]: "a placeholder"});
+  },
   // "s-type-let-expr": function(l: Loc, binds: TypeLetBind[], body: Expr, block: boolean) {},
   // "s-let-expr": function(l: LoadTable, binds: LetBind[], body: Expr, block: boolean) {},
   // "s-letrec": function(l: Loc, binds: LetrecBind[], body: Expr, block: boolean) {},
@@ -201,7 +252,7 @@ const nodeTypes = {
     // TODO: ignoring params, check, blocky
     let fun_from = {line: pos.from.line, ch: pos.from.ch + 4};
     let fun_to = {line: pos.from.line, ch: fun_from.ch + name.length};
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Func(
       pos.from,
       pos.to,
@@ -211,16 +262,16 @@ const nodeTypes = {
       doc,
       body,
       block,
-      {'aria-label': `${name}, a function with ${args} with ${body}`});
+      {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
   },
   // "s-type": function(l: Loc, name: Name, params: Name[], ann: Ann) {},
   // "s-newtype": function(l: Loc, name: Name, namet: Name) {},
   // "s-var": function(l: Loc, name: Bind, value: Expr) {},
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
   "s-let": function (pos: Loc, id: Bind, rhs: Expr, _keyword_val: boolean) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     let options = {};
-    options['aria-label'] = `${id} set to ${rhs}`;
+    options['aria-label'] = `${id}, a value definition`;
     return new Let(
       pos.from,
       pos.to,
@@ -230,40 +281,58 @@ const nodeTypes = {
     );
   },
   // "s-ref": function(l: Loc, ann: Ann | null) {},
-  // "s-contract": function(l: Loc, name: Name, ann: Ann) {},
-  // "s-when": function(l: Loc, test: Expr, block: Expr, blocky: boolean) {},
+  "s-contract": function(l: Loc, name: Name, _params: Name[], ann: Ann) {
+    if(DEBUG) console.log(arguments);
+    // TODO: don't know what params do, using binding for now
+    return new Contract(l.from, l.to, name, ann, {'aria-label': `contract for ${name}: ${ann}`});
+  },
+  "s-when": function(l: Loc, test: Expr, block: Expr, blocky: boolean) {
+    if (DEBUG) console.log(arguments);
+    return new When(l.from, l.to, test, block, blocky, {[ariaLabel]: `when statement`});
+  },
   // "s-assign": function(l: Loc, id: Name, value: Expr) {},
   's-if-pipe': function(pos: Loc, branches: IfPipeBranch[], blocky: boolean) {
-    return new IfPipe(pos.from, pos.to, branches, blocky, {'aria-label': 'if pipe'});
+    if (DEBUG) console.log(arguments);
+    branches.forEach((element, index) => {
+      (element as any).options["aria-label"] = `branch ${index + 1}`;
+    });
+    return new IfPipe(pos.from, pos.to, branches, blocky, {'aria-label': 'ask expression'});
   },
   // "s-if-pipe-else": function(l: Loc, branches: IfPipeBranch[], _else: Expr, blocky: boolean) {},
-  // "s-if": function(l: Loc, branches: IfBranch[], blocky: boolean) {},
-  // "s-if-else": function(l: Loc, branches: IfBranch[], _else: Expr, blocky: boolean) {},
+  "s-if": function(l: Loc, branches: IfBranch[], blocky: boolean) {
+    return new IfExpression(l.from, l.to, branches, blocky, {[ariaLabel]: `if expression with ${branches.length} branches}`});
+  },
+  "s-if-else": function(l: Loc, branches: IfBranch[], _else: Expr, blocky: boolean) {
+    return new IfElseExpression(l.from, l.to, branches, _else, blocky, {[ariaLabel]: `if expression with ${branches.length} branches and an else branch`});
+  },
   // "s-cases": function(l: Loc, typ: Ann, val: Expr, branches: CasesBranch[], blocky: boolean) {},
   // "s-cases-else": function(l: Loc, typ: Ann, val: Expr, branches: CasesBranch[], _else: Expr, blocky: boolean) {},
   "s-op": function (pos: Loc, opPos: Loc, op: string, left: Expr, right: Expr) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
+    let name = op;
     return new Binop(
       pos.from,
       pos.to,
       new Nodes.Literal(opPos.from, opPos.to, op, 'operator'),
       left,
       right,
-      {'aria-label': `${left} ${name} ${right}`});
+      {'aria-label': `${name} expression`});
   },
   "s-check-test": function(pos: Loc, check_op: CheckOp, refinement: Expr | null, lhs: Expr, rhs: Expr | null) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new CheckTest(
       pos.from, pos.to, check_op, refinement, lhs, rhs, {'aria-label': `${check_op} ${lhs} ${rhs}`}
     );
   },
   // "s-check-expr": function(l: Loc, expr: Expr, ann: Ann) {},
   's-paren': function(pos: Loc, expr: ASTNode) {
-    return new Paren(pos.from, pos.to, expr, {'aria-label': 'parentheses'});
+    // should maybe have this have aria-label of child?
+    // or maybe should be fine since won't render s-paren
+    return new Paren(pos.from, pos.to, expr, {'aria-label': 'parenthetical expression'});
   },
   // note this name string is "" if anonymous
   "s-lam": function(l: Loc, name: string, _params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, _check_loc: Loc | null, _check: Expr | null, blocky: boolean) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     let fun_from = { line: l.from.line, ch: l.from.ch + 4 };
     let fun_to = {line: l.from.line, ch: fun_from.ch + name.length};
     let real_name = (name == "")? null : new Nodes.Literal(fun_from, fun_to, name, 'lambda');
@@ -282,13 +351,13 @@ const nodeTypes = {
   // "s-extend": function(l: Loc, supe: Expr, fields: Member[]) {},
   // "s-update": function(l: Loc, supe: Expr, fields: Member[]) {},
   "s-tuple": function(pos: Loc, fields: Expr[]) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Tuple(
       pos.from, pos.to, fields, {'aria-label': `tuple with ${fields}`}, 
     );
   },
   "s-tuple-get": function(pos: Loc, lhs: ASTNode, index: number, index_pos: Loc) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new TupleGet(
       pos.from, pos.to, lhs, new Nodes.Literal(index_pos.from, index_pos.to, index, "number"), {'aria-label': `${index} element of ${lhs} tuple`}
     )
@@ -296,13 +365,13 @@ const nodeTypes = {
   // "s-obj": function(l: Loc, fields: Member[]) {},
   // "s-array": function(l: Loc, values: Expr[]) {},
   "s-construct": function (pos: Loc, modifier: any, constructor: any, values: any[]) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Construct(
       pos.from, pos.to, modifier, constructor, values, { 'aria-label': `${constructor} with values ${values}` }
     );
   },
   "s-app": function(pos: Loc, fun: Expr, args: Expr[]) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new FunctionApp(
       pos.from, pos.to, fun, args, {'aria-label': `${fun} applied to ${args}`}, 
     );
@@ -314,7 +383,7 @@ const nodeTypes = {
       pos.from,
       pos.to,
       str,
-      'symbol',
+      's-id',
       {'aria-label': `${str}, an identifier`});
   },
   "s-id-var": function(pos: Loc, str: Name) {
@@ -323,7 +392,7 @@ const nodeTypes = {
       pos.from,
       pos.to,
       "!" + str,
-      'symbol',
+      's-id-var',
       {'aria-label': `${str}, an identifier`});
   },
   // "s-id-letrec": function(pos: Loc, id: Name, safe: boolean) {},
@@ -345,11 +414,10 @@ const nodeTypes = {
       value,
       'boolean',
       {'aria-label': `${value}, a boolean`});
-    console.log(ret);
     return ret;
   },
   "s-str": function(pos: Loc, value: string) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
       pos.from,
       pos.to,
@@ -359,33 +427,39 @@ const nodeTypes = {
     );
   },
   's-dot': function(pos: Loc, base: any, method: string) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
       pos.from, pos.to, base.toString() + "." + method, 'method', {'aria-label': `${method} on data ${base}`}
     )
   },
   's-get-bang': function (pos: Loc, obj: Expr, field: string) {
     // TODO make sure correct
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
       pos.from, pos.to, obj.toString() + "." + field, 'method', {'aria-label': `${field} on data ${obj}`}
     )
   },
   's-bracket': function(pos: Loc, base: any, index: any) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Bracket(
-      pos.from, pos.to, base, index, {'aria-label': `${index} of ${base}`}
+      pos.from, pos.to, base, index, {'aria-label': `${index} of ${base}, a lookup expression`}
     )
   },
   // "s-data": function(l: Loc, name: string, params: Name[], mixins: Expr[], variants: Variant[], shared_members: Member[], check: Expr | null) {},
   // "s-data-expr": function(l: Loc, name: string, namet: Name, params: Name[], mixins: Expr[], variants: Variant[], shared_members: Member[], check: Expr | null) {},
-  // 's-for': function(l: Loc, iterator: Expr, bindings: ForBind[], ann: Ann, body: Expr, blocky: boolean) {},
+  's-for': function(l: Loc, iterator: Expr, bindings: ForBind[], ann: Ann, body: Expr, blocky: boolean) {
+    if (DEBUG || true) console.log(arguments);
+    return new For(l.from, l.to, iterator, bindings, ann, body, blocky, {[ariaLabel]: `a for expression`});
+  },
   "s-check": function(pos: Loc, name: string | undefined, body: any, keyword_check: boolean) {
     return new Check(
       pos.from, pos.to, name, body, keyword_check, { 'aria-label': ((name != undefined)? `${name} `: "") + `checking ${body}`}
     );
   },
-  // 's-reactor': function(l: Loc, fields: Member[]) {},
+  's-reactor': function(l: Loc, fields: Member[]) {
+    if (DEBUG) console.log(arguments);
+    return new Reactor(l.from, l.to, fields, {'aria-label': `reactor`});
+  },
   // 's-table-extend': function(l: LoadTable, column_binds: ColumnBinds, extensions: TableExtendField[]) {},
   // 's-table-update': function(l: Loc, column_binds: ColumnBinds, updates: Member[]) {},
   // 's-table-select': function(l: Loc, columns: Name[], table: Expr) {},
@@ -393,10 +467,10 @@ const nodeTypes = {
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
   // 's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {},
-  's-load-table': function (pos: Loc, rows: any[], sources: any[]) {
-    console.log(arguments);
+  's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
+    if(DEBUG) console.log(arguments);
     return new LoadTable(
-      pos.from, pos.to, rows, sources, {'aria-label': `${rows} of table from ${sources}`}
+      pos.from, pos.to, rows, sources, {'aria-label': `load table with ${rows.length} columns`}
     );
   },
 
@@ -419,21 +493,28 @@ const nodeTypes = {
   // 's-tuple-bind': function(l: LoadTable, fields: Bind[], as_name: Bind | null) {},
 
   // data Member
-  // 's-data-field': function(l: Loc, name: string, value: Expr) {},
+  's-data-field': function(l: Loc, name: string, value: Expr) {
+    if(DEBUG) console.log(arguments);
+    return new DataField(l.from, l.to, name, value,
+      {'aria-label': `${name}`});
+  },
   // 's-mutable-field': function(l: Loc, name: string, ann: Ann, value: Expr) {},
   // 's-method-field': function(l: Loc, name: string, params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, check: Expr | null, blocky: boolean) {},
 
   // data FieldName
   // examples of this _other have been ABlank...
   's-field-name': function(pos: Loc, name: string, _other: any) {
-    console.log(arguments);
+    if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
-      pos.from, pos.to, name, 'field-name', {'aria-label': `${name} field`}
+      pos.from, pos.to, name, 'field-name', {'aria-label': `${name}, a column`}
     );
   },
   
   // data ForBind
-  // 's-for-bind': function(l: Loc, bind: Bind, value: Expr) {},
+  's-for-bind': function(l: Loc, bind: Bind, value: Expr) {
+    if (DEBUG || true) console.log(arguments);
+    return new ForBind(l.from, l.to, idToLiteral(bind), value, {aria: `binding for for expression`});
+  },
 
   // data ColumnBinds
   // 's-column-binds': function(l: Loc, binds: Bind[], table: Expr) {},
@@ -466,10 +547,8 @@ end
   // data LoadTableSpec
   // 's-sanitize': function(l: Loc, name: Name, sanitizer: Expr) {},
   's-table-src': function (pos: Loc, source: any) {
-    console.log(arguments);
-    return new Nodes.Literal(
-      pos.from, pos.to, source, 'table-source', {'aria-label': `${source}, a table source`}
-    )
+    if(DEBUG) console.log(arguments);
+    return source;
   },
 
   // not doing data VariantMemberType
@@ -482,11 +561,14 @@ end
   // 's-singleton-variant': function(l: Loc, name: string, with_members: Member[]) {},
 
   //data IfBranch
-  // 's-if-branch': function(l: Loc, test: Expr, body: Expr) {},
+  's-if-branch': function(l: Loc, test: Expr, body: Expr) {
+    if (DEBUG) console.log(arguments);
+    return new IfBranch(l.from, l.to, test, body, {[ariaLabel]: `if branch`});
+  },
 
   //data IfPipeBranch
   's-if-pipe-branch': function(pos: Loc, test: ASTNode, body: ASTNode) {
-    return new IfPipeBranch(pos.from, pos.to, test, body, {'aria-label': `${test} testing with result ${body} branch`});
+    return new IfPipeBranch(pos.from, pos.to, test, body, {'aria-label': `ask branch`});
   },
   
   // data CasesBind
@@ -508,30 +590,63 @@ end
       pos.from,
       pos.to,
       id,
-      'symbol',
+      'a-name',
       // make sure that this matches the pedagogy used in classroom:
       // "variable", "identifier", "name", ...; other languages
       {'aria-label': `${id}, an identifier`});
   },
   // 'a-type-var': function(l: Loc, id: Name) {},
   // 'a-arrow': function(l: Loc, args: Ann[], ret: Ann, use_parens: boolean) {},
+  'a-arrow-argnames': function(l: Loc, args: AField[], ret: Ann, uses_parens: boolean) {
+    if(DEBUG) console.log(arguments);
+    return new ArrowArgnames(l.from, l.to,
+      args,
+      ret,
+      uses_parens,
+      {'aria-label': `${args} to ${ret}`});
+  },
   // 'a-method': function(l: Let, args: Ann[], ret: Ann) {},
   // 'a-record': function(l: Loc, fields: AField[]) {},
   // 'a-tuple': function(l: Loc, fields: AField[]) {},
-  // 'a-app': function(l: Loc, ann: Ann, args: Ann[]) {},
+  'a-app': function(l: Loc, ann: Ann, args: Ann[]) {
+    if (DEBUG || true) console.log(arguments);
+    return new AnnotationApp(l.from, l.to, ann, args, {[ariaLabel]: `appication annotation`});
+  },
   // 'a-pred': function(l: Loc, ann: Ann, exp: Expr) {},
   // 'a-dot': function(l: Loc, obj: Name, field: string) {},
   // 'a-checked': function(checked: Ann, residual: Ann) {},
 
   // data AField
-  // 'a-field': function(l: Loc, name: string, ann: Ann) {},
+  'a-field': function(l: Loc, name: string, ann: Ann) {
+    if(DEBUG) console.log(arguments);
+    return new Nodes.Literal(
+      l.from, l.to,
+      name + " :: " + ann.value, 'a-field',
+      {'aria-label': `${name}, annotated as a ${ann}`}
+    )
+  },
 }
 
 function idToLiteral(id: Bind): Nodes.Literal {
+  if (DEBUG) console.log(id);
   let name = id.ident.value;
+  if (DEBUG) console.log(name);
+
   return new Nodes.Literal(
-    (id as ASTNode).from, (id as ASTNode).to, (id.ann != null)? name + " :: " + id.ann : name, {'aria-label': name}
-  )
+    (id as ASTNode).from, (id as ASTNode).to, (id.ann != null)? name + " :: " + id.ann : name, "identifier", {'aria-label': name}
+  );
+}
+
+function inputs_to_fun(args: Bind[]): string {
+  if (args.length == 0) {
+    return "inputs";
+  }
+  else if (args.length == 1) {
+    return "input: " + args[0];
+  }
+  else {
+    return "inputs: " + args.join(", ");
+  }
 }
 
 function makeNode(nodeType: string) {

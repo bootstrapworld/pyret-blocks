@@ -1,6 +1,7 @@
 import CMB, {store} from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-import { wait, cleanupAfterTest } from '../../support/test-utils';
+import { TeardownAfterTest } from 'CodeMirror-Blocks';
+import { wait } from '../../support/test-utils.js';
 import {
   click,
   keyDown,
@@ -29,7 +30,7 @@ describe('The CodeMirrorBlocks Class', function () {
   });
 
   afterEach(function () {
-    cleanupAfterTest('root', store);
+    TeardownAfterTest();
   });
 
   /** //////////////////////////////////////////////////////////
