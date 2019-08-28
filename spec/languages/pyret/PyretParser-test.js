@@ -1,5 +1,6 @@
 import PyretParser from '../../../src/languages/pyret/PyretParser';
 
+
 describe("The Pyret Parser,", function() {
   beforeEach(function() {
     this.parser = new PyretParser();
@@ -24,23 +25,26 @@ describe("The Pyret Parser,", function() {
   });
 
   it("should have some label for Bootstrap constructs", function() {
-    let test = (str) => expect(this.parser.parse(str).rootNodes[0].options["aria-label"]).not.toBe(undefined);
+    let test = (str) => {
+      let result = this.parser.parse(str).rootNodes[0].options["aria-label"];
+      expect(result).not.toBe(undefined);
+    };
     /**
      * From Justin and Emmanuel
      * import
      * load-spreadhseet
-	   * load-table
-	   * simple let bindings -> improve stylings and rendering
-	   * funciton definition -> works
-	   * func app -> similar as simple let (s-app NYI)
-	   * method invocation -> same
-	   * binop -> works
-	   * check-expects -> hash error
-	   * is -> not recognized as an operator
-	   * tuples -> NYI
-	   * constructor ([list: 1, 2, 3]) -> all except styling
-	   * dot accessor
-	   * if would be nice to have
+     * load-table
+     * simple let bindings -> improve stylings and rendering
+     * funciton definition -> works
+     * func app -> similar as simple let (s-app NYI)
+     * method invocation -> same
+     * binop -> works
+     * check-expects -> hash error
+     * is -> not recognized as an operator
+     * tuples -> NYI
+     * constructor ([list: 1, 2, 3]) -> all except styling
+     * dot accessor
+     * if would be nice to have
      */
     // includes aren't part of the parse tree for now
     // test('include gdrive-sheets');
@@ -126,7 +130,11 @@ end
 
 row["field"]`;
 
-    expect(this.parser.parse(text).rootNodes[0].options["aria-label"]).not.toBe(undefined);
+    let parsed = this.parser.parse(text);
+
+    for (let i = 0; i < parsed.rootNodes.length; i++) {
+      expect(parsed.rootNodes[i].options["aria-label"]).not.toBe(undefined);
+    }
   });
 
   it("should render Emmanuel's demo ds program", function() {
@@ -171,5 +179,21 @@ end`;
     for (let i = 0; i < parsed.rootNodes.length; i++) {
       expect(parsed.rootNodes[i].options["aria-label"]).not.toBe(undefined);
     }
-  })
+  });
+
+  describe("should be able to test non-ds programs:", function() {
+    const test = (text, label = text) => {
+      it(`${label}`, function() {
+        let result = this.parser.parse(text).rootNodes[0].options["aria-label"];
+        expect(result).not.toBe(undefined);
+      });
+    };
+
+    test(`if num-modulo(i, 5) == 0:
+      some(i * i)
+    else:
+      none
+    end`);
+    test(`if x == 3: 3 else if x > 0: 0 else if x < -1: 4 else: -1 end`);
+  });
 });

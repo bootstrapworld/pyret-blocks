@@ -1,76 +1,29 @@
-import CMB, {store} from '../../../src/languages/pyret';
-import 'codemirror/addon/search/searchcursor.js';
-import { TeardownAfterTest } from 'CodeMirror-Blocks';
-import { wait } from '../../support/test-utils.js';
-
-import {
-  _click,
-  _doubleClick,
-  _blur,
-  keyDown,
-  insertText,
-} from '../../support/simulate';
-
-
-// ms delay to let the DOM catch up before testing
-const DELAY = 500;
+import PyretParser from '../../../src/languages/pyret/PyretParser';
 
 describe('The CodeMirrorBlocks Class', function() {
   beforeEach(function() {
-    const fixture = `
-      <div id="root">
-        <div id="cmb-editor" class="editor-container"/>
-      </div>
-    `;
-    document.body.insertAdjacentHTML('afterbegin', fixture);
-    const container = document.getElementById('cmb-editor');
-    this.blocks = CMB(container, {value: ""});
-    this.blocks.setBlockMode(true);
-  });
-
-  afterEach(function() {
-    TeardownAfterTest();
+    this.parser = new PyretParser();
   });
 
   describe('testing method', function() {
     it("pretty-ify non-pretty text", function() {
-      this.blocks.setBlockMode(false);
-      this.blocks.setCursor({ line: 0, ch: 0 });
       let insert = "fun f(x):\n  x + 3\nend";
-      keyDown("9", {}, this.blocks.getInputField());
-      insertText(insert);
-      expect(this.blocks.getBlockMode()).toBe(false);
-      expect(this.blocks.getValue()).toBe(insert);
-      this.blocks.setBlockMode(true);
+      
       // see if pretty-printed now
-      expect(this.blocks.getValue()).not.toBe(insert);
-      expect(this.blocks.getValue()).toBe("fun f(x): x + 3 end");
+      expect(this.parser.parse(insert).toString()).not.toBe(insert);
+      expect(this.parser.parse(insert).toString()).toBe("fun f(x): x + 3 end");
     });
   });
 
   describe('small DS programs', function() {
-    beforeEach(async function() {
-      this.blocks.setBlockMode(true);
-      this.blocks.setValue("");
-      await DELAY;
-    });
-
     let testify = function (text, name = text, already_pretty = true) {
       return it(name, async function() {
-        this.blocks.setCursor({ line: 0, ch: 0 });
-        keyDown("9", {}, this.blocks.getInputField());
-        insertText(text);
-        await DELAY;
-
-        this.blocks.setBlockMode(false);
-        await DELAY;
-        // sometimes this is true???
-        expect(this.blocks.getBlockMode()).toBe(false);
+        let result = this.parser.parse(text).toString();
         if (already_pretty) {
-          expect(this.blocks.getValue()).toEqual(text);
+          expect(result).toEqual(text);
         }
         else {
-          expect(this.blocks.getValue()).not.toEqual(text);
+          expect(result).not.toEqual(text);
         }
       });
     };
@@ -121,24 +74,103 @@ end`);
     | (animal["species"] == "lizard") then: lizard-img
   end
 end`);
+    testify(`is-fixed :: (animal :: Row) -> Boolean`);
+    testify(`include world
+big-bang("inert", [list: ])
+
+fun increment(x): x + 1 end
+
+big-bang(10, [list: on-tick(increment)])
+big-bang(10, [list: on-tick-n(increment, 3)])`);
+    testify(`include reactors
+
+fun tencrement(x): x + 10 end
+
+reactor:
+  seconds-per-tick: 0.1, title: "Count by 10", on-tick: tencrement, init: 10
+end`);
   });
 
-  describe("larger pyret programs", function() {
-    beforeEach(async function () {
-      this.blocks.setBlockMode(true);
-      this.blocks.setValue("");
-      await DELAY;
-    });
+  describe("other pyret programs", function() {
+    let testify = function(name, text) {
+      it(name, async function () {
+        expect(this.parser.parse(text).toString()).toEqual(text);
+      });
+    };
 
-    it("blocky function", async function() {
-      let text = `fun f(x) block:
+    testify("blocky function", `fun f(x) block:
   print(x)
   x + 3
-end`;
-      this.blocks.setValue(text);
-      this.blocks.setBlockMode(false);
-      await DELAY;
-      expect(this.blocks.getValue()).toEqual(text);
-    });
+end`);
+
+    testify("ret ann function", `fun f(x) -> Number: x + 3 end`);
+
+    testify("blocky and ret ann function", `fun f(x) -> Number block:
+  print(x)
+  x + 3
+end`);
+
+    testify("default lambda", `lam(x): x + 3 end`);
+
+    testify("lambda with ret ann", `lam(x) -> Number: x + 3 end`);
+
+    testify("lambda with block", `lam(x) block: x + 3 end`);
+
+    testify("lambda with ret ann and block", `lam(x) -> Number block: x + 3 end`);
+
+    testify("simple if", `if x == 4:
+  4
+end`);
+
+    testify("simple if and else", `if x == 3:
+  2
+else:
+  3
+end`);
+
+    testify("if with else if's", `if x == 5:
+  5
+else if x >= 5:
+  7
+else if x < 3:
+  2
+end`);
+
+    testify("if with else if's and else", `if x == 5:
+  5
+else if x >= 5:
+  7
+else if x < 3:
+  2
+else:
+  0
+end`);
+
+    testify('if inside of a function', `fun f(x):
+  if x > 3:
+    "hello"
+  else:
+    "goodbye"
+  end
+end`);
+
+    testify('for each', `for each(n from non-nums): a1.get-now(n) raises "Number" end`);
+    testify('for build-array', `for build-array(i from 7): (i * i) - i end`);
+    testify('for each check', `for each(i from range(1, 4)): raw-array-get(a1, i) is "init" end`);
+    testify('multiple fors', `for raw-array-fold(acc from 0, elt from bigarr, ix from 0):
+  for raw-array-fold(acc2 from acc, elt2 from bigarr, ix2 from 0):
+    acc2 + elt2
+  end
+end`);
+    testify('should display parens', `(i * i) - i`);
+    testify('when', `when not(is-array(v)):
+  raise("not an Array")
+end`);
+    testify('a-app', `fun f(v :: Array<Number>) block:
+  when not(is-array(v)):
+    raise("not an Array")
+  end
+  v
+end`);
   });
 });
