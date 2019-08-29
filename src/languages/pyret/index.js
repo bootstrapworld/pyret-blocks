@@ -1,5 +1,5 @@
 import PyretParser from './PyretParser';
-import CodeMirrorBlocks  from "CodeMirror-Blocks";
+import CodeMirrorBlocks  from "codemirror-blocks";
 require('./style.less');
 
 export const language = {
