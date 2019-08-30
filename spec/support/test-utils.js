@@ -1,4 +1,4 @@
-import { TeardownAfterTest } from 'CodeMirror-Blocks';
+import { TeardownAfterTest } from 'codemirror-blocks';
 
 export async function wait(ms) {
   return new Promise(resolve => {
