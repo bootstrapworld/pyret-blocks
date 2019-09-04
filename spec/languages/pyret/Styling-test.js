@@ -1,6 +1,6 @@
 import CMB from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-import { TeardownAfterTest } from 'CodeMirror-Blocks';
+import { TeardownAfterTest } from 'codemirror-blocks';
 import { wait } from '../../support/test-utils.js';
 import {
   _keyPress,

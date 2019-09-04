@@ -1,5 +1,5 @@
 import React from 'react';
-import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'CodeMirror-Blocks';
+import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;

@@ -5,7 +5,7 @@ import {
   AST,
   ASTNode,
   Nodes,
-} from 'CodeMirror-Blocks';
+} from 'codemirror-blocks';
 const {
   Blank,
 } = Nodes
