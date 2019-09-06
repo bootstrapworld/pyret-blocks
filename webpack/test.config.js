@@ -21,7 +21,7 @@ if (envConfig.runCoverage) {
 module.exports = _.extend({}, baseConfig, {
   resolve: {
     alias: {
-      'codemirror-blocks': path.resolve(__dirname, '..', 'src')
+      'codemirror-blocks': 'CodeMirror-Blocks'
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
