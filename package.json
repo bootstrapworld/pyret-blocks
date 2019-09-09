@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "classnames": "2.2.6",
-    "codemirror-blocks": "git://github.com/bootstrapworld/codemirror-blocks.git#c69e6dbad2ae7419861bc1517675376ffdfce6f1",
+    "codemirror-blocks": "0.7.8",
     "object-hash": "1.3.1",
     "pretty-fast-pretty-printer": "0.9.6",
     "prop-types": "15.7.2",

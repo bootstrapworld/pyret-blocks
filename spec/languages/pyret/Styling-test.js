@@ -1,11 +1,7 @@
 import CMB from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-import { TeardownAfterTest } from 'codemirror-blocks';
+import { testing } from 'codemirror-blocks';
 import { wait } from '../../support/test-utils.js';
-import {
-  _keyPress,
-  _insertText,
-} from '../../support/simulate';
 
 const DELAY = 250;
 
@@ -43,7 +39,7 @@ describe("functions", function () {
         this.body = this.literal1.body;
       });
 
-      afterEach(function () { TeardownAfterTest(); });
+      afterEach(function () { testing.TeardownAfterTest(); });
 
       it("should have a white background for fun name", function () {
         // console.log("FUNNAME", this.fun_name);
