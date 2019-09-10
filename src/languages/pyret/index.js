@@ -17,8 +17,7 @@ export const language = {
   },
 };
 
-console.log(language);
-console.log(language.getParser());
-
 const constructor = (container, options) => new CodeMirrorBlocks(container, options, language);
 export default constructor;
+
+module.exports = constructor;

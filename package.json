@@ -1,6 +1,6 @@
 {
   "name": "pyret-blocks",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pyret language for use in CodeMirror Blocks",
   "main": "src/languages/pyret/index.js",
   "engines": {

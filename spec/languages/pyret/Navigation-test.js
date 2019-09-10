@@ -5,6 +5,7 @@ import { wait } from '../../support/test-utils.js';
 
 const DELAY = 250;
 
+// be sure to call with `apply` or `call`
 let setup = function () {
   const fixture = `
       <div id="root">

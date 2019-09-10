@@ -1,10 +1,25 @@
 import PyretCMB from '../src/languages/pyret';
 import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
+import { testing }  from "codemirror-blocks";
 
-const smallExampleCode = `1 + 2`;
 
-const useBigCode = true;
+/// DEBUGGING STUFF
+import { wait, teardown } from '../spec/support/test-utils';
+import {
+  click,
+  keyDown,
+  _keyPress,
+  _insertText,
+} from '../spec/support/simulate';
+
+const DELAY = 250;
+
+
+
+const smallExampleCode = `load-spreadsheet("14er5Mh443Lb5SIFxXZHdAnLCuQZaA8O6qtgGlibQuEg")`;
+
+const useBigCode = false;
 const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
@@ -14,4 +29,17 @@ editor.setBlockMode(true);
 
 // for debugging purposes
 window.editor = editor
-console.log(editor);
+document.getElementById('testButton').onclick = runTestEvent;
+
+async function runTestEvent(){
+	let ast = editor.getAst();
+    this.literal1 = ast.rootNodes[0];
+    console.log('first root is', this.literal1);
+	console.log('before anything, activeElement is', document.activeElement);
+	testing.click(this.literal1);
+    await wait(DELAY);
+    console.log('after clicking, activeElement is', document.activeElement)
+    testing.keyDown("ArrowDown");
+    await wait(DELAY);
+    console.log('after ArrowDown, activeElement is', document.activeElement)
+}
