@@ -8,7 +8,7 @@
     "npm": ">=3.x"
   },
   "dependencies": {
-    "codemirror-blocks": "0.7.8",
+    "codemirror-blocks": "0.8.0",
     "react-dom": "16.9.0",
     "react": "16.9.0"
   },

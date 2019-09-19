@@ -1,9 +1,6 @@
 import CMB from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 import { testing } from 'codemirror-blocks';
-import { wait } from '../../support/test-utils.js';
-
-const DELAY = 250;
 
 let setup = function () {
   const fixture = `

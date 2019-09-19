@@ -1,8 +1,8 @@
 import PyretParser from './PyretParser';
-import CodeMirrorBlocks  from "codemirror-blocks";
+import { CodeMirrorBlocks, Languages }  from "codemirror-blocks";
 require('./style.less');
 
-export const language = {
+export const Pyret = Languages.addLanguage({
   id: 'pyret',
   name: 'Pyret',
   description: 'The Pyret language',
@@ -15,9 +15,9 @@ export const language = {
       lockNodesOfType: ['comment']
     };
   },
-};
+});
 
-const constructor = (container, options) => new CodeMirrorBlocks(container, options, language);
+const constructor = (container, options) => new CodeMirrorBlocks(container, options, Pyret);
 export default constructor;
 
 module.exports = constructor;
