@@ -21,7 +21,7 @@ if (envConfig.runCoverage) {
 module.exports = _.extend({}, baseConfig, {
   resolve: {
     alias: {
-      'codemirror-blocks': 'CodeMirror-Blocks'
+      'codemirror-blocks': 'codemirror-blocks'
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },

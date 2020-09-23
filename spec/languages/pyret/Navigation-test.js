@@ -1,7 +1,7 @@
 import CMB from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-import { testing } from 'codemirror-blocks';
-import { wait } from '../../support/test-utils.js';
+//import { testing } from 'codemirror-blocks';
+import { testing } from '../../support/test-utils.js';
 
 const DELAY = 250;
 
@@ -41,28 +41,28 @@ describe("load-spreadsheet", function () {
 
   it('should activate load-spreadsheet and then url when down is pressed', async function () {
     testing.click(this.literal1);
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).toBe(this.literal1.func);
     expect(this.activeNode()).not.toBe(this.literal1.args);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).not.toBe(this.literal1.func);
     expect(this.activeNode()).toBe(this.literal1.args[0]);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   });
 });
 
@@ -81,62 +81,62 @@ end`);
 
   it('should activate the first column name', async function () {
     testing.click(this.literal1);
-    await wait(DELAY);
+    await testing.wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).toBe(this.columns[0]);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   });
 
   it('should activate the second column name', async function () {
     testing.click(this.columns[0]);
-    await wait(DELAY);
+    await testing.wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).toBe(this.columns[1]);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   });
 
   it('should activate the third column name', async function () {
     testing.click(this.columns[1]);
-    await wait(DELAY);
+    await testing.wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).toBe(this.columns[2]);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   });
 
   it('should activate the source when down is pressed', async function () {
     testing.click(this.columns[2]);
-    await wait(DELAY);
+    await testing.wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).toBe(this.literal1.sources[0]);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   });
 });
 
@@ -154,28 +154,28 @@ describe("lets", function () {
 
       it('should activate the binding and then the rhs when down is pressed', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.literal1.ident);
         expect(this.activeNode()).not.toBe(this.literal1.rhs);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.literal1.ident);
         expect(this.activeNode()).toBe(this.literal1.rhs);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
       });
     });
   };
@@ -201,42 +201,42 @@ describe("binops", function () {
 
       it('should activate the operator, lhs, and rhs when down is pressed', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.op);
         expect(this.activeNode()).not.toBe(this.left);
         expect(this.activeNode()).not.toBe(this.right);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.op);
         expect(this.activeNode()).toBe(this.left);
         expect(this.activeNode()).not.toBe(this.right);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.op);
         expect(this.activeNode()).not.toBe(this.left);
         expect(this.activeNode()).toBe(this.right);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
       });
     });
   };
@@ -264,35 +264,35 @@ describe("functions", function () {
 
       it("should activate function name, arguments, and body", async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.fun_name);
         expect(this.activeNode()).not.toBe(this.body);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         for (let i = 0; i < this.args.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).not.toBe(this.fun_name);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.fun_name);
         expect(this.activeNode()).toBe(this.body);
@@ -322,47 +322,47 @@ describe("functions with return annotations", function () {
 
       it("should activate function name, arguments, return annotation and body", async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.fun_name);
         expect(this.activeNode()).not.toBe(this.body);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         for (let i = 0; i < this.args.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).not.toBe(this.fun_name);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.fun_name);
         expect(this.activeNode()).toBe(this.retAnn);
         expect(this.activeNode()).not.toBe(this.body);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.fun_name);
         expect(this.activeNode()).not.toBe(this.retAnn);
@@ -391,23 +391,23 @@ describe("lambdas", function () {
 
       it("should activate arguments, and body", async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         for (let i = 0; i < this.args.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.body);
       });
@@ -435,34 +435,34 @@ describe("lambdas with return annotations", function () {
 
       it("should activate arguments, return annotation and body", async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         for (let i = 0; i < this.args.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.retAnn);
         expect(this.activeNode()).not.toBe(this.body);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.retAnn);
         expect(this.activeNode()).toBe(this.body);
@@ -490,29 +490,29 @@ describe("method and function applications", function () {
 
       it('should activate the function and arguments when down is pressed', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.func);
         expect(this.activeNode()).not.toBe(this.args);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         for (let i = 0; i < this.args.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).not.toBe(this.func);
           expect(this.activeNode()).toBe(this.args[i]);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
       });
     });
@@ -543,42 +543,42 @@ describe("checks and testing", function () {
 
       it('should activate the operator, lhs, and rhs when down is pressed', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.op);
         expect(this.activeNode()).not.toBe(this.left);
         expect(this.activeNode()).not.toBe(this.right);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.op);
         expect(this.activeNode()).toBe(this.left);
         expect(this.activeNode()).not.toBe(this.right);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).not.toBe(this.op);
         expect(this.activeNode()).not.toBe(this.left);
         expect(this.activeNode()).toBe(this.right);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
       });
     });
   };
@@ -598,9 +598,9 @@ describe("checks and testing", function () {
 
       it("should move to body", async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).not.toBe(this.literal1);
         expect(this.activeNode()).toBe(this.body);
       });
@@ -627,19 +627,19 @@ describe("tuples", function () {
 
       it('should activate the arguments on each press', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).toBe(this.literal1);
 
         for (let i = 0; i < this.fields.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).toBe(this.fields[i]);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
       });
     });
@@ -663,24 +663,24 @@ describe("tuples", function () {
 
     it('should activate the index', async function () {
       testing.click(this.literal1);
-      await wait(DELAY);
+      await testing.wait(DELAY);
       testing.keyDown("ArrowDown");
-      await wait(DELAY);
+      await testing.wait(DELAY);
       expect(this.activeNode()).toBe(this.base);
 
       testing.keyDown("Enter");
-      await wait(DELAY);
+      await testing.wait(DELAY);
       testing.keyDown("Enter");
-      await wait(DELAY);
+      await testing.wait(DELAY);
 
       testing.keyDown("ArrowDown");
-      await wait(DELAY);
+      await testing.wait(DELAY);
       expect(this.activeNode()).toBe(this.index);
 
       testing.keyDown("Enter");
-      await wait(DELAY);
+      await testing.wait(DELAY);
       testing.keyDown("Enter");
-      await wait(DELAY);
+      await testing.wait(DELAY);
     });
   });
 });
@@ -701,29 +701,29 @@ describe("lists", function () {
 
       it('should activate the arguments on each press', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).toBe(this.literal1);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).toBe(this.construct);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         for (let i = 0; i < this.fields.length; i++) {
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).not.toBe(this.literal1);
           expect(this.activeNode()).not.toBe(this.construct);
           expect(this.activeNode()).toBe(this.fields[i]);
 
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           testing.keyDown("Enter");
-          await wait(DELAY);
+          await testing.wait(DELAY);
         }
       });
     });
@@ -749,24 +749,24 @@ describe("lists", function () {
 
       it('should activate the index', async function () {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).toBe(this.base);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).toBe(this.index);
 
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         testing.keyDown("Enter");
-        await wait(DELAY);
+        await testing.wait(DELAY);
       });
     });
   };
@@ -790,44 +790,44 @@ describe("contracts", function () {
 
   it('should activate the name and then the annotation when down is pressed', async function () {
     testing.click(this.literal1);
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).toBe(this.name);
     expect(this.activeNode()).not.toBe(this.ann);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).not.toBe(this.literal1);
     expect(this.activeNode()).not.toBe(this.literal1.name);
     expect(this.activeNode()).toBe(this.literal1.ann);
 
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   });
 });
 /*
 NOTE(Emmanuel): this appears to be dead code
 const testing.click_expect = async function(to_testing.click, active_node, result, check_editable = false) {
   testing.click(to_testing.click);
-  await wait(DELAY);
+  await testing.wait(DELAY);
 
   testing.keyDown("ArrowDown");
   expect(active_node()).toBe(result);
 
   if (check_editable) {
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     testing.keyDown("Enter");
-    await wait(DELAY);
+    await testing.wait(DELAY);
   }
 };
 */
@@ -847,20 +847,20 @@ describe("if statements", function () {
 
       it('should activate the first branch', async function() {
         testing.click(this.literal1);
-        await wait(DELAY);
+        await testing.wait(DELAY);
 
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         expect(this.activeNode()).toBe(this.branches[0]);
       });
 
       it('should activate each branch', async function() {
         for(let i = 0; i < this.branches.length - 1; i ++) {
           testing.click(this.branches[i].body.stmts[0]);
-          await wait(DELAY);
+          await testing.wait(DELAY);
 
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).toBe(this.branches[i + 1]);
         }
       });
@@ -869,10 +869,10 @@ describe("if statements", function () {
         if (this.else_branch != undefined) {
           let length = this.branches.length;
           testing.click(this.branches[length - 1].body.stmts[0]);
-          await wait(DELAY);
+          await testing.wait(DELAY);
 
           testing.keyDown("ArrowDown");
-          await wait(DELAY);
+          await testing.wait(DELAY);
           expect(this.activeNode()).toBe(this.else_branch);
         }
       });
@@ -924,34 +924,34 @@ describe('parentheses', function() {
 
   it('should move to inside of parens', async function () {
     testing.click(this.literal1);
-    await wait(DELAY);
+    await testing.wait(DELAY);
     
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.outside_op);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.parens);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.inner);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.inside_op);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.inner_left);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.inner_right);
 
     testing.keyDown("ArrowDown");
-    await wait(DELAY);
+    await testing.wait(DELAY);
     expect(this.activeNode()).toBe(this.i);
   });
 });
@@ -973,10 +973,10 @@ function general_test(text, label = text) {
     it('should progress', async function() {
       let previous = this.start;
       testing.click(this.start);
-      await wait(DELAY);
+      await testing.wait(DELAY);
 
       testing.keyDown("ArrowDown");
-      await wait(DELAY);
+      await testing.wait(DELAY);
       let current = this.activeNode();
 
       while(current !== this.end) {
@@ -986,7 +986,7 @@ function general_test(text, label = text) {
         }
         previous = current;
         testing.keyDown("ArrowDown");
-        await wait(DELAY);
+        await testing.wait(DELAY);
         current = this.activeNode();
       }
     });
