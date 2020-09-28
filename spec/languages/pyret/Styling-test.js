@@ -1,24 +1,11 @@
-import CMB from '../../../src/languages/pyret';
+import pyret from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-//import { testing } from 'codemirror-blocks';
-import { testing } from '../../support/test-utils.js';
+import {wait, teardown, activationSetup} from '../../support/test-utils';
 
-let setup = function () {
-  const fixture = `
-      <div id="root">
-        <div id="cmb-editor" class="editor-container"/>
-      </div>
-    `;
-  document.body.insertAdjacentHTML('afterbegin', fixture);
-  const container = document.getElementById('cmb-editor');
-  this.cmb = CMB(container, { collapseAll: false, value: "" });
-  this.cmb.setBlockMode(true);
+const DELAY = 250;
 
-  this.activeNode = () => this.cmb.getFocusedNode();
-  this.activeAriaId = () =>
-    this.cmb.getScrollerElement().getAttribute('aria-activedescendent');
-  this.selectedNodes = () => this.cmb.getSelectedNodes();
-};
+// be sure to call with `apply` or `call`
+let setup = function () { activationSetup.call(this, pyret); };
 
 /** //////////////////////////////////////////////////////////
  * Specific navigation tests for programs that use BSDS constructs below
@@ -37,7 +24,7 @@ describe("functions", function () {
         this.body = this.literal1.body;
       });
 
-      afterEach(function () { testing.TeardownAfterTest(); });
+      afterEach(function () { teardown(); });
 
       it("should have a white background for fun name", function () {
         // console.log("FUNNAME", this.fun_name);

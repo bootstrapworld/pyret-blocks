@@ -1,19 +1,19 @@
-const { click, doubleClick, blur, keyDown, keyPress, insertText } = require('./simulate');
+import CodeMirrorBlocks from '../../src/languages/pyret';
 import { store } from '../../src/store';
 
-async function wait(ms) {
+export async function wait(ms) {
   return new Promise(resolve => {
     setTimeout(resolve, ms);
   });
 }
 
-function removeEventListeners() {
+export function removeEventListeners() {
   const oldElem = document.body;
   const newElem = oldElem.cloneNode(true);
   oldElem.parentNode.replaceChild(newElem, oldElem);
 }
 
-function cleanupAfterTest(rootId, store) {
+export function cleanupAfterTest(rootId, store) {
   let rootNode = document.getElementById('root');
   if (rootNode) {
   document.body.removeChild(rootNode);
@@ -29,17 +29,49 @@ function cleanupAfterTest(rootId, store) {
   }
 }
 
-function teardown() {
+export function teardown() {
   cleanupAfterTest('root', store);
 }
 
-module.exports.testing = {
-  TeardownAfterTest: teardown,
-  click : click,
-  doubleClick : doubleClick,
-  blur : blur,
-  keyDown : keyDown,
-  keyPress : keyPress,
-  insertText : insertText,
-  wait: wait
-};
+const fixture = `
+  <div id="root">
+    <div id="cmb-editor" class="editor-container"/>
+  </div>
+`;
+/**
+ * Setup, be sure to use with `apply` (`activationSetup.apply(this, [pyret])`)
+ * or `call` (`activationSetup.call(this, pyret)`)
+ * so that `this` is scoped correctly!
+ */
+export function activationSetup(language) {
+  document.body.insertAdjacentHTML('afterbegin', fixture);
+  const container = document.getElementById('cmb-editor');
+  const cmOptions = {historyEventDelay: 100} // since our test harness is faster than people
+  this.cmb = CodeMirrorBlocks(
+    container, 
+    { collapseAll: false, value: "", incrementalRendering: false }, 
+    language, 
+    cmOptions
+  );
+  this.cmb.setBlockMode(true);
+
+  this.activeNode = () => this.cmb.getFocusedNode();
+  this.activeAriaId = () =>
+    this.cmb.getScrollerElement().getAttribute('aria-activedescendent');
+  this.selectedNodes = () => this.cmb.getSelectedNodes();
+}
+
+/**
+ * Setup, be sure to use with `apply` (`cmSetup.apply(this, [pyret])`)
+ * or `call` (`cmSetup.call(this, pyret)`)
+ * so that `this` is scoped correctly!
+ */
+export function cmSetup(_) {
+  document.body.insertAdjacentHTML('afterbegin', fixture);
+  const container = document.getElementById('cmb-editor');
+  this.cmb = WeSchemeBlocks(container, { collapseAll: false, value: "" });
+  this.editor = this.cmb;
+  this.cm = this.editor;
+  this.blocks = this.cmb;
+  this.cmb.setBlockMode(true);
+}

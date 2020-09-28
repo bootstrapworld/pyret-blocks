@@ -1,75 +1,54 @@
-import CMB from '../../../src/languages/pyret';
+import pyret from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
-//import { testing } from 'codemirror-blocks';
-import { testing } from '../../support/test-utils.js';
+import {wait, teardown, activationSetup} from '../../support/test-utils';
+import { testing } from 'codemirror-blocks';
 
-//const DELAY = 250;
-const DELAY = 1000;
+const DELAY = 250;
 
 // be sure to call with `apply` or `call`
-let setup = function () {
-  const fixture = `
-      <div id="root">
-        <div id="cmb-editor" class="editor-container"/>
-      </div>
-    `;
-  document.body.insertAdjacentHTML('afterbegin', fixture);
-  const container = document.getElementById('cmb-editor');
-  this.cmb = CMB(container, { collapseAll: false, value: "" });
-  this.cmb.setBlockMode(true);
-
-  this.activeNode = () => this.cmb.getFocusedNode();
-  this.activeAriaId = () =>
-    this.cmb.getScrollerElement().getAttribute('aria-activedescendent');
-  this.selectedNodes = () => this.cmb.getSelectedNodes();
-};
+let setup = function () { activationSetup.call(this, pyret); };
 
 /** //////////////////////////////////////////////////////////
  * Specific navigation tests for programs that use BSDS constructs below
  */
 describe("load-spreadsheet", function () {
-  beforeEach(function () {
+  beforeEach(async function () {
     setup.call(this);
-
     this.cmb.setValue('load-spreadsheet("14er5Mh443Lb5SIFxXZHdAnLCuQZaA8O6qtgGlibQuEg")');
-    (async function() {
-      await testing.wait(5000);
-    })();
+    await wait(DELAY);
     let ast = this.cmb.getAst();
-
-    this.literal1 = ast.rootNodes[0];
+    this.root1 = ast.rootNodes[0];
   });
 
   afterEach(function () {
-    testing.TeardownAfterTest();
+    testing.teardown();
   });
 
   it('should activate load-spreadsheet and then url when down is pressed', async function () {
-    testing.click(this.literal1);
-    await testing.wait(DELAY);
+    console.log('@@@@@@@', this.root1);
+    testing.mouseDown(this.root1);
+    await wait(DELAY);
     testing.keyDown("ArrowDown");
-    await testing.wait(DELAY);
-    expect(this.activeNode()).not.toBe(this.literal1);
-    /*
-    expect(this.activeNode()).toBe(this.literal1.func);
-    expect(this.activeNode()).not.toBe(this.literal1.args);
+    await wait(DELAY);
+    expect(this.activeNode()).not.toBe(this.root1);
+    expect(this.activeNode()).toBe(this.root1.func);
+    expect(this.activeNode()).not.toBe(this.root1.args);
 
     testing.keyDown("Enter");
-    await testing.wait(DELAY);
+    await wait(DELAY);
     testing.keyDown("Enter");
-    await testing.wait(DELAY);
+    await wait(DELAY);
 
     testing.keyDown("ArrowDown");
-    await testing.wait(DELAY);
-    expect(this.activeNode()).not.toBe(this.literal1);
-    expect(this.activeNode()).not.toBe(this.literal1.func);
-    expect(this.activeNode()).toBe(this.literal1.args[0]);
+    await wait(DELAY);
+    expect(this.activeNode()).not.toBe(this.root1);
+    expect(this.activeNode()).not.toBe(this.root1.func);
+    expect(this.activeNode()).toBe(this.root1.args[0]);
 
     testing.keyDown("Enter");
-    await testing.wait(DELAY);
+    await wait(DELAY);
     testing.keyDown("Enter");
-    await testing.wait(DELAY);
-    */
+    await wait(DELAY);
   });
 });
 

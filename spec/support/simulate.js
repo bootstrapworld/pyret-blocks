@@ -14,12 +14,78 @@ let Simulate = ReactTestUtils.Simulate;
 export function click(node) {
   Simulate.click(toElement(node));
 }
+export function mouseDown(node) {
+  Simulate.mouseDown(toElement(node));
+}
 export function doubleClick(node) {
   Simulate.doubleClick(toElement(node));
 }
 export function blur(node=document.activeElement) {
   Simulate.blur(toElement(node));
 }
+
+function createBubbledEvent(type, props = {}) {
+  const event = new Event(type, { bubbles: true });
+  Object.assign(event, props);
+  return event;
+}
+
+function createBubbledMouseEvent(type, props = {}) {
+  const event = new MouseEvent(type, { bubbles: true });
+  Object.assign(event, props);
+  return event;
+}
+
+export function drop(dataTransfer) {
+  let ans = createBubbledEvent('drop');
+  return ans;
+}
+
+export function dragstart() {
+  let ans = createBubbledEvent('dragstart');
+  return ans;
+}
+
+export function dragover(node=document.activeElement) {
+  toElement(node).dispatchEvent(createBubbledEvent('dragover'));
+}
+
+export function dragenterObsolete(node=document.activeElement) {
+  toElement(node).dispatchEvent(createBubbledEvent('mouseenter'));
+  toElement(node).dispatchEvent(createBubbledEvent('dragenter'));
+  toElement(node).dispatchEvent(createBubbledEvent('mouseover'));
+}
+
+export function mouseenter() {
+  return createBubbledEvent('mouseenter');
+}
+
+export function dragenter() {
+  return createBubbledEvent('dragenter');
+}
+
+export function mouseover() {
+  return createBubbledEvent('mouseover');
+}
+
+export function dragenterSeq(node=document.activeElement) {
+  //toElement(node).dispatchEvent(mouseenter());
+  toElement(node).dispatchEvent(dragenter());
+  toElement(node).dispatchEvent(mouseover());
+}
+
+export function dragleave() {
+  return createBubbledEvent('dragleave');
+}
+
+export function mouseleave() {
+  return createBubbledEvent('mouseleave');
+}
+
+export function dragend() {
+  return createBubbledEvent('dragend');
+}
+
 // TODO: document.activeElement isn't always a good default to dispatch to.
 // What does the _browser_ dispatch to?
 export function keyDown(key, props={}, node=document.activeElement) {
@@ -91,6 +157,7 @@ function getKeyCode(key) {
   case "/": return 191;
   case "<": return 188;
   // If you extend this, make sure to match the official table linked above.
+  default: throw new Error("Unknown key: " + key);
   }
 }
 
@@ -100,7 +167,7 @@ function toElement(node) {
   if (node instanceof Element) {
     return node;
   }
-  if (node.element instanceof Element) {
+  if (node && node.element instanceof Element) {
     return node.element;
   }
   throw new Error("Cannot convert value into a DOM node:" + node);
