@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-
 var baseConfig = require('./base.config.js')();
 
 // this is the config for generating the files needed to run the examples.
@@ -28,6 +27,7 @@ module.exports = function(env, argv) {
       ])
     }),
     plugins: baseConfig.plugins.concat([
+      new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
         filename: 'new-pyret-editor.html',
         template: 'example/new-pyret-editor.html',

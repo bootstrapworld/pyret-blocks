@@ -2,21 +2,31 @@ var _ = require('lodash');
 var path = require('path');
 var webpack = require('webpack');
 var baseConfig = require('./base.config.js');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // this is the config for a single js file that can be included with a script tag
 var configs = [
   _.extend({}, baseConfig(), {
     entry: {
-      "PyretLangBlocks": ['./src/languages/pyret/index.js']
+      "CodeMirrorBlocks": ['./src/languages/pyret/index.js']
     },
     output: {
       path: path.resolve(__dirname, '..', "dist"),
       filename: "[name].js",
-      library: ["PyretLangBlocks"]
+      library: ["CodeMirrorBlocks"]
     },
-    plugins: [new webpack.ProvidePlugin({ codemirror: "codemirror" })],
+    plugins: [
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static', 
+        reportFilename: "bundle-sizes.html",
+        generateStatsFile: true,
+        openAnalyzer: false,
+      }),
+    ],
     externals: {
       'codemirror': 'CodeMirror',
+      'codemirror/addon/search/search' : 'codemirror',
+      'codemirror/addon/search/searchcursor' : 'codemirror',
     }
   })
 ];
