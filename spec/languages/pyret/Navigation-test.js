@@ -1,8 +1,13 @@
 import pyret from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 import {wait, teardown, activationSetup} from '../../support/test-utils';
-import { testing } from 'codemirror-blocks';
-
+import {
+  click,
+  mouseDown,
+  blur,
+  keyDown,
+  insertText,
+} from '../../support/simulate';
 const DELAY = 250;
 
 // be sure to call with `apply` or `call`
@@ -21,33 +26,33 @@ describe("load-spreadsheet", function () {
   });
 
   afterEach(function () {
-    testing.teardown();
+    teardown();
   });
 
   it('should activate load-spreadsheet and then url when down is pressed', async function () {
     console.log('@@@@@@@', this.root1);
-    testing.mouseDown(this.root1);
+    mouseDown(this.root1);
     await wait(DELAY);
-    testing.keyDown("ArrowDown");
+    keyDown("ArrowDown");
     await wait(DELAY);
     expect(this.activeNode()).not.toBe(this.root1);
     expect(this.activeNode()).toBe(this.root1.func);
     expect(this.activeNode()).not.toBe(this.root1.args);
 
-    testing.keyDown("Enter");
+    keyDown("Enter");
     await wait(DELAY);
-    testing.keyDown("Enter");
+    keyDown("Enter");
     await wait(DELAY);
 
-    testing.keyDown("ArrowDown");
+    keyDown("ArrowDown");
     await wait(DELAY);
     expect(this.activeNode()).not.toBe(this.root1);
     expect(this.activeNode()).not.toBe(this.root1.func);
     expect(this.activeNode()).toBe(this.root1.args[0]);
 
-    testing.keyDown("Enter");
+    keyDown("Enter");
     await wait(DELAY);
-    testing.keyDown("Enter");
+    keyDown("Enter");
     await wait(DELAY);
   });
 });
