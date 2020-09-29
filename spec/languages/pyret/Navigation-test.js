@@ -132,3 +132,47 @@ end`);
   });
 
 });
+
+describe("lets", function () {
+  let test_let = function (text) {
+    describe(text, function () {
+      beforeEach(function () {
+        setup.call(this);
+        this.cmb.setValue(text);
+        let ast = this.cmb.getAst();
+        this.root1 = ast.rootNodes[0];
+      });
+
+      afterEach(function () { teardown(); });
+
+      it('should activate the binding and then the rhs when down is pressed', async function () {
+        mouseDown(this.root1);
+        await wait(DELAY);
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        expect(this.activeNode()).not.toBe(this.root1);
+        expect(this.activeNode()).toBe(this.root1.ident);
+        expect(this.activeNode()).not.toBe(this.root1.rhs);
+
+        keyDown("Enter");
+        await wait(DELAY);
+        keyDown("Enter");
+        await wait(DELAY);
+
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        expect(this.activeNode()).not.toBe(this.root1);
+        expect(this.activeNode()).not.toBe(this.root1.ident);
+        expect(this.activeNode()).toBe(this.root1.rhs);
+
+        keyDown("Enter");
+        await wait(DELAY);
+        keyDown("Enter");
+        await wait(DELAY);
+      });
+    });
+  };
+  test_let("x = 3");
+  test_let("x = true");
+  test_let(`data-type = "string"`);
+});
