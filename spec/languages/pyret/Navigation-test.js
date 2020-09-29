@@ -57,3 +57,78 @@ describe("load-spreadsheet", function () {
   });
 });
 
+describe("load-table", function () {
+  beforeEach(async function () {
+    setup.call(this);
+    this.cmb.setValue(`load-table: nth, name, home-state
+  source: presidents-sheet.sheet-by-name("presidents", true)
+end`);
+    await wait(DELAY);
+    let ast = this.cmb.getAst();
+    this.root1 = ast.rootNodes[0];
+    this.columns = this.root1.columns;
+    mouseDown(this.root1);
+  });
+
+  afterEach(function () { teardown(); });
+
+  it('should activate the first column name', async function () {
+    mouseDown(this.root1); await wait(DELAY);
+
+    //click(this.root1);
+
+    keyDown("ArrowDown"); await wait(DELAY);
+
+    expect(this.activeNode()).not.toBe(this.root1);
+    expect(this.activeNode()).toBe(this.columns[0]);
+
+    keyDown("Enter"); await wait(DELAY);
+    keyDown("Enter"); await wait(DELAY);
+  });
+
+  it('should activate the second column name', async function () {
+    mouseDown(this.columns[0]); await wait(DELAY);
+
+    // TODO: The old tests simply want to click, but that doesn't work yet.
+    //
+    //click(this.columns[0]);
+
+    keyDown("ArrowDown"); await wait(DELAY);
+
+    expect(this.activeNode()).not.toBe(this.root1);
+    expect(this.activeNode()).not.toBe(this.columns[0]);
+    expect(this.activeNode()).toBe(this.columns[1]);
+
+    keyDown("Enter"); await wait(DELAY);
+    keyDown("Enter"); await wait(DELAY);
+  });
+
+  it('should activate the third column name', async function () {
+    mouseDown(this.columns[1]); await wait(DELAY);
+    //click(this.columns[1]);
+
+    keyDown("ArrowDown"); await wait(DELAY);
+
+    expect(this.activeNode()).not.toBe(this.root1);
+    expect(this.activeNode()).not.toBe(this.columns[0]);
+    expect(this.activeNode()).not.toBe(this.columns[1]);
+    expect(this.activeNode()).toBe(this.columns[2]);
+
+    keyDown("Enter"); await wait(DELAY);
+    keyDown("Enter"); await wait(DELAY);
+  });
+
+  it('should activate the source when down is pressed', async function () {
+    mouseDown(this.columns[2]); await wait(DELAY);
+    //click(this.columns[2]);
+
+    keyDown("ArrowDown"); await wait(DELAY);
+
+    expect(this.activeNode()).not.toBe(this.root1);
+    expect(this.activeNode()).toBe(this.root1.sources[0]);
+
+    keyDown("Enter"); await wait(DELAY);
+    keyDown("Enter"); await wait(DELAY);
+  });
+
+});
