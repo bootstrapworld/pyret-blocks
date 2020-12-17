@@ -1,20 +1,17 @@
-var _ = require('lodash');
-var path = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
-var baseConfig = require('./base.config.js')();
+const baseConfig = require('./base.config.js')();
 
 // this is the config for generating the files needed to run the examples.
 module.exports = function(env, argv) {
 
-  return _.extend({}, baseConfig, {
+  return Object.assign({}, baseConfig, {
     devtool: 'cheap-module-source-map',
     entry: {
       "new-pyret-editor-example": './example/new-pyret-editor-example.js'
     },
-    module: _.extend({}, baseConfig.module, {
+    module: Object.assign({}, baseConfig.module, {
       rules: baseConfig.module.rules.concat([
         { test: /\.arr$/, use: 'raw-loader' }
       ])
@@ -29,17 +26,8 @@ module.exports = function(env, argv) {
       }),
     ]),
     optimization: {
-      minimize: argv['mode'] == 'production',
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            name: 'commons',
-            chunks: 'all',
-            minChunks: 2,
-            enforce: true
-          }
-        }
-      }
+      minimize: false,
+      splitChunks: false
     },
     devServer: {
       hot: true,
