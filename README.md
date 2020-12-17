@@ -1,38 +1,24 @@
 [![dependencies Status](https://david-dm.org/bootstrapworld/codemirror-blocks/status.svg)](https://david-dm.org/bootstrapworld/pyret-blocks)
 [![devDependencies Status](https://david-dm.org/bootstrapworld/codemirror-blocks/dev-status.svg)](https://david-dm.org/bootstrapworld/pyret-blocks?type=dev)
-[![Build Status](https://travis-ci.org/bootstrapworld/codemirror-blocks.svg?branch=master)](https://travis-ci.org/bootstrapworld/pyret-blocks)
-[![Coverage Status](https://coveralls.io/repos/bootstrapworld/codemirror-blocks/badge.svg?branch=master&service=github)](https://coveralls.io/github/bootstrapworld/pyret-blocks?branch=master)
+[comment] [![Build Status](https://travis-ci.org/bootstrapworld/codemirror-blocks.svg?branch=master)](https://travis-ci.org/bootstrapworld/pyret-blocks)
+[comment][![Coverage Status](https://coveralls.io/repos/bootstrapworld/codemirror-blocks/badge.svg?branch=master&service=github)](https://coveralls.io/github/bootstrapworld/pyret-blocks?branch=master)
 [![Code Climate](https://codeclimate.com/github/bootstrapworld/codemirror-blocks/badges/gpa.svg)](https://codeclimate.com/github/bootstrapworld/pyret-blocks)
 
-# codemirror-blocks
-A library for making functional languages editable using visual blocks inside of codemirror
+# pyret-blocks
+A screenreader-accessible, hybrid block and text editor for the [Pyret programming language](https://www.pyret.org).
 
 ## Usage
 
-1. Install this library with npm:
+Export the pyret-blocks module using the normal `npm run build` mechanism, then include it in your favorite Pyret-using, CodeMirror-enabled project. You can now use the new `CodeMirrorBlocks` constructor to replace an existing CodeMirror instance with blocks. In other words, you'd replace code that looks like this:
 
-        npm install --save codemirror-blocks
+    // make a new CM instance inside the container elt, passing in CM ops
+    this.editor = CodeMirror(container, {/* CodeMirror options  */}});
+With code that looks like this:
 
-2. Install the peer dependencies:
+    // make a new CMB instance inside the container elt, passing in CMB ops
+    this.editor = CodeMirrorBlocks(container, {/* CodeMirrorBlocks options  */});
 
-        npm install --save babel-polyfill codemirror
-
-3. Make sure `babel-polyfill` is required at the top of your entry point:
-
-        require('babel-polyfill')
-
-4. Hook it up:
-
-        import CodeMirror from 'CodeMirror'
-        import CodeMirrorBlocks from 'codemirror-blocks'
-        import MyParser from './MyParser.js' //See example/parser.js for an example
-
-        // feel free to include the example css, or roll your own!
-        require('codemirror-blocks/example/example.css')
-
-        let cm = CodeMirror.fromTextArea(document.getElementById('mytextarea'))
-        let blocks = new CodeMirrorBlocks(cm, /* options */ {}, new MyParser())
-        blocks.setBlockMode(true)
+NOTE: your IDE will need to load CodeMirror as an external dependency. We assume it already does (otherwise, why would you be here?), so you'll need to provide it yourself.
 
 ## Development
 
@@ -57,14 +43,17 @@ Alternatively, you can put it in your `.{bash,zsh}rc`, which will run them autom
 
         npm start
 
-4. browse to http://localhost:8080/ and fire away!
+4. browse to http://localhost:8080/editor.html and fire away!
 
-5. while you work, be sure to continuously run the unit tests with:
+5. while you work, be sure to run the unit tests (early and often!) with:
 
-        npm run test-watch
+        npm run test
 
-Library code is in the **src/** directory. An example of how it should be used
-is in the **example/** directory.
+Language-specific code is in the **src/languages/pyret/** directory. The files there include:
+- `ast.tsx` - a TypeScript file describing the AST nodes for this language, over-and-above the builtin nodes that the CMB library includes natively. If you are *adding support for language features* or *changing the way existing nodes render*, this is where you'll do most of your work. You'll need some JS and minimal JSX/React chops to work here.
+- `index.js` - the interface where the language mode declares itself to the CMB library. It's unlikely you will edit anything here (except *maybe* some of the strings).
+- `Parser.js` - this file contains that code that takes an AST produced by your language's native parser and converts it to a CMB AST. **Pay special attention to the `aria-label` fields**! These strings are what the screenreader will announce to describe an AST node.
+- `style.less` - this is where the CSS rules are declared, for styling the rendered AST nodes. If you know CSS, learning [LESS](http://lesscss.org/features/) is pretty easy and downright fun!
 
 6. you can generate local coverage reports in the **.coverage/** folder by running:
 
@@ -73,10 +62,3 @@ is in the **example/** directory.
 7. you can generate a static, minified ball of JS and CSS in the **dist/** folder by running:
 
         npm run build
-
-## Updating demo on project site
-
-To update the demo on the project site with the latest version of the example in
-this repository, just run:
-
-    ./deploy-example.sh
