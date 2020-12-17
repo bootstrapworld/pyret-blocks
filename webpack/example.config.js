@@ -24,6 +24,10 @@ module.exports = function(env, argv) {
         inject: 'body',
         chunks: ['commons','new-pyret-editor-example'],
       }),
+      // see https://stackoverflow.com/a/64553486/12026982
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
     ]),
     optimization: {
       minimize: false,
