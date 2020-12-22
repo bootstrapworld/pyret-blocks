@@ -26,7 +26,7 @@ function StyleSelector(envElement) {
         }
         console.log(queryHTML);
 
-        envElement.innerHTML = `<select id="selector" onChange="${this.handleChange}">${queryHTML}</select>`;
+        envElement.innerHTML = `<select id="selector" onChange="${this.handleChange}" class="form-control" style="width: 200px">${queryHTML}</select>`;
     }
 }
 

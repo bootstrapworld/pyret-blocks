@@ -13,5 +13,10 @@ export const StyleList = [
         displayName: "Neon (By Kevin Hsu)",
         themeName: "theme-neon",
         id: "neon-block-style"
+    },
+    {
+        displayName: "Inverse (By Rob)",
+        themeName: "theme-inverse",
+        id: "inverse-block-style"
     }
 ];
