@@ -33,10 +33,8 @@ editor.setBlockMode(true);
 // Constructs the Style Selector below the Code Monitor
 const selectorBox = document.getElementById('style-selector');
 // const themeBox = document.getElementById('theme-selector');
-// console.log(selectorBox);
 const selector = new StyleSelector(selectorBox);
 selector.display();
-// selector.innerHTML = ReactDOMServer.renderToString(<StyleSelector />); // StyleSelector; 
 
 // for debugging purposes
 window.editor = editor

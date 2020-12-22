@@ -5,9 +5,11 @@ function StyleSelector(envElement) {
     this.environment = envElement;
 
     this.handleChange = `
-    console.log(this.value);
-    const themeBox = document.getElementById('theme-selector');
-    themeBox.className = this.value;`;
+    let styleSelector = document.getElementById('selector');
+    let themeBox = document.getElementById('theme-selector');
+    themeBox.className = styleSelector.value;
+    // console.log(styleSelector);
+    // console.log(styleSelector.value);`;
     
     this.display = function() {
 
@@ -15,8 +17,8 @@ function StyleSelector(envElement) {
         for (let index in StyleList) {
             let item = StyleList[index];
             let itemHTML = `<div key=${item.key}>
-                <input type="radio" id=${item.id} name="style-selection" value=${item.themeName} onClick="${this.handleChange}" />
-                <label for=${item.id}>${item.displayName}</label><br />
+                <option id="${item.id}" name="style-selection" value="${item.themeName}">
+                <label for="${item.id}">${item.displayName}</label></option>
             </div>`;
             
             console.log(itemHTML);
@@ -24,31 +26,35 @@ function StyleSelector(envElement) {
         }
         console.log(queryHTML);
 
-        envElement.innerHTML = `<form>${queryHTML}</form>`;
+        envElement.innerHTML = `<select id="selector" onChange="${this.handleChange}">${queryHTML}</select>`;
     }
 }
 
-// import React, { Component } from 'react';
+// function StyleSelector(envElement) {
+//     console.log(this);
+//     this.environment = envElement;
 
-// class StyleSelector extends Component {
+//     this.handleChange = `
+//     console.log(this.value);
+//     const themeBox = document.getElementById('theme-selector');
+//     themeBox.className = this.value;`;
+    
+//     this.display = function() {
 
-//     handleChange(e) {
-//         e.preventDefault();
-//         console.log(e.target);
-//     }
-//     //{(event) => this.handleChange(event)}
-//     render() {
-//         return(
-//             <form>
-//                 {StyleList.map((item, index) => {
-//                     return(
-//                         <div key={item.value}>
-//                             <input type="radio" id={item.id} name="style-selection" value={item.value} onClick={(event) => {console.log(event)}} />
-//                             <label htmlFor={item.id}>{item.displayName}</label><br />
-//                         </div>)
-//                 })}
-//             </form>
-//         )
+//         let queryHTML = "";
+//         for (let index in StyleList) {
+//             let item = StyleList[index];
+//             let itemHTML = `<div key=${item.key}>
+//                 <input type="radio" id=${item.id} name="style-selection" value=${item.themeName} onClick="${this.handleChange}" />
+//                 <label for=${item.id}>${item.displayName}</label><br />
+//             </div>`;
+            
+//             console.log(itemHTML);
+//             queryHTML += itemHTML;
+//         }
+//         console.log(queryHTML);
+
+//         envElement.innerHTML = `<form>${queryHTML}</form>`;
 //     }
 // }
 
