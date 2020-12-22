@@ -5,9 +5,9 @@ export const StyleList = [
         id: 'default-block-style'
     },
     {
-        displayName: 'Scarlet Red',
-        themeName: 'theme-scarletred',
-        id: 'scarletred-block-style'
+        displayName: 'Strawberry (By Matthew Ji)',
+        themeName: 'theme-strawberry',
+        id: 'strawberry-block-style'
     },
     {
         displayName: "Neon (By Kevin Hsu)",
