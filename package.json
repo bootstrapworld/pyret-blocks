@@ -65,7 +65,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "test": "node ./node_modules/karma/bin/karma start --single-run",
+    "test": "./node_modules/karma/bin/karma start --single-run",
     "test-watch": "karma start",
     "prepare": "npm run build",
     "start": "webpack serve --mode development --config webpack/example.config.js",
