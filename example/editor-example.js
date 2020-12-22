@@ -1,7 +1,5 @@
 import PyretCMB from '../src/languages/pyret';
-// import React, { Component } from 'react';
-// import ReactDOMServer from 'react-dom/server';
-import StyleSelector from '../src/less/style-selector';
+import StyleSelector from '../src/languages/pyret/style-selection/style-selector';
 import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
 import { testing }  from "codemirror-blocks";
