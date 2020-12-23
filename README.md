@@ -60,3 +60,31 @@ Language-specific code is in the **src/languages/pyret/** directory. The files t
 7. you can generate a static, minified ball of JS and CSS in the **dist/** folder by running:
 
         npm run build
+
+## Inserting New Themes
+We have also given the option for you to add your own themes into the application during development. Style-specific code is in the **src/languages/pyret/style-selection** directory, where you will find:
+- `style-list.js` - which exports an array of JSONs indicating the Styles available in the editor. More on this below.
+- `style-selector.js` - the script that exports a constructor that will create the selector of styles for the editor in the application. If you are only concerned with adding new styles, you probably won't need to edit this.
+- `\style\` - a directory where all the less files for the theme are at. More on this below. Inside this directory, you will find a file called **default.less**, this is a template for what you can modifiy into any other style.
+
+Once you have your style compiled, all you need to insert a new style is to:
+
+1. Upload your file to the **style** directory mentioned above if you haven't already.
+
+2. Open up **style-list.js**, and insert a json of the following format:
+
+        {
+                displayName: STRING,
+                themeName: STRING,
+                id: STRING
+        }
+
+- `displayName` - Theme Name of your Style that will be displayed on the UI
+- `themeName` - the ClassName of the Wrapper around Code Mirror, add this to style.less
+- `id` - id of the option block in the UI, formatted in the style of "[name]-block-style"
+
+3. In ##style.less## referenced in Development, add the following to the less file:
+
+        .[themeName]{
+                @import "./style-selection/style/[file you uploaded]";
+        }

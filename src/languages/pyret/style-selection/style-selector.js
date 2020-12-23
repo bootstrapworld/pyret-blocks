@@ -1,9 +1,14 @@
 import { StyleList } from "./style-list";
-
+// Creates a Constructor that takes in an HTML Element and Populates it with a Style Selector
 function StyleSelector(envElement) {
-    console.log(this);
+    
     this.environment = envElement;
 
+    /* handleChange():: Event -> VOID
+        When a change has been detected under the Select Tag, gets the current value of the selector and
+        changes the theme of CodeMirror to the value specified by the selector.
+        Function is stringified for this application.
+    */
     this.handleChange = `
     let styleSelector = document.getElementById('selector');
     let themeBox = document.getElementById('theme-selector');
@@ -11,6 +16,10 @@ function StyleSelector(envElement) {
     // console.log(styleSelector);
     // console.log(styleSelector.value);`;
     
+    /* display():: -> VOID
+        Constructs the HTML Selection for the Styles. First, it maps the array from style-list.js into a series of options.
+        Then it concatenates that into the select tag and modified the innerHTML of the HTML Environment.
+    */
     this.display = function() {
 
         let queryHTML = "";

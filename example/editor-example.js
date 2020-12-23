@@ -30,7 +30,6 @@ editor.setBlockMode(true);
 
 // Constructs the Style Selector below the Code Monitor
 const selectorBox = document.getElementById('style-selector');
-// const themeBox = document.getElementById('theme-selector');
 const selector = new StyleSelector(selectorBox);
 selector.display();
 
