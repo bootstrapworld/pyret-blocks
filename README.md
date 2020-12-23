@@ -83,7 +83,7 @@ Once you have your style compiled, all you need to insert a new style is to:
 - `themeName` - the ClassName of the Wrapper around Code Mirror, add this to style.less
 - `id` - id of the option block in the UI, formatted in the style of "[name]-block-style"
 
-3. In ##style.less## referenced in Development, add the following to the less file:
+3. In **style.less** referenced in Development, add the following to the less file:
 
         .[themeName]{
                 @import "./style-selection/style/[file you uploaded]";
