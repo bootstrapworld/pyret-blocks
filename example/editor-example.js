@@ -19,6 +19,7 @@ const DELAY = 250;
 
 
 const smallExampleCode = `load-spreadsheet("14er5Mh443Lb5SIFxXZHdAnLCuQZaA8O6qtgGlibQuEg")`;
+// const smallExampleCode = `when x > 5: 1 end`;
 
 const useBigCode = false;
 const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
