@@ -140,7 +140,7 @@ export class Func extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -208,7 +208,7 @@ export class Lambda extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -1337,7 +1337,7 @@ export class For extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args>{this.bindings}</Args>;
     let header_ending = <span>
-      {(this.ann != null)? <>&nbsp;->&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.ann != null)? <>&nbsp;-&gt&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
