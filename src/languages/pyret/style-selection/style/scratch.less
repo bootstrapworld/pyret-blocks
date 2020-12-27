@@ -1,3 +1,8 @@
+.CodeMirror,
+#cmb-editor {
+  background: #EBECF0;
+}
+
 .blocks-language-pyret {
   // Import the default style, using the parameters set below.
   // Yes, the parameters below here really get passed into the style file imported above them.
@@ -61,7 +66,8 @@
     justify-content: center;
     font-weight: bold;
     padding: 1px 5px;
-    border: none;
+    border: @border-width solid grey;
+    border-radius: 2px;
     text-align: center;
     color: white;
     > .blocks-white-space:not(.blocks-editing) {
@@ -88,6 +94,7 @@
   }
 
   .blocks-literal {
+    font-size: 16px;
     .blocks-literal-number {
       color: @literal-number-color;
     }
@@ -143,7 +150,8 @@
     align-items: stretch;
     color: black;
     margin: 2px;
-    background: #eee;
+    border: @border-width solid grey;
+    border-radius: 2px;
     overflow: hidden;
     white-space: nowrap;
     transition: all 0.5s;
@@ -240,14 +248,19 @@
       font-weight: bolder;
     }
   }
+  
   .blocks-literal, .blocks-literal-number{
     color: white;
+  }
+
+  .blocks-literal {
+    border: 2px solid black;
+    border-radius: 2px;
   }
 
   .blocks-let {
     background-color: rgb(255, 140, 26);
     border-radius: 5px;
-
   }
 
   .blocks-func {
@@ -258,6 +271,7 @@
   }
   .blocks-func-body {
     display: inline-block;
+    background-color: #ffdbe9;
     .blocks-func-left {
       width: 100px;
       background-color: @func-background;
