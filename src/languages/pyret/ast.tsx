@@ -618,8 +618,14 @@ export class Check extends AST.ASTNode {
         <span className="blocks-check">
           {"check" + (this.name != null ? " " + this.name : "")}
         </span>
-        <span className="blocks-args">
-          {body}
+        <span className="blocks-check-body">
+          <span className="blocks-check-left" ></span>
+          <span className="blocks-check-args">
+            {body}
+          </span>
+        </span>
+        <span className="blocks-check-footer">
+          end
         </span>
       </Node>
     );
@@ -672,11 +678,11 @@ export class CheckTest extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-check-test">
-          {this.op.reactElement()}
-        </span>
         <span className="blocks-args">
           {this.lhs.reactElement()}
+					<span className="blocks-check-test">
+						{this.op.reactElement()}
+					</span>
           {this.rhs ? this.rhs.reactElement() : null}
         </span>
       </Node>

@@ -224,6 +224,8 @@
   //Colors directly taken from scratch.mit.edu
   @func-background: rgb(255, 102, 128);
   @lam-background: rgb(207, 99, 207);
+	@check-background: #5C98F7;
+	@checkTest-background: #F5BF42;
   .blocks-binop{
     background-color:rgb(89, 192, 89);
     border-radius: 20px;
@@ -248,26 +250,21 @@
       font-weight: bolder;
     }
   }
-  
-  // .blocks-literal, .blocks-literal-number{
-  //   // color: white;
-  // }
-
-  // .blocks-literal {
-  //   // border: 2px solid black;
-  //   // border-radius: 2px;
-  // }
 
   .blocks-let {
     background-color: rgb(255, 140, 26);
     border-radius: 5px;
+		padding: 1rem;
+		clip-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
   }
 
   .blocks-func {
     background-color: @func-background;
     border-radius: 8px;
     border-bottom-left-radius: 0px;
-    padding: 5px;
+
+		clip-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+		padding: 1rem 0;
   }
   .blocks-func-body {
     display: inline-block;
@@ -291,5 +288,34 @@
 
   .blocks-lambda {
     background-color: @lam-background;
+  }
+
+	.blocks-check {
+    background-color: @check-background;
+    border-radius: 8px;
+    border-bottom-left-radius: 0px;
+
+		clip-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+		padding: 1rem 0;
+	}
+
+  .blocks-checkTest {
+    background-color: @checkTest-background;
+    border-radius: 5px;
+		padding: 1rem;
+		clip-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+  }
+
+	.blocks-funapp{
+    border-radius: 5px;
+		background-color: @func-background;
+	}
+
+  .blocks-check-footer {
+    background-color: @check-background;
+    border-radius: 8px;
+    border-top-left-radius: 0px;
+    padding: 5px;
+    color: white;
   }
 }

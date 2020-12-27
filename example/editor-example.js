@@ -18,7 +18,19 @@ const DELAY = 250;
 
 
 
-const smallExampleCode = `f = lam(x): x + 1 end\nx = 1\na = x + 1\n fun f(x): x - 10 end`;
+const smallExampleCode = `
+f = lam(x): x + 1 end\nx = 1\na = x + 1\n 
+
+fun f(x): 
+  y = x - 10 
+  z = x - 10 
+  y + 8
+end
+
+check "test message": 
+  3 is 3
+  foo-bar-baz() is 12345
+end`;
 
 const useBigCode = false;
 const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
