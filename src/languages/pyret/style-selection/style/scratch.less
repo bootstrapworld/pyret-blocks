@@ -383,6 +383,8 @@
   }
   
   /*   Conditional Expressions   */
+
+  // If and If Else Expressions:
 	.blocks-if{
 		background-color: @checkTest-background;
     border-radius: 8px;
@@ -416,5 +418,34 @@
     clip-path: @sidebar-path;
     background-color: transparent;
   }
+
+  // When Expression:
+  // polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @when-path: polygon(0% @height-setoff*1.5, @w-scale*16px 0.5*@height-setoff, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 0.5*@height-setoff, @w-scale*64px @height-setoff*1.5, 100% @height-setoff*1.5, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @when-sidebar-path: polygon(0% 1.5*@height-setoff, @sidebar-width 1.5*@height-setoff, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
+  .blocks-when{
+    background-color: @checkTest-background;
+    // clip-path: @insert-output-path;
+    clip-path: @when-path;
+  }
+
+  .blocks-when-header {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .blocks-when-footer{
+    background-color: @checkTest-background;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+  }
+
+  .blocks-s-when{
+    border-left: @sidebar-width solid @checkTest-background;
+    clip-path: @when-sidebar-path;
+    background-color: transparent;
+  }
+
   /* xx Conditional Expressions xx */
 }
