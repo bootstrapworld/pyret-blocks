@@ -1,6 +1,16 @@
-.CodeMirror,
+.CodeMirror{
+  // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane 
+  background-color:#5fdfff;
+  background-image: linear-gradient(to right, transparent 50%, rgba(255, 255, 255, 0.5) 50%),
+  linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.5) 50%);
+  background-size: 25px 25px;
+}
+
 #cmb-editor {
-  background: #EBECF0;
+  // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane
+  background-color: #5fdfff;
+  background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.5) 50%);
+  background-size: 25px;
 }
 
 .blocks-language-pyret {
@@ -35,7 +45,17 @@
     opacity: 0.5;
   }
 
+  .blocks-node[aria-expanded="false"] { 
 
+    &:before {
+      content: "···";
+      color: white;
+      text-align: center;
+    }
+
+    border: 0.25rem solid black;
+    background: black;
+  }
 
   // css classes
   .blocks-ask,
@@ -66,8 +86,8 @@
     justify-content: center;
     font-weight: bold;
     padding: 1px 5px;
-    border: @border-width solid grey;
-    border-radius: 2px;
+    // border: @border-width solid grey;
+    // border-radius: 2px;
     text-align: center;
     color: white;
     > .blocks-white-space:not(.blocks-editing) {
@@ -149,8 +169,8 @@
     flex-direction: column;
     align-items: stretch;
     color: black;
-    margin: 2px;
-    border: @border-width solid grey;
+    // margin: 2px;
+    // border: @border-width solid transparent;
     border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
@@ -226,7 +246,7 @@
   @lam-background: rgb(207, 99, 207);
 	@check-background: #5C98F7;
   @checkTest-background: #F5BF42;
-  
+  @body-color: #EEE;
   // Pathes for the Template
   @w-scale: 1;
   // @h-scale: 1;
@@ -268,7 +288,7 @@
     background-color: rgb(255, 140, 26);
     border-radius: 5px;
     padding: 1rem;
-    border: 2px solid black;
+    // border: 2px solid black;
 		clip-path: @insert-output-path;
   }
 
@@ -277,15 +297,17 @@
     border-radius: 8px;
     border-bottom-left-radius: 0px;
 
-		clip-path: @start-finish-path;
+    clip-path: @start-finish-path;
 
 		padding: 1rem;
-		text-align: left !important;
+		text-align: left;
 		display: block;
   }
   .blocks-func-body {
     display: inline-block;
-    // background-color: #EEE;
+    padding-top: 10px;
+    margin-top: -10px;
+    background-color: @body-color;
     .blocks-func-left {
       width: 100px;
       background-color: @func-background;
@@ -315,7 +337,7 @@
 		clip-path: @start-finish-path;
 
 		padding: 1rem;
-		text-align: left !important;
+		text-align: left;
 		display: block;
 	}
 
