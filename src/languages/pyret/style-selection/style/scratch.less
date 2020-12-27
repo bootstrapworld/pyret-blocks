@@ -315,22 +315,37 @@
 
 		padding: 1rem;
 		text-align: left;
-		display: block;
+    display: block;
+
   }
   .blocks-func-body {
     display: inline-block;
     padding-top: 10px;
     margin-top: -10px;
-    // background-color: @body-color;
-    .blocks-func-left {
-      width: 100px;
-      background-color: @func-background;
-      display: inline;
+    .blocks-drop-target{
+      display: none;
     }
-    .blocks-func-right {
+    br {
+      height: 0px;
+      width: 0px;
+      display: none;
+    }
+    .blocks-node{
       display: inline;
+      padding-top: -10px;
+    }
+    .blocks-let{
+      margin-top: -6px;
+      border: 2px solid gray;
+    }
+    :hover {
+      .blocks-drop-target{
+        display: block;
+      }
     }
   }
+  
+
   .blocks-func-footer {
     background-color: @func-background;
     border-radius: 0px 8px 8px 0px;
@@ -382,6 +397,8 @@
 		clip-path: @sidebar-path;
   }
   
+
+
   /*   Conditional Expressions   */
 	.blocks-if{
 		background-color: @checkTest-background;
@@ -405,6 +422,8 @@
     padding: 5px;
     color: white;
   }
+
+
 
   // .blocks-if-footer {
   //   clip-path: @only-output-path;
