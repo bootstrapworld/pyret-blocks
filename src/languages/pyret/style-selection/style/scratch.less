@@ -170,7 +170,7 @@
   {
     display: inline-flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: baseline;
     color: black;
     // margin: 2px;
     // border: @border-width solid transparent;
@@ -179,6 +179,7 @@
     overflow: hidden;
     white-space: nowrap;
     transition: all 0.5s;
+    margin-top: -7px;
 
     cursor: grab;
     cursor: -moz-grab;
@@ -325,33 +326,30 @@
     display: block;
 
   }
-  .blocks-func-body {
-    display: inline-block;
-    padding-top: 10px;
-    margin-top: -10px;
-    .blocks-drop-target{
+  // Dropzone 
+  .blocks-func-body,
+  .blocks-cond-result,
+  .blocks-lambdaExp,
+  .blocks-check-body {
+    //Prevent default displaying
+    .blocks-drop-target,
+    .blocks-arguments .blocks-drop-target{
       display: none;
+    }
+    .blocks-block > span > span {
+      display: block;
     }
     br {
-      height: 0px;
-      width: 0px;
       display: none;
     }
-    .blocks-node{
-      display: inline;
-      padding-top: -10px;
-    }
-    .blocks-let{
-      margin-top: -6px;
-      border: 2px solid gray;
-    }
+    //Force it to display on hover over the main element
     :hover {
       .blocks-drop-target{
         display: block;
       }
     }
+
   }
-  
 
   .blocks-func-footer {
     background-color: @func-background;
@@ -429,7 +427,8 @@
 		border-left: @sidebar-width solid @check-background;
 		clip-path: @sidebar-path;
   }
-
+  /* xx Check Blocks xx */
+  // ---------------------------------------------------------------------------------------------------------
   /*   Conditional Expressions   */
   // -------------------------------------------------
   // If and If Else Expressions:
