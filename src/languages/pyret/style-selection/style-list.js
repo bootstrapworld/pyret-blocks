@@ -4,6 +4,11 @@
 //  id - id of the option block in the UI, formatted in the style of "[name]-block-style"
 export const StyleList = [
     {
+        displayName: "Scratch",
+        themeName: "theme-scratch",
+        id: "scratch-block-style"
+    },
+    {
         displayName: 'Default Style',
         themeName: 'theme-default',
         id: 'default-block-style'
@@ -22,10 +27,5 @@ export const StyleList = [
         displayName: "Inverse (By Rob)",
         themeName: "theme-inverse",
         id: "inverse-block-style"
-    },
-    {
-        displayName: "Scratch",
-        themeName: "theme-scratch",
-        id: "scratch-block-style"
     }
 ];
