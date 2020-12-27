@@ -1170,16 +1170,26 @@ export class IfBranch extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-        <div className="blocks-cond-row">
+            <Node node={this} {...props}>
           <div className="blocks-cond-predicate">
             {this.test.reactElement()}
           </div>
+        <div className="blocks-cond-row">
           <div className="blocks-cond-result">
             {this.body.reactElement()}
           </div>
         </div>
       </Node>
+      // <Node node={this} {...props}>
+      //   <div className="blocks-cond-row">
+      //     <div className="blocks-cond-predicate">
+      //       {this.test.reactElement()}
+      //     </div>
+      //     <div className="blocks-cond-result">
+      //       {this.body.reactElement()}
+      //     </div>
+      //   </div>
+      // </Node>
     )
   }
 }

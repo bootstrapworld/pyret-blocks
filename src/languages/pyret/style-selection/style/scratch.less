@@ -465,6 +465,36 @@
 		border-left: @sidebar-width solid @checkTest-background;
     clip-path: @sidebar-path;
     background-color: transparent;
+
+    .blocks-cond-table {
+      // background: red;
+
+      display: flex;
+      flex-direction: column;
+      white-space: pre-line;
+
+      align-items: left;
+      
+      .blocks-cond-predicate{
+
+        background-color: @checkTest-background;
+        padding-top: 1rem;
+        padding-right: 1.5rem;
+        padding-bottom: 1rem;
+        padding-left: 0rem;
+
+        clip-path: @insert-output-path;
+        float: none !important;
+      }
+
+      .blocks-cond-row {
+        // display: flex !important;
+  
+        .blocks-cond-result{
+          
+        }
+      }
+    }
   }
   // -------------------------------------------------
   // When Expression:
