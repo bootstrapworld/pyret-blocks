@@ -154,10 +154,7 @@ export class Func extends AST.ASTNode {
           fun&nbsp;{name}({args}){header_ending}:
         </span>
         <span className="blocks-func-body">
-          <span className="blocks-func-left" ></span>
-          <span className="blocks-func-right">
-            {body}
-          </span>
+          {body}
         </span>
         <span className="blocks-func-footer" id="blocks-style-footer">
           end
