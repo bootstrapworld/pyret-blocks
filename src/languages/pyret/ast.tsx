@@ -145,8 +145,8 @@ export class Func extends AST.ASTNode {
     let name = this.name.reactElement();
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
-    let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+		let header_ending = <span>
+      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -1171,10 +1171,10 @@ export class IfBranch extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
+				<div className="blocks-cond-predicate">
+					{this.test.reactElement()}
+				</div>
         <div className="blocks-cond-row">
-          <div className="blocks-cond-predicate">
-            {this.test.reactElement()}
-          </div>
           <div className="blocks-cond-result">
             {this.body.reactElement()}
           </div>
