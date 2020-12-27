@@ -146,7 +146,7 @@ export class Func extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
 		let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -242,7 +242,9 @@ export class Lambda extends AST.ASTNode {
         <span className="blocks-lambda">
           lam&nbsp;{name}({args}){header_ending}:
         </span>
-        {body}
+        <span className="blocks-lambda-body">
+          {body}
+        </span>
         <span className="blocks-lambda-footer" id="blocks-style-footer">
           end
         </span>
