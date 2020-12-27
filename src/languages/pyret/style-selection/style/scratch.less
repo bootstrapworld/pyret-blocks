@@ -225,12 +225,26 @@
   @func-background: rgb(255, 102, 128);
   @lam-background: rgb(207, 99, 207);
 	@check-background: #5C98F7;
-	@checkTest-background: #F5BF42;
+  @checkTest-background: #F5BF42;
+  
+  // Pathes for the Template
+  @w-scale: 1;
+  // @h-scale: 1;
+  // @insert-output-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+  // @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @h-scale*10px, @w-scale*36px @h-scale*10px, @w-scale*48px 0%, 100% 0%, 100% 90%, @w-scale*48px 90%, @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px 90%, 0% 90%);
+  @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px 10%, @w-scale*36px 10%, @w-scale*48px 0%, 100% 0%, 100% 90%, @w-scale*48px 90%, @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px 90%, 0% 90%);
+  // @start-finish-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+  @start-finish-path: polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+  @identifier-path: polygon(0% 50%, 15px 0%, calc(~'100% - 15px') 0%, 100% 50%, calc(~'100% - 15px') 100%, 15px 100%);
+  
+
   .blocks-binop{
     background-color:rgb(89, 192, 89);
     border-radius: 20px;
     border: 1px solid grey;
     padding: 5px;
+    clip-path: @identifier-path;
+
     .blocks-operator-container{
       
       margin: 0px;
@@ -255,7 +269,7 @@
     background-color: rgb(255, 140, 26);
     border-radius: 5px;
 		padding: 1rem;
-		clip-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+		clip-path: @insert-output-path;
   }
 
   .blocks-func {
@@ -263,7 +277,7 @@
     border-radius: 8px;
     border-bottom-left-radius: 0px;
 
-		clip-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+		clip-path: @start-finish-path;
 		padding: 1rem 0;
   }
   .blocks-func-body {
@@ -295,7 +309,7 @@
     border-radius: 8px;
     border-bottom-left-radius: 0px;
 
-		clip-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+		clip-path: @start-finish-path;
 		padding: 1rem 0;
 	}
 
@@ -303,7 +317,7 @@
     background-color: @checkTest-background;
     border-radius: 5px;
 		padding: 1rem;
-		clip-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
+		clip-path: @insert-output-path;
   }
 
 	.blocks-funapp{
