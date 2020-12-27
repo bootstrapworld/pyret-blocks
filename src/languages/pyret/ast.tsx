@@ -39,11 +39,18 @@ export class Binop extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
+        {/* <span className="blocks-operator">
+          {this.op.reactElement()}
+        </span> */}
+        <span className="blocks-bin-left">
+        {this.left.reactElement()}
+        </span>
         <span className="blocks-operator">
           {this.op.reactElement()}
         </span>
-        {this.left.reactElement()}
-        {this.right.reactElement()}
+        <span className="blocks-bin-right">
+          {this.right.reactElement()}
+        </span>
       </Node>
     );
   }
