@@ -88,6 +88,7 @@
     padding: 1px 5px;
     // border: @border-width solid grey;
     // border-radius: 2px;
+    filter: drop-shadow(2px 2px 2px #000000);
     text-align: center;
     color: white;
     > .blocks-white-space:not(.blocks-editing) {
@@ -171,6 +172,7 @@
     color: black;
     // margin: 2px;
     // border: @border-width solid transparent;
+    filter: drop-shadow(2px 2px 2px #000000);
     border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
@@ -253,12 +255,23 @@
   // @insert-output-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
   // @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px 10%, @w-scale*36px 10%, @w-scale*48px 0%, 100% 0%, 100% 90%, @w-scale*48px 90%, @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px 90%, 0% 90%);
   @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @only-output-path: polygon(0% 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   // @start-finish-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
   @start-finish-path: polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   // @identifier-path: polygon(0% 50%, 15px 0%, calc(~'100% - 15px') 0%, 100% 50%, calc(~'100% - 15px') 100%, 15px 100%);
 	
-	@sidebar-width: 1.4rem;
-  @sidebar-path: polygon(0% 4%, @sidebar-width 4%, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
+  @sidebar-width: 1.4rem;
+  @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
+  // @sidebar-path: polygon(0% 4%, @sidebar-width 4%, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
+
+  // .blocks-node[aria-selected^="true"] {
+  //   clip-path: none;
+  // }
+
+    
+  #blocks-style-footer {
+   //clip-path: polygon(0% 0%, 0% calc(100% - @height-setoff/2), 100% calc(100% - @height-setoff/2), 100% 0%);
+  }
 
 
   .blocks-binop{
@@ -310,7 +323,7 @@
     display: inline-block;
     padding-top: 10px;
     margin-top: -10px;
-    background-color: @body-color;
+    // background-color: @body-color;
     .blocks-func-left {
       width: 100px;
       background-color: @func-background;
@@ -322,7 +335,7 @@
   }
   .blocks-func-footer {
     background-color: @func-background;
-		border-radius: 0px 8px 8px 0px;
+    border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
   }
@@ -376,11 +389,15 @@
     border-radius: 8px;
     border-bottom-left-radius: 0px;
     clip-path: @start-finish-path;
-
+    
 		padding: 1rem;
 		text-align: left;
-		display: block;
-	}
+    display: block;
+  }
+  
+  .blocks-cond-table{
+    // background-color: @body-color;
+  }
 
 	.blocks-if-footer, 
 	.blocks-else{
@@ -388,11 +405,17 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
-	}
+  }
+
+  // .blocks-if-footer {
+  //   clip-path: @only-output-path;
+  // }
 
   .blocks-if-Expression,
 	.blocks-if-else-Expression{
 		border-left: @sidebar-width solid @checkTest-background;
-		clip-path: @sidebar-path;
-	}
+    clip-path: @sidebar-path;
+    background-color: transparent;
+  }
+
 }

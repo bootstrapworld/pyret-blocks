@@ -159,7 +159,7 @@ export class Func extends AST.ASTNode {
             {body}
           </span>
         </span>
-        <span className="blocks-func-footer">
+        <span className="blocks-func-footer" id="blocks-style-footer">
           end
         </span>
       </Node>
@@ -624,7 +624,7 @@ export class Check extends AST.ASTNode {
             {body}
           </span>
         </span>
-        <span className="blocks-check-footer">
+        <span className="blocks-check-footer" id="blocks-style-footer">
           end
         </span>
       </Node>
@@ -1248,7 +1248,7 @@ export class IfExpression extends AST.ASTNode {
         <div className="blocks-cond-table">
           {branches}
         </div>
-        <span className="blocks-if-footer">
+        <span className="blocks-if-footer" id="blocks-style-footer">
           end
         </span>
       </Node>
@@ -1311,7 +1311,7 @@ export class IfElseExpression extends AST.ASTNode {
 					{NEWLINE}
           {(this.else_branch as any).reactElement()}
         </div>
-        <span className="blocks-if-footer">
+        <span className="blocks-if-footer" id="blocks-style-footer">
           end
         </span>
       </Node>
