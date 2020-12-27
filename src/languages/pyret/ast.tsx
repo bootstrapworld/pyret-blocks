@@ -39,11 +39,17 @@ export class Binop extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-operator">
-          {this.op.reactElement()}
+        <span className="blocks-operator-container">
+          <span className="blocks-operator-input">
+            {this.left.reactElement()}  
+          </span>
+          <span className="blocks-operator-text">
+            {this.op.reactElement()}
+          </span>
+          <span className="locks-operator-input">
+            {this.right.reactElement()}
+          </span>
         </span>
-        {this.left.reactElement()}
-        {this.right.reactElement()}
       </Node>
     );
   }
@@ -147,7 +153,15 @@ export class Func extends AST.ASTNode {
         <span className="blocks-func">
           fun&nbsp;{name}({args}){header_ending}:
         </span>
-        {body}
+        <span className="blocks-func-body">
+          <span className="blocks-func-left" ></span>
+          <span className="blocks-func-right">
+            {body}
+          </span>
+        </span>
+        <span className="blocks-func-footer">
+          end
+        </span>
       </Node>
     );
   }
