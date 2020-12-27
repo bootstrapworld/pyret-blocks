@@ -46,7 +46,7 @@ export class Binop extends AST.ASTNode {
           <span className="blocks-operator-text">
             {this.op.reactElement()}
           </span>
-          <span className="locks-operator-input">
+          <span className="blocks-operator-input">
             {this.right.reactElement()}
           </span>
         </span>

@@ -1,3 +1,8 @@
+.CodeMirror,
+#cmb-editor {
+  background: #EBECF0;
+}
+
 .blocks-language-pyret {
   // Import the default style, using the parameters set below.
   // Yes, the parameters below here really get passed into the style file imported above them.
@@ -6,7 +11,7 @@
 
   // Set border parameters for default-style.less:
   @border-radius: 5px;
-  @border-width: 2px;
+  @border-width: 3px;
   // Color parameters:
   @comment-color: #ddd;
   @comment-background-color: #444;
@@ -61,7 +66,8 @@
     justify-content: center;
     font-weight: bold;
     padding: 1px 5px;
-    border: none;
+    // border: @border-width solid grey;
+    // border-radius: 2px;
     text-align: center;
     color: white;
     > .blocks-white-space:not(.blocks-editing) {
@@ -88,6 +94,7 @@
   }
 
   .blocks-literal {
+    font-size: 16px;
     .blocks-literal-number {
       color: @literal-number-color;
     }
@@ -143,7 +150,8 @@
     align-items: stretch;
     color: black;
     margin: 2px;
-    background: #eee;
+    border: @border-width solid grey;
+    border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
     transition: all 0.5s;
@@ -260,6 +268,7 @@
   }
   .blocks-func-body {
     display: inline-block;
+    background-color: #EEE;
     .blocks-func-left {
       width: 100px;
       background-color: @func-background;
