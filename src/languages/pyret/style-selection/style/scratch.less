@@ -256,6 +256,9 @@
   // @start-finish-path: polygon(0% 30%, 16% 10%, 28% 0%, 36% 0%, 48% 10%, 64% 30%, 100% 30%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
   @start-finish-path: polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% 90%, @w-scale*48px 90%, @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px 90%, 0% 90%);
   // @identifier-path: polygon(0% 50%, 15px 0%, calc(~'100% - 15px') 0%, 100% 50%, calc(~'100% - 15px') 100%, 15px 100%);
+	
+	@sidebar-width: 1.4rem;
+  @sidebar-path: polygon(0% 4%, @sidebar-width 4%, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
 
 
   .blocks-binop{
@@ -319,8 +322,7 @@
   }
   .blocks-func-footer {
     background-color: @func-background;
-    border-radius: 8px;
-    border-top-left-radius: 0px;
+		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
   }
@@ -353,11 +355,45 @@
 		background-color: @func-background;
 	}
 
+	.blocks-funDef{
+		border-left: @sidebar-width solid @func-background;
+		clip-path: @sidebar-path;
+	}
+
   .blocks-check-footer {
     background-color: @check-background;
-    border-radius: 8px;
-    border-top-left-radius: 0px;
+		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
   }
+
+  .blocks-s-check {
+		border-left: @sidebar-width solid @check-background;
+		clip-path: @sidebar-path;
+	}
+
+	.blocks-if{
+		background-color: @checkTest-background;
+    border-radius: 8px;
+    border-bottom-left-radius: 0px;
+    clip-path: @start-finish-path;
+
+		padding: 1rem;
+		text-align: left;
+		display: block;
+	}
+
+	.blocks-if-footer, 
+	.blocks-else{
+    background-color: @checkTest-background;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+	}
+
+  .blocks-if-Expression,
+	.blocks-if-else-Expression{
+		border-left: @sidebar-width solid @checkTest-background;
+		clip-path: @sidebar-path;
+	}
 }

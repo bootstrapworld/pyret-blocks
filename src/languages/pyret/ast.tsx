@@ -1248,6 +1248,9 @@ export class IfExpression extends AST.ASTNode {
         <div className="blocks-cond-table">
           {branches}
         </div>
+        <span className="blocks-if-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -1300,9 +1303,17 @@ export class IfElseExpression extends AST.ASTNode {
         <div className="blocks-cond-table">
           {branches}
           {NEWLINE}
-          else:{NEWLINE}
+				</div>
+				<span className="blocks-else">
+					else:
+				</span>
+				<div className="blocks-cond-table">
+					{NEWLINE}
           {(this.else_branch as any).reactElement()}
         </div>
+        <span className="blocks-if-footer">
+          end
+        </span>
       </Node>
     );
   }
