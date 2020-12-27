@@ -42,8 +42,9 @@
   @literal-symbol-color: steelblue;
   
   .blocks-contract {
+    background-color: black;
     border-radius: 0px;
-    opacity: 0.5;
+    // opacity: 0.5;
   }
 
   .blocks-node[aria-expanded="false"] { 
@@ -271,7 +272,8 @@
    //clip-path: polygon(0% 0%, 0% calc(100% - @height-setoff/2), 100% calc(100% - @height-setoff/2), 100% 0%);
   }
 
-
+  // ---------------------------------------------------------------------------------------------------------
+  /*   Binary Operations   */
   .blocks-binop{
     background-color:rgb(89, 192, 89);
     border-radius: 20px;
@@ -297,7 +299,10 @@
       font-weight: bolder;
     }
   }
-
+  /*  xx Binary Operations xx  */
+  // ---------------------------------------------------------------------------------------------------------
+  /* Identifiers 
+    ex. x = 1 */
   .blocks-let {
     background-color: rgb(255, 140, 26);
     border-radius: 5px;
@@ -305,7 +310,8 @@
     // border: 2px solid black;
 		clip-path: @insert-output-path;
   }
-
+  // ---------------------------------------------------------------------------------------------------------
+  // Functions
   .blocks-func {
     background-color: @func-background;
     border-radius: 8px;
@@ -338,11 +344,28 @@
     color: white;
   }
 
+	.blocks-funapp{
+    border-radius: 5px;
+		background-color: @func-background;
+	}
+
+	.blocks-funDef{
+		border-left: @sidebar-width solid @func-background;
+		clip-path: @sidebar-path;
+  }
+  
+  // Lambda - Anonmynous Functions
   .blocks-lambda {
     background-color: @lam-background;
   }
+  // ---------------------------------------------------------------------------------------------------------
+  .blocks-bind {
+    background-color: red;
+  }
 
-	.blocks-check {
+  // ---------------------------------------------------------------------------------------------------------
+  /*   Check Blocks   */
+  .blocks-check {
     background-color: @check-background;
 		border-radius: 0px 8px 8px 0px;
 
@@ -360,16 +383,6 @@
 		clip-path: @insert-output-path;
   }
 
-	.blocks-funapp{
-    border-radius: 5px;
-		background-color: @func-background;
-	}
-
-	.blocks-funDef{
-		border-left: @sidebar-width solid @func-background;
-		clip-path: @sidebar-path;
-	}
-
   .blocks-check-footer {
     background-color: @check-background;
 		border-radius: 0px 8px 8px 0px;
@@ -381,9 +394,10 @@
 		border-left: @sidebar-width solid @check-background;
 		clip-path: @sidebar-path;
   }
-  
+  /* xx Check Blocks xx */
+  // ---------------------------------------------------------------------------------------------------------
   /*   Conditional Expressions   */
-
+  // -------------------------------------------------
   // If and If Else Expressions:
 	.blocks-if{
 		background-color: @checkTest-background;
@@ -418,7 +432,7 @@
     clip-path: @sidebar-path;
     background-color: transparent;
   }
-
+  // -------------------------------------------------
   // When Expression:
   // polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @when-path: polygon(0% @height-setoff*1.5, @w-scale*16px 0.5*@height-setoff, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 0.5*@height-setoff, @w-scale*64px @height-setoff*1.5, 100% @height-setoff*1.5, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
@@ -446,6 +460,6 @@
     clip-path: @when-sidebar-path;
     background-color: transparent;
   }
-
   /* xx Conditional Expressions xx */
+  // ---------------------------------------------------------------------------------------------------------
 }
