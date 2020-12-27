@@ -1444,15 +1444,31 @@ export class When extends AST.ASTNode {
     return (
       <Node node={this} {...props}>
         <div className="blocks-when">
-          when
-          <div className="blocks-cond-predicate">
-            {this.test.reactElement()}
+          <div className="blocks-when-header">
+            <div className="blocks-cond-predicate">
+            when {this.test.reactElement()} :
+            </div>
+            </div>
           </div>
-          <div className="blocks-cond-result">
-            {this.body.reactElement()}
-          </div>
-        </div>
+            <div className="blocks-cond-result">
+              {this.body.reactElement()}
+            </div>
+            <span className="blocks-when-footer" id="blocks-style-footer">
+            end
+            </span>
       </Node>
+
+          //   <Node node={this} {...props}>
+          //   <div className="blocks-when">
+          //     when
+          //     <div className="blocks-cond-predicate">
+          //       {this.test.reactElement()}
+          //     </div>
+          //     <div className="blocks-cond-result">
+          //       {this.body.reactElement()}
+          //     </div>
+          //   </div>
+          // </Node>
     )
   }
 }

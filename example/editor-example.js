@@ -27,6 +27,11 @@ fun f(x):
   y + 8
 end
 
+when x > 1:
+  y = x + 5
+  y
+end
+
 check "test message": 
   3 is 3
   foo-bar-baz() is 12345
