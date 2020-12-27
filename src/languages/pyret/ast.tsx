@@ -288,7 +288,7 @@ export class Block extends AST.ASTNode {
       </span>
       statements.push(span);
     });
-    statements.push(<DropTarget key={this.stmts.length} />);
+		statements.push(<span><DropTarget key={this.stmts.length} /></span>);
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
