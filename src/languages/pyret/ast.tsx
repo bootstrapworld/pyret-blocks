@@ -146,7 +146,7 @@ export class Func extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -164,6 +164,22 @@ export class Func extends AST.ASTNode {
         </span>
       </Node>
     );
+    /*
+    let name = this.name.reactElement();
+    let body = this.body.reactElement();
+    let args = <Args field="args">{this.args}</Args>;
+    let header_ending = <span>
+      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+    </span>;
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-func">
+          fun&nbsp;{name}({args}){header_ending}:
+        </span>
+        {body}
+      </Node>
+    );
+    */
   }
 }
 
@@ -222,7 +238,7 @@ export class Lambda extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -230,6 +246,9 @@ export class Lambda extends AST.ASTNode {
           lam&nbsp;{name}({args}){header_ending}:
         </span>
         {body}
+        <span className="blocks-lambda-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }

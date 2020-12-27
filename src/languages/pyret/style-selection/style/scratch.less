@@ -1,10 +1,10 @@
 .CodeMirror{
   // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane 
-  // background-color: white;
-  background-color:#5fdfff;
-  background-image: linear-gradient(to right, transparent 50%, rgba(255, 255, 255, 0.5) 50%),
-  linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.5) 50%);
-  background-size: 25px 25px;
+  background-color: white;
+  // background-color:#5fdfff;
+  // background-image: linear-gradient(to right, transparent 50%, rgba(255, 255, 255, 0.5) 50%),
+  // linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.5) 50%);
+  // background-size: 25px 25px;
 }
 
 #cmb-editor {
@@ -272,6 +272,7 @@
    //clip-path: polygon(0% 0%, 0% calc(100% - @height-setoff/2), 100% calc(100% - @height-setoff/2), 100% 0%);
   }
 
+
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
   .blocks-binop{
@@ -357,11 +358,28 @@
   // Lambda - Anonmynous Functions
   .blocks-lambda {
     background-color: @lam-background;
+    border-radius: 0px 8px 8px 0px;
+
+		clip-path: @start-finish-path;
+
+		padding: 0.7rem;
+		text-align: left;
+		display: block;
+  }
+
+  .blocks-lambda-footer {
+    background-color: @lam-background;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+  }
+
+  .blocks-lambdaExp {
+    border-left: @sidebar-width solid @lam-background;
+		clip-path: @sidebar-path;
   }
   // ---------------------------------------------------------------------------------------------------------
-  .blocks-bind {
-    background-color: red;
-  }
+
 
   // ---------------------------------------------------------------------------------------------------------
   /*   Check Blocks   */
@@ -462,4 +480,57 @@
   }
   /* xx Conditional Expressions xx */
   // ---------------------------------------------------------------------------------------------------------
+  /*    Constructor    */
+  // Non-fixed-sized Datatypes, ex. Lists, Sets, etc.
+  .blocks-construct {
+    background-color: red;
+  }
+
+  .blocks-constructor {
+    background: white;
+  }
+  /* xx Constructor xx */
+
+  /*       Tuple        */
+  // Tuples - ex. {1; 2; true; "A"}
+  .blocks-tuple{
+    color: red;
+    filter: drop-shadow(2px 2px 2px white);
+  }
+
+  .blocks-s-tuple{
+    background: white;
+
+    .blocks-literal{
+      color: black;
+      filter: drop-shadow(2px 2px 2px white);
+    }
+  }
+
+  //Tuple Get - ex. t = {1; 2; 3}, t.{1} = 2
+  .blocks-tuple-access{
+    color: red;
+    filter: drop-shadow(2px 2px 2px white);
+  }
+
+  .blocks-tuple-get{
+    background: white;
+    .blocks-literal{
+      color: black;
+      filter: drop-shadow(2px 2px 2px white);
+    }
+  }
+  /*   xx  Tuple  xx    */
+  .blocks-bracket{
+    color: red;
+    filter: drop-shadow(2px 2px 2px white);
+  }
+
+  .blocks-s-bracket{
+    background: white;
+    .blocks-literal{
+      color: black;
+      filter: drop-shadow(2px 2px 2px white);
+    }
+  }
 }

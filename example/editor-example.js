@@ -24,7 +24,13 @@ f = lam(x): x + 1 end\nx = 1\na = x + 1\n
 fun f(x): 
   y = x - 10 
   z = x - 10 
-  y + 8
+  y
+end
+
+a = lam(n :: Number) -> Number:
+  y = n + 1
+  z = y * 2
+  z
 end
 
 when x > 1:
@@ -35,6 +41,8 @@ end
 check "test message": 
   3 is 3
   foo-bar-baz() is 12345
+  3 is-not 4
+  5 is=~ 5.000001
 end
 
 if x == 3: 4
