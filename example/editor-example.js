@@ -30,7 +30,12 @@ end
 check "test message": 
   3 is 3
   foo-bar-baz() is 12345
-end`;
+end
+
+if x == 3: 4
+else: 5
+end
+`;
 
 const useBigCode = false;
 const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
