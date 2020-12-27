@@ -328,11 +328,12 @@
     display: block;
 
   }
-  // Dropzone 
+  // Drop/hover functionality: hide drop targets when not dropping or hovering over it
   .blocks-func-body,
+  .blocks-lambda-body,
   .blocks-cond-result,
-  .blocks-lambdaExp,
-  .blocks-check-body {
+  .blocks-check-body,
+  .blocks-cond-table{
     //Prevent default displaying
     .blocks-drop-target,
     .blocks-arguments .blocks-drop-target{
@@ -347,7 +348,8 @@
     //Force it to display on hover over the main element
     :hover {
       .blocks-drop-target{
-        display: block;
+        display: inherit !important;
+        margin: 10px;
       }
     }
 
