@@ -1,5 +1,6 @@
 .CodeMirror{
   // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane 
+  // background-color: white;
   background-color:#5fdfff;
   background-image: linear-gradient(to right, transparent 50%, rgba(255, 255, 255, 0.5) 50%),
   linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.5) 50%);
@@ -261,12 +262,9 @@
   // @identifier-path: polygon(0% 50%, 15px 0%, calc(~'100% - 15px') 0%, 100% 50%, calc(~'100% - 15px') 100%, 15px 100%);
 	
   @sidebar-width: 1.4rem;
-  @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
+  @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
+  // @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, @sidebar-width 0%, 110% 0%, 100% 110%, 0% 110%);
   // @sidebar-path: polygon(0% 4%, @sidebar-width 4%, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
-
-  // .blocks-node[aria-selected^="true"] {
-  //   clip-path: none;
-  // }
 
     
   #blocks-style-footer {
@@ -382,8 +380,9 @@
   .blocks-s-check {
 		border-left: @sidebar-width solid @check-background;
 		clip-path: @sidebar-path;
-	}
-
+  }
+  
+  /*   Conditional Expressions   */
 	.blocks-if{
 		background-color: @checkTest-background;
     border-radius: 8px;
@@ -417,5 +416,5 @@
     clip-path: @sidebar-path;
     background-color: transparent;
   }
-
+  /* xx Conditional Expressions xx */
 }

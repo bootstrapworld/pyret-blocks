@@ -35,6 +35,14 @@ end
 if x == 3: 4
 else: 5
 end
+
+if x > 5:
+  y = x + 1
+  z = y + 1
+  z
+else:
+  x
+end
 `;
 
 const useBigCode = false;
