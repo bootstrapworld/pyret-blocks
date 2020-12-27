@@ -18,8 +18,7 @@ const DELAY = 250;
 
 
 
-// const smallExampleCode = `load-spreadsheet("14er5Mh443Lb5SIFxXZHdAnLCuQZaA8O6qtgGlibQuEg")`;
-const smallExampleCode = `when x > 5: 1 end`;
+const smallExampleCode = `f = lam(x): x + 1 end\nx = 1\na = x + 1\n fun f(x): x - 10 end`;
 
 const useBigCode = false;
 const exampleCode = useBigCode? dsExampleCode : smallExampleCode;

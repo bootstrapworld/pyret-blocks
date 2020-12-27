@@ -39,17 +39,16 @@ export class Binop extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        {/* <span className="blocks-operator">
-          {this.op.reactElement()}
-        </span> */}
-        <span className="blocks-bin-left">
-        {this.left.reactElement()}
-        </span>
-        <span className="blocks-operator">
-          {this.op.reactElement()}
-        </span>
-        <span className="blocks-bin-right">
-          {this.right.reactElement()}
+        <span className="blocks-operator-container">
+          <span className="blocks-operator-input">
+            {this.left.reactElement()}  
+          </span>
+          <span className="blocks-operator-text">
+            {this.op.reactElement()}
+          </span>
+          <span className="locks-operator-input">
+            {this.right.reactElement()}
+          </span>
         </span>
       </Node>
     );
@@ -147,14 +146,22 @@ export class Func extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
         <span className="blocks-func">
           fun&nbsp;{name}({args}){header_ending}:
         </span>
-        {body}
+        <span className="blocks-func-body">
+          <span className="blocks-func-left" ></span>
+          <span className="blocks-func-right">
+            {body}
+          </span>
+        </span>
+        <span className="blocks-func-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -215,7 +222,7 @@ export class Lambda extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -1344,7 +1351,7 @@ export class For extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args>{this.bindings}</Args>;
     let header_ending = <span>
-      {(this.ann != null)? <>&nbsp;->&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.ann != null)? <>&nbsp;-&gt&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>

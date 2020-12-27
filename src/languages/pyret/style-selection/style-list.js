@@ -22,5 +22,10 @@ export const StyleList = [
         displayName: "Inverse (By Rob)",
         themeName: "theme-inverse",
         id: "inverse-block-style"
+    },
+    {
+        displayName: "Scratch",
+        themeName: "theme-scratch",
+        id: "scratch-block-style"
     }
 ];
