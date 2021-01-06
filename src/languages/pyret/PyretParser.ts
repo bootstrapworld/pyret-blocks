@@ -267,7 +267,11 @@ const nodeTypes = {
   },
   // "s-type": function(l: Loc, name: Name, params: Name[], ann: Ann) {},
   // "s-newtype": function(l: Loc, name: Name, namet: Name) {},
-  // "s-var": function(l: Loc, name: Bind, value: Expr) {},
+  "s-var": function(l: Loc, name: Bind, value: Expr) {
+    let options = {};
+    options['aria-label'] = `${name}, a variable definition`;
+    return new Var(l.from, l.to, idToLiteral(name), value, options);
+  },
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
   "s-let": function (pos: Loc, id: Bind, rhs: Expr, _keyword_val: boolean) {
     if(DEBUG) console.log(arguments);

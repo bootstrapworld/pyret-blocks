@@ -21,6 +21,8 @@ const DELAY = 250;
 const smallExampleCode = `
 lam(x): x + 1 end
 
+var all-for-one = "ONE FOR ALL FULL COWLING"
+
 a = ask: 
 | x == 4 then: 43
 | x < 1 then: 1

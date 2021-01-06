@@ -124,6 +124,7 @@
     .blocks-literal-string {
       height: 100px;
       color: @literal-string-color;
+      background-color: white;
     }
     .blocks-literal-char {
       color: @literal-char-color;
@@ -254,6 +255,8 @@
   @lam-background: rgb(207, 99, 207);
 	@check-background: #5C98F7;
   @checkTest-background: #F5BF42;
+  @let-color: rgb(255, 140, 26);
+  @var-color: red;
   @body-color: #EEE;
   // Pathes for the Template
   @w-scale: 1;
@@ -271,8 +274,8 @@
   @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
 
   @body-offset: 3px;
-  @body-left-width: 3px;
-  @body-right-width: 3px;
+  @body-left-width: 4px;
+  @body-right-width: 4px;
   @body-path: @only-output-path;// polygon(-3% -3%, 103% -3%, 103% 103%, -3% 103%);
   // @body-path: polygon(0% 0%, 103% 0%, 103% calc(100% - @height-setoff), calc(100% - @body-right-width) calc(100% - @height-setoff), calc(100% - @body-right-width) 103%, 0% 103%);
   // @body-path: polygon(0% 0%, 103% 0%, 103% calc(100% - (@height-setoff)), calc(100% - @body-border-width) calc(100% - (@height-setoff)), calc(100% - @body-border-width) calc(100% - (@height-setoff - @body-offset)), @w-scale*48px calc(100% - (@height-setoff - @body-offset)), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - (@height-setoff - @body-offset)), 0% calc(100% - (@height-setoff - @body-offset)));
@@ -322,7 +325,16 @@
   /* Identifiers 
     ex. x = 1 */
   .blocks-let {
-    background-color: rgb(255, 140, 26);
+    background-color: @let-color;
+    border-radius: 5px;
+    padding: 1rem;
+    // border: 2px solid black;
+		clip-path: @insert-output-path;
+  }
+  /* Var
+  ex. var x = 1 */
+  .blocks-var {
+    background-color: @var-color;
     border-radius: 5px;
     padding: 1rem;
     // border: 2px solid black;
@@ -383,10 +395,32 @@
 	}
 
 	.blocks-funDef{
-		border-left: @sidebar-width solid @func-background;
+    position: relative;
+    text-align: left;
+    // border-left: @sidebar-width solid @func-background;
 		// clip-path: @sidebar-path;
   }
-  
+
+  .blocks-funDef:after {
+    content: "";
+    background: @func-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-funDef:before {
+    content: "";
+    background: @func-background;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+  // ------------------------------------------------------------------------------------------------------
   // Lambda - Anonmynous Functions
   .blocks-lambda {
     background-color: @lam-background;
@@ -517,9 +551,11 @@
 
   .blocks-if-Expression,
 	.blocks-if-else-Expression{
-		border-left: @sidebar-width solid @checkTest-background;
-    // clip-path: @sidebar-path;
     background-color: transparent;
+    position: relative;
+    text-align: left;
+		// border-left: @sidebar-width solid @checkTest-background;
+    // clip-path: @sidebar-path;
 
     .blocks-cond-table {
       // background: red;
@@ -555,6 +591,28 @@
       }
     }
   }
+
+  .blocks-if-Expression:after,
+	.blocks-if-else-Expression:after {
+    content: "";
+    background: @checkTest-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-if-Expression:before,
+	.blocks-if-else-Expression:before {
+    content: "";
+    background:  @checkTest-background;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
   // -------------------------------------------------
   // When Expression:
   // polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
@@ -580,9 +638,31 @@
   }
 
   .blocks-s-when{
-    border-left: @sidebar-width solid @checkTest-background;
+    // border-left: @sidebar-width solid @checkTest-background;
     // clip-path: @when-sidebar-path;
     background-color: transparent;
+    position: relative;
+    text-align: left;
+  }
+  
+  .blocks-s-when:after {
+    content: "";
+    background: @checkTest-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-s-when:before {
+    content: "";
+    background:  @checkTest-background;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
   }
   /* xx Conditional Expressions xx */
   // ---------------------------------------------------------------------------------------------------------

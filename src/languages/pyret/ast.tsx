@@ -367,9 +367,11 @@ export class Var extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-var">VAR</span>
-        <span className="blocks-args">
+        <span className="blocks-var">
+          VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
+        {/* <span className="blocks-args">
           <Args>{[this.ident, this.rhs]}</Args>
+        </span> */}
         </span>
       </Node>
     );
