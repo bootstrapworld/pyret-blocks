@@ -296,18 +296,18 @@ const nodeTypes = {
     return new When(l.from, l.to, test, block, blocky, {[ariaLabel]: `when statement`});
   },
   // "s-assign": function(l: Loc, id: Name, value: Expr) {},
-  // "s-assign": function(l: Loc, id: Name, value: Expr) {
-  //   if(DEBUG) console.log(arguments);
-  //     let options = {};
-  //     options['aria-label'] = `${id}, a value definition`;
-  //     return new Assign(
-  //       l.from,
-  //       l.to,
-  //       idToLiteral(id),
-  //       rhs,
-  //       options
-  //     );
-  // },
+  "s-assign": function(l: Loc, id: Name, value: Expr) {
+    if(DEBUG) console.log(arguments);
+      let options = {};
+      options['aria-label'] = `${id}, a value definition`;
+      return new Assign(
+        l.from,
+        l.to,
+        id,
+        value,
+        options
+      );
+  },
   's-if-pipe': function(pos: Loc, branches: IfPipeBranch[], blocky: boolean) {
     if (DEBUG) console.log(arguments);
     branches.forEach((element, index) => {

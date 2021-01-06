@@ -20,6 +20,9 @@ const smallExampleCode = `
 lam(x): x + 1 end
 
 var all-for-one = "ONE FOR ALL FULL COWLING"
+all-for-one := 1
+
+fun add(n :: Number) -> List<Number, String>: 1 end
 
 vert = a(b(c(d(e(1)))))
 
