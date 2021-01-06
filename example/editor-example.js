@@ -23,8 +23,14 @@ var all-for-one = "ONE FOR ALL FULL COWLING"
 all-for-one := 1
 
 fun add(n :: Number) -> Number:
-  doc: "Same"
+  doc: "ABCDEFG"
   n
+end
+
+fun add(n :: Number) -> Number:
+  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh"
+  x = n + 1
+  x
 end
 
 vert = a(b(c(d(e(1)))))

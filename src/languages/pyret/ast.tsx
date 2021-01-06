@@ -97,7 +97,8 @@ export class Func extends AST.ASTNode {
   name: AST.ASTNode;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
-  doc: string | null;
+  doc: AST.ASTNode | null;
+  // doc: string | null;
   body: AST.ASTNode;
   block: boolean
 
@@ -131,12 +132,15 @@ export class Func extends AST.ASTNode {
     let header = P.ifFlat(
       P.horz("fun ", this.name, "(", P.sepBy(this.args, ", ", ","), ")", retAnn, header_ending),
       P.vert(P.horz("fun ", this.name, "("),
-             P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":")));
+             P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":"),
+             ));
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
-      P.horz(header, " ", this.body, " end"),
+      // P.horz(header, " ", this.body, " end"),
+      P.horz(header, " ", "doc: \"", this.doc, "\" ", this.body, " end"),
       P.vert(header,
-             P.horz(INDENT, this.body),
+            P.horz(INDENT, "doc: \"", this.doc, "\""),
+            P.horz(INDENT, this.body),
              "end"));
   }
 
@@ -144,14 +148,20 @@ export class Func extends AST.ASTNode {
     // TODO: show doc
     let name = this.name.reactElement();
     let body = this.body.reactElement();
+    // let doc = "doc: " + this.doc;
+    let docDOM = <span>
+      doc: {name} {this.doc}
+    </span>
+    // let doc = this.doc ? "doc: " + this.doc : "";
     let args = <Args field="args">{this.args}</Args>;
 		let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
+    const NEWLINE = <br />;
     return (
       <Node node={this} {...props}>
         <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:
+          fun&nbsp;{name}({args}){header_ending}:{NEWLINE}{docDOM}
         </span>
         <span className="blocks-func-body">
           {body}
@@ -184,6 +194,7 @@ export class Lambda extends AST.ASTNode {
   name: AST.ASTNode | null;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
+  // doc: AST.ASTNode | null;
   doc: string | null;
   body: AST.ASTNode;
   block: boolean
@@ -1639,7 +1650,6 @@ export class AnnotationApp extends AST.ASTNode {
 
   render(props) {
 		// let typeArgument = "<" + String(this.args) + ">";
-    // args.push(<DropTarget key={this.args.length} />);
     return <Node node={this} {...props}>
       <span className="blocks-a-app">{this.ann.reactElement()}
 		{"<"} <Args field="args">{this.args}</Args> {">"}

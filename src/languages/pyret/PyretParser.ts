@@ -249,6 +249,7 @@ const nodeTypes = {
       'block');
   },
   // "s-user-block": function(l: Loc, body: Expr) {},
+  // doc: string
   "s-fun": function (pos: Loc, name: string, _params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, _check_loc: Loc | null, _check: Expr | null, block: boolean) {
     // TODO: ignoring params, check, blocky
     let fun_from = {line: pos.from.line, ch: pos.from.ch + 4};
@@ -265,6 +266,8 @@ const nodeTypes = {
       body,
       block,
       {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
+
+            // new Nodes.Literal(fun_from, fun_to, name, 'functiosn'),
   },
   // "s-type": function(l: Loc, name: Name, params: Name[], ann: Ann) {},
   // "s-newtype": function(l: Loc, name: Name, namet: Name) {},
