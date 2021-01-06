@@ -1508,7 +1508,12 @@ export class For extends AST.ASTNode {
         <span className="blocks-for">
           for&nbsp;{name}({args}){header_ending}:
         </span>
+        <span className="blocks-for-body">
         {body}
+        </span>
+        <span className="blocks-for-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }

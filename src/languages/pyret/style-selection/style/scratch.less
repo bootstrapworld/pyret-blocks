@@ -260,6 +260,7 @@
   @checkTest-background: #F5BF42;
   @let-color: rgb(255, 140, 26);
   @var-color: red;
+  @for-color: green;
   @body-color: #EEE;
   // Pathes for the Template
   @w-scale: 1;
@@ -347,6 +348,10 @@
     // border: 2px solid black;
 		clip-path: @insert-output-path;
   }
+
+  .blocks-contract {
+    background-color: red;
+  }
   // ---------------------------------------------------------------------------------------------------------
   // Functions
   .blocks-func {
@@ -366,6 +371,7 @@
   .blocks-lambda-body,
   .blocks-cond-result,
   .blocks-check-body,
+  .blocks-for-body,
   .blocks-cond-table{
     //Prevent default displaying
     .blocks-drop-target,
@@ -763,4 +769,59 @@
     }
   }
   /*   xx Bracket xx   */
+  .blocks-for {
+    background-color: @for-color;
+    border-bottom-left-radius: 0px;
+
+    // clip-path: @start-finish-path;
+    clip-path:  @insert-output-path;
+		padding: 1rem;
+		text-align: left;
+    display: block;
+  }
+  //---------------------------------------------------------------
+  // For
+  .blocks-s-for {
+    position: relative;
+    text-align: left;
+  }
+  
+  .blocks-s-for:after {
+    content: "";
+    background: @for-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-s-for:before {
+    content: "";
+    background:  @for-color;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-for-footer {
+    background: @for-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @insert-output-path;
+  }
+
+  .blocks-for-bind {
+    background: white;
+    color:blue;
+  }
+
+  .blocks-s-for-bind {
+
+  }
+
+
 }
