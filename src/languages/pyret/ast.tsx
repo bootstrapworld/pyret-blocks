@@ -880,6 +880,25 @@ export class IfPipe extends AST.ASTNode {
           {branches}
         </div>
       </Node>
+          //   <Node node={this} {...props}>
+          //   <span className="blocks-ask">
+          //        ask:
+          //   </span>
+          //   <div className="blocks-cond-table">
+          //     {branches}
+          //     {NEWLINE}
+          //   </div>
+          //   <span className="blocks-else">
+          //     otherwise:
+          //   </span>
+          //   <div className="blocks-cond-table">
+          //     {NEWLINE}
+          //     {(this.else_branch as any).reactElement()}
+          //   </div>
+          //   <span className="blocks-ask-footer" id="blocks-style-footer">
+          //     end
+          //   </span>
+          // </Node>
     );
   }
 }

@@ -137,6 +137,9 @@
     .blocks-lambdaExpression {
       border-radius: @large-border-radius @large-border-radius 0px 0px;
     }
+    // .blocks-literal-s-id {
+    //   background: white;
+    // }
   }
 
   // ast nodes (in constructors)
@@ -266,12 +269,19 @@
 	
   @sidebar-width: 1.4rem;
   @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
+
+  @body-offset: 3px;
+  @body-left-width: 3px;
+  @body-right-width: 3px;
+  @body-path: @only-output-path;// polygon(-3% -3%, 103% -3%, 103% 103%, -3% 103%);
+  // @body-path: polygon(0% 0%, 103% 0%, 103% calc(100% - @height-setoff), calc(100% - @body-right-width) calc(100% - @height-setoff), calc(100% - @body-right-width) 103%, 0% 103%);
+  // @body-path: polygon(0% 0%, 103% 0%, 103% calc(100% - (@height-setoff)), calc(100% - @body-border-width) calc(100% - (@height-setoff)), calc(100% - @body-border-width) calc(100% - (@height-setoff - @body-offset)), @w-scale*48px calc(100% - (@height-setoff - @body-offset)), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - (@height-setoff - @body-offset)), 0% calc(100% - (@height-setoff - @body-offset)));
   // @sidebar-path: polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, @sidebar-width 0%, 110% 0%, 100% 110%, 0% 110%);
   // @sidebar-path: polygon(0% 4%, @sidebar-width 4%, @sidebar-width 0%, 100% 0%, 100% 100%, 0% 100%);
 
-    
+
   #blocks-style-footer {
-    clip-path: @only-input-path;
+    // clip-path: @only-input-path;
    //clip-path: polygon(0% 0%, 0% calc(100% - @height-setoff/2), 100% calc(100% - @height-setoff/2), 100% 0%);
   }
 
@@ -322,11 +332,11 @@
   // Functions
   .blocks-func {
     background-color: @func-background;
-    border-radius: 8px;
+    // border-radius: 8px;
     border-bottom-left-radius: 0px;
 
-    clip-path: @start-finish-path;
-
+    // clip-path: @start-finish-path;
+    clip-path:  @insert-output-path;
 		padding: 1rem;
 		text-align: left;
     display: block;
@@ -364,6 +374,7 @@
     border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
+    clip-path: @insert-output-path;
   }
 
 	.blocks-funapp{
@@ -373,16 +384,16 @@
 
 	.blocks-funDef{
 		border-left: @sidebar-width solid @func-background;
-		clip-path: @sidebar-path;
+		// clip-path: @sidebar-path;
   }
   
   // Lambda - Anonmynous Functions
   .blocks-lambda {
     background-color: @lam-background;
-    border-radius: 0px 8px 8px 0px;
+    // border-radius: 0px 8px 8px 0px;
+    // clip-path: @start-finish-path;
 
-		clip-path: @start-finish-path;
-
+    clip-path:  @insert-output-path;
 		padding: 0.7rem;
 		text-align: left;
 		display: block;
@@ -390,17 +401,48 @@
 
   .blocks-lambda-footer {
     background-color: @lam-background;
-		border-radius: 0px 8px 8px 0px;
+    clip-path: @insert-output-path;
+		// border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
   }
 
-  .blocks-lambdaExp {
-    border-left: @sidebar-width solid @lam-background;
-		clip-path: @sidebar-path;
-		float: left;
-		text-align: left;
+  .blocks-lambda-body {
+    // clip-path: @body-path;
   }
+
+  .blocks-lambdaExp {
+    position: relative;
+    text-align: left;
+
+    // clip-path: @sidebar-path;
+    // clip-path: @insert-output-path;
+    // clip-path: @body-path;
+  }
+  
+  
+  /* Main div for border to extend to 50% from bottom left corner */
+  
+  .blocks-lambdaExp:after {
+    content: "";
+    background: @lam-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-lambdaExp:before {
+    content: "";
+    background: @lam-background;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
   // ---------------------------------------------------------------------------------------------------------
 
 
@@ -429,6 +471,7 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
+    clip-path: @only-input-path;
   }
 
   .blocks-s-check {
@@ -442,9 +485,10 @@
   // If and If Else Expressions:
 	.blocks-if{
 		background-color: @checkTest-background;
-    border-radius: 8px;
+    // border-radius: 8px;
     border-bottom-left-radius: 0px;
-    clip-path: @start-finish-path;
+    clip-path: @insert-output-path;
+    // clip-path: @start-finish-path;
     
 		padding: 1rem;
 		text-align: left;
@@ -461,7 +505,8 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
-    clip-path: @only-input-path;
+    clip-path: @insert-output-path;
+    // clip-path: @only-input-path;
   }
 
 
@@ -473,7 +518,7 @@
   .blocks-if-Expression,
 	.blocks-if-else-Expression{
 		border-left: @sidebar-width solid @checkTest-background;
-    clip-path: @sidebar-path;
+    // clip-path: @sidebar-path;
     background-color: transparent;
 
     .blocks-cond-table {
@@ -499,10 +544,14 @@
 
       .blocks-cond-row {
         // display: flex !important;
-  
+      
         .blocks-cond-result{
           
         }
+      }
+
+      .blocks-if-footer{
+        clip-path: @insert-output-path;
       }
     }
   }
@@ -513,8 +562,8 @@
   @when-sidebar-path: polygon(0% 1.5*@height-setoff, @sidebar-width 1.5*@height-setoff, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
   .blocks-when{
     background-color: @checkTest-background;
-    // clip-path: @insert-output-path;
-    clip-path: @when-path;
+    clip-path: @insert-output-path;
+   //  clip-path: @when-path;
   }
 
   .blocks-when-header {
@@ -527,11 +576,12 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
+    clip-path: @insert-output-path;
   }
 
   .blocks-s-when{
     border-left: @sidebar-width solid @checkTest-background;
-    clip-path: @when-sidebar-path;
+    // clip-path: @when-sidebar-path;
     background-color: transparent;
   }
   /* xx Conditional Expressions xx */
@@ -550,7 +600,7 @@
   /*       Tuple        */
   // Tuples - ex. {1; 2; true; "A"}
   .blocks-tuple{
-    color: red;
+    color: #e75480;
     filter: drop-shadow(2px 2px 2px white);
   }
 
@@ -565,7 +615,7 @@
 
   //Tuple Get - ex. t = {1; 2; 3}, t.{1} = 2
   .blocks-tuple-access{
-    color: red;
+    color: #e75480;
     filter: drop-shadow(2px 2px 2px white);
   }
 
