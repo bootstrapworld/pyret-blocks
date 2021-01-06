@@ -144,14 +144,16 @@ export class Func extends AST.ASTNode {
     // TODO: show doc
     let name = this.name.reactElement();
     let body = this.body.reactElement();
+    let doc = this.doc ? "doc: " + this.doc : "";
     let args = <Args field="args">{this.args}</Args>;
 		let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
+    const NEWLINE = <br />;
     return (
       <Node node={this} {...props}>
         <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:
+          fun&nbsp;{name}({args}){header_ending}:{NEWLINE}{doc}
         </span>
         <span className="blocks-func-body">
           {body}
@@ -1639,7 +1641,6 @@ export class AnnotationApp extends AST.ASTNode {
 
   render(props) {
 		// let typeArgument = "<" + String(this.args) + ">";
-    args.push(<DropTarget key={this.args.length} />);
     return <Node node={this} {...props}>
       <span className="blocks-a-app">{this.ann.reactElement()}
 		{"<"} <Args field="args">{this.args}</Args> {">"}
