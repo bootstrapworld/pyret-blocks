@@ -307,7 +307,8 @@ const nodeTypes = {
     if (DEBUG) console.log(arguments);
 		branches.forEach((element, index) => {
 			(element as any).options["aria-label"] = `branch ${index + 1}`;
-		});
+    });
+
     return new IfPipeElseExpression(l.from, l.to, branches, _otherwise, blocky, {'aria-label': 'ask-otherwise expression'});
 	},
   "s-if": function(l: Loc, branches: IfBranch[], blocky: boolean) {

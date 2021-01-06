@@ -880,6 +880,25 @@ export class IfPipe extends AST.ASTNode {
           {branches}
         </div>
       </Node>
+          //   <Node node={this} {...props}>
+          //   <span className="blocks-ask">
+          //        ask:
+          //   </span>
+          //   <div className="blocks-cond-table">
+          //     {branches}
+          //     {NEWLINE}
+          //   </div>
+          //   <span className="blocks-else">
+          //     otherwise:
+          //   </span>
+          //   <div className="blocks-cond-table">
+          //     {NEWLINE}
+          //     {(this.else_branch as any).reactElement()}
+          //   </div>
+          //   <span className="blocks-ask-footer" id="blocks-style-footer">
+          //     end
+          //   </span>
+          // </Node>
     );
   }
 }
@@ -926,12 +945,40 @@ export class IfPipeBranch extends AST.ASTNode {
   }
 }
 
+const prettyAsks = function(branches: IfBranch[], _else: AST.ASTNode | undefined, blocky: boolean): P.Doc {
+  // TODO what do do if empty branches?
+  let length = branches.length;
+  if (length == 0) {
+    throw new Error("if constructed with no branches—this should not have parsed(?)");
+  }
+  else if (length == 1) {
+    let prefix = ifPrefix(branches[0]);
+    if (_else != undefined) {
+      return P.vert(prefix, ifElse(_else), "end");
+    }
+    else {
+      return P.vert(P.concat("ask: ", branches[0].pretty()), "end");
+    }
+  }
+  else {
+    let prefix = ifPrefix(branches[0]);
+    let suffix = "end";
+    let pretty_branches = branches.slice(1, length).map(b => P.concat("else if ", b.pretty()));
+    if (_else != undefined) {
+      return P.vert(prefix, ...pretty_branches, ifElse(_else), suffix);
+    }
+    else {
+      return P.vert(prefix, ...pretty_branches, suffix);
+    }
+  }
+};
 export class IfPipeElseExpression extends AST.ASTNode {
-  branches: IfBranch[];
-	otherwise_branch: IfBranch;
+
+  branches: IfPipeBranch[];
+	otherwise_branch: IfPipeBranch;
   blocky: boolean;
   constructor(from, to, branches, otherwise_branch, blocky, options) {
-    super(from, to, 'if-pipe-else-Expression', options);
+    super(from, to, 'ifPipeElseExpression', options);
     this.branches = branches;
     this.otherwise_branch = otherwise_branch;
     this.blocky = blocky;
@@ -944,11 +991,20 @@ export class IfPipeElseExpression extends AST.ASTNode {
   ])
 
   longDescription(level) {
-    return `${enumerateList([this.branches, this.otherwise_branch], level)} in an if expression`;
+    return `${enumerateList([this.branches, this.otherwise_branch], level)} in an ask expression with otherwise`;
   }
 
   pretty() {
-    return prettyIfs(this.branches, this.otherwise_branch, this.blocky);
+    let prefix = "ask:";
+    let suffix = "end";
+    // let mainlength = this.branches.length;
+    let branches = P.sepBy(this.branches, "", "");
+    let otherwise_branch = "| otherwise: "+this.otherwise_branch;
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", otherwise_branch+" "+suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
+
   }
 
   render(props) {
@@ -967,7 +1023,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
 
     return (
       <Node node={this} {...props}>
-        <span className="blocks-if">
+        <span className="blocks-ask">
           Ask:
         </span>
         <div className="blocks-cond-table">
@@ -981,7 +1037,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
 					{NEWLINE}
           {(this.otherwise_branch as any).reactElement()}
         </div>
-        <span className="blocks-if-footer" id="blocks-style-footer">
+        <span className="blocks-ask-footer" id="blocks-style-footer">
           end
         </span>
       </Node>

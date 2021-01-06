@@ -23,9 +23,12 @@ const DELAY = 250;
 
 
 const smallExampleCode = `
+lam(x): x + 1 end
 
-### Make a histogram showing distribution of nonwhite
-### students across public high-school 
+a = ask: 
+| x == 4 then: 43
+| x < 1 then: 1
+end
 
 provide *
 provide-types *
@@ -35,9 +38,12 @@ include reactors
 
 a = ask: 
 | x == 4 then: 43
+| otherwise: 1
 end
 
 f = lam(x): x + 1 end\nx = 1\na = x + 1\n 
+
+ask: | x == 3 then: 3| x == 5 then: 5 end
 
 fun f(x): 
   y = x - 10 
@@ -45,10 +51,24 @@ fun f(x):
   y
 end
 
+reactor:
+  seconds-per-tick: 0.1,
+  title: "Count by 10",
+  on-tick: tencrement,
+  init: 10,
+end
+
 a = lam(n :: Number) -> Number:
   y = n + 1
   z = y * 2
   z
+end
+
+fun add(n :: Number) -> Number:
+  fun sub(num :: Number) -> Number:
+    num - 1
+  end
+  n + 1
 end
 
 when x > 1:
