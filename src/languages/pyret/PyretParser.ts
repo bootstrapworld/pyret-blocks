@@ -296,12 +296,12 @@ const nodeTypes = {
     return new When(l.from, l.to, test, block, blocky, {[ariaLabel]: `when statement`});
   },
   // "s-assign": function(l: Loc, id: Name, value: Expr) {},
-  's-if-pipe': function(pos: Loc, branches: IfPipeBranch[], blocky: boolean) {
+  's-if-pipe': function(l: Loc, branches: IfPipeBranch[], blocky: boolean) {
     if (DEBUG) console.log(arguments);
     branches.forEach((element, index) => {
       (element as any).options["aria-label"] = `branch ${index + 1}`;
     });
-    return new IfPipe(pos.from, pos.to, branches, blocky, {'aria-label': 'ask expression'});
+    return new IfPipe(l.from, l.to, branches, blocky, {'aria-label': 'ask expression'});
   },
 	"s-if-pipe-else": function(l: Loc, branches: IfPipeBranch[], _otherwise: Expr, blocky: boolean) {
     if (DEBUG) console.log(arguments);
