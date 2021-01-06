@@ -1639,7 +1639,7 @@ export class AnnotationApp extends AST.ASTNode {
 
   render(props) {
 		// let typeArgument = "<" + String(this.args) + ">";
-    args.push(<DropTarget key={this.args.length} />);
+    // args.push(<DropTarget key={this.args.length} />);
     return <Node node={this} {...props}>
       <span className="blocks-a-app">{this.ann.reactElement()}
 		{"<"} <Args field="args">{this.args}</Args> {">"}

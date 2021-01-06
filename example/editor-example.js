@@ -22,7 +22,10 @@ lam(x): x + 1 end
 var all-for-one = "ONE FOR ALL FULL COWLING"
 all-for-one := 1
 
-fun add(n :: Number) -> List<Number, String>: 1 end
+fun add(n :: Number) -> Number:
+  doc: "Same"
+  n
+end
 
 vert = a(b(c(d(e(1)))))
 
