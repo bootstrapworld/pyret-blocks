@@ -182,7 +182,7 @@ const nodeTypes = {
   // "p-data": function(pos: Loc, d: Name, mod: ImportType | null) {},
 
   // data Provide
-  // "s-provide": function(pos: Loc, block: ASTNode) {},
+	// "s-provide": function(pos: Loc, block: ASTNode) { },
   // "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
   // "s-provide-all": function(pos: Loc) {},
   "s-provide-none": function(_pos: Loc) { return null; },
@@ -216,7 +216,7 @@ const nodeTypes = {
 
   // data LetBind
   // "s-let-bind": function(l: Loc, b: Bind, value: Expr) {},
-  // "s-var-bind": function(l: Loc, b: Bind, value: Expr) {},
+	// "s-var-bind": function(l: Loc, b: Bind, value: Expr) {},
 
   // data LetrecBind
   // "s-letrec-bind": function(l: Loc, b: Bind, value: Expr) {},

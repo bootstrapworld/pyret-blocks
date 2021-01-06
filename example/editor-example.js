@@ -16,8 +16,6 @@ import {
 
 const DELAY = 250;
 
-
-
 const smallExampleCode = `
 lam(x): x + 1 end
 
