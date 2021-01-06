@@ -195,7 +195,6 @@
     user-select: none;
   }
 
-  .blocks-ifPipeExpression,
   .blocks-if-else-Expression,
   .blocks-if-Expression {
     border-radius: 0px;
@@ -581,9 +580,8 @@
 
       display: flex;
       flex-direction: column;
+			align-items: flex-start;
       white-space: pre-line;
-
-      align-items: left;
       
       .blocks-cond-predicate{
 
@@ -595,14 +593,6 @@
 
         clip-path: @insert-output-path;
         float: none !important;
-      }
-
-      .blocks-cond-row {
-        // display: flex !important;
-      
-        .blocks-cond-result{
-          
-        }
       }
 
       .blocks-if-footer{

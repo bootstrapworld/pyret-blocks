@@ -832,7 +832,7 @@ export class Paren extends AST.ASTNode {
 }
 
 export class IfPipe extends AST.ASTNode {
-  branches: AST.ASTNode[];
+	branches: IfPipeBranch[];
   blocky: boolean;
   constructor(from, to, branches, blocky, options) {
     super(from, to, 'ifPipeExpression', options);
@@ -866,7 +866,7 @@ export class IfPipe extends AST.ASTNode {
       let span = <span key={index}>
         <DropTarget />
         {NEWLINE}
-        {element.reactElement()}
+        {(element as any).reactElement()}
         {NEWLINE}
       </span>;
       branches.push(span);
@@ -916,16 +916,16 @@ export class IfPipeBranch extends AST.ASTNode {
   }
 
   render(props) {
+    const NEWLINE = <br />
     return (
-      <Node node={this} {...props}>
-        <div className="blocks-cond-row">
-          <div className="blocks-cond-predicate">
-            {this.test.reactElement()}
-          </div>
-          <div className="blocks-cond-result">
-            {this.body.reactElement()}
-          </div>
-        </div>
+			<Node node={this} {...props}>
+				<div className="blocks-cond-predicate">
+					{this.test.reactElement()}
+				</div>
+				{NEWLINE}
+				<div className="blocks-cond-result">
+					{this.body.reactElement()}
+				</div>
       </Node>
     )
   }
@@ -1021,7 +1021,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
 				</span>
 				<div className="blocks-cond-table">
 					{NEWLINE}
-          {(this.otherwise_branch as any).reactElement()}
+					{(this.otherwise_branch as any).reactElement()}
         </div>
         <span className="blocks-ask-footer" id="blocks-style-footer">
           end
@@ -1647,7 +1647,6 @@ export class AnnotationApp extends AST.ASTNode {
         )}
         {">"}
       </span>
-      
     </Node>
   }
 }

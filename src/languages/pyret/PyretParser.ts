@@ -254,6 +254,7 @@ const nodeTypes = {
     let fun_from = {line: pos.from.line, ch: pos.from.ch + 4};
     let fun_to = {line: pos.from.line, ch: fun_from.ch + name.length};
     if(DEBUG) console.log(arguments);
+
     return new Func(
       pos.from,
       pos.to,
@@ -308,12 +309,13 @@ const nodeTypes = {
         options
       );
   },
-  's-if-pipe': function(pos: Loc, branches: IfPipeBranch[], blocky: boolean) {
+  's-if-pipe': function(l: Loc, branches: IfPipeBranch[], blocky: boolean) {
+>>>>>>> 5980746379aafabd895c1651fcf3acac0c688255
     if (DEBUG) console.log(arguments);
     branches.forEach((element, index) => {
       (element as any).options["aria-label"] = `branch ${index + 1}`;
     });
-    return new IfPipe(pos.from, pos.to, branches, blocky, {'aria-label': 'ask expression'});
+    return new IfPipe(l.from, l.to, branches, blocky, {'aria-label': 'ask expression'});
   },
 	"s-if-pipe-else": function(l: Loc, branches: IfPipeBranch[], _otherwise: Expr, blocky: boolean) {
     if (DEBUG) console.log(arguments);
