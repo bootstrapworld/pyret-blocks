@@ -19,6 +19,14 @@ const DELAY = 250;
 
 
 const smallExampleCode = `
+
+### Make a histogram showing distribution of nonwhite
+### students across public high-school 
+
+a = ask: 
+| x == 4 then: 43
+end
+
 f = lam(x): x + 1 end\nx = 1\na = x + 1\n 
 
 fun f(x): 

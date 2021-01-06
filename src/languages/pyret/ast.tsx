@@ -926,6 +926,69 @@ export class IfPipeBranch extends AST.ASTNode {
   }
 }
 
+export class IfPipeElseExpression extends AST.ASTNode {
+  branches: IfBranch[];
+	otherwise_branch: IfBranch;
+  blocky: boolean;
+  constructor(from, to, branches, otherwise_branch, blocky, options) {
+    super(from, to, 'if-pipe-else-Expression', options);
+    this.branches = branches;
+    this.otherwise_branch = otherwise_branch;
+    this.blocky = blocky;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.list('branches'),
+    Spec.required('otherwise_branch'),
+    Spec.value('blocky'),
+  ])
+
+  longDescription(level) {
+    return `${enumerateList([this.branches, this.otherwise_branch], level)} in an if expression`;
+  }
+
+  pretty() {
+    return prettyIfs(this.branches, this.otherwise_branch, this.blocky);
+  }
+
+  render(props) {
+    const NEWLINE = <br />
+    let branches = [];
+    this.branches.forEach((element, index) => {
+      let span = <span key={index}>
+        <DropTarget />
+        {NEWLINE}
+        {(element as any).reactElement()}
+        {NEWLINE}
+      </span>;
+      branches.push(span);
+    });
+    branches.push(<DropTarget key={this.branches.length} />);
+
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-if">
+          Ask:
+        </span>
+        <div className="blocks-cond-table">
+          {branches}
+          {NEWLINE}
+				</div>
+				<span className="blocks-else">
+					otherwise:
+				</span>
+				<div className="blocks-cond-table">
+					{NEWLINE}
+          {(this.otherwise_branch as any).reactElement()}
+        </div>
+        <span className="blocks-if-footer" id="blocks-style-footer">
+          end
+        </span>
+      </Node>
+    );
+  }
+}
+
 export class ArrowArgnames extends AST.ASTNode {
   args: AST.ASTNode[];
   ret: AST.ASTNode; // TODO: is ret ever empty?
