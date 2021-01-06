@@ -1021,9 +1021,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
 				</span>
 				<div className="blocks-cond-table">
 					{NEWLINE}
-					<center>
-						{(this.otherwise_branch as any).reactElement()}
-					</center>
+					{(this.otherwise_branch as any).reactElement()}
         </div>
         <span className="blocks-ask-footer" id="blocks-style-footer">
           end
@@ -1510,7 +1508,12 @@ export class For extends AST.ASTNode {
         <span className="blocks-for">
           for&nbsp;{name}({args}){header_ending}:
         </span>
+        <span className="blocks-for-body">
         {body}
+        </span>
+        <span className="blocks-for-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -1636,7 +1639,7 @@ export class AnnotationApp extends AST.ASTNode {
 
   render(props) {
     return <Node node={this} {...props}>
-      <span className="blocks-a-app">{this.ann.reactElement()} :: </span>
+			<span className="blocks-a-app">{this.ann.reactElement()} :: </span>
     </Node>
   }
 }

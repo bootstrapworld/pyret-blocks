@@ -254,6 +254,7 @@ const nodeTypes = {
     let fun_from = {line: pos.from.line, ch: pos.from.ch + 4};
     let fun_to = {line: pos.from.line, ch: fun_from.ch + name.length};
     if(DEBUG) console.log(arguments);
+
     return new Func(
       pos.from,
       pos.to,
@@ -295,7 +296,18 @@ const nodeTypes = {
     if (DEBUG) console.log(arguments);
     return new When(l.from, l.to, test, block, blocky, {[ariaLabel]: `when statement`});
   },
-  // "s-assign": function(l: Loc, id: Name, value: Expr) {},
+  // "s-assign": function(l: Loc, id: Name, value: Expr) {
+  //   if(DEBUG) console.log(arguments);
+  //     let options = {};
+  //     options['aria-label'] = `${id}, a value definition`;
+  //     return new Assign(
+  //       l.from,
+  //       l.to,
+  //       idToLiteral(id),
+  //       rhs,
+  //       options
+  //     );
+  // },
   's-if-pipe': function(l: Loc, branches: IfPipeBranch[], blocky: boolean) {
     if (DEBUG) console.log(arguments);
     branches.forEach((element, index) => {

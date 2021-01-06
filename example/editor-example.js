@@ -21,6 +21,16 @@ lam(x): x + 1 end
 
 var all-for-one = "ONE FOR ALL FULL COWLING"
 
+vert = a(b(c(d(e(1)))))
+
+fun cull(beings :: List<Being>) -> List<Being>:
+  for filter(b from beings):
+    p = b.posn
+    (p.x > 0) and (p.x < WIDTH) and
+    (p.y > 0) and (p.y < HEIGHT)
+  end
+end
+
 a = ask: 
 | x == 4 then: 43
 | x < 1 then: 1
