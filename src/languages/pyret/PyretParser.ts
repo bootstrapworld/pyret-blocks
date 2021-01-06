@@ -310,7 +310,6 @@ const nodeTypes = {
       );
   },
   's-if-pipe': function(l: Loc, branches: IfPipeBranch[], blocky: boolean) {
->>>>>>> 5980746379aafabd895c1651fcf3acac0c688255
     if (DEBUG) console.log(arguments);
     branches.forEach((element, index) => {
       (element as any).options["aria-label"] = `branch ${index + 1}`;
