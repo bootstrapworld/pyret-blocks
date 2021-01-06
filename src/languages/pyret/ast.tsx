@@ -881,26 +881,10 @@ export class IfPipe extends AST.ASTNode {
         <div className="blocks-cond-table">
           {branches}
         </div>
+        <span className="blocks-ask-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
-          //   <Node node={this} {...props}>
-          //   <span className="blocks-ask">
-          //        ask:
-          //   </span>
-          //   <div className="blocks-cond-table">
-          //     {branches}
-          //     {NEWLINE}
-          //   </div>
-          //   <span className="blocks-else">
-          //     otherwise:
-          //   </span>
-          //   <div className="blocks-cond-table">
-          //     {NEWLINE}
-          //     {(this.else_branch as any).reactElement()}
-          //   </div>
-          //   <span className="blocks-ask-footer" id="blocks-style-footer">
-          //     end
-          //   </span>
-          // </Node>
     );
   }
 }
@@ -1026,13 +1010,13 @@ export class IfPipeElseExpression extends AST.ASTNode {
     return (
       <Node node={this} {...props}>
         <span className="blocks-ask">
-          Ask:
+          ask:
         </span>
         <div className="blocks-cond-table">
           {branches}
           {NEWLINE}
 				</div>
-				<span className="blocks-else">
+				<span className="blocks-otherwise">
 					otherwise:
 				</span>
 				<div className="blocks-cond-table">

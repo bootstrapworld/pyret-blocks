@@ -1,6 +1,7 @@
 .CodeMirror{
   // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane 
   background-color: white;
+
   // background-color:#5fdfff;
   // background-image: linear-gradient(to right, transparent 50%, rgba(255, 255, 255, 0.5) 50%),
   // linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.5) 50%);
@@ -90,7 +91,7 @@
     padding: 1px 5px;
     // border: @border-width solid grey;
     // border-radius: 2px;
-    filter: drop-shadow(2px 2px 2px #000000);
+    // filter: drop-shadow(2px 2px 2px #000000);
     text-align: center;
     color: white;
     > .blocks-white-space:not(.blocks-editing) {
@@ -107,7 +108,7 @@
       border: dotted 2px darkgray;
     }
     > .blocks-node {
-      box-shadow: 0px 0px 10px 1px white;
+      // box-shadow: 0px 0px 10px 1px white;
     }
     >.blocks-literal, .blocks-identifierList {
       box-shadow: none;
@@ -159,6 +160,7 @@
   .blocks-funApp,
   .blocks-funDef,
   .blocks-ifPipeExpression,
+  .blocks-ifPipeElseExpression,
   .blocks-if-Expression,
   .blocks-if-else-Expression,
   .blocks-s-include,
@@ -178,7 +180,8 @@
     color: black;
     // margin: 2px;
     // border: @border-width solid transparent;
-    filter: drop-shadow(2px 2px 2px #000000);
+    filter: drop-shadow(1px 1px 1px #000000);
+    
     border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
@@ -286,6 +289,10 @@
   #blocks-style-footer {
     // clip-path: @only-input-path;
    //clip-path: polygon(0% 0%, 0% calc(100% - @height-setoff/2), 100% calc(100% - @height-setoff/2), 100% 0%);
+  }
+
+  .react-container {
+    // filter: drop-shadow(2px 2px 2px #000000);
   }
 
   // .blocks-drop-target:focus{
@@ -550,7 +557,9 @@
   // }
 
   .blocks-if-Expression,
-	.blocks-if-else-Expression{
+  .blocks-if-else-Expression,
+  .blocks-ifPipeExpression,
+  .blocks-ifPipeElseExpression{
     background-color: transparent;
     position: relative;
     text-align: left;
@@ -593,7 +602,9 @@
   }
 
   .blocks-if-Expression:after,
-	.blocks-if-else-Expression:after {
+  .blocks-if-else-Expression:after,
+  .blocks-ifPipeExpression:after,
+  .blocks-ifPipeElseExpression:after{
     content: "";
     background: @checkTest-background;
     position: absolute;
@@ -604,7 +615,9 @@
   }
 
   .blocks-if-Expression:before,
-	.blocks-if-else-Expression:before {
+  .blocks-if-else-Expression:before,
+  .blocks-ifPipeExpression:before,
+  .blocks-ifPipeElseExpression:before {
     content: "";
     background:  @checkTest-background;
     position: absolute;
@@ -612,6 +625,35 @@
     right: 0;
     height: calc(100% - @height-setoff);
     width: @body-left-width;
+  }
+  // -------------------------------------------------
+  // Ask Expression:
+  // Ask without Otherwise:
+  //.blocks-ifPipeExpression and .blocks-ifPipeElseExpression referenced above ^ already
+  .blocks-ask {
+    background-color: @checkTest-background;
+    // border-radius: 8px;
+    border-bottom-left-radius: 0px;
+    clip-path: @insert-output-path;
+    // clip-path: @start-finish-path;
+    
+		padding: 1rem;
+		text-align: left;
+    display: block;
+  }
+
+  .blocks-ifPipeExpression {
+    background: transparent;
+  }
+
+  .blocks-ask-footer,
+  .blocks-otherwise {
+    background-color: @checkTest-background;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @insert-output-path;
+    text-align: left;
   }
   // -------------------------------------------------
   // When Expression:
