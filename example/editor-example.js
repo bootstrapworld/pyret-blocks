@@ -16,12 +16,22 @@ import {
 
 const DELAY = 250;
 
+// b = ask: 
+// | x == 4 then: 43
+// | otherwise: 5
+// end
 
 
 const smallExampleCode = `
 
 ### Make a histogram showing distribution of nonwhite
 ### students across public high-school 
+
+provide *
+provide-types *
+include image
+include reactors
+
 
 a = ask: 
 | x == 4 then: 43
