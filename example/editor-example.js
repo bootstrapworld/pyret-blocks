@@ -16,12 +16,6 @@ import {
 
 const DELAY = 250;
 
-// b = ask: 
-// | x == 4 then: 43
-// | otherwise: 5
-// end
-
-
 const smallExampleCode = `
 lam(x): x + 1 end
 
@@ -29,12 +23,6 @@ a = ask:
 | x == 4 then: 43
 | x < 1 then: 1
 end
-
-provide *
-provide-types *
-include image
-include reactors
-
 
 a = ask: 
 | x == 4 then: 43
