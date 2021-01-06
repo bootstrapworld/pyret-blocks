@@ -40,6 +40,7 @@ import {Binop,
   When,
   IfExpression,
   IfElseExpression,
+  IfPipeElseExpression,
   AnnotationApp,
 } from "./ast";
 
@@ -298,7 +299,14 @@ const nodeTypes = {
     });
     return new IfPipe(pos.from, pos.to, branches, blocky, {'aria-label': 'ask expression'});
   },
-  // "s-if-pipe-else": function(l: Loc, branches: IfPipeBranch[], _else: Expr, blocky: boolean) {},
+	"s-if-pipe-else": function(l: Loc, branches: IfPipeBranch[], _otherwise: Expr, blocky: boolean) {
+    if (DEBUG) console.log(arguments);
+		branches.forEach((element, index) => {
+			(element as any).options["aria-label"] = `branch ${index + 1}`;
+    });
+
+    return new IfPipeElseExpression(l.from, l.to, branches, _otherwise, blocky, {'aria-label': 'ask-otherwise expression'});
+	},
   "s-if": function(l: Loc, branches: IfBranch[], blocky: boolean) {
     return new IfExpression(l.from, l.to, branches, blocky, {[ariaLabel]: `if expression with ${branches.length} branches}`});
   },
