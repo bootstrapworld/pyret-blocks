@@ -41,6 +41,7 @@
   @literal-char-color: orange;
   @literal-boolean-color: darkred;
   @literal-symbol-color: steelblue;
+	@if-block-min-width: 180px;
   
   .blocks-contract {
     background-color: black;
@@ -197,7 +198,7 @@
 
   .blocks-if-else-Expression,
   .blocks-if-Expression {
-		min-width: 10%;
+		min-width: @if-block-min-width;
     border-radius: 0px;
     background: white;
     > .blocks-if {
@@ -217,7 +218,9 @@
         display: table-row-group;
         padding: 3px;
         text-align: center;
-        min-width: 200px;
+				> .blocks-cond-predicate{
+					min-width: @if-block-min-width;
+				}
         &:focus {
           outline: @editing-border-color @border-width solid;
         }
