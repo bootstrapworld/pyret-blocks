@@ -601,19 +601,33 @@
     }
   }
 
-  .blocks-if-Expression:after,
-  .blocks-if-else-Expression:after,
-  .blocks-ifPipeExpression:after,
-  .blocks-ifPipeElseExpression:after{
-    content: "";
-    background: @checkTest-background;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: calc(100% - @height-setoff);
-    width: @body-left-width;
-  }
+  // .blocks-if-Expression:after,
+  // .blocks-if-else-Expression:after,
+  // .blocks-ifPipeExpression:after,
+  // .blocks-ifPipeElseExpression:after{
+  //   content: "";
+  //   background: @checkTest-background;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-left-width;
+  // }
 
+  // .blocks-if-Expression:before,
+  // .blocks-if-else-Expression:before,
+  // .blocks-ifPipeExpression:before,
+  // .blocks-ifPipeElseExpression:before {
+  //   content: "";
+  //   background:  @checkTest-background;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-right-width;
+  // }
+
+  
   .blocks-if-Expression:before,
   .blocks-if-else-Expression:before,
   .blocks-ifPipeExpression:before,
@@ -622,7 +636,7 @@
     background:  @checkTest-background;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     height: calc(100% - @height-setoff);
     width: @body-left-width;
   }
