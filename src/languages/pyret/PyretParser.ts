@@ -256,18 +256,22 @@ const nodeTypes = {
     let fun_to = {line: pos.from.line, ch: fun_from.ch + name.length};
     if(DEBUG) console.log(arguments);
 
+    let doc_from = {line: pos.from.line + 1, ch: pos.from.ch};
+    let doc_to = {line: pos.from.line + 1, ch: doc_from.ch + 1};
+		// new Nodes.Literal(fun_from, fun_to, name, 'function'),
+		// new Nodes.Literal(doc_from, doc_to, doc, 'string'),
+		// new Nodes.Literal(doc_from, doc_to, "\"" + doc + "\"", 'string', {'aria-label': `${doc}, a docstring`}),
+		// new Nodes.Literal(doc_from, doc_to, doc, 'string', {'aria-label': `${doc}, a docstring`}),
     return new Func(
       pos.from,
       pos.to,
-      new Nodes.Literal(fun_from, fun_to, name, 'function'),
+			new Nodes.Literal(fun_from, fun_to, name, 'function'),
       args.map(a => idToLiteral(a)),
       ann,
-      doc,
+      new Nodes.Literal(doc_from, doc_to, doc, 'operator'),
       body,
       block,
       {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
-
-            // new Nodes.Literal(fun_from, fun_to, name, 'functiosn'),
   },
   // "s-type": function(l: Loc, name: Name, params: Name[], ann: Ann) {},
   // "s-newtype": function(l: Loc, name: Name, namet: Name) {},

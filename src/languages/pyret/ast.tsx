@@ -116,7 +116,7 @@ export class Func extends AST.ASTNode {
     Spec.required('name'),
     Spec.list('args'),
     Spec.optional('retAnn'),
-    Spec.value('doc'),
+    Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block'),
   ])
@@ -148,11 +148,11 @@ export class Func extends AST.ASTNode {
     // TODO: show doc
     let name = this.name.reactElement();
     let body = this.body.reactElement();
-    // let doc = "doc: " + this.doc;
-    let docDOM = <span>
-      doc: {name} {this.doc}
-    </span>
-    // let doc = this.doc ? "doc: " + this.doc : "";
+		let doc = this.doc.reactElement();
+    // let docDOM = <span>
+    //   doc: {name} {this.doc}
+    // </span>
+		let docHeading = this.doc ? "doc: " : "";
     let args = <Args field="args">{this.args}</Args>;
 		let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
@@ -161,7 +161,7 @@ export class Func extends AST.ASTNode {
     return (
       <Node node={this} {...props}>
         <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:{NEWLINE}{docDOM}
+          fun&nbsp;{name}({args}){header_ending}:{NEWLINE}{docHeading}{doc}
         </span>
         <span className="blocks-func-body">
           {body}
