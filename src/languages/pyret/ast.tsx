@@ -159,9 +159,9 @@ export class Func extends AST.ASTNode {
     const NEWLINE = <br />;
     return (
       <Node node={this} {...props}>
-        <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:{NEWLINE}doc: {doc}
-        </span>
+				<span className="blocks-func">
+					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}doc: {doc} 
+				</span>
         <span className="blocks-func-body">
           {body}
         </span>
@@ -313,16 +313,19 @@ export class Block extends AST.ASTNode {
 export class Let extends AST.ASTNode {
   ident: AST.ASTNode; // really Bind
   rhs: AST.ASTNode;
+	bgcClassName: string;
 
-  constructor(from, to, id, rhs, options = {}) {
+  constructor(from, to, id, rhs, bgcClassName, options = {}) {
     super(from, to, 's-let', options);
     this.ident = id;
     this.rhs = rhs;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('ident'),
     Spec.required('rhs'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -336,11 +339,11 @@ export class Let extends AST.ASTNode {
              P.horz(INDENT, this.rhs)));
   }
 
-  render(props) {
-    let identifier = this.ident.reactElement();
-    return (
-      <Node node={this} {...props}>
-        <span className="blocks-let">
+	render(props) {
+		let identifier = this.ident.reactElement();
+		return (
+			<Node node={this} {...props}>
+				<span className={`blocks-let ${this.bgcClassName}`}>
           {identifier} &nbsp;=&nbsp; {this.rhs.reactElement()}
         </span>
       </Node>

@@ -17,6 +17,14 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
+
+a-num = 3
+a-string = "three"
+a-boolean = true
+a-binop = 1 + 3
+a-constructor = [list: 1, 2, 3]
+var a-mutable = 3
+
 lam(x): x + 1 end
 
 if (x): 

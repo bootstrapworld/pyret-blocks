@@ -1,3 +1,5 @@
+@import "./theme.less";
+
 .CodeMirror{
   // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane 
   background-color: white;
@@ -35,15 +37,15 @@
   @drag-replace-background-color: red;
 
   // Settings for _this_ file:
-  @large-border-radius: 15px;
-  @literal-number-color: blue;
-  @literal-string-color: green;
-  @literal-char-color: orange;
-  @literal-boolean-color: darkred;
-  @literal-symbol-color: steelblue;
-	@if-block-min-width: 180px;
-  
-  .blocks-contract {
+
+	@literal-number-color: blue;
+	@literal-string-color: green;
+	@literal-char-color: orange;
+	@literal-boolean-color: darkred;
+	@literal-symbol-color: steelblue;
+	@large-border-radius: 15px;
+
+	.blocks-contract {
     background-color: black;
     border-radius: 0px;
     // opacity: 0.5;
@@ -256,18 +258,31 @@
 
   .blocks-condClause .blocks-cond-result { float: none !important; }
 
+
+	/* Color palette */
+	/* @util-color: #FFB366; */
+	/* @mutable-color: #FF6961; */
+	/* @number-color: #735843; */
+	/* @string-color: #77dd77; */
+	/* @boolean-color: #B378D3; */
+	/* @binop-color: #464646; */
+	/* @constructor-color: #8080FF; */
+	/* @untyped-color: #FFD0FF; */
+	@if-block-min-width: 180px;
+
   //Colors directly taken from scratch.mit.edu
-  @func-background: rgb(255, 102, 128);
+  @func-background: @constructor-color;
   @lam-background: rgb(207, 99, 207);
-	@check-background: #5C98F7;
-  @checkTest-background: #F5BF42;
+  @check-background: @util-color;
+  @checkTest-background: @util-color;
   @let-color: rgb(255, 140, 26);
-  @var-color: red;
+  @var-color: @mutable-color;
   @for-color: green;
   @body-color: #EEE;
   // Pathes for the Template
   @w-scale: 1;
   @height-setoff: 8px;
+
   // @insert-output-path: polygon(0% 0%, 12% 0%, 24% 10%, 36% 10%, 48% 0%, 100% 0%, 100% 90%, 48% 90%, 36% 100%, 24% 100%, 12% 90%, 0% 90%);
   // @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px 10%, @w-scale*36px 10%, @w-scale*48px 0%, 100% 0%, 100% 90%, @w-scale*48px 90%, @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px 90%, 0% 90%);
   @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
@@ -307,7 +322,7 @@
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
   .blocks-binop{
-    background-color:rgb(89, 192, 89);
+    background-color: @binop-color;
     border-radius: 20px;
     border: 1px solid grey;
     padding: 5px;
@@ -336,7 +351,7 @@
   /* Identifiers 
     ex. x = 1 */
   .blocks-let {
-    background-color: @let-color;
+    /* background-color: @let-color; */
     border-radius: 5px;
     padding: 1rem;
     // border: 2px solid black;
@@ -345,7 +360,8 @@
   /* Var
   ex. var x = 1 */
   .blocks-var {
-    background-color: @var-color;
+		background-color: @var-color;
+		border: 2px solid @var-color;
     border-radius: 5px;
     padding: 1rem;
     // border: 2px solid black;
@@ -610,7 +626,7 @@
   .blocks-ifPipeExpression:after,
   .blocks-ifPipeElseExpression:after{
     content: "";
-    background: @checkTest-background;
+    background: @untyped-color;
     position: absolute;
     top: 0;
     left: 0;
@@ -623,7 +639,7 @@
   .blocks-ifPipeExpression:before,
   .blocks-ifPipeElseExpression:before {
     content: "";
-    background:  @checkTest-background;
+    background: @untyped-color;
     position: absolute;
     top: 0;
     right: 0;
@@ -635,7 +651,7 @@
   // Ask without Otherwise:
   //.blocks-ifPipeExpression and .blocks-ifPipeElseExpression referenced above ^ already
   .blocks-ask {
-    background-color: @checkTest-background;
+    background-color: @untyped-color;
     // border-radius: 8px;
     border-bottom-left-radius: 0px;
     clip-path: @insert-output-path;
@@ -652,7 +668,7 @@
 
   .blocks-ask-footer,
   .blocks-otherwise {
-    background-color: @checkTest-background;
+    background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
@@ -715,7 +731,7 @@
   /*    Constructor    */
   // Non-fixed-sized Datatypes, ex. Lists, Sets, etc.
   .blocks-construct {
-    background-color: red;
+    background-color: @constructor-color;
   }
 
   .blocks-constructor {

@@ -72,6 +72,36 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
   };
 }
 
+function getBackgroundColor(id: Bind, rhs: Expr) {
+	let dataType = String(id);
+	let fixedSizeDataTypes = ["number", "string", "var", "boolean"];
+	let nonFixedSizeDataTypes = {
+		"a-method": "untyped", 
+		"a-constructor": "constructor", 
+		"a-binop": "binop"
+	}
+	if (fixedSizeDataTypes.includes(rhs.dataType)){
+		console.log(`%c id: ${id}`, "background-color: green");
+		return rhs.dataType;
+	}
+	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
+		return nonFixedSizeDataTypes[id];
+		//   console.log(`%c rhs: ${JSON.stringify(rhs)}`, "background-color: red");
+		//   console.log(JSON.stringify(rhs, null, 2));
+	}
+	else if (rhs.dataType === undefined){
+		// console.log(`%c color rhs.type: ${rhs.dataType}`, "background-color: blue");
+		// console.log(`%c id: ${id}`, "background-color: blue");
+		return "untyped";
+	}
+	else{
+		// console.log(`%c color rhs.type: ${JSON.stringify(id)}`, "background-color: blue");
+		// console.log(`%c color rhs.type: ${JSON.stringify(rhs)}`, "background-color: blue");
+		// console.log(`%c color rhs.type: ${rhs.dataType}`, "background-color: red");
+		return "";
+	}
+}
+
 const checkOP = 'check-op';
 
 const ariaLabel = "aria-label";
@@ -286,11 +316,14 @@ const nodeTypes = {
     if(DEBUG) console.log(arguments);
     let options = {};
     options['aria-label'] = `${id}, a value definition`;
+		let bgcClassName = getBackgroundColor(id, rhs);
+
     return new Let(
       pos.from,
       pos.to,
       idToLiteral(id),
       rhs,
+			bgcClassName,
       options
     );
   },
