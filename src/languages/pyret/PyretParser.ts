@@ -256,8 +256,9 @@ const nodeTypes = {
     let fun_to = {line: pos.from.line, ch: fun_from.ch + name.length};
     if(DEBUG) console.log(arguments);
 
-    let doc_from = {line: pos.from.line + 1, ch: pos.from.ch};
-    let doc_to = {line: pos.from.line + 1, ch: doc_from.ch + 1};
+		let docText = doc ? doc : "";
+    let doc_from = {line: pos.from.line, ch: pos.from.ch};
+    let doc_to = {line: pos.from.line, ch: doc_from.ch + 1};
 		// new Nodes.Literal(fun_from, fun_to, name, 'function'),
 		// new Nodes.Literal(doc_from, doc_to, doc, 'string'),
 		// new Nodes.Literal(doc_from, doc_to, "\"" + doc + "\"", 'string', {'aria-label': `${doc}, a docstring`}),
@@ -268,7 +269,7 @@ const nodeTypes = {
 			new Nodes.Literal(fun_from, fun_to, name, 'function'),
       args.map(a => idToLiteral(a)),
       ann,
-      new Nodes.Literal(doc_from, doc_to, doc, 'operator'),
+      new Nodes.Literal(doc_from, doc_to, docText, 'operator'),
       body,
       block,
       {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
