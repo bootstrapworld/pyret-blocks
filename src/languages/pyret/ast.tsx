@@ -342,11 +342,13 @@ export class Let extends AST.ASTNode {
 	render(props) {
 		let identifier = this.ident.reactElement();
 		return (
-			<Node node={this} {...props}>
-				<span className={`blocks-let ${this.bgcClassName}`}>
-          {identifier} &nbsp;=&nbsp; {this.rhs.reactElement()}
-        </span>
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className={"blocks-let"}>
+						{identifier} &nbsp;=&nbsp; {this.rhs.reactElement()}
+					</span>
+				</Node>
+			</span>
     );
   }
 }
@@ -354,16 +356,19 @@ export class Let extends AST.ASTNode {
 export class Var extends AST.ASTNode {
   ident: Nodes.Literal;
   rhs: AST.ASTNode;
+	bgcClassName: string;
 
-  constructor(from, to, id, rhs, options = {}) {
+  constructor(from, to, id, rhs, bgcClassName, options = {}) {
     super(from, to, 's-var', options);
     this.ident = id;
     this.rhs = rhs;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('ident'),
     Spec.required('rhs'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -380,7 +385,7 @@ export class Var extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-var">
+				<span className={`blocks-var ${this.bgcClassName}`}>
           VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
         {/* <span className="blocks-args">
           <Args>{[this.ident, this.rhs]}</Args>

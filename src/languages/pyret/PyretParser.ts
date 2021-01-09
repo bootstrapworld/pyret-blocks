@@ -302,7 +302,8 @@ const nodeTypes = {
   "s-var": function(l: Loc, name: Bind, value: Expr) {
     let options = {};
     options['aria-label'] = `${name}, a variable definition`;
-    return new Var(l.from, l.to, idToLiteral(name), value, options);
+		let bgcClassName = getBackgroundColor(name, value);
+    return new Var(l.from, l.to, idToLiteral(name), value, bgcClassName, options);
   },
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
   "s-let": function (pos: Loc, id: Bind, rhs: Expr, _keyword_val: boolean) {

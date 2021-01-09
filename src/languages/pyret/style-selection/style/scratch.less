@@ -401,22 +401,22 @@
   }
 
   .blocks-s-let:after{
-    content: "";
-    background: @let-color;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: calc(100% - @height-setoff);
-    width: @body-left-width;
+		content: "";
+		/* background: @let-color; */
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
   }
   /* Var
   ex. var x = 1 */
   .blocks-var {
-		background-color: @var-color;
-		border: 2px solid @var-color;
+		/* background-color: @var-color; */
+		/* border: 2px solid @var-color; */
     /* border-radius: 5px; */
-    padding: 1rem;
-    // border: 2px solid black;
+    /* padding: 1rem; */
+		border: 1rem solid @var-color;
 		clip-path: @insert-output-path;
   }
 
@@ -839,6 +839,7 @@
 
   .blocks-constructor {
     background: white;
+		padding-left: 0;
   }
   /* xx Constructor xx */
 

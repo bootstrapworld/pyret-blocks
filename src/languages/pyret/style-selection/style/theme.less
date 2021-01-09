@@ -8,13 +8,45 @@
 @constructor-color: #8080FF;
 @untyped-color: #FFD0FF;
 
-.util{ background-color: @util-color; }
-.mutable{ background-color: @mutable-color; }
-.number{ background-color: @number-color; }
-.string{ background-color: @string-color; }
-.boolean{ background-color: @boolean-color; }
-.binop{ background-color: @binop-color; }
-.constructor{ background-color: @constructor-color; }
-.untyped{ background-color: @untyped-color; }
+.util{ 
+	.blocks-let, .blocks-s-let:after{
+		background-color: @util-color; 
+	}
+}
+.mutable{ 
+	.blocks-var, .blocks-s-var:after{
+		background-color: @mutable-color; 
+	}
+}
+.number{ 
+	.blocks-let, .blocks-s-let:after{
+		background-color: @number-color; 
+	}
+}
+.string{ 
+	.blocks-let, .blocks-s-let:after{
+		background-color: @string-color; 
+	}
+}
+.boolean{ 
+	.blocks-let, .blocks-s-let:after{
+		background-color: @boolean-color; 
+	}
+}
+.binop{ 
+	.blocks-let, .blocks-s-let:after{
+		background-color: @binop-color; 
+	}
+}
+.constructor{ 
+	.blocks-let, .blocks-s-let:after{
+		background: @constructor-color; 
+	}
+}
+.untyped{ 
+	.blocks-let, .blocks-s-let:after{
+		background-color: @untyped-color; 
+	}
+}
 
 
