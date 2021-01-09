@@ -27,10 +27,20 @@ var a-mutable = 3
 
 lam(x): x + 1 end
 
-if (x): 
-3
-else: 
-5 
+lam(x):
+  lam(y):
+    z = y + x
+    a = z / 2
+    a + z
+  end
+end
+
+if (x):
+  y = x + 1
+  3
+else:
+  z = x + 1
+  5
 end
 
 var all-for-one = "ONE FOR ALL FULL COWLING"
@@ -111,6 +121,16 @@ end
 
 if x == 3: 4
 else: 5
+end
+
+ask:
+| x == 3 then:
+y = x + 1
+y
+| x == 1 then:
+z = x + 2
+z
+| otherwise: x
 end
 
 if x > 5:

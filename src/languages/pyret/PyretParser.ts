@@ -85,19 +85,12 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 		return rhs.dataType;
 	}
 	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
-		return nonFixedSizeDataTypes[id];
-		//   console.log(`%c rhs: ${JSON.stringify(rhs)}`, "background-color: red");
-		//   console.log(JSON.stringify(rhs, null, 2));
+		return nonFixedSizeDataTypes[dataType];
 	}
 	else if (rhs.dataType === undefined){
-		// console.log(`%c color rhs.type: ${rhs.dataType}`, "background-color: blue");
-		// console.log(`%c id: ${id}`, "background-color: blue");
 		return "untyped";
 	}
 	else{
-		// console.log(`%c color rhs.type: ${JSON.stringify(id)}`, "background-color: blue");
-		// console.log(`%c color rhs.type: ${JSON.stringify(rhs)}`, "background-color: blue");
-		// console.log(`%c color rhs.type: ${rhs.dataType}`, "background-color: red");
 		return "";
 	}
 }
