@@ -76,7 +76,6 @@ export class Bind extends AST.ASTNode {
 
   pretty() {
     let ident = this.ident.pretty();
-    console.log(ident);
     if (this.ann === null) {
       return ident;
     } else {
@@ -385,14 +384,16 @@ export class Var extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-				<span className={`blocks-var ${this.bgcClassName}`}>
-          VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
-        {/* <span className="blocks-args">
-          <Args>{[this.ident, this.rhs]}</Args>
-        </span> */}
-        </span>
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className={"blocks-var"}>
+						VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
+					{/* <span className="blocks-args">
+						<Args>{[this.ident, this.rhs]}</Args>
+					</span> */}
+					</span>
+				</Node>
+			</span>
     );
   }
 }

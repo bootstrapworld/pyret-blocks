@@ -77,15 +77,18 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // Function used to assign the color type of each block in Block Pyret
 function getBackgroundColor(id: Bind, rhs: Expr) {
 	let dataType = String(id);
-	let fixedSizeDataTypes = ["number", "string", "var", "boolean"];
+	let fixedSizeDataTypes = ["number", "string", "boolean"];
 	let nonFixedSizeDataTypes = {
 		"a-method": "untyped", 
-		"a-constructor": "constructor", 
-		"a-binop": "binop"
+		"a-binop": "binop", 
 	}
+	// console.log(`%c ${id}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
-		// console.log(`%c id: ${id}`, "background-color: green");
 		return rhs.dataType;
+	}
+	else if (rhs.type === "constructor"){
+		return "constructor";
 	}
 	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
 		return nonFixedSizeDataTypes[dataType];
