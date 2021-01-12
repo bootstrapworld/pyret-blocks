@@ -72,6 +72,9 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
   };
 }
 
+// ----------------------------------------------------------------------
+// getBackgroundColor():: Bind, Expr -> VOID
+// Function used to assign the color type of each block in Block Pyret
 function getBackgroundColor(id: Bind, rhs: Expr) {
 	let dataType = String(id);
 	let fixedSizeDataTypes = ["number", "string", "var", "boolean"];
@@ -94,6 +97,7 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 		return "";
 	}
 }
+// ----------------------------------------------------------------------
 
 const checkOP = 'check-op';
 

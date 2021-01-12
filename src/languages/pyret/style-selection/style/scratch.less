@@ -475,7 +475,11 @@
 	.blocks-funapp{
     border-radius: 5px;
 		background-color: @func-background;
-	}
+  }
+  
+  .blocks-funApp{
+    padding-left: 0;
+  }
 
 	.blocks-funDef{
     position: relative;
@@ -621,7 +625,7 @@
   // -------------------------------------------------
   // If and If Else Expressions:
 	.blocks-if{
-		background-color: @checkTest-background;
+		background-color: @untyped-color;// @checkTest-background;
     // border-radius: 8px;
     border-bottom-left-radius: 0px;
     clip-path: @input-shiftout-path;
@@ -638,7 +642,7 @@
   }
 
 	.blocks-if-footer{
-    background-color: @checkTest-background;
+    background-color: @untyped-color;// @checkTest-background;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
@@ -648,7 +652,7 @@
   }
 
   .blocks-else{
-    background-color: @checkTest-background;
+    background-color: @untyped-color; //@checkTest-background;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
@@ -687,7 +691,7 @@
       
       .blocks-cond-predicate{
 
-        background-color: @checkTest-background;
+        background-color: @untyped-color;// @checkTest-background;
         padding-top: 1.6rem;
         padding-right: 1.5rem;
         padding-bottom: 1rem;
@@ -732,18 +736,18 @@
   //   width: @body-right-width;
   // }
 
-  .blocks-if-Expression:before,
-  .blocks-if-else-Expression:before,
-  .blocks-ifPipeExpression:before,
-  .blocks-ifPipeElseExpression:before {
-    content: "";
-    background: @untyped-color;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: calc(100% - @height-setoff);
-    width: @body-left-width;
-  }
+  // .blocks-if-Expression:before,
+  // .blocks-if-else-Expression:before,
+  // .blocks-ifPipeExpression:before,
+  // .blocks-ifPipeElseExpression:before {
+  //   content: "";
+  //   background: @untyped-color;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-left-width;
+  // }
 
   // -------------------------------------------------
   // Ask Expression:
@@ -782,7 +786,7 @@
   @when-path: polygon(0% @height-setoff*1.5, @w-scale*16px 0.5*@height-setoff, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 0.5*@height-setoff, @w-scale*64px @height-setoff*1.5, 100% @height-setoff*1.5, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @when-sidebar-path: polygon(0% 1.5*@height-setoff, @sidebar-width 1.5*@height-setoff, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
   .blocks-when{
-    background-color: @checkTest-background;
+    background-color: @untyped-color; // @checkTest-background;
     clip-path: @input-shiftout-path;
     // clip-path: @insert-output-path;
    //  clip-path: @when-path;
@@ -794,7 +798,7 @@
   }
 
   .blocks-when-footer{
-    background-color: @checkTest-background;
+    background-color: @untyped-color;// @checkTest-background;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
@@ -812,7 +816,7 @@
   
   .blocks-s-when:after {
     content: "";
-    background: @checkTest-background;
+    background: @untyped-color;// @checkTest-background;
     position: absolute;
     top: 0;
     left: 0;
