@@ -462,7 +462,7 @@
 
     // clip-path: @start-finish-path;
     // clip-path:  @insert-output-path;
-    // clip-path: @input-shiftout-path;
+    clip-path: @input-shiftout-path;
     padding: 1rem;
     text-align: left;
     // min-height: 1000px;
@@ -471,20 +471,22 @@
     .blocks-doc-string {
       text-align: left;
 
-      // overflow-y: auto;
-      
-      // padding-top: 1.5rem;
-      // padding-bottom: 1.5rem;
-      // display: inline-flex;
-      // max-width: 500px;
+      .blocks-editing {
+        white-space: pre-wrap;
+        word-break: keep-all; 
+      }
+
       .blocks-node{
-        // overflow-y: auto;
-        // display: flex;
+
+        text-align: left;
+        height: 100%;
+        width: 95%;
+        min-height: 20px;
         .blocks-literal-string,
         .blocks-literal-operator{
-  
+          
           white-space: pre-wrap;
-          // word-wrap: break-word;
+          word-break: keep-all; 
         }
       }
 

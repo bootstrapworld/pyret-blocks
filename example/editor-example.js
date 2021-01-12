@@ -27,6 +27,24 @@ load-table: name, age, favorite-color
   source: imported-my-table
 end
 
+fun add():
+  doc: "dee"
+  n + 1
+end
+
+fun add(n :: Number, s :: String) -> Number:
+  doc: "ABCDEFG"
+  n
+end
+
+fun add(n :: Number) -> Number:
+  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
+  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
+  x
+end
+
+fun test(n :: Number) -> Number: doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhh" n end
+
 a-num = 3
 a-string = "three"
 a-boolean = true
@@ -63,17 +81,6 @@ end
 
 var all-for-one = "ONE FOR ALL FULL COWLING"
 all-for-one := 1
-
-fun add(n :: Number) -> Number:
-  doc: "ABCDEFG"
-  n
-end
-
-fun add(n :: Number) -> Number:
-  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh"
-  x = n + 1
-  x
-end
 
 vert = a(b(c(d(e(1)))))
 
