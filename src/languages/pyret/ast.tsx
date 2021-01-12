@@ -161,7 +161,9 @@ export class Func extends AST.ASTNode {
       <Node node={this} {...props}>
 				<span className="blocks-func">
 					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}
-					doc: {doc} 
+          <div className="blocks-doc-string">
+          doc: {doc} 
+          </div>
 				</span>
         <span className="blocks-func-body">
           {body}

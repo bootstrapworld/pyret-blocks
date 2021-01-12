@@ -420,6 +420,12 @@
 		clip-path: @insert-output-path;
   }
 
+  .blocks-s-var {
+    position: relative;
+    text-align: left;
+    // padding-left: @body-left-width;
+  }
+
   .blocks-s-var:after{
     content: "";
     background: @var-color;
@@ -456,10 +462,33 @@
 
     // clip-path: @start-finish-path;
     // clip-path:  @insert-output-path;
-    clip-path: @input-shiftout-path;
+    // clip-path: @input-shiftout-path;
     padding: 1rem;
-		text-align: left;
+    text-align: left;
+    // min-height: 1000px;
     display: block;
+
+    .blocks-doc-string {
+      text-align: left;
+
+      // overflow-y: auto;
+      
+      // padding-top: 1.5rem;
+      // padding-bottom: 1.5rem;
+      // display: inline-flex;
+      // max-width: 500px;
+      .blocks-node{
+        // overflow-y: auto;
+        // display: flex;
+        .blocks-literal-string,
+        .blocks-literal-operator{
+  
+          white-space: pre-wrap;
+          // word-wrap: break-word;
+        }
+      }
+
+    }
 
   }
 
