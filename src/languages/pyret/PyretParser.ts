@@ -81,7 +81,7 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 		"a-binop": "binop"
 	}
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
-		console.log(`%c id: ${id}`, "background-color: green");
+		// console.log(`%c id: ${id}`, "background-color: green");
 		return rhs.dataType;
 	}
 	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
@@ -407,7 +407,7 @@ const nodeTypes = {
       blocky,
       {'aria-label': `${name}, a function with ${args} with ${body}`});
   },
-  // "s-method": function(l: Loc, name: string, params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, check: Expr | null, blocky: boolean) {},
+	// "s-method": function(l: Loc, name: string, params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, check: Expr | null, blocky: boolean) {},
   // "s-extend": function(l: Loc, supe: Expr, fields: Member[]) {},
   // "s-update": function(l: Loc, supe: Expr, fields: Member[]) {},
   "s-tuple": function(pos: Loc, fields: Expr[]) {

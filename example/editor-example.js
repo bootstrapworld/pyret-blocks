@@ -25,6 +25,10 @@ a-binop = 1 + 3
 a-constructor = [list: 1, 2, 3]
 var a-mutable = 3
 
+x = for map(elem from range(0, 3)):
+  elem + 2
+end
+
 lam(x): x + 1 end
 
 lam(x):
