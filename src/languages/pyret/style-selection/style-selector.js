@@ -30,10 +30,10 @@ function StyleSelector(envElement) {
                 <label for="${item.id}">${item.displayName}</label></option>
             </div>`;
             
-            console.log(itemHTML);
+            // console.log(itemHTML);
             queryHTML += itemHTML;
         }
-        console.log(queryHTML);
+        // console.log(queryHTML);
 
         envElement.innerHTML = `<select id="selector" onChange="${this.handleChange}" class="form-control" style="width: 200px">${queryHTML}</select>`;
     }

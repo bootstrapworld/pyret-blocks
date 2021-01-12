@@ -21,8 +21,10 @@ a-num = 3
 a-string = "three"
 a-boolean = true
 a-binop = 1 + 3
-a-constructor = [list: 1, 2, 3]
-a-variable = foo
+a-num-constructor = [list: 1, 2, 3]
+a-string-constructor = [list: "a", "b"]
+not-consistent-typing = [list: 1, "a", 3]
+another-variable = foo
 var a-mutable = 3
 var a-mutable-construktor = [list: "a"]
 

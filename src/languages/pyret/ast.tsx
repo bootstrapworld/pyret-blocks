@@ -656,7 +656,6 @@ export class Check extends AST.ASTNode {
   }
 
   render(props) {
-    console.log("?", this.body);
     let body = this.body.reactElement();
     return (
       <Node node={this} {...props}>
