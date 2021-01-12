@@ -17,6 +17,16 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bob", 12, "blue"
+  row: "Alice", 17, "green"
+  row: "Eve", 13, "red"
+end
+
+load-table: name, age, favorite-color
+  source: imported-my-table
+end
+
 a-num = 3
 a-string = "three"
 a-boolean = true

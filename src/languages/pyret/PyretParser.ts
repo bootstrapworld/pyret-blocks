@@ -545,7 +545,10 @@ const nodeTypes = {
   // 's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {},
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
-  // 's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {},
+	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
+		console.log("%c table being called!!!", "background-color: blue");
+    return new Nodes.Literal( l.from, l.to, "\"" + "test" + "\"", 'string', {'aria-label': `, a string`});
+	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
     if(DEBUG) console.log(arguments);
     return new LoadTable(
@@ -554,7 +557,10 @@ const nodeTypes = {
   },
 
   // data TableRow
-  // 's-table-row': function(l: Loc, elems: Expr[]) {},
+	's-table-row': function(l: Loc, elems: Expr[]) {
+		console.log("%c row being called!!!", "background-color: blue");
+    return new Nodes.Literal( l.from, l.to, "\"" + "test" + "\"", 'string', {'aria-label': `, a string`});
+	},
   
   // data ConstructModifer
   's-construct-normal': function() { return null; },

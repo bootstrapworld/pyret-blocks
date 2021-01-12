@@ -1443,7 +1443,7 @@ export class IfElseExpression extends AST.ASTNode {
     let branches = [];
     this.branches.forEach((element, index) => {
       let span = <span key={index}>
-        <DropTarget />
+				<DropTarget key={index}/>
         {NEWLINE}
         {(element as any).reactElement()}
         {NEWLINE}
@@ -1458,7 +1458,7 @@ export class IfElseExpression extends AST.ASTNode {
           if:
         </span>
         <div className="blocks-cond-table">
-          {branches}
+					{branches}
           {NEWLINE}
 				</div>
 				<span className="blocks-else">
