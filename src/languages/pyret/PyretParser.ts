@@ -82,8 +82,7 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 		"a-method": "untyped", 
 		"a-binop": "binop", 
 	}
-	// console.log(`%c ${id}`, "background-color: red");
-	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
+	// console.log(`%c ${rhs.type}`, "background-color: red");
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
 		return rhs.dataType;
 	}
@@ -93,11 +92,11 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
 		return nonFixedSizeDataTypes[dataType];
 	}
-	else if (rhs.dataType === undefined){
-		return "untyped";
-	}
+	// else if (rhs.dataType === undefined){
 	else{
-		return "";
+		console.log(`%c ${id}`, "background-color: red");
+		console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
+		return "untyped";
 	}
 }
 // ----------------------------------------------------------------------
@@ -433,8 +432,20 @@ const nodeTypes = {
   // "s-array": function(l: Loc, values: Expr[]) {},
   "s-construct": function (pos: Loc, modifier: any, constructor: any, values: any[]) {
     if(DEBUG) console.log(arguments);
+		
+		let bgcClassName = "untyped";
+		let aType = values[0].dataType
+		let typingIsConsistent = true;
+		values.forEach(element => {
+			typingIsConsistent = (element.dataType == aType);
+		})
+
+		if (typingIsConsistent){
+			bgcClassName = getBackgroundColor(name, values[0]);
+		}
+		console.log(`%c ${bgcClassName}`, "background-color: blue");
     return new Construct(
-      pos.from, pos.to, modifier, constructor, values, { 'aria-label': `${constructor} with values ${values}` }
+      pos.from, pos.to, modifier, constructor, values, bgcClassName, { 'aria-label': `${constructor} with values ${values}` }
     );
   },
   "s-app": function(pos: Loc, fun: Expr, args: Expr[]) {

@@ -17,14 +17,15 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
-
 a-num = 3
 a-string = "three"
 a-boolean = true
 a-binop = 1 + 3
 a-constructor = [list: 1, 2, 3]
+a-variable = foo
 var a-mutable = 3
 var a-mutable-construktor = [list: "a"]
+
 
 x = for map(elem from range(0, 3)):
   elem + 2

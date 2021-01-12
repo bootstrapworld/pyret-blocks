@@ -439,18 +439,21 @@ export class Construct extends AST.ASTNode {
   modifier: any; // TODO: what is this?
   construktor: AST.ASTNode;
   values: AST.ASTNode[];
+	bgcClassName: string;
 
-  constructor(from, to, modifier, construktor, values, options = {}) {
+  constructor(from, to, modifier, construktor, values, bgcClassName, options = {}) {
     super(from, to, 'constructor', options);
     this.modifier = modifier;
     this.construktor = construktor;
     this.values = values;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.value('modifier'),
     Spec.required('construktor'),
     Spec.list('values'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -472,10 +475,12 @@ export class Construct extends AST.ASTNode {
     let construktor = this.construktor.reactElement();
     let values = <Args field="values">{this.values}</Args>;
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-construct">{construktor}</span>
-        {values}
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-construct">{construktor}</span>
+					{values}
+				</Node>
+			</span>
     );
   }
 }
