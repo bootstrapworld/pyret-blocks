@@ -77,24 +77,26 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // Function used to assign the color type of each block in Block Pyret
 function getBackgroundColor(id: Bind, rhs: Expr) {
 	let dataType = String(id);
-	let fixedSizeDataTypes = ["number", "string", "var", "boolean"];
+	let fixedSizeDataTypes = ["number", "string", "boolean"];
 	let nonFixedSizeDataTypes = {
 		"a-method": "untyped", 
-		"a-constructor": "constructor", 
-		"a-binop": "binop"
+		"a-binop": "binop", 
 	}
+	// console.log(`%c ${rhs.type}`, "background-color: red");
+	// console.log(`%c ${id}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
-		// console.log(`%c id: ${id}`, "background-color: green");
 		return rhs.dataType;
+	}
+	else if (rhs.type === "constructor"){
+		return "constructor";
 	}
 	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
 		return nonFixedSizeDataTypes[dataType];
 	}
-	else if (rhs.dataType === undefined){
-		return "untyped";
-	}
+	// else if (rhs.dataType === undefined){
 	else{
-		return "";
+		return "untyped";
 	}
 }
 // ----------------------------------------------------------------------
@@ -430,8 +432,21 @@ const nodeTypes = {
   // "s-array": function(l: Loc, values: Expr[]) {},
   "s-construct": function (pos: Loc, modifier: any, constructor: any, values: any[]) {
     if(DEBUG) console.log(arguments);
+		
+		let bgcClassName = "untyped";
+		let aType = values[0].dataType
+		let typingIsConsistent = true;
+		values.forEach(element => {
+			if (element.dataType !== aType){
+				typingIsConsistent = false;
+			}
+		})
+
+		if (typingIsConsistent){
+			bgcClassName = getBackgroundColor(name, values[0]);
+		}
     return new Construct(
-      pos.from, pos.to, modifier, constructor, values, { 'aria-label': `${constructor} with values ${values}` }
+      pos.from, pos.to, modifier, constructor, values, bgcClassName, { 'aria-label': `${constructor} with values ${values}` }
     );
   },
   "s-app": function(pos: Loc, fun: Expr, args: Expr[]) {
@@ -530,7 +545,10 @@ const nodeTypes = {
   // 's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {},
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
-  // 's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {},
+	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
+		console.log("%c table being called!!!", "background-color: blue");
+    return new Nodes.Literal( l.from, l.to, "\"" + "test" + "\"", 'string', {'aria-label': `, a string`});
+	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
     if(DEBUG) console.log(arguments);
     return new LoadTable(
@@ -539,7 +557,10 @@ const nodeTypes = {
   },
 
   // data TableRow
-  // 's-table-row': function(l: Loc, elems: Expr[]) {},
+	's-table-row': function(l: Loc, elems: Expr[]) {
+		console.log("%c row being called!!!", "background-color: blue");
+    return new Nodes.Literal( l.from, l.to, "\"" + "test" + "\"", 'string', {'aria-label': `, a string`});
+	},
   
   // data ConstructModifer
   's-construct-normal': function() { return null; },

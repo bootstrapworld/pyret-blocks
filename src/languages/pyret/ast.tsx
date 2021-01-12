@@ -76,7 +76,6 @@ export class Bind extends AST.ASTNode {
 
   pretty() {
     let ident = this.ident.pretty();
-    console.log(ident);
     if (this.ann === null) {
       return ident;
     } else {
@@ -387,14 +386,16 @@ export class Var extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-				<span className={`blocks-var ${this.bgcClassName}`}>
-          VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
-        {/* <span className="blocks-args">
-          <Args>{[this.ident, this.rhs]}</Args>
-        </span> */}
-        </span>
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className={"blocks-var"}>
+						VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
+					{/* <span className="blocks-args">
+						<Args>{[this.ident, this.rhs]}</Args>
+					</span> */}
+					</span>
+				</Node>
+			</span>
     );
   }
 }
@@ -440,18 +441,21 @@ export class Construct extends AST.ASTNode {
   modifier: any; // TODO: what is this?
   construktor: AST.ASTNode;
   values: AST.ASTNode[];
+	bgcClassName: string;
 
-  constructor(from, to, modifier, construktor, values, options = {}) {
+  constructor(from, to, modifier, construktor, values, bgcClassName, options = {}) {
     super(from, to, 'constructor', options);
     this.modifier = modifier;
     this.construktor = construktor;
     this.values = values;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.value('modifier'),
     Spec.required('construktor'),
     Spec.list('values'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -473,10 +477,12 @@ export class Construct extends AST.ASTNode {
     let construktor = this.construktor.reactElement();
     let values = <Args field="values">{this.values}</Args>;
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-construct">{construktor}</span>
-        {values}
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-construct">{construktor}</span>
+					{values}
+				</Node>
+			</span>
     );
   }
 }
@@ -652,7 +658,6 @@ export class Check extends AST.ASTNode {
   }
 
   render(props) {
-    console.log("?", this.body);
     let body = this.body.reactElement();
     return (
       <Node node={this} {...props}>
@@ -1440,7 +1445,7 @@ export class IfElseExpression extends AST.ASTNode {
     let branches = [];
     this.branches.forEach((element, index) => {
       let span = <span key={index}>
-        <DropTarget />
+				<DropTarget key={index}/>
         {NEWLINE}
         {(element as any).reactElement()}
         {NEWLINE}
@@ -1455,7 +1460,7 @@ export class IfElseExpression extends AST.ASTNode {
           if:
         </span>
         <div className="blocks-cond-table">
-          {branches}
+					{branches}
           {NEWLINE}
 				</div>
 				<span className="blocks-else">
