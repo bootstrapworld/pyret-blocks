@@ -1344,8 +1344,10 @@ export class Table extends AST.ASTNode {
     
     let prefix = "table:";
     let suffix = "end";
-    let branches = P.sepBy(this.headers, ", ", ",");
-    let rowBranches = P.sepBy(this.rows, ", ", "");
+    let branches = P.sepBy(this.headers, ", ", "");
+    let rowBranches = P.sepBy(this.rows, " ", "");
+    // let rowBranches = P.sepBy(this.rows, ", ", "");
+    console.log(this.rows[0]);
     console.log(branches);
     console.log(rowBranches);
     return P.ifFlat(
@@ -1397,10 +1399,11 @@ export class ATableRow extends AST.ASTNode {
     console.log("TABLE ROW ___________________________")
     console.log(this.elems);
 		// let suffix = "end";
-		let branches = P.sepBy(this.elems, ", ", ",");
+    let vertBranches = P.sepBy(this.elems, ", ", ",");
+    let hortBranches = P.sepBy(this.elems, ", ", ",");
 		return P.ifFlat(
-			P.horz(prefix, " ", branches),
-			P.vert(prefix, P.horz(INDENT, branches))
+			P.horz(prefix, " ", hortBranches),
+			P.vert(prefix, P.horz(INDENT, vertBranches))
 		);
 	}
 

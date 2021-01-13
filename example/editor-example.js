@@ -24,6 +24,12 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "Evgsdsdsdsdsdsde", 13, "red"
 end
 
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
 #|
 load-table: name, age, favorite-color
   source: imported-my-table
