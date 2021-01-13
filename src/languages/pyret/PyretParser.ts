@@ -622,6 +622,10 @@ const nodeTypes = {
   // data FieldName
   // examples of this _other have been ABlank...
   's-field-name': function(pos: Loc, name: string, _other: any) {
+    console.log("Field Name -----------------");
+    console.log(pos);
+    console.log(name);
+    console.log(_other);
     if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
       pos.from, pos.to, name, 'field-name', {'aria-label': `${name}, a column`}

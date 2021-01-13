@@ -1,3 +1,6 @@
+// Documentations of functions in pretty() can be found on:
+// https://github.com/brownplt/pretty-fast-pretty-printer
+
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 
@@ -1318,30 +1321,9 @@ export class Table extends AST.ASTNode {
   }
 
   pretty() {
-    /* 
-    let header = P.horz("[", this.construktor, ":");
-    let values = P.sepBy(this.values, ", ", "");
-    let footer = P.txt("]");
-
-    return P.ifFlat(P.horz(header, P.txt(" "), values, footer),
-      P.vert(header,
-             P.horz(INDENT, values), // maybe make values in P.vertArray
-             footer));
-             
-    */
     console.log("------------ Table Pretty -------------");
     
     let header = P.horz("table: ", P.sepBy(this.headers, ", ", ""));
-    // let body = P.sepBy(this.rows, "end");;
-    // let footer = P.txt("end");
-
-    // console.log(body);
-    // return P.ifFlat(
-    // P.horz(header, footer),
-    // P.vert(header,
-    //        P.horz(INDENT, this.rows),
-    //        footer));
-    
     let prefix = "table:";
     let suffix = "end";
     let branches = P.sepBy(this.headers, ", ", "");
@@ -1352,10 +1334,7 @@ export class Table extends AST.ASTNode {
     console.log(rowBranches);
     return P.ifFlat(
       P.horz(prefix, " ", branches, " ", rowBranches, " ", suffix),
-      // P.horz(prefix, " ", rowBranches, " ", suffix),
-      P.vert(header, P.horz(INDENT, rowBranches), suffix), 
-      // P.vert(header, P.horz(INDENT, rowBranches), suffix), 
-      // P.vert(prefix, P.horz(INDENT, rowBranches), suffix)
+      P.vert(header, P.horz(INDENT, rowBranches), suffix)
     );
   }
 

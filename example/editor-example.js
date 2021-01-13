@@ -22,15 +22,23 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
   row: "Alicgsdddddddde", 17, "green"
   row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
 end
 
+#|
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
   row: "E", 13, "red"
 end
 
-#|
 load-table: name, age, favorite-color
   source: imported-my-table
 end
