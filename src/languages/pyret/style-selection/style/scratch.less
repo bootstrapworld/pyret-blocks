@@ -191,7 +191,8 @@
     overflow: hidden;
     white-space: nowrap;
     transition: all 0.5s;
-    margin-top: -7px;
+    //margin-top: -7px;
+    margin-bottom: -7px;
 
     cursor: grab;
     cursor: -moz-grab;
@@ -341,11 +342,21 @@
     .blocks-block > span > span {
       display: block;
     }
+    .blocks-block{
+      .blocks-drop-target {
+        clip-path: @insert-output-path;
+        min-height: 60px;
+        min-width: 100px;
+        margin-bottom: -7px !important;
+        margin-top: 0px !important;
+        margin-left: 10px;
+      }
+    }
     br {
       display: none;
     }
     //Force it to display on hover over the main element
-    :hover {
+    :hover, .blocks-hover {
       .blocks-drop-target{
         display: inherit !important;
         margin: 10px;
@@ -359,8 +370,9 @@
   .blocks-binop{
     background-color: @binop-color;
     border-radius: 20px;
+    padding: 10px;
     border: 1px solid grey;
-    padding: 5px;
+    //clip-path: @insert-output-path;
     // clip-path: @identifier-path;
 
     .blocks-operator-container{
@@ -368,11 +380,10 @@
       
       // display: inline-block;
       *display: inline;
-      vertical-align: top;
+      vertical-align: middle;
       color: white;
     }
-
-    .blocks-operator-input, .blocks-operator {
+    .blocks-operator-inpEut, .blocks-operator {
       margin: 2px;
       display: inline;
       color: white;
@@ -380,6 +391,13 @@
     .blocks-operator-text{
       font-weight: bolder;
     }
+  }
+  .blocks-block > span > span > .blocks-binop{
+    clip-path: @insert-output-path !important;
+    border-radius: 0px;
+    margin-bottom: -7px;
+    border-left: 10px solid @binop-color;
+    margin-left: 10px;
   }
   /*  xx Binary Operations xx  */
   // ---------------------------------------------------------------------------------------------------------
@@ -467,6 +485,7 @@
     text-align: left;
     // min-height: 1000px;
     display: block;
+    margin-bottom: -7px;
 
     .blocks-doc-string {
       text-align: left;
@@ -549,7 +568,8 @@
     clip-path: @input-shiftout-path;
 		padding: 0.7rem;
 		text-align: left;
-		display: block;
+    display: block;
+    margin-bottom: -7px;
   }
 
   .blocks-lambda-footer {
@@ -731,6 +751,7 @@
         // clip-path: @insert-output-path;
         clip-path: @shiftin-shiftout-path;
         float: none !important;
+        
       }
 
       .blocks-if-footer{
@@ -932,6 +953,7 @@
     padding: 1rem;
 		text-align: left;
     display: block;
+    margin-bottom: -7px;
   }
   //---------------------------------------------------------------
   // For
@@ -977,6 +999,6 @@
   .blocks-s-for-bind {
 
   }
-
+  
 
 }
