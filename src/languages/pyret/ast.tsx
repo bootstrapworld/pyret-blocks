@@ -1276,9 +1276,10 @@ export class Reactor extends AST.ASTNode {
   }
 }
 
+// --------------------------------- Table Render Implemented -------------------------------
 export class Table extends AST.ASTNode {
   headers: AST.ASTNode[];
-  rows: AST.ASTNode[];
+  rows: AST.ASTNode[] | null;
   
   constructor(from, to, headers, rows, options) {
     super(from, to, 's-table', options);
@@ -1286,12 +1287,22 @@ export class Table extends AST.ASTNode {
     this.rows = rows;
     // let rowBranches = this.rows.map((rowBranches, index) => console.log(rowBranches));
     // let rowBranches = this.rows.map((rowBranches, index) => rowBranches.reactElement({key: index}));
-		// console.log(`%c ${JSON.stringify(headers, null, 2)}`, 'background-color: blue');
-		console.log(`%c ${JSON.stringify(this.headers, null, 2)}`, 'background-color: purple');
-		console.log(`%c ${JSON.stringify(this.rows, null, 2)}`, 'background-color: blue');
+    // console.log(`%c ${JSON.stringify(headers, null, 2)}`, 'background-color: blue');
+    
 
-		console.log(`%c ${this.headers}`, 'background-color: purple');
-		console.log(`%c ${this.rows}`, 'background-color: blue');
+		// console.log(`%c ${JSON.stringify(this.headers, null, 2)}`, 'background-color: purple');
+		// console.log(`%c ${JSON.stringify(this.rows, null, 2)}`, 'background-color: blue');
+
+		// console.log(`%c ${this.headers}`, 'background-color: purple');
+    // console.log(`%c ${this.rows}`, 'background-color: blue');
+    
+    // console.log(`%c ${JSON.stringify(this.headers, null, 2)}`);
+    // console.log(`%c ${JSON.stringify(this.rows, null, 2)}`);
+    
+    console.log("Headers");
+		console.log(`%c ${this.headers}`);
+    console.log("Rows:")
+    console.log(`%c ${this.rows}`);
 
 		console.log(this.headers);
 		console.log(this.rows);
@@ -1307,15 +1318,42 @@ export class Table extends AST.ASTNode {
   }
 
   pretty() {
+    /* 
+    let header = P.horz("[", this.construktor, ":");
+    let values = P.sepBy(this.values, ", ", "");
+    let footer = P.txt("]");
+
+    return P.ifFlat(P.horz(header, P.txt(" "), values, footer),
+      P.vert(header,
+             P.horz(INDENT, values), // maybe make values in P.vertArray
+             footer));
+             
+    */
+    console.log("------------ Table Pretty -------------");
+    
+    let header = P.horz("table: ", P.sepBy(this.headers, ", ", ""));
+    // let body = P.sepBy(this.rows, "end");;
+    // let footer = P.txt("end");
+
+    // console.log(body);
+    // return P.ifFlat(
+    // P.horz(header, footer),
+    // P.vert(header,
+    //        P.horz(INDENT, this.rows),
+    //        footer));
+    
     let prefix = "table:";
     let suffix = "end";
     let branches = P.sepBy(this.headers, ", ", ",");
-    let rowBranches = P.sepBy(this.rows, ", ", ",");
+    let rowBranches = P.sepBy(this.rows, ", ", "");
+    console.log(branches);
+    console.log(rowBranches);
     return P.ifFlat(
-      P.horz(prefix, " ", branches, " ", suffix),
-      P.horz(prefix, " ", rowBranches, " ", suffix),
-      P.vert(prefix, P.horz(INDENT, branches), suffix), 
-      P.vert(prefix, P.horz(INDENT, rowBranches), suffix)
+      P.horz(prefix, " ", branches, " ", rowBranches, " ", suffix),
+      // P.horz(prefix, " ", rowBranches, " ", suffix),
+      P.vert(header, P.horz(INDENT, rowBranches), suffix), 
+      // P.vert(header, P.horz(INDENT, rowBranches), suffix), 
+      // P.vert(prefix, P.horz(INDENT, rowBranches), suffix)
     );
   }
 
@@ -1355,12 +1393,14 @@ export class ATableRow extends AST.ASTNode {
 	}
 
 	pretty() {
-		let prefix = "table-row:";
-		let suffix = "end";
+    let prefix = "row:";
+    console.log("TABLE ROW ___________________________")
+    console.log(this.elems);
+		// let suffix = "end";
 		let branches = P.sepBy(this.elems, ", ", ",");
 		return P.ifFlat(
-			P.horz(prefix, " ", branches, " ", suffix),
-			P.vert(prefix, P.horz(INDENT, branches), suffix)
+			P.horz(prefix, " ", branches),
+			P.vert(prefix, P.horz(INDENT, branches))
 		);
 	}
 
@@ -1375,7 +1415,7 @@ export class ATableRow extends AST.ASTNode {
 		);
 	}
 }
-
+// ------------------  xx  ------------ Table Render Implemented ------ xx  ----------------------
 export class IfBranch extends AST.ASTNode {
   test: AST.ASTNode;
   body: AST.ASTNode;

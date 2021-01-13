@@ -569,6 +569,11 @@ const nodeTypes = {
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
+    // if(DEBUG) console.log(arguments);
+    console.log("------------ Table Parser -------------");
+    console.log(headers);
+    console.log(rows);
+    console.log("-------------------------");
 		return new Table(l.from, l.to, headers, rows, {'aria-label': `table`});
 	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
@@ -580,6 +585,7 @@ const nodeTypes = {
 
   // data TableRow
 	's-table-row': function(l: Loc, elems: Expr[]) {
+    // if(DEBUG) console.log(arguments);
 		let nodes = [];
 		elems.map((aCell, index) => {
 			let aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});

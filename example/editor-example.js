@@ -19,9 +19,9 @@ const DELAY = 250;
 const smallExampleCode = `
 
 table: name :: String, age :: Number, favorite-color :: String
-  row: "Bob", 12, "blue"
-  row: "Alice", 17, "green"
-  row: "Eve", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
 end
 
 #|
