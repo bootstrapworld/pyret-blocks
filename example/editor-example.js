@@ -18,6 +18,10 @@ const DELAY = 250;
 
 const smallExampleCode = `
 
+table: name :: List<Number>, age :: String
+  row: [list: [list: 1], 2, 3], "red"
+end
+
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
   row: "Alicgsdddddddde", 17, "green"

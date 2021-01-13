@@ -101,6 +101,21 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 		return "untyped";
 	}
 }
+
+function getConstructBackgroundColor(values: any[]) {
+	let bgcClassName = "untyped";
+	let typingIsConsistent = true;
+	values.forEach(element => {
+		if (element.dataType !== values[0].dataType){
+			typingIsConsistent = false;
+		}
+	})
+
+	if (typingIsConsistent){
+		bgcClassName = getBackgroundColor(null, values[0]);
+	}
+	return bgcClassName;
+}
 // ----------------------------------------------------------------------
 
 const checkOP = 'check-op';
@@ -456,18 +471,7 @@ const nodeTypes = {
   "s-construct": function (pos: Loc, modifier: any, constructor: any, values: any[]) {
     if(DEBUG) console.log(arguments);
 		
-		let bgcClassName = "untyped";
-		let aType = values[0].dataType
-		let typingIsConsistent = true;
-		values.forEach(element => {
-			if (element.dataType !== aType){
-				typingIsConsistent = false;
-			}
-		})
-
-		if (typingIsConsistent){
-			bgcClassName = getBackgroundColor(null, values[0]);
-		}
+		let bgcClassName = getConstructBackgroundColor(values);
     return new Construct(
       pos.from, pos.to, modifier, constructor, values, bgcClassName, { 'aria-label': `${constructor} with values ${values}` }
     );
@@ -588,7 +592,16 @@ const nodeTypes = {
     // if(DEBUG) console.log(arguments);
 		let nodes = [];
 		elems.map((aCell, index) => {
-			let aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});
+			let aNode;
+			if (aCell.construktor){
+				let bgcClassName = getConstructBackgroundColor(aCell.values);
+				aNode = new Construct(aCell.from, aCell.to, aCell.modifier, aCell.construktor, aCell.values, bgcClassName, 
+					{ 'aria-label': `${aCell.construktor} with values ${aCell.values}` });
+			}
+			else{
+				aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});
+			}
+
 			nodes.push(aNode);
 		});
 

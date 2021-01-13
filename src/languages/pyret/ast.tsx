@@ -1360,19 +1360,17 @@ export class Table extends AST.ASTNode {
   }
 
   render(props) {
-    let branches = this.headers.map((branch, index) => branch.reactElement({key: index}));
-		let rowBranches = this.rows.map((rowBranches, index) => rowBranches.reactElement({key: index}));
+		let headerBranches = this.headers.map((branch, index) => <th key={index}> {branch.reactElement()} </th>);
+		let rowBranches = this.rows.map((branch, index) => <tr key={index}> {branch.reactElement()} </tr>);
+
     return (
       <Node node={this} {...props}>
-        <span className="blocks-header">
-					table: 
-        </span>
-        <div className="blocks-cond-table">
-          {branches}
-        </div>
-        <div className="blocks-cond-table">
-          {rowBranches}
-        </div>
+				<span className="blocks-table">
+					<table>
+						<tr>{headerBranches}</tr> 
+						{rowBranches}
+					</table>
+				</span>
       </Node>
     );
   }
@@ -1408,12 +1406,10 @@ export class ATableRow extends AST.ASTNode {
 	}
 
 	render(props) {
-		let branches = this.elems.map((branch, index) => branch.reactElement({key: index}));
+		let branches = this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
 		return (
 			<Node node={this} {...props}>
-				<div className="blocks-cond-table">
-					{branches}
-				</div>
+				{branches}
 			</Node>
 		);
 	}
