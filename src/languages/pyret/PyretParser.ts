@@ -103,7 +103,12 @@ function getBackgroundColor(id: Bind, rhs: Expr) {
 }
 
 function getConstructorBackgroundColor(values: any[]) {
-	let bgcClassName = "untyped";
+  let bgcClassName = "untyped";
+  
+  if (values === undefined || values.length == 0) {
+    return bgcClassName;
+  }
+
 	let typingIsConsistent = true;
 	values.forEach(element => {
 		if (element.dataType !== values[0].dataType){

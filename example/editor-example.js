@@ -32,6 +32,8 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "Alicgsdddddddde", 17, "green"
 end
 
+[list-set: ]
+
 #|
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"

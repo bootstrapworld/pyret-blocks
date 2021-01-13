@@ -490,6 +490,7 @@ export class Construct extends AST.ASTNode {
   }
 }
 
+
 export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
