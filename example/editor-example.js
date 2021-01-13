@@ -18,6 +18,27 @@ const DELAY = 250;
 
 const smallExampleCode = `
 
+
+a-two-d-list = [list: [list: "a"]]
+another-two-d-list = [list: 3, [list: "a"]]
+
+
+[list-set: ]
+a = 3 + b
+
+a-num = 3
+a-string = "three"
+a-boolean = true
+a-binop = 1 + 3
+a-num-constructor = [list: 1, 2, 3]
+a-string-constructor = [list: "a", "b"]
+not-consistent-typing = [list: 1, "a", 3]
+another-variable = foo
+var a-mutable = 3
+var a-mutable-construktor = [list: "a"]
+
+#|
+
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
   row: "Alicgsdddddddde", 17, "green"
@@ -32,9 +53,6 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "Alicgsdddddddde", 17, "green"
 end
 
-[list-set: ]
-
-#|
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
@@ -62,18 +80,6 @@ fun add(n :: Number) -> Number:
 end
 
 fun test(n :: Number) -> Number: doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhh" n end
-
-a-num = 3
-a-string = "three"
-a-boolean = true
-a-binop = 1 + 3
-a-num-constructor = [list: 1, 2, 3]
-a-string-constructor = [list: "a", "b"]
-not-consistent-typing = [list: 1, "a", 3]
-another-variable = foo
-var a-mutable = 3
-var a-mutable-construktor = [list: "a"]
-
 
 x = for map(elem from range(0, 3)):
   elem + 2

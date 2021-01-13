@@ -1,6 +1,7 @@
 import * as TOK from "./pyret-lang/pyret-tokenizer.js";
 import * as P from "./pyret-lang/pyret-parser.js";
 import * as TR from "./pyret-lang/translate-parse-tree.js";
+import PRIMITIVES_CONFIG from './primitives-config';
 import {
   AST,
   ASTNode,
@@ -77,26 +78,28 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // ----------------------------------------------------------------------
 // getBackgroundColor():: Bind, Expr -> VOID
 // Function used to assign the color type of each block in Block Pyret
-function getBackgroundColor(id: Bind, rhs: Expr) {
-	let dataType = String(id);
+function getBackgroundColor(rhs: Expr) {
 	let fixedSizeDataTypes = ["number", "string", "boolean"];
-	let nonFixedSizeDataTypes = {
-		"a-method": "untyped", 
-		"a-binop": "binop", 
-	}
-	// console.log(`%c ${rhs.type}`, "background-color: red");
-	// console.log(`%c ${id}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
+	// console.log(`%c ${rhs.type}`, "background-color: red");
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
 		return rhs.dataType;
+	}
+	if (rhs.type === "binop"){
+		var results;
+		PRIMITIVES_CONFIG.primitives.forEach(element => {
+			if (element.name === rhs.op.value){
+				results = element;
+			}
+		})
+		// console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
+		return "untyped";
 	}
 	else if (rhs.type === "constructor"){
 		return "constructor";
 	}
-	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
-		return nonFixedSizeDataTypes[dataType];
-	}
-	// else if (rhs.dataType === undefined){
 	else{
 		return "untyped";
 	}
@@ -117,7 +120,7 @@ function getConstructorBackgroundColor(values: any[]) {
 	})
 
 	if (typingIsConsistent){
-		bgcClassName = getBackgroundColor(null, values[0]);
+		bgcClassName = getBackgroundColor(values[0]);
 	}
 	return bgcClassName;
 }
@@ -351,7 +354,7 @@ const nodeTypes = {
   "s-var": function(l: Loc, name: Bind, value: Expr) {
     let options = {};
     options['aria-label'] = `${name}, a variable definition`;
-		let bgcClassName = getBackgroundColor(name, value);
+		let bgcClassName = getBackgroundColor(value);
     return new Var(l.from, l.to, idToLiteral(name), value, bgcClassName, options);
   },
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
@@ -359,7 +362,7 @@ const nodeTypes = {
     if(DEBUG) console.log(arguments);
     let options = {};
     options['aria-label'] = `${id}, a value definition`;
-		let bgcClassName = getBackgroundColor(id, rhs);
+		let bgcClassName = getBackgroundColor(rhs);
 
     return new Let(
       pos.from,

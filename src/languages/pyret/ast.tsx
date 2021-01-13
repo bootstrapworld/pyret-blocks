@@ -479,6 +479,12 @@ export class Construct extends AST.ASTNode {
   render(props) {
     let construktor = this.construktor.reactElement();
     let values = <Args field="values">{this.values}</Args>;
+			// <span className="constructor">
+			//   <Node node={this} {...props}>
+			//     <span className={`blocks-construct ${this.bgcClassName}`}>{construktor}</span>
+			//     {values}
+			//   </Node>
+			// </span>
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
