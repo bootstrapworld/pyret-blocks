@@ -31,6 +31,8 @@ import {Binop,
   Lambda,
   Let,
   LoadTable,
+	Table, 
+	ATableRow, 
   Paren,
   SpecialImport,
   Reactor,
@@ -567,8 +569,7 @@ const nodeTypes = {
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
-		console.log("%c table being called!!!", "background-color: blue");
-    return new Nodes.Literal( l.from, l.to, "\"" + "test" + "\"", 'string', {'aria-label': `, a string`});
+		return new Table(l.from, l.to, headers, rows, {'aria-label': `table`});
 	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
     if(DEBUG) console.log(arguments);
@@ -579,8 +580,13 @@ const nodeTypes = {
 
   // data TableRow
 	's-table-row': function(l: Loc, elems: Expr[]) {
-		console.log("%c row being called!!!", "background-color: blue");
-    return new Nodes.Literal( l.from, l.to, "\"" + "test" + "\"", 'string', {'aria-label': `, a string`});
+		let nodes = [];
+		elems.map((aCell, index) => {
+			let aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});
+			nodes.push(aNode);
+		});
+
+		return new ATableRow(l.from, l.to, nodes, {'aria-label': `table-row`});
 	},
   
   // data ConstructModifer

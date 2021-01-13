@@ -247,7 +247,7 @@ export class Lambda extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="args">{this.args}</Args>;
     let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
@@ -1276,6 +1276,106 @@ export class Reactor extends AST.ASTNode {
   }
 }
 
+export class Table extends AST.ASTNode {
+  headers: AST.ASTNode[];
+  rows: AST.ASTNode[];
+  
+  constructor(from, to, headers, rows, options) {
+    super(from, to, 's-table', options);
+    this.headers = headers;
+    this.rows = rows;
+    // let rowBranches = this.rows.map((rowBranches, index) => console.log(rowBranches));
+    // let rowBranches = this.rows.map((rowBranches, index) => rowBranches.reactElement({key: index}));
+		// console.log(`%c ${JSON.stringify(headers, null, 2)}`, 'background-color: blue');
+		console.log(`%c ${JSON.stringify(this.headers, null, 2)}`, 'background-color: purple');
+		console.log(`%c ${JSON.stringify(this.rows, null, 2)}`, 'background-color: blue');
+
+		console.log(`%c ${this.headers}`, 'background-color: purple');
+		console.log(`%c ${this.rows}`, 'background-color: blue');
+
+		console.log(this.headers);
+		console.log(this.rows);
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.list('headers'),
+    Spec.list('rows'),
+  ])
+
+  longDescription(level) {
+    return `${enumerateList(this.headers, level)} in a table`;
+  }
+
+  pretty() {
+    let prefix = "table:";
+    let suffix = "end";
+    let branches = P.sepBy(this.headers, ", ", ",");
+    let rowBranches = P.sepBy(this.rows, ", ", ",");
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", suffix),
+      P.horz(prefix, " ", rowBranches, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix), 
+      P.vert(prefix, P.horz(INDENT, rowBranches), suffix)
+    );
+  }
+
+  render(props) {
+    let branches = this.headers.map((branch, index) => branch.reactElement({key: index}));
+		let rowBranches = this.rows.map((rowBranches, index) => rowBranches.reactElement({key: index}));
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-header">
+					table: 
+        </span>
+        <div className="blocks-cond-table">
+          {branches}
+        </div>
+        <div className="blocks-cond-table">
+          {rowBranches}
+        </div>
+      </Node>
+    );
+  }
+}
+
+export class ATableRow extends AST.ASTNode {
+	elems: AST.ASTNode[];
+	
+	constructor(from, to, elems, options) {
+		super(from, to, 's-table-row', options);
+		this.elems = elems;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.list('elems'),
+	])
+
+	longDescription(level) {
+		return `${enumerateList(this.elems, level)} in a table row`;
+	}
+
+	pretty() {
+		let prefix = "table-row:";
+		let suffix = "end";
+		let branches = P.sepBy(this.elems, ", ", ",");
+		return P.ifFlat(
+			P.horz(prefix, " ", branches, " ", suffix),
+			P.vert(prefix, P.horz(INDENT, branches), suffix)
+		);
+	}
+
+	render(props) {
+		let branches = this.elems.map((branch, index) => branch.reactElement({key: index}));
+		return (
+			<Node node={this} {...props}>
+				<div className="blocks-cond-table">
+					{branches}
+				</div>
+			</Node>
+		);
+	}
+}
+
 export class IfBranch extends AST.ASTNode {
   test: AST.ASTNode;
   body: AST.ASTNode;
@@ -1527,7 +1627,7 @@ export class For extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args>{this.bindings}</Args>;
     let header_ending = <span>
-      {(this.ann != null)? <>&nbsp;->&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.ann != null)? <>&nbsp;-&gt;&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
