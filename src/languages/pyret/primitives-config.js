@@ -86,7 +86,7 @@ export default {
       returnType: 'Image',
       argumentTypes: ['String'],
     }, {
-      name: '=',
+      name: '==',
       returnType: 'Boolean',
       argumentTypes: ['Number', 'Number'],
     }, {

@@ -84,21 +84,29 @@ function getBackgroundColor(rhs: Expr) {
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
 	// console.log(`%c ${rhs.type}`, "background-color: red");
-	if (fixedSizeDataTypes.includes(rhs.dataType)){
-		return rhs.dataType;
-	}
-	if (rhs.type === "binop"){
+	
+	function getReturnType(name){
 		var results;
 		PRIMITIVES_CONFIG.primitives.forEach(element => {
-			if (element.name === rhs.op.value){
+			if (element.name === name){
 				results = element;
 			}
 		})
-		// console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
-		return "untyped";
+		console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
+		return results.returnType.toLowerCase();
+	}
+
+	if (fixedSizeDataTypes.includes(rhs.dataType)){
+		return rhs.dataType;
 	}
 	else if (rhs.type === "constructor"){
 		return "constructor";
+	}
+	else if (rhs.type === "binop"){
+		return getReturnType(rhs.op.value);
+	}
+	else if (rhs.type === "funApp"){
+		return (rhs.func.value.value) ? getReturnType(rhs.func.value.value) : "untyped";
 	}
 	else{
 		return "untyped";

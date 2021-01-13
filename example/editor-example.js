@@ -19,23 +19,30 @@ const DELAY = 250;
 const smallExampleCode = `
 
 
-a-two-d-list = [list: [list: "a"]]
-another-two-d-list = [list: 3, [list: "a"]]
-
 
 [list-set: ]
-a = 3 + b
 
 a-num = 3
 a-string = "three"
 a-boolean = true
-a-binop = 1 + 3
 a-num-constructor = [list: 1, 2, 3]
 a-string-constructor = [list: "a", "b"]
 not-consistent-typing = [list: 1, "a", 3]
 another-variable = foo
 var a-mutable = 3
 var a-mutable-construktor = [list: "a"]
+
+a-two-d-list = [list: [list: "a"]]
+another-two-d-list = [list: 3, [list: "a"]]
+
+
+a-binop = 1 + 3
+another-binop = 1 * 3
+greater-than = 3 < 5
+b = 3.foo(4)
+c = sqrt(4)
+num = string-length("abc")
+aString = string-append("hello", "world")
 
 #|
 
