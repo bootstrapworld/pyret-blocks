@@ -464,7 +464,7 @@ const nodeTypes = {
 		})
 
 		if (typingIsConsistent){
-			bgcClassName = getBackgroundColor(name, values[0]);
+			bgcClassName = getBackgroundColor(null, values[0]);
 		}
     return new Construct(
       pos.from, pos.to, modifier, constructor, values, bgcClassName, { 'aria-label': `${constructor} with values ${values}` }
