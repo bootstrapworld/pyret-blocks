@@ -30,7 +30,7 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
-#|
+
 load-table: name, age, favorite-color
   source: imported-my-table
 end
@@ -173,7 +173,7 @@ if x > 5:
 else:
   x
 end
-|#
+
 `;
 
 const useBigCode = false;
