@@ -34,7 +34,7 @@ end
 
 [list-set: ]
 
-#|
+
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
@@ -183,6 +183,7 @@ if x > 5:
 else:
   x
 end
+#|
 |#
 `;
 
