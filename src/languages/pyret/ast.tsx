@@ -1815,3 +1815,30 @@ export class AnnotationApp extends AST.ASTNode {
     </Node>
   }
 }
+
+export class ProvideAll extends AST.ASTNode {
+
+  constructor(from, to, options = {}) {
+    super(from, to, 'provide-stmt', options);
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('ann'),
+    Spec.list('args'),
+  ])
+
+  longDescription(level) {
+    return `an application annotation with `;
+  }
+
+  pretty() {
+    return P.horz(P.txt("provide *"));
+  }
+
+  render(props) {
+		// let typeArgument = "<" + String(this.args) + ">";
+    return <Node node={this} {...props}>
+      <span>provide *</span>
+    </Node>
+  }
+}

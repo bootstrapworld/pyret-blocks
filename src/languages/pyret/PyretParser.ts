@@ -45,6 +45,7 @@ import {Binop,
   IfElseExpression,
   IfPipeElseExpression,
   AnnotationApp,
+  ProvideAll,
 } from "./ast";
 
 export interface Position {
@@ -248,7 +249,7 @@ const nodeTypes = {
   // "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
    "s-provide-all": function(pos: Loc) {
      console.log('found a provide all!')
-     return new Nodes.Literal(pos.from, pos.to, "provide *", "provide-all");
+     return new ProvideAll(pos.from, pos.to, "provide-all");
    },
   "s-provide-none": function(_pos: Loc) { return null; },
 

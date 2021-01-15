@@ -112,7 +112,7 @@ function translate(ast, fileName, constructors) {
         return makeNode('s-provide-all', pos(node.pos));
       } else {
         // (provide-stmt PROVIDE stmt END)
-        return makeNode('s-provide', pos(node.pos), tr(node.kids[0]));
+        return makeNode('s-provide', pos(node.pos), tr(node.kids[1]));
       }
     },
     'provide-types-stmt': function(node) {
