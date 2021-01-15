@@ -17,6 +17,40 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
+provide *
+
+#|
+[list-set: ]
+
+a-num = 3
+a-string = "three"
+a-boolean = true
+a-num-constructor = [list: 1, 2, 3]
+a-string-constructor = [list: "a", "b"]
+not-consistent-typing = [list: 1, "a", 3]
+another-variable = foo
+var a-mutable = 3
+var a-mutable-construktor = [list: "a"]
+
+a-two-d-list = [list: [list: "a"]]
+another-two-d-list = [list: 3, [list: "a"]]
+
+
+a-binop = 1 + 3
+another-binop = 1 * 3
+greater-than = 3 < 5
+b = 3.foo(4)
+c = sqrt(4)
+num = string-length("abc")
+aString = string-append("hello", "world")
+
+fun add(n :: Number) -> Number:
+  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
+  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
+  x
+end
+
+
 
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
@@ -55,25 +89,9 @@ fun add(n :: Number, s :: String) -> Number:
   n
 end
 
-fun add(n :: Number) -> Number:
-  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
-  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
-  x
-end
+
 
 fun test(n :: Number) -> Number: doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhh" n end
-
-a-num = 3
-a-string = "three"
-a-boolean = true
-a-binop = 1 + 3
-a-num-constructor = [list: 1, 2, 3]
-a-string-constructor = [list: "a", "b"]
-not-consistent-typing = [list: 1, "a", 3]
-another-variable = foo
-var a-mutable = 3
-var a-mutable-construktor = [list: "a"]
-
 
 x = for map(elem from range(0, 3)):
   elem + 2
@@ -183,7 +201,7 @@ if x > 5:
 else:
   x
 end
-#|
+
 |#
 `;
 
