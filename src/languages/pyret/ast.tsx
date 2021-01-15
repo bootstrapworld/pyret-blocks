@@ -1,5 +1,9 @@
+// Documentations of functions in pretty() can be found on:
+// https://github.com/brownplt/pretty-fast-pretty-printer
+
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
+import { render } from 'react-dom';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
@@ -99,7 +103,7 @@ export class Func extends AST.ASTNode {
   doc: AST.ASTNode | null;
   // doc: string | null;
   body: AST.ASTNode;
-  block: boolean
+  block: boolean;
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
     super(from, to, 'funDef', options);
@@ -118,6 +122,8 @@ export class Func extends AST.ASTNode {
     Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block'),
+    Spec.value('onDragOver'),
+    Spec.value('onDragEnd')
   ])
 
   longDescription(level) {
@@ -142,6 +148,28 @@ export class Func extends AST.ASTNode {
             P.horz(INDENT, this.body),
              "end"));
   }
+  onDragOver(e){
+    //this.setState({ hover: true });
+    /*
+    var target = e.target;
+    console.log('enter', target);
+    if(target.classList.contains('blocks-func-body'))
+    {
+      e.target.classList.add('blocks-hover');
+      console.log('dragging over', this, target, e.sender );
+    } 
+    */
+  };
+  onDragEnd = function(e){
+    var target = e.target;
+    console.log('exit', target);
+    while(!target.classList.contains('blocks-func-body'))
+    {
+        target = target.parentNode;
+    }
+    target.classList.remove('blocks-hover');
+    console.log('dragging end', target);
+  };
 
   render(props) {
     // TODO: show doc
@@ -151,43 +179,32 @@ export class Func extends AST.ASTNode {
     // let docDOM = <span>
     //   doc: {name} {this.doc}
     // </span>
+    
     let args = <Args field="args">{this.args}</Args>;
 		let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     const NEWLINE = <br />;
+    let bodyClass = "blocks-func-body"; //+ (this.state.hover ? " blocks-hover" : "");
+
     return (
-      <Node node={this} {...props}>
+      <Node node={this} {...props} onDragEnter={() => console.log('A')}>
 				<span className="blocks-func">
 					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}
           <div className="blocks-doc-string">
           doc: {doc}
           </div>
 				</span>
-        <span className="blocks-func-body">
-          {body}
+        <span onDragLeave={this.onDragEnd}>
+          <span className={bodyClass} >
+            {body}
+          </span>
         </span>
         <span className="blocks-func-footer" id="blocks-style-footer">
           end
         </span>
       </Node>
     );
-    /*
-    let name = this.name.reactElement();
-    let body = this.body.reactElement();
-    let args = <Args field="args">{this.args}</Args>;
-    let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
-    </span>;
-    return (
-      <Node node={this} {...props}>
-        <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:
-        </span>
-        {body}
-      </Node>
-    );
-    */
   }
 }
 
@@ -476,6 +493,12 @@ export class Construct extends AST.ASTNode {
   render(props) {
     let construktor = this.construktor.reactElement();
     let values = <Args field="values">{this.values}</Args>;
+			// <span className="constructor">
+			//   <Node node={this} {...props}>
+			//     <span className={`blocks-construct ${this.bgcClassName}`}>{construktor}</span>
+			//     {values}
+			//   </Node>
+			// </span>
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
@@ -486,6 +509,7 @@ export class Construct extends AST.ASTNode {
     );
   }
 }
+
 
 export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
@@ -1318,30 +1342,9 @@ export class Table extends AST.ASTNode {
   }
 
   pretty() {
-    /* 
-    let header = P.horz("[", this.construktor, ":");
-    let values = P.sepBy(this.values, ", ", "");
-    let footer = P.txt("]");
-
-    return P.ifFlat(P.horz(header, P.txt(" "), values, footer),
-      P.vert(header,
-             P.horz(INDENT, values), // maybe make values in P.vertArray
-             footer));
-             
-    */
     console.log("------------ Table Pretty -------------");
     
     let header = P.horz("table: ", P.sepBy(this.headers, ", ", ""));
-    // let body = P.sepBy(this.rows, "end");;
-    // let footer = P.txt("end");
-
-    // console.log(body);
-    // return P.ifFlat(
-    // P.horz(header, footer),
-    // P.vert(header,
-    //        P.horz(INDENT, this.rows),
-    //        footer));
-    
     let prefix = "table:";
     let suffix = "end";
     let branches = P.sepBy(this.headers, ", ", "");
@@ -1352,10 +1355,7 @@ export class Table extends AST.ASTNode {
     console.log(rowBranches);
     return P.ifFlat(
       P.horz(prefix, " ", branches, " ", rowBranches, " ", suffix),
-      // P.horz(prefix, " ", rowBranches, " ", suffix),
-      P.vert(header, P.horz(INDENT, rowBranches), suffix), 
-      // P.vert(header, P.horz(INDENT, rowBranches), suffix), 
-      // P.vert(prefix, P.horz(INDENT, rowBranches), suffix)
+      P.vert(header, P.horz(INDENT, rowBranches), suffix)
     );
   }
 
@@ -1808,6 +1808,33 @@ export class AnnotationApp extends AST.ASTNode {
       <span className="blocks-a-app">{this.ann.reactElement()}
 		{"<"} <Args field="args">{this.args}</Args> {">"}
       </span>
+    </Node>
+  }
+}
+
+export class ProvideAll extends AST.ASTNode {
+
+  constructor(from, to, options = {}) {
+    super(from, to, 'provide-stmt', options);
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('ann'),
+    Spec.list('args'),
+  ])
+
+  longDescription(level) {
+    return `an application annotation with `;
+  }
+
+  pretty() {
+    return P.horz(P.txt("provide *"));
+  }
+
+  render(props) {
+		// let typeArgument = "<" + String(this.args) + ">";
+    return <Node node={this} {...props}>
+      <span>provide *</span>
     </Node>
   }
 }

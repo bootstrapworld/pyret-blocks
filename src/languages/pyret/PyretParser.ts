@@ -1,6 +1,7 @@
 import * as TOK from "./pyret-lang/pyret-tokenizer.js";
 import * as P from "./pyret-lang/pyret-parser.js";
 import * as TR from "./pyret-lang/translate-parse-tree.js";
+import PRIMITIVES_CONFIG from './primitives-config';
 import {
   AST,
   ASTNode,
@@ -44,6 +45,7 @@ import {Binop,
   IfElseExpression,
   IfPipeElseExpression,
   AnnotationApp,
+  ProvideAll,
 } from "./ast";
 
 export interface Position {
@@ -77,33 +79,48 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // ----------------------------------------------------------------------
 // getBackgroundColor():: Bind, Expr -> VOID
 // Function used to assign the color type of each block in Block Pyret
-function getBackgroundColor(id: Bind, rhs: Expr) {
-	let dataType = String(id);
+function getBackgroundColor(rhs: Expr) {
 	let fixedSizeDataTypes = ["number", "string", "boolean"];
-	let nonFixedSizeDataTypes = {
-		"a-method": "untyped", 
-		"a-binop": "binop", 
-	}
-	// console.log(`%c ${rhs.type}`, "background-color: red");
-	// console.log(`%c ${id}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
+	// console.log(`%c ${rhs.type}`, "background-color: red");
+	
+	function getReturnType(name){
+		var results;
+		PRIMITIVES_CONFIG.primitives.forEach(element => {
+			if (element.name === name){
+				results = element;
+			}
+		})
+		console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
+		return results.returnType.toLowerCase();
+	}
+
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
 		return rhs.dataType;
 	}
 	else if (rhs.type === "constructor"){
 		return "constructor";
 	}
-	else if (Object.keys(nonFixedSizeDataTypes).includes(dataType)){
-		return nonFixedSizeDataTypes[dataType];
+	else if (rhs.type === "binop"){
+		return getReturnType(rhs.op.value);
 	}
-	// else if (rhs.dataType === undefined){
+	else if (rhs.type === "funApp"){
+		return (rhs.func.value.value) ? getReturnType(rhs.func.value.value) : "untyped";
+	}
 	else{
 		return "untyped";
 	}
 }
 
-function getConstructBackgroundColor(values: any[]) {
-	let bgcClassName = "untyped";
+function getConstructorBackgroundColor(values: any[]) {
+  let bgcClassName = "untyped";
+  
+  if (values === undefined || values.length == 0) {
+    return bgcClassName;
+  }
+
 	let typingIsConsistent = true;
 	values.forEach(element => {
 		if (element.dataType !== values[0].dataType){
@@ -112,7 +129,7 @@ function getConstructBackgroundColor(values: any[]) {
 	})
 
 	if (typingIsConsistent){
-		bgcClassName = getBackgroundColor(null, values[0]);
+		bgcClassName = getBackgroundColor(values[0]);
 	}
 	return bgcClassName;
 }
@@ -230,7 +247,10 @@ const nodeTypes = {
   // data Provide
 	// "s-provide": function(pos: Loc, block: ASTNode) { },
   // "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
-  // "s-provide-all": function(pos: Loc) {},
+   "s-provide-all": function(pos: Loc) {
+     console.log('found a provide all!')
+     return new ProvideAll(pos.from, pos.to, "provide-all");
+   },
   "s-provide-none": function(_pos: Loc) { return null; },
 
   // data ProvideTypes
@@ -346,7 +366,7 @@ const nodeTypes = {
   "s-var": function(l: Loc, name: Bind, value: Expr) {
     let options = {};
     options['aria-label'] = `${name}, a variable definition`;
-		let bgcClassName = getBackgroundColor(name, value);
+		let bgcClassName = getBackgroundColor(value);
     return new Var(l.from, l.to, idToLiteral(name), value, bgcClassName, options);
   },
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
@@ -354,7 +374,7 @@ const nodeTypes = {
     if(DEBUG) console.log(arguments);
     let options = {};
     options['aria-label'] = `${id}, a value definition`;
-		let bgcClassName = getBackgroundColor(id, rhs);
+		let bgcClassName = getBackgroundColor(rhs);
 
     return new Let(
       pos.from,
@@ -471,7 +491,7 @@ const nodeTypes = {
   "s-construct": function (pos: Loc, modifier: any, constructor: any, values: any[]) {
     if(DEBUG) console.log(arguments);
 		
-		let bgcClassName = getConstructBackgroundColor(values);
+		let bgcClassName = getConstructorBackgroundColor(values);
     return new Construct(
       pos.from, pos.to, modifier, constructor, values, bgcClassName, { 'aria-label': `${constructor} with values ${values}` }
     );
@@ -594,14 +614,13 @@ const nodeTypes = {
 		elems.map((aCell, index) => {
 			let aNode;
 			if (aCell.construktor){
-				let bgcClassName = getConstructBackgroundColor(aCell.values);
+				let bgcClassName = getConstructorBackgroundColor(aCell.values);
 				aNode = new Construct(aCell.from, aCell.to, aCell.modifier, aCell.construktor, aCell.values, bgcClassName, 
 					{ 'aria-label': `${aCell.construktor} with values ${aCell.values}` });
 			}
 			else{
 				aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});
 			}
-
 			nodes.push(aNode);
 		});
 
@@ -635,6 +654,10 @@ const nodeTypes = {
   // data FieldName
   // examples of this _other have been ABlank...
   's-field-name': function(pos: Loc, name: string, _other: any) {
+    console.log("Field Name -----------------");
+    console.log(pos);
+    console.log(name);
+    console.log(_other);
     if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
       pos.from, pos.to, name, 'field-name', {'aria-label': `${name}, a column`}
@@ -783,6 +806,7 @@ function inputs_to_fun(args: Bind[]): string {
 function makeNode(nodeType: string) {
   const args = Array.prototype.slice.call(arguments, 1);
   const constructor = nodeTypes[nodeType];
+  console.log('node:', nodeType);
   if (constructor === undefined) {
     console.log("Warning: node type", nodeType, "NYI");
     return;
@@ -846,11 +870,14 @@ export default class PyretParser {
   //       See `pyret-lang/src/js/trove/parse-pyret.js`.
   parse(text: string) {
     // Tokenize
+    console.log('text to be parsed:', text);
+    console.trace();
     const tokenizer = TOK.Tokenizer;
     tokenizer.tokenizeFrom(text);
     // Parse
     console.log("@going to parse");
     const parsed = P.PyretGrammar.parse(tokenizer);
+    console.log('parsed:', parsed);
     if (parsed) {
       console.log("@valid parse");
       // Count parse trees
@@ -860,8 +887,10 @@ export default class PyretParser {
         // Construct parse tree
         const parseTree = P.PyretGrammar.constructUniqueParse(parsed);
         console.log("@reconstructed unique parse");
+        console.log('pt:', parseTree);
         // Translate parse tree to AST
         const ast = translateParseTree(parseTree, "<editor>.arr");
+        console.log(ast);
         return ast;
       } else {
         throw "Multiple parses";
