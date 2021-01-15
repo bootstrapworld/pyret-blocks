@@ -3,6 +3,7 @@
 
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
+import { render } from 'react-dom';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
@@ -102,7 +103,7 @@ export class Func extends AST.ASTNode {
   doc: AST.ASTNode | null;
   // doc: string | null;
   body: AST.ASTNode;
-  block: boolean
+  block: boolean;
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
     super(from, to, 'funDef', options);
@@ -121,6 +122,8 @@ export class Func extends AST.ASTNode {
     Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block'),
+    Spec.value('onDragOver'),
+    Spec.value('onDragEnd')
   ])
 
   longDescription(level) {
@@ -145,6 +148,28 @@ export class Func extends AST.ASTNode {
             P.horz(INDENT, this.body),
              "end"));
   }
+  onDragOver(e){
+    //this.setState({ hover: true });
+    /*
+    var target = e.target;
+    console.log('enter', target);
+    if(target.classList.contains('blocks-func-body'))
+    {
+      e.target.classList.add('blocks-hover');
+      console.log('dragging over', this, target, e.sender );
+    } 
+    */
+  };
+  onDragEnd = function(e){
+    var target = e.target;
+    console.log('exit', target);
+    while(!target.classList.contains('blocks-func-body'))
+    {
+        target = target.parentNode;
+    }
+    target.classList.remove('blocks-hover');
+    console.log('dragging end', target);
+  };
 
   render(props) {
     // TODO: show doc
@@ -154,43 +179,32 @@ export class Func extends AST.ASTNode {
     // let docDOM = <span>
     //   doc: {name} {this.doc}
     // </span>
+    
     let args = <Args field="args">{this.args}</Args>;
 		let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     const NEWLINE = <br />;
+    let bodyClass = "blocks-func-body"; //+ (this.state.hover ? " blocks-hover" : "");
+
     return (
-      <Node node={this} {...props}>
+      <Node node={this} {...props} onDragEnter={() => console.log('A')}>
 				<span className="blocks-func">
 					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}
           <div className="blocks-doc-string">
           doc: {doc}
           </div>
 				</span>
-        <span className="blocks-func-body">
-          {body}
+        <span onDragLeave={this.onDragEnd}>
+          <span className={bodyClass} >
+            {body}
+          </span>
         </span>
         <span className="blocks-func-footer" id="blocks-style-footer">
           end
         </span>
       </Node>
     );
-    /*
-    let name = this.name.reactElement();
-    let body = this.body.reactElement();
-    let args = <Args field="args">{this.args}</Args>;
-    let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;->&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
-    </span>;
-    return (
-      <Node node={this} {...props}>
-        <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:
-        </span>
-        {body}
-      </Node>
-    );
-    */
   }
 }
 

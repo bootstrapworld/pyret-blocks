@@ -18,7 +18,7 @@ const DELAY = 250;
 
 const smallExampleCode = `
 
-
+provide *
 
 [list-set: ]
 
@@ -43,6 +43,12 @@ b = 3.foo(4)
 c = sqrt(4)
 num = string-length("abc")
 aString = string-append("hello", "world")
+
+fun add(n :: Number) -> Number:
+  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
+  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
+  x
+end
 
 #|
 
@@ -80,11 +86,7 @@ fun add(n :: Number, s :: String) -> Number:
   n
 end
 
-fun add(n :: Number) -> Number:
-  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
-  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
-  x
-end
+
 
 fun test(n :: Number) -> Number: doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhh" n end
 

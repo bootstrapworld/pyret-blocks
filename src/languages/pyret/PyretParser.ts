@@ -246,7 +246,10 @@ const nodeTypes = {
   // data Provide
 	// "s-provide": function(pos: Loc, block: ASTNode) { },
   // "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
-  // "s-provide-all": function(pos: Loc) {},
+   "s-provide-all": function(pos: Loc) {
+     console.log('found a provide all!')
+     return new Nodes.Literal(pos.from, pos.to, "provide *", "provide-all");
+   },
   "s-provide-none": function(_pos: Loc) { return null; },
 
   // data ProvideTypes
@@ -802,6 +805,7 @@ function inputs_to_fun(args: Bind[]): string {
 function makeNode(nodeType: string) {
   const args = Array.prototype.slice.call(arguments, 1);
   const constructor = nodeTypes[nodeType];
+  console.log('node:', nodeType);
   if (constructor === undefined) {
     console.log("Warning: node type", nodeType, "NYI");
     return;
@@ -865,11 +869,14 @@ export default class PyretParser {
   //       See `pyret-lang/src/js/trove/parse-pyret.js`.
   parse(text: string) {
     // Tokenize
+    console.log('text to be parsed:', text);
+    console.trace();
     const tokenizer = TOK.Tokenizer;
     tokenizer.tokenizeFrom(text);
     // Parse
     console.log("@going to parse");
     const parsed = P.PyretGrammar.parse(tokenizer);
+    console.log('parsed:', parsed);
     if (parsed) {
       console.log("@valid parse");
       // Count parse trees
@@ -879,8 +886,10 @@ export default class PyretParser {
         // Construct parse tree
         const parseTree = P.PyretGrammar.constructUniqueParse(parsed);
         console.log("@reconstructed unique parse");
+        console.log('pt:', parseTree);
         // Translate parse tree to AST
         const ast = translateParseTree(parseTree, "<editor>.arr");
+        console.log(ast);
         return ast;
       } else {
         throw "Multiple parses";
