@@ -32,7 +32,11 @@ var a-mutable-construktor = [list: "a"]
 
 a-two-d-list = [list: [list: "a"]]
 another-two-d-list = [list: 3, [list: "a"]]
-
+fun add(n :: Number) -> Number:
+  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
+  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
+  x
+end
 
 a-binop = 1 + 3
 another-binop = 1 * 3
@@ -42,12 +46,14 @@ c = sqrt(4)
 num = string-length("abc")
 aString = string-append("hello", "world")
 
-
+vert = sqrt(sqrt(sqrt(4)))
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
   row: "E", 13, "red"
 end
+
+
 
 #|
 
@@ -68,11 +74,7 @@ end
 [list-set: ]
 
 
-fun add(n :: Number) -> Number:
-  doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
-  x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
-  x
-end
+
 
 load-table: name, age, favorite-color
   source: imported-my-table
