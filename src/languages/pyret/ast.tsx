@@ -1333,7 +1333,7 @@ export class Table extends AST.ASTNode {
   rows: AST.ASTNode[] | null;
   
   constructor(from, to, headers, rows, options) {
-    super(from, to, 's-table', options);
+		super(from, to, 's-table', options);
     this.headers = headers;
     this.rows = rows;
     // let rowBranches = this.rows.map((rowBranches, index) => console.log(rowBranches));
@@ -1342,21 +1342,21 @@ export class Table extends AST.ASTNode {
     
 
 		// console.log(`%c ${JSON.stringify(this.headers, null, 2)}`, 'background-color: purple');
-		// console.log(`%c ${JSON.stringify(this.rows, null, 2)}`, 'background-color: blue');
+		// console.log(`%c ${JSON.stringify(this.rows[0], null, 2)}`, 'background-color: blue');
 
 		// console.log(`%c ${this.headers}`, 'background-color: purple');
-    // console.log(`%c ${this.rows}`, 'background-color: blue');
+		// console.log(`%c ${this.rows}`, 'background-color: blue');
     
     // console.log(`%c ${JSON.stringify(this.headers, null, 2)}`);
     // console.log(`%c ${JSON.stringify(this.rows, null, 2)}`);
     
-    console.log("Headers");
-		console.log(`%c ${this.headers}`);
-    console.log("Rows:")
-    console.log(`%c ${this.rows}`);
+    // console.log("Headers");
+		// console.log(`%c ${this.headers}`);
+    // console.log("Rows:")
+    // console.log(`%c ${this.rows}`);
 
-		console.log(this.headers);
-		console.log(this.rows);
+		// console.log(this.headers);
+		// console.log(this.rows);
   }
 
   static spec = Spec.nodeSpec([
@@ -1377,9 +1377,9 @@ export class Table extends AST.ASTNode {
     let branches = P.sepBy(this.headers, ", ", "");
     let rowBranches = P.sepBy(this.rows, " ", "");
     // let rowBranches = P.sepBy(this.rows, ", ", "");
-    console.log(this.rows[0]);
-    console.log(branches);
-    console.log(rowBranches);
+    // console.log(this.rows[0]);
+    // console.log(branches);
+    // console.log(rowBranches);
     return P.ifFlat(
       P.horz(prefix, " ", branches, " ", rowBranches, " ", suffix),
       P.vert(header, P.horz(INDENT, rowBranches), suffix)
@@ -1388,7 +1388,24 @@ export class Table extends AST.ASTNode {
 
   render(props) {
 		let headerBranches = this.headers.map((branch, index) => <th key={index}> {branch.reactElement()} </th>);
-		let rowBranches = this.rows.map((branch, index) => <tr key={index}> {branch.reactElement()} </tr>);
+
+		let rowBranches = [];
+		this.rows.forEach((aRow, index) => {
+			let cellElements = [];
+			aRow.elems.forEach((cell, cellIndex) => {
+				cellElements.push(<td key={cellIndex}> {cell.reactElement()} </td>);
+			});
+			let rowElement = <tr key={index}> {cellElements} </tr>
+			rowBranches.push(rowElement);
+    });
+
+		// let rowBranches = this.rows.map((branch, index) => {
+		//   <tr key={index}> {
+		//     console.log(JSON.stringify(branch, null, 2));
+		//     branch.reactElement();
+		//     // branch.map((cell, cellIndex) => cell.reactElement({key: cellIndex}))
+		//   } </tr>
+		// });
 
     return (
       <Node node={this} {...props}>
@@ -1841,13 +1858,12 @@ export class AnnotationApp extends AST.ASTNode {
 
 export class ProvideAll extends AST.ASTNode {
 
-  constructor(from, to, options = {}) {
-    super(from, to, 'provide-stmt', options);
+	constructor(from, to, options = {}) {
+		super(from, to, 'provide-stmt', options);
+		console.log("%c provide all called", "background-color: blue");
   }
 
   static spec = Spec.nodeSpec([
-    Spec.required('ann'),
-    Spec.list('args'),
   ])
 
   longDescription(level) {
@@ -1860,8 +1876,9 @@ export class ProvideAll extends AST.ASTNode {
 
   render(props) {
 		// let typeArgument = "<" + String(this.args) + ">";
+		console.log("%c provide all called from render", "background-color: green");
     return <Node node={this} {...props}>
-      <span>provide *</span>
+      <span>provide hi *</span>
     </Node>
   }
 }

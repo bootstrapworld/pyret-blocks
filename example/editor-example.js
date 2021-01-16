@@ -20,6 +20,28 @@ const smallExampleCode = `
 # provide *
 
 
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
+
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
 [list-set: ]
 
 a-num = 3
@@ -51,7 +73,6 @@ fun add(n :: Number) -> Number:
 end
 
 
-
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
   row: "Alicgsdddddddde", 17, "green"
@@ -74,6 +95,7 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "A", 17, "green"
   row: "E", 13, "red"
 end
+
 
 load-table: name, age, favorite-color
   source: imported-my-table
@@ -137,7 +159,7 @@ a = ask:
 | x == 4 then: 43
 | otherwise: 1
 end
-#|
+
 f = lam(x): x + 1 end\nx = 1\na = x + 1\n 
 
 ask: | x == 3 then: 3| x == 5 then: 5 end
@@ -201,8 +223,6 @@ if x > 5:
 else:
   x
 end
-
-|#
 `;
 
 const useBigCode = false;
