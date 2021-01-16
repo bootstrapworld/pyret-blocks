@@ -598,7 +598,7 @@ const nodeTypes = {
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
 		if(DEBUG) console.log(arguments);
     // console.log("------------ Table Parser -------------");
-		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: red");
+		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: green");
 		// console.log(JSON.stringify(headers, null, 2));
 		// console.log(headers);
     // console.log(rows);
@@ -616,6 +616,8 @@ const nodeTypes = {
 	's-table-row': function(l: Loc, elems: Expr[]) {
     // if(DEBUG) console.log(arguments);
 		let nodes = [];
+		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: red");
+		// console.log(JSON.stringify(elems, null, 2));
 		elems.map((aCell, index) => {
 			let aNode;
 			if (aCell.construktor){
@@ -663,10 +665,18 @@ const nodeTypes = {
     console.log(pos);
     console.log(name);
     console.log(_other);
+
+		let options = {};
+		options['aria-label'] = `${name}, a column`;
+
+		if (_other){
+			// console.log("%c-----------------", "background-color: purple");
+			// console.log(JSON.stringify(_other.value.value, null, 2));
+			options['datatype'] = _other.value.value;
+			name = `${name} :: ${_other.value.value}`;
+		}
     if(DEBUG) console.log(arguments);
-    return new Nodes.Literal(
-      pos.from, pos.to, name, 'field-name', {'aria-label': `${name}, a column`}
-    );
+    return new Nodes.Literal(pos.from, pos.to, name, 'field-name', options);
   },
   
   // data ForBind

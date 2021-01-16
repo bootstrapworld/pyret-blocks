@@ -20,6 +20,29 @@ const smallExampleCode = `
 # provide *
 
 
+a-num = 3
+a-string = "three"
+a-boolean = true
+a-num-constructor = [list: 1, 2, 3]
+a-string-constructor = [list: "a", "b"]
+not-consistent-typing = [list: 1, "a", 3]
+another-variable = foo
+var a-mutable = 3
+var a-mutable-construktor = [list: "a"]
+
+a-two-d-list = [list: [list: "a"]]
+another-two-d-list = [list: 3, [list: "a"]]
+
+
+a-binop = 1 + 3
+another-binop = 1 * 3
+greater-than = 3 < 5
+b = 3.foo(4)
+c = sqrt(4)
+num = string-length("abc")
+aString = string-append("hello", "world")
+
+
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
@@ -44,27 +67,6 @@ end
 
 [list-set: ]
 
-a-num = 3
-a-string = "three"
-a-boolean = true
-a-num-constructor = [list: 1, 2, 3]
-a-string-constructor = [list: "a", "b"]
-not-consistent-typing = [list: 1, "a", 3]
-another-variable = foo
-var a-mutable = 3
-var a-mutable-construktor = [list: "a"]
-
-a-two-d-list = [list: [list: "a"]]
-another-two-d-list = [list: 3, [list: "a"]]
-
-
-a-binop = 1 + 3
-another-binop = 1 * 3
-greater-than = 3 < 5
-b = 3.foo(4)
-c = sqrt(4)
-num = string-length("abc")
-aString = string-append("hello", "world")
 
 fun add(n :: Number) -> Number:
   doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"

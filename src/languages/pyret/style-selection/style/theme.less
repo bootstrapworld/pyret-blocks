@@ -1,46 +1,47 @@
 /* Color palette */
 @util-color: #FFB366;
 @mutable-color: #FF6961;
-@number-color: #735843;
-@string-color: #77dd77;
+@number-color: #77dd77;
+@string-color: #735843;
 @boolean-color: #B378D3;
-@binop-color: #878787;
+@binop-color: #FFD0FF;
 @constructor-color: #8080FF;
-@untyped-color: #FFD0FF;
+@untyped-color: #878787;
 
 .util{ 
-	.blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-constructor, .blocks-var>span, .blocks-let>span{
 		background-color: @util-color; 
 	}
 }
 .mutable{ 
-	.blocks-constructor, .blocks-var, .blocks-s-var:after{
+	/* .blocks-constructor, .blocks-var, .blocks-s-var:after{ */
+	.blocks-constructor, .blocks-var > span:first-child{
 		background-color: @mutable-color; 
 	}
 }
 .number{ 
-	.blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-constructor, .blocks-var>span, .blocks-let>span{
 		background-color: @number-color; 
 	}
 }
 .string{ 
-	.blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-constructor, .blocks-var>span, .blocks-let>span{
 		background-color: @string-color; 
 	}
 }
 .boolean{ 
-	.blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-constructor, .blocks-var, .blocks-let>span{
 		background-color: @boolean-color; 
 	}
 }
 .binop{ 
-	.blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-constructor, .blocks-var, .blocks-let>span{
 		background-color: @binop-color; 
 	}
 }
 .constructor{ 
 	/* .blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{ */
-	.blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-var>span, .blocks-let > span:first-child{
 		background: @constructor-color; 
 	}
 }
