@@ -406,7 +406,7 @@ export class Var extends AST.ASTNode {
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
 					<span className={"blocks-var"}>
-						VAR {this.ident.reactElement()} = {this.rhs.reactElement()}
+						VAR &nbsp;{this.ident.reactElement()} &nbsp;=&nbsp;{this.rhs.reactElement()}
 					{/* <span className="blocks-args">
 						<Args>{[this.ident, this.rhs]}</Args>
 					</span> */}
