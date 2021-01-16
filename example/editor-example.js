@@ -17,9 +17,9 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
-provide *
+# provide *
 
-#|
+
 [list-set: ]
 
 a-num = 3
@@ -137,7 +137,7 @@ a = ask:
 | x == 4 then: 43
 | otherwise: 1
 end
-
+#|
 f = lam(x): x + 1 end\nx = 1\na = x + 1\n 
 
 ask: | x == 3 then: 3| x == 5 then: 5 end

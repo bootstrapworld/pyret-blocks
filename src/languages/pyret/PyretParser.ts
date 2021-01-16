@@ -45,7 +45,7 @@ import {Binop,
   IfExpression,
   IfElseExpression,
   IfPipeElseExpression,
-  AnnotationApp,
+  AnnotationApp
 } from "./ast";
 
 export interface Position {
@@ -94,7 +94,7 @@ function getBackgroundColor(rhs: Expr) {
 			}
 		})
 		console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
-		return results.returnType.toLowerCase();
+		return results ? results.returnType.toLowerCase() : "untyped";
 	}
 
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
@@ -251,10 +251,12 @@ const nodeTypes = {
      console.log('------------------------ Provide -------------------------');
      console.log(pos);
      console.log('found a provide all!');
-     return new Nodes.Literal(pos.from, pos.to, "A", 'operator', {'aria-label': ``});
+    //  return new Nodes.Literal(pos.from, pos.to, "A", 'operator', {'aria-label': ``});
       // return new ProvideAll(pos.from, pos.to, {'aria-label': `provide all`});
 
      // return new Nodes.Literal(pos.from, pos.to, "provide *", "string", {'aria-label': `provide all`});
+     console.log('found a provide all!')
+     return new ProvideAll(pos.from, pos.to, "provide-all");
    },
   "s-provide-none": function(_pos: Loc) {
     return null;

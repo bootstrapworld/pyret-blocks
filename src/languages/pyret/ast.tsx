@@ -1179,32 +1179,32 @@ export class Include extends AST.ASTNode {
   }
 }
 
-export class ProvideAll extends AST.ASTNode{
+// export class ProvideAll extends AST.ASTNode{
 
-  constructor(from, to, options = {}) {
-    super(from, to, 's-provide-all', options);
-  }
+//   constructor(from, to, options = {}) {
+//     super(from, to, 's-provide-all', options);
+//   }
 
-  static spec = Spec.nodeSpec([
-    // Spec.required('mod'),
-  ]);
+//   static spec = Spec.nodeSpec([
+//     // Spec.required('mod'),
+//   ]);
 
-  longDescription(level) {
-    return `provide all statement`;
-  }
+//   longDescription(level) {
+//     return `provide all statement`;
+//   }
 
-  pretty() {
-    return P.horz("provide *");
-  }
+//   pretty() {
+//     return P.horz("provide *");
+//   }
 
-  render(props) {
+//   render(props) {
 
-    console.log("provde all !!!!!!!!");
-    return( <Node node={this} {...props}>
-      <span className="blocks-provide-all">provide *</span>
-    </Node>)
-  }
-}
+//     console.log("provde all !!!!!!!!");
+//     return( <Node node={this} {...props}>
+//       <span className="blocks-provide-all">provide *</span>
+//     </Node>)
+//   }
+// }
 
 export class SpecialImport extends AST.ASTNode {
   func: AST.ASTNode;
@@ -1387,19 +1387,17 @@ export class Table extends AST.ASTNode {
   }
 
   render(props) {
-    let branches = this.headers.map((branch, index) => branch.reactElement({key: index}));
-		let rowBranches = this.rows.map((rowBranches, index) => rowBranches.reactElement({key: index}));
+		let headerBranches = this.headers.map((branch, index) => <th key={index}> {branch.reactElement()} </th>);
+		let rowBranches = this.rows.map((branch, index) => <tr key={index}> {branch.reactElement()} </tr>);
+
     return (
       <Node node={this} {...props}>
-        <span className="blocks-header">
-					table: 
-        </span>
-        <div className="blocks-cond-table">
-          {branches}
-        </div>
-        <div className="blocks-cond-table">
-          {rowBranches}
-        </div>
+				<span className="blocks-table">
+					<table>
+						<tr>{headerBranches}</tr> 
+						{rowBranches}
+					</table>
+				</span>
       </Node>
     );
   }
@@ -1435,12 +1433,10 @@ export class ATableRow extends AST.ASTNode {
 	}
 
 	render(props) {
-		let branches = this.elems.map((branch, index) => branch.reactElement({key: index}));
+		let branches = this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
 		return (
 			<Node node={this} {...props}>
-				<div className="blocks-cond-table">
-					{branches}
-				</div>
+				{branches}
 			</Node>
 		);
 	}
@@ -1839,6 +1835,33 @@ export class AnnotationApp extends AST.ASTNode {
       <span className="blocks-a-app">{this.ann.reactElement()}
 		{"<"} <Args field="args">{this.args}</Args> {">"}
       </span>
+    </Node>
+  }
+}
+
+export class ProvideAll extends AST.ASTNode {
+
+  constructor(from, to, options = {}) {
+    super(from, to, 'provide-stmt', options);
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('ann'),
+    Spec.list('args'),
+  ])
+
+  longDescription(level) {
+    return `an application annotation with `;
+  }
+
+  pretty() {
+    return P.horz(P.txt("provide *"));
+  }
+
+  render(props) {
+		// let typeArgument = "<" + String(this.args) + ">";
+    return <Node node={this} {...props}>
+      <span>provide *</span>
     </Node>
   }
 }

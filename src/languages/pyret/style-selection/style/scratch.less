@@ -963,7 +963,7 @@
 
     // clip-path: @start-finish-path;
     // clip-path:  @insert-output-path;
-    clip-path: @input-shiftout-path;
+    // clip-path: @input-shiftout-path;
     padding: 1rem;
 		text-align: left;
     display: block;
@@ -974,6 +974,7 @@
   .blocks-s-for {
     position: relative;
     text-align: left;
+    height: 100%;
   }
   
   .blocks-s-for:after {
@@ -1006,13 +1007,30 @@
   }
 
   .blocks-for-bind {
+
     background: white;
+    border-radius: 3px;
     color:blue;
+
   }
 
   .blocks-s-for-bind {
-
+    padding-left: 0;
   }
+
+	.blocks-table{
+		table{
+			table-layout: fixed;
+			/* width: 50%; */
+		}
+		th, td{
+			/* width: 100%; */
+		}
+		table, th, td{
+			border: 1px solid black;
+			/* background-color: red; */
+		}
+	}
   
 
 }
