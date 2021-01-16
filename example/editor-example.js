@@ -20,6 +20,28 @@ const smallExampleCode = `
 
 provide *
 
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
+#|
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
 [list-set: ]
 
 a-num = 3
@@ -48,28 +70,6 @@ fun add(n :: Number) -> Number:
   doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhhh Performance of an unreleased song called"
   x = n + 1 + 5 + 6 + 7 + 7 + 7 + 1 + 7 + 7 + 7 + 1
   x
-end
-
-#|
-
-table: name :: String, age :: Number, favorite-color :: String
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-end
-
-table: name :: String, age :: Number, favorite-color :: String
-  row: "B", 12, "blue"
-  row: "A", 17, "green"
-  row: "E", 13, "red"
 end
 
 load-table: name, age, favorite-color

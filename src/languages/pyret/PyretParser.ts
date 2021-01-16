@@ -246,12 +246,15 @@ const nodeTypes = {
 
   // data Provide
 	// "s-provide": function(pos: Loc, block: ASTNode) { },
-  // "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
-   "s-provide-all": function(pos: Loc) {
-     console.log('found a provide all!')
-     return new ProvideAll(pos.from, pos.to, "provide-all");
-   },
-  "s-provide-none": function(_pos: Loc) { return null; },
+	// "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
+	"s-provide-all": function(pos: Loc) {
+		console.log('found a provide all!')
+		console.log("%c !!!!!!!!!!!!!!", "background-color: red");
+		let options = {};
+		options['aria-label'] = `provides all`;
+		return new ProvideAll(pos.from, pos.to, options);
+	},
+	"s-provide-none": function(_pos: Loc) { return null; },
 
   // data ProvideTypes
   // "s-provide-types": function(pos: Loc, ann: AField[]) {},
@@ -593,11 +596,13 @@ const nodeTypes = {
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
-    // if(DEBUG) console.log(arguments);
-    console.log("------------ Table Parser -------------");
-    console.log(headers);
-    console.log(rows);
-    console.log("-------------------------");
+		if(DEBUG) console.log(arguments);
+    // console.log("------------ Table Parser -------------");
+		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: red");
+		// console.log(JSON.stringify(headers, null, 2));
+		// console.log(headers);
+    // console.log(rows);
+    // console.log("-------------------------");
 		return new Table(l.from, l.to, headers, rows, {'aria-label': `table`});
 	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
