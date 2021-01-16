@@ -396,7 +396,7 @@
       vertical-align: middle;
       color: white;
     }
-    .blocks-operator-inpEut, .blocks-operator {
+    .blocks-operator-input, .blocks-operator {
       margin: 2px;
       display: inline;
       color: white;
@@ -420,10 +420,11 @@
   .blocks-let {
 		background-color: @untyped-color;
     /* border-radius: 5px; */
-    padding: 1rem;
-    
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
     // border: 2px solid black;
-		clip-path: @insert-output-path;
+    clip-path: @insert-output-path;
   }
 
   .blocks-s-let {
@@ -449,7 +450,8 @@
     /* border-radius: 5px; */
     /* padding: 1rem; */
 		border: 1rem solid @var-color;
-		clip-path: @insert-output-path;
+    clip-path: @insert-output-path;
+    padding-bottom: 12px;
   }
 
   .blocks-s-var {
