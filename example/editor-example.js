@@ -20,6 +20,8 @@ const smallExampleCode = `
 # provide *
 
 
+vert = a(b(c(d(e(1)))))
+
 a-num = 3
 a-string = "three"
 a-boolean = true

@@ -94,7 +94,7 @@ function getBackgroundColor(rhs: Expr) {
 			}
 		})
 		console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
-		return results ? results.returnType.toLowerCase() : "untyped";
+		return (results) ? results.returnType.toLowerCase() : "untyped";
 	}
 
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
