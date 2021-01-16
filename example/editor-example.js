@@ -19,6 +19,49 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+[list-set: ]
+
+
+
+
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+
+#|
 
 a-two-d-list = [list: [list: "A", "B", "C"], 2]
 a-two-d-list = [list: [list: 3], [list: "B"]]
@@ -232,6 +275,7 @@ if x > 5:
 else:
   x
 end
+|#
 `;
 
 const useBigCode = false;
