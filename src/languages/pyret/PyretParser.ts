@@ -82,7 +82,7 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 function getBackgroundColor(rhs: Expr) {
 	let fixedSizeDataTypes = ["number", "string", "boolean"];
 	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
-	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
+	console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
 	// console.log(`%c ${rhs.type}`, "background-color: red");
 	
@@ -128,9 +128,7 @@ function getConstructorBackgroundColor(values: any[]) {
 		}
 	})
 
-	if (typingIsConsistent){
-		bgcClassName = getBackgroundColor(values[0]);
-	}
+	bgcClassName = (typingIsConsistent) ? getBackgroundColor(values[0]) : "";
 	return bgcClassName;
 }
 // ----------------------------------------------------------------------

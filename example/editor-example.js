@@ -20,6 +20,12 @@ const smallExampleCode = `
 
 provide *
 
+a-two-d-list = [list: [list: "A", "B", "C"], 2]
+a-two-d-list = [list: [list: 3], [list: "B"]]
+a-two-d-list = [list: [list: "a"], [list: "B"]]
+a-two-d-list = [list: 1, [list: "A", "B", "C"], 2]
+
+
 vert = a(b(c(d(e(1)))))
 
 a-num = 3
