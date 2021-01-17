@@ -1400,7 +1400,7 @@ export class Table extends AST.ASTNode {
 			aRow.elems.forEach((cell, cellIndex) => {
 				// console.log(`%c ---------------------------`, "background-color: red");
 				// console.log(cell);
-				cellElements.push(<td key={cellIndex}> {cell.reactElement()} </td>);
+				cellElements.push(cell.reactElement({key: cellIndex}));
 			});
 			let rowElement = <tr key={index}> {cellElements} </tr>
 			rowBranches.push(rowElement);
