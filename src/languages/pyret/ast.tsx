@@ -1399,6 +1399,20 @@ export class Table extends AST.ASTNode {
 			rowBranches.push(rowElement);
     });
 
+    let columnBranches = this.headers.map((branch, index) => {
+      let colType = "untyped";
+      let strBranch = String(branch).split(" ");
+      if (strBranch.length == 3) {
+        colType = strBranch[2]
+        if (colType.includes("<") || colType.includes(">")) {
+          colType = "constructor";
+          // let startPos = colType.indexOf('<');
+          // colType = colType.substring(0, startPos);
+        }
+      }
+      return(<col key={index} className={colType.toLowerCase()}/>);
+    })
+
 		// let rowBranches = this.rows.map((branch, index) => {
 		//   <tr key={index}> {
 		//     console.log(JSON.stringify(branch, null, 2));
@@ -1411,6 +1425,9 @@ export class Table extends AST.ASTNode {
       <Node node={this} {...props}>
 				<span className="blocks-table">
 					<table>
+          <colgroup>
+            {columnBranches}
+          </colgroup>
 						<tr className="blocks-table-header">{headerBranches}</tr> 
 						{rowBranches}
 					</table>

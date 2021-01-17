@@ -595,12 +595,13 @@ const nodeTypes = {
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
 		if(DEBUG) console.log(arguments);
-    // console.log("------------ Table Parser -------------");
+    console.log("------------ Table Parser -------------");
 		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: green");
 		// console.log(JSON.stringify(headers, null, 2));
 		// console.log(headers);
     // console.log(rows);
     // console.log("-------------------------");
+    console.log(headers);
 		return new Table(l.from, l.to, headers, rows, {'aria-label': `table`});
 	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
@@ -663,15 +664,33 @@ const nodeTypes = {
     console.log(pos);
     console.log(name);
     console.log(_other);
+    // console.log(_other.ann);
+    // console.log(_other.args);
 
 		let options = {};
 		options['aria-label'] = `${name}, a column`;
 
 		if (_other){
 			// console.log("%c-----------------", "background-color: purple");
-			// console.log(JSON.stringify(_other.value.value, null, 2));
-			options['datatype'] = _other.value.value;
-			name = `${name} :: ${_other.value.value}`;
+      // console.log(JSON.stringify(_other.value.value, null, 2));
+      if (_other.value){
+        options['datatype'] = _other.value.value;
+        name = `${name} :: ${_other.value.value}`;
+      }else{
+        console.log("No value field");
+        let header = _other.ann.value.value;
+        let temp = "";
+        let body = _other.args.map((branch, index) => {
+            return(branch.value.value);
+        });
+
+        let type = header + "<" + body.join() + ">";
+
+        console.log(type);
+        options['datatype'] = type;
+        name = `${name} :: ${type}`;
+      }
+
 		}
     if(DEBUG) console.log(arguments);
     return new Nodes.Literal(pos.from, pos.to, name, 'field-name', options);

@@ -19,13 +19,21 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: [list: "B"], 12, "blue"
+  row: [list: "A"], 17, "green"
+  row: [list: "E"], 13, "red"
+end
+
+[...: 1, 2]
+
+#|
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
   row: "E", 13, "red"
 end
 
-#|
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
   row: "Alicgsdddddddde", 17, "green"
