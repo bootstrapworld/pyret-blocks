@@ -21,9 +21,7 @@ const smallExampleCode = `
 
 [list: 1, [list: 1, 2, 3], 3]
 
-[list: 1] + [list: 2]
 
-#|
 
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
@@ -31,13 +29,32 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
+
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: [list: "B"], 12, "blue"
+  row: [list: "A"], 17, "green"
+  row: [list: "E"], 13, "red"
+end
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+#|
+
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
 end
-
-
-
-
 
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
@@ -46,31 +63,13 @@ load-table: name :: String, age :: Number, favorite-color :: String
   sanitize favorite-color using DS.string-sanitizer
 end
 
-table: name :: List<String>, age :: Number, favorite-color :: String
-  row: [list: "B"], 12, "blue"
-  row: [list: "A"], 17, "green"
-  row: [list: "E"], 13, "red"
-end
-
 [...: 1, 2]
 
 [raw-row: {"city"; "NYC"}, {"pop"; 8500000}]
 
 
 
-table: name :: String, age :: Number, favorite-color :: String
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-end
+
 
 [list-set: ]
 

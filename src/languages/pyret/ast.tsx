@@ -1398,17 +1398,20 @@ export class Table extends AST.ASTNode {
   }
 
   render(props) {
-		let headerBranches = this.headers.map((branch, index) => <th key={index} className={branch.options.bgcClassName}> {branch.reactElement()} </th>);
+    let headerBranches = <Args>{this.headers}</Args>;
+    // let headerBranches = this.headers.map((branch, index) => <th key={index} className={branch.options.bgcClassName}> {branch.reactElement()} </th>);
 
 		let rowBranches = [];
 		this.rows.forEach((aRow, index) => {
 			let cellElements = [];
 			aRow.elems.forEach((cell, cellIndex) => {
 				// console.log(`%c ---------------------------`, "background-color: red");
-				// console.log(cell);
+        // console.log(cell);
+        
 				cellElements.push(cell.reactElement({key: cellIndex}));
-			});
-			let rowElement = <tr key={index} draggable="true"> {cellElements} </tr>
+      });
+      console.log(aRow);
+			let rowElement = <tr key={index} draggable="true"> <Args>{aRow.elems}</Args> </tr>
 			rowBranches.push(rowElement);
     });
 
@@ -1423,7 +1426,7 @@ export class Table extends AST.ASTNode {
           // colType = colType.substring(0, startPos);
         }
       }
-      return(<col key={index} className={colType.toLowerCase()}/>);
+      return(<col key={index} span={2} className={colType.toLowerCase()}/>);
     });
 
     return (
@@ -1433,7 +1436,7 @@ export class Table extends AST.ASTNode {
           <colgroup>
             {columnBranches}
           </colgroup>
-						<tr className="blocks-table-header">{headerBranches}</tr> 
+						<tr className="blocks-table-header">{headerBranches}</tr>
             {rowBranches}
 					</table>
 				</span>

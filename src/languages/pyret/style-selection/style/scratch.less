@@ -1118,19 +1118,26 @@
 
 			tr{
 				> span{
-					display: table-cell; 
+          display: table-cell;
+          text-align: center;
+          vertical-align: middle;
+          padding: @w-scale*6px @w-scale*10px;
 				}
-			}
+      }
+      
+      .blocks-drop-target {
+        background-color: white !important;
+      }
     }
 
-    td , th{
-      padding: @w-scale*3px @w-scale*4px;
-      text-align: center;
-      vertical-align: middle;
+    td , th,
+    .blocks-literal{
+      // padding: @w-scale*6px @w-scale*10px;
+
     }
 
     tr:not(:first-child):nth-child(odd){
-      background-color: #fff;
+      background-color: #ddd;
      }
   }
   
