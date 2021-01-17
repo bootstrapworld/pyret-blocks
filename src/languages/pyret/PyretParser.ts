@@ -491,7 +491,9 @@ const nodeTypes = {
   // "s-array": function(l: Loc, values: Expr[]) {},
   "s-construct": function (pos: Loc, modifier: any, constructor: any, values: any[]) {
     if(DEBUG) console.log(arguments);
-		
+    console.log("-------------------- Constructor ---------------");
+    console.log(constructor);
+    console.log(values);
 		let bgcClassName = getConstructorBackgroundColor(values);
     return new Construct(
       pos.from, pos.to, modifier, constructor, values, bgcClassName, { 'aria-label': `${constructor} with values ${values}` }
@@ -599,7 +601,7 @@ const nodeTypes = {
 		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: green");
 		// console.log(JSON.stringify(headers, null, 2));
 		// console.log(headers);
-    // console.log(rows);
+    console.log(rows);
     // console.log("-------------------------");
     console.log(headers);
 		return new Table(l.from, l.to, headers, rows, {'aria-label': `table`});
@@ -614,23 +616,27 @@ const nodeTypes = {
   // data TableRow
 	's-table-row': function(l: Loc, elems: Expr[]) {
     // if(DEBUG) console.log(arguments);
-		let nodes = [];
+    let nodes = [];
+    console.log("------------- TABLE ROW --------------------");
+    console.log(elems);
 		// console.log("%c !!!!!!!!!!!!!!!!", "background-color: red");
-		// console.log(JSON.stringify(elems, null, 2));
-		elems.map((aCell, index) => {
-			let aNode;
-			if (aCell.construktor){
-				let bgcClassName = getConstructorBackgroundColor(aCell.values);
-				aNode = new Construct(aCell.from, aCell.to, aCell.modifier, aCell.construktor, aCell.values, bgcClassName, 
-					{ 'aria-label': `${aCell.construktor} with values ${aCell.values}` });
-			}
-			else{
-				aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});
-			}
-			nodes.push(aNode);
-		});
+    // console.log(JSON.stringify(elems, null, 2));
+    
 
-		return new ATableRow(l.from, l.to, nodes, {'aria-label': `table-row`});
+		// elems.map((aCell, index) => {
+		// 	let aNode;
+		// 	if (aCell.construktor){
+		// 		let bgcClassName = getConstructorBackgroundColor(aCell.values);
+		// 		aNode = new Construct(aCell.from, aCell.to, aCell.modifier, aCell.construktor, aCell.values, bgcClassName, 
+		// 			{ 'aria-label': `${aCell.construktor} with values ${aCell.values}` });
+		// 	}
+		// 	else{
+		// 		aNode = new Nodes.Literal(aCell.from, aCell.to, aCell.value, aCell.dataType, {'aria-label': `${aCell.value}, a ${aCell.dataType}`});
+		// 	}
+		// 	nodes.push(aNode);
+		// });
+
+		return new ATableRow(l.from, l.to, elems, {'aria-label': `table-row`});
 	},
   
   // data ConstructModifer
@@ -731,7 +737,14 @@ end
   // 's-table-extend-reducer': function(l: Loc, name: string, reducer: Expr, col: Name, ann: Ann) {},
 
   // data LoadTableSpec
-  // 's-sanitize': function(l: Loc, name: Name, sanitizer: Expr) {},
+  's-sanitize': function(l: Loc, name: Name, sanitizer: Expr) {
+    console.log("-------- Sanitize -----------");
+    console.log(l);
+    console.log(name);
+    console.log(sanitizer);
+    
+    return new Nodes.Literal(l.from, l.to, name, 'field-name');
+  },
   's-table-src': function (pos: Loc, source: any) {
     if(DEBUG) console.log(arguments);
     return source;

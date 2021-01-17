@@ -851,6 +851,12 @@ export class LoadTable extends AST.ASTNode {
   }
 }
 
+// Source is handled independently in the Parser
+
+export class Sanitize extends AST.ASTNode {
+
+}
+
 export class Paren extends AST.ASTNode {
   expr: AST.ASTNode;
   constructor(from, to, expr, options) {
@@ -1393,9 +1399,9 @@ export class Table extends AST.ASTNode {
 		this.rows.forEach((aRow, index) => {
 			let cellElements = [];
 			aRow.elems.forEach((cell, cellIndex) => {
-				cellElements.push(<td key={cellIndex}> {cell.reactElement()} </td>);
+				cellElements.push(<td key={cellIndex}> {cell.reactElement()}</td>);
 			});
-			let rowElement = <tr key={index}> {cellElements} </tr>
+			let rowElement = <tr key={index} draggable="true"> {cellElements} </tr>
 			rowBranches.push(rowElement);
     });
 
@@ -1403,7 +1409,7 @@ export class Table extends AST.ASTNode {
       let colType = "untyped";
       let strBranch = String(branch).split(" ");
       if (strBranch.length == 3) {
-        colType = strBranch[2]
+        colType = strBranch[2];
         if (colType.includes("<") || colType.includes(">")) {
           colType = "constructor";
           // let startPos = colType.indexOf('<');
@@ -1411,15 +1417,7 @@ export class Table extends AST.ASTNode {
         }
       }
       return(<col key={index} className={colType.toLowerCase()}/>);
-    })
-
-		// let rowBranches = this.rows.map((branch, index) => {
-		//   <tr key={index}> {
-		//     console.log(JSON.stringify(branch, null, 2));
-		//     branch.reactElement();
-		//     // branch.map((cell, cellIndex) => cell.reactElement({key: cellIndex}))
-		//   } </tr>
-		// });
+    });
 
     return (
       <Node node={this} {...props}>
@@ -1429,7 +1427,7 @@ export class Table extends AST.ASTNode {
             {columnBranches}
           </colgroup>
 						<tr className="blocks-table-header">{headerBranches}</tr> 
-						{rowBranches}
+            {rowBranches}
 					</table>
 				</span>
       </Node>
@@ -1467,7 +1465,8 @@ export class ATableRow extends AST.ASTNode {
 	}
 
 	render(props) {
-		let branches = this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
+    let branches = this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
+    
 		return (
 			<Node node={this} {...props}>
 				{branches}

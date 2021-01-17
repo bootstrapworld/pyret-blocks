@@ -19,6 +19,30 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+[list: 1, 3]
+
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+end
+
+
+#|
+
+
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+
 table: name :: List<String>, age :: Number, favorite-color :: String
   row: [list: "B"], 12, "blue"
   row: [list: "A"], 17, "green"
@@ -27,12 +51,9 @@ end
 
 [...: 1, 2]
 
-#|
-table: name :: String, age :: Number, favorite-color :: String
-  row: "B", 12, "blue"
-  row: "A", 17, "green"
-  row: "E", 13, "red"
-end
+[raw-row: {"city"; "NYC"}, {"pop"; 8500000}]
+
+
 
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
