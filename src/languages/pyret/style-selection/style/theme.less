@@ -9,7 +9,9 @@
 @untyped-color: #878787;
 
 .util{ 
-	.blocks-constructor, .blocks-var>span, .blocks-let>span{
+	.blocks-constructor, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal{
 		background-color: @util-color; 
 	}
 }
@@ -19,34 +21,55 @@
 		background-color: @mutable-color; 
 	}
 }
+th.number{ background-color: @number-color; }
 .number{ 
-	.blocks-constructor, .blocks-var>span, .blocks-let>span{
+	> span.blocks-binop, 
+	.blocks-operator-container, 
+	.blocks-constructor, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal{
 		background-color: @number-color; 
 	}
 }
+th.string{ background-color: @string-color; }
 .string{ 
-	.blocks-constructor, .blocks-var>span, .blocks-let>span{
+	.blocks-constructor, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal{
 		background-color: @string-color; 
 	}
 }
+th.boolean{ background-color: @boolean-color; }
 .boolean{ 
-	.blocks-constructor, .blocks-var, .blocks-let>span{
+	.blocks-constructor, 
+	.blocks-var,
+	.blocks-let>span.blocks-literal{
 		background-color: @boolean-color; 
 	}
 }
+th.binop{ background-color: @binop-color; }
 .binop{ 
-	.blocks-constructor, .blocks-var, .blocks-let>span{
+	.blocks-operator-container, 
+	.blocks-constructor, 
+	.blocks-var, 
+	.blocks-let>span.blocks-literal{
 		background-color: @binop-color; 
 	}
 }
+th.constructor{ background-color: @constructor-color; }
 .constructor{ 
 	/* .blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{ */
-	.blocks-var>span, .blocks-let > span:first-child{
+	.blocks-var>span, 
+	.blocks-let>span:first-child{
 		background: @constructor-color; 
 	}
 }
+th.untyped{ background-color: @untyped-color; }
 .untyped{ 
-	.blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{
+	.blocks-constructor, 
+	.blocks-var, 
+	.blocks-let, 
+	.blocks-s-let:after{
 		background-color: @untyped-color; 
 	}
 }

@@ -79,23 +79,24 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // ----------------------------------------------------------------------
 // getBackgroundColor():: Bind, Expr -> VOID
 // Function used to assign the color type of each block in Block Pyret
+
+function getReturnType(name){
+	var results;
+	PRIMITIVES_CONFIG.primitives.forEach(element => {
+		if (element.name === name){
+			results = element;
+		}
+	})
+	console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
+	return (results) ? results.returnType.toLowerCase() : "untyped";
+}
+
 function getBackgroundColor(rhs: Expr) {
 	let fixedSizeDataTypes = ["number", "string", "boolean"];
 	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
-	console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
+	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
 	// console.log(`%c ${rhs.type}`, "background-color: red");
-	
-	function getReturnType(name){
-		var results;
-		PRIMITIVES_CONFIG.primitives.forEach(element => {
-			if (element.name === name){
-				results = element;
-			}
-		})
-		console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
-		return (results) ? results.returnType.toLowerCase() : "untyped";
-	}
 
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
 		return rhs.dataType;
@@ -247,7 +248,7 @@ const nodeTypes = {
 	// "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
 	"s-provide-all": function(pos: Loc) {
 		console.log('found a provide all!')
-		console.log("%c !!!!!!!!!!!!!!", "background-color: red");
+		// console.log("%c !!!!!!!!!!!!!!", "background-color: red");
 		let options = {};
 		options['aria-label'] = `provides all`;
 		return new ProvideAll(pos.from, pos.to, options);
@@ -435,12 +436,14 @@ const nodeTypes = {
   "s-op": function (pos: Loc, opPos: Loc, op: string, left: Expr, right: Expr) {
     if(DEBUG) console.log(arguments);
     let name = op;
+		let bgcClassName = getReturnType(op);
     return new Binop(
       pos.from,
       pos.to,
       new Nodes.Literal(opPos.from, opPos.to, op, 'operator'),
       left,
       right,
+			bgcClassName,
       {'aria-label': `${name} expression`});
   },
   "s-check-test": function(pos: Loc, check_op: CheckOp, refinement: Expr | null, lhs: Expr, rhs: Expr | null) {
@@ -659,6 +662,7 @@ const nodeTypes = {
   // data FieldName
   // examples of this _other have been ABlank...
   's-field-name': function(pos: Loc, name: string, _other: any) {
+    if(DEBUG) console.log(arguments);
     console.log("Field Name -----------------");
     console.log(pos);
     console.log(name);
@@ -667,13 +671,11 @@ const nodeTypes = {
 		let options = {};
 		options['aria-label'] = `${name}, a column`;
 
-		if (_other){
-			// console.log("%c-----------------", "background-color: purple");
+		if (_other && _other.value){
+			// console.log("%c-----------------", "background-color: purple"
 			// console.log(JSON.stringify(_other.value.value, null, 2));
-			options['datatype'] = _other.value.value;
 			name = `${name} :: ${_other.value.value}`;
 		}
-    if(DEBUG) console.log(arguments);
     return new Nodes.Literal(pos.from, pos.to, name, 'field-name', options);
   },
   

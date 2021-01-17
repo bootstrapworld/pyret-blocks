@@ -20,6 +20,32 @@ const smallExampleCode = `
 
 provide *
 
+x + 3
+y = x + 1
+
+fun test(): 
+x + 3
+end
+
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+
 a-two-d-list = [list: [list: "A", "B", "C"], 2]
 a-two-d-list = [list: [list: 3], [list: "B"]]
 a-two-d-list = [list: [list: "a"], [list: "B"]]
@@ -46,6 +72,8 @@ fun add(n :: Number) -> Number:
   x
 end
 
+#|
+
 a-binop = 1 + 3
 another-binop = 1 * 3
 greater-than = 3 < 5
@@ -63,21 +91,6 @@ end
 
 
 
-#|
-
-table: name :: String, age :: Number, favorite-color :: String
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-end
 
 [list-set: ]
 

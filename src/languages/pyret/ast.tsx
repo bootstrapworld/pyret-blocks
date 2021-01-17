@@ -16,19 +16,22 @@ export class Binop extends AST.ASTNode {
   op: AST.ASTNode;
   left: AST.ASTNode;
   right: AST.ASTNode;
+	bgcClassName: string;
 
-  constructor(from, to, op, left, right, options = {}) {
+  constructor(from, to, op, left, right, bgcClassName, options = {}) {
     super(from, to, 'binop', options);
     // op is just a string, so not a part of children
     this.op = op;
     this.left = left;
     this.right = right;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('op'),
     Spec.required('left'),
     Spec.required('right'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -42,19 +45,21 @@ export class Binop extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-operator-container">
-          <span className="blocks-operator-input">
-            {this.left.reactElement()}  
-          </span>
-          <span className="blocks-operator-text">
-            {this.op.reactElement()}
-          </span>
-          <span className="blocks-operator-input">
-            {this.right.reactElement()}
-          </span>
-        </span>
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-operator-container">
+						<span className="blocks-operator-input">
+							{this.left.reactElement()}  
+						</span>
+						<span className="blocks-operator-text">
+							{this.op.reactElement()}
+						</span>
+						<span className="blocks-operator-input">
+							{this.right.reactElement()}
+						</span>
+					</span>
+				</Node>
+			</span>
     );
   }
 }
@@ -1360,12 +1365,14 @@ export class Table extends AST.ASTNode {
   }
 
   render(props) {
-		let headerBranches = this.headers.map((branch, index) => <th key={index}> {branch.reactElement()} </th>);
+		let headerBranches = this.headers.map((branch, index) => <th key={index} className={branch.options.bgcClassName}> {branch.reactElement()} </th>);
 
 		let rowBranches = [];
 		this.rows.forEach((aRow, index) => {
 			let cellElements = [];
 			aRow.elems.forEach((cell, cellIndex) => {
+				console.log(`%c ---------------------------`, "background-color: red");
+				console.log(cell);
 				cellElements.push(<td key={cellIndex}> {cell.reactElement()} </td>);
 			});
 			let rowElement = <tr key={index}> {cellElements} </tr>
