@@ -239,6 +239,7 @@
           border-top: 1px solid #aaa;
           .blocks-cond-predicate, .blocks-cond-result {
             display: inline-block;
+            
             &.blocks-cond-else {
               color: #777;
             }
@@ -366,33 +367,24 @@
   .blocks-for-body,
   .blocks-cond-table{
     //Prevent default displaying
-    .blocks-drop-target,
-    .blocks-arguments .blocks-drop-target{
+    .blocks-drop-target{
       display: none;
+    }
+    .blocks-args > .blocks-drop-target{
+      display: inherit;
+      margin: 0px !important;
+      margin-left: 5px !important;
+      margin-right: 5px !important;
+      clip-path: none !important;
     }
     .blocks-block > span > span {
       display: block;
-    }
-    .blocks-block{
-      .blocks-drop-target {
-        clip-path: @insert-output-path;
-        min-height: 60px;
-        min-width: 100px;
-        margin-bottom: -7px !important;
-        margin-top: 0px !important;
-        margin-left: 10px;
-      }
     }
     br {
       display: none;
     }
     //Force it to display on hover over the main element
-    :hover, .blocks-hover {
-      .blocks-drop-target{
-        display: inherit !important;
-        margin: 10px;
-      }
-    }
+    
 
   }
   .blocks-hover {
@@ -401,7 +393,24 @@
       margin: 10px;
     }
   }
-
+  .blocks-block > span > span > .blocks-drop-target {
+    clip-path: @insert-output-path;
+    min-height: 60px;
+    min-width: 100px;
+    margin-bottom: -7px !important;
+    margin-top: 0px !important;
+    margin-left: 10px;
+  }
+    
+  .blocks-block {
+    > span:hover{ 
+      .blocks-drop-target{
+        display: inherit !important;
+        margin: 10px;
+      }
+    }
+  }
+  
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
   .blocks-binop{
@@ -771,6 +780,7 @@
     background-color: @untyped-color; //@checkTest-background;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
+    padding-bottom: 10px;
     color: white;
     clip-path: @if-shiftin-shiftout-path;
     // clip-path: @insert-output-path;
@@ -808,11 +818,13 @@
       .blocks-cond-predicate{
 
         background-color: @untyped-color;// @checkTest-background;
-        padding-top: 1.6rem;
+        padding-top: 2rem;
         padding-right: 1.5rem;
-        padding-bottom: 1rem;
+        padding-bottom: 1.8rem;
         padding-left: 0rem;
-
+        margin-bottom: -7px;
+        margin-top: -9px;
+        margin-left: -2px;
         // clip-path: @insert-output-path;
         clip-path: @shiftin-shiftout-path;
         float: none !important;

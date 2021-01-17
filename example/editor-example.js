@@ -50,7 +50,36 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "Alicgsdddddddde", 17, "green"
 end
 
+fun f(x :: Number) -> Number:
+  fun t(xl :: Number) -> Number:
+    xl - 1
+  end
+  x - 1
+end
+
+lam(x):
+  lam(y):
+    z = y - x
+    a = z * 2
+    a - z
+  end
+end
 #|
+
+fun add(n :: Number) -> Number:
+  fun sub(num :: Number) -> Number:
+    num - 1
+  end
+  n + 1
+end
+
+
+
+
+
+
+
+
 
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
