@@ -19,8 +19,11 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
-[list: 1, 3]
+[list: 1, [list: 1, 2, 3], 3]
 
+[list: 1] + [list: 2]
+
+#|
 
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
@@ -33,7 +36,7 @@ load-table: name :: String, age :: Number, favorite-color :: String
 end
 
 
-#|
+
 
 
 load-table: name :: String, age :: Number, favorite-color :: String
@@ -92,6 +95,32 @@ end
 
 
 
+x + 3
+y = x + 1
+
+fun test(): 
+x + 3
+end
+
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+
 a-two-d-list = [list: [list: "A", "B", "C"], 2]
 a-two-d-list = [list: [list: 3], [list: "B"]]
 a-two-d-list = [list: [list: "a"], [list: "B"]]
@@ -118,6 +147,7 @@ fun add(n :: Number) -> Number:
   x
 end
 
+
 a-binop = 1 + 3
 another-binop = 1 * 3
 greater-than = 3 < 5
@@ -132,26 +162,6 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "A", 17, "green"
   row: "E", 13, "red"
 end
-
-
-table: name :: String, age :: Number, favorite-color :: String
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-  row: "Evgsdsdsdsdsdsde", 13, "red"
-  row: "Bobdgssssssss", 12, "blue"
-  row: "Alicgsdddddddde", 17, "green"
-end
-
-[list-set: ]
-
-
-
 
 
 table: name :: String, age :: Number, favorite-color :: String
