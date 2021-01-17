@@ -285,6 +285,7 @@
   @var-color: @mutable-color;
   @for-color: green;
   @body-color: #EEE;
+  @table-color: #EEE;
   // Pathes for the Template
   @w-scale: 1;
   @height-setoff: 8px;
@@ -1079,8 +1080,40 @@
   // -------------------------------------------------------
   // Table
 
-  .blocks-s-table {
-    background-color: red;
+  .blocks-s-table::after {
+    content: "";
+		background: @table-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .blocks-table {
+    background-color: @table-color;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: @body-left-width;
+    clip-path: @shiftin-shiftout-path;
+
+    table {
+      // background-color: red;
+      border-collapse: collapse;
+      border-spacing: 0;
+      box-shadow: 0 2px 15px rgba(64,64,64,.7);
+      border-radius: 9px;
+      overflow: hidden;
+    }
+
+    td , th{
+      padding: @w-scale*3px @w-scale*4px;
+      text-align: center;
+    }
+
+    tr:not(:first-child):nth-child(odd){
+      background-color: #fff;
+     }
   }
   
 

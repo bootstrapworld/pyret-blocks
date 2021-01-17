@@ -25,7 +25,7 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
-
+#|
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
   row: "Alicgsdddddddde", 17, "green"
@@ -61,7 +61,7 @@ table: name :: String, age :: Number, favorite-color :: String
 end
 
 
-#|
+
 
 a-two-d-list = [list: [list: "A", "B", "C"], 2]
 a-two-d-list = [list: [list: 3], [list: "B"]]

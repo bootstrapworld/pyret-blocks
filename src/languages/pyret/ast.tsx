@@ -1411,7 +1411,7 @@ export class Table extends AST.ASTNode {
       <Node node={this} {...props}>
 				<span className="blocks-table">
 					<table>
-						<tr>{headerBranches}</tr> 
+						<tr className="blocks-table-header">{headerBranches}</tr> 
 						{rowBranches}
 					</table>
 				</span>
