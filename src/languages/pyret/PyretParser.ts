@@ -445,6 +445,8 @@ const nodeTypes = {
     /* Special Exception + 
     Recommend Adding a List of Binops that can return more than One DataType */
     if (op === "+") {
+      try{
+
         let leftType = left.dataType;
         let rightType = right.dataType;
 
@@ -458,7 +460,10 @@ const nodeTypes = {
 
         if (left.construktor.value.value=="list" && right.construktor.value.value=="list"){
           bgcClassName="constructor";
-        }        
+        }
+      }catch(err) {
+        bgcClassName="number";
+      }        
     }
     // --------------------------------------
 
