@@ -1184,6 +1184,33 @@ export class Include extends AST.ASTNode {
   }
 }
 
+// export class ProvideAll extends AST.ASTNode{
+
+//   constructor(from, to, options = {}) {
+//     super(from, to, 's-provide-all', options);
+//   }
+
+//   static spec = Spec.nodeSpec([
+//     // Spec.required('mod'),
+//   ]);
+
+//   longDescription(level) {
+//     return `provide all statement`;
+//   }
+
+//   pretty() {
+//     return P.horz("provide *");
+//   }
+
+//   render(props) {
+
+//     console.log("provde all !!!!!!!!");
+//     return( <Node node={this} {...props}>
+//       <span className="blocks-provide-all">provide *</span>
+//     </Node>)
+//   }
+// }
+
 export class SpecialImport extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
@@ -1371,13 +1398,27 @@ export class Table extends AST.ASTNode {
 		this.rows.forEach((aRow, index) => {
 			let cellElements = [];
 			aRow.elems.forEach((cell, cellIndex) => {
-				console.log(`%c ---------------------------`, "background-color: red");
-				console.log(cell);
+				// console.log(`%c ---------------------------`, "background-color: red");
+				// console.log(cell);
 				cellElements.push(<td key={cellIndex}> {cell.reactElement()} </td>);
 			});
 			let rowElement = <tr key={index}> {cellElements} </tr>
 			rowBranches.push(rowElement);
     });
+
+    let columnBranches = this.headers.map((branch, index) => {
+      let colType = "untyped";
+      let strBranch = String(branch).split(" ");
+      if (strBranch.length == 3) {
+        colType = strBranch[2]
+        if (colType.includes("<") || colType.includes(">")) {
+          colType = "constructor";
+          // let startPos = colType.indexOf('<');
+          // colType = colType.substring(0, startPos);
+        }
+      }
+      return(<col key={index} className={colType.toLowerCase()}/>);
+    })
 
 		// let rowBranches = this.rows.map((branch, index) => {
 		//   <tr key={index}> {
@@ -1391,7 +1432,10 @@ export class Table extends AST.ASTNode {
       <Node node={this} {...props}>
 				<span className="blocks-table">
 					<table>
-						<tr>{headerBranches}</tr> 
+          <colgroup>
+            {columnBranches}
+          </colgroup>
+						<tr className="blocks-table-header">{headerBranches}</tr> 
 						{rowBranches}
 					</table>
 				</span>

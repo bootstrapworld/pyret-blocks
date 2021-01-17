@@ -17,8 +17,59 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
+# provide *
 
-provide *
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: [list: "B"], 12, "blue"
+  row: [list: "A"], 17, "green"
+  row: [list: "E"], 13, "red"
+end
+
+[...: 1, 2]
+
+#|
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+[list-set: ]
+
+
+
+
+
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
+
+
+
 
 x + 3
 y = x + 1
@@ -72,7 +123,6 @@ fun add(n :: Number) -> Number:
   x
 end
 
-#|
 
 a-binop = 1 + 3
 another-binop = 1 * 3
@@ -90,11 +140,28 @@ table: name :: String, age :: Number, favorite-color :: String
 end
 
 
-
+table: name :: String, age :: Number, favorite-color :: String
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+  row: "Evgsdsdsdsdsdsde", 13, "red"
+  row: "Bobdgssssssss", 12, "blue"
+  row: "Alicgsdddddddde", 17, "green"
+end
 
 [list-set: ]
 
 
+table: name :: String, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
 
 
 load-table: name, age, favorite-color
