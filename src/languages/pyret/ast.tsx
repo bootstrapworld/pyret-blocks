@@ -185,7 +185,9 @@ export class Func extends AST.ASTNode {
     //   doc: {name} {this.doc}
     // </span>
     
-    let args = <Args field="args">{this.args}</Args>;
+    let args = <span className="blocks-args">
+        <Args field="args">{this.args}</Args>
+      </span>;
 		let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
@@ -267,7 +269,9 @@ export class Lambda extends AST.ASTNode {
     // TODO: show doc
     let name = (this.name == null)? null : this.name.reactElement();
     let body = this.body.reactElement();
-    let args = <Args field="args">{this.args}</Args>;
+    let args = <span className="blocks-args">
+      <Args field="args">{this.args}</Args>
+    </span>;
     let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
