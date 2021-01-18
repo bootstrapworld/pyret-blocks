@@ -834,7 +834,9 @@ export class LoadTable extends AST.ASTNode {
     let header = P.txt("load-table: ");
     let row_names = P.sepBy(this.columns.map(e => e.pretty()), ", ", "");
     let row_pretty = P.ifFlat(row_names, P.vertArray(this.columns.map(e => e.pretty())));
-    let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty()), "", "source: "));
+    let sources = P.horz(P.sepBy(this.sources.map(s => s.pretty())));
+    // let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty())));
+    // let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty()), "", "source: "));
     let footer = P.txt("end");
     return P.vert(
       P.ifFlat(
@@ -854,16 +856,78 @@ export class LoadTable extends AST.ASTNode {
         <span className="blocks-args">
           <Args>{this.columns}</Args>
         </span>
-        {this.sources.map((e, i) => e.reactElement({key: i}))}
+        <Args>
+          {this.sources}
+        </Args>
     </Node>
+            /* {this.sources.map((e, i) => e.reactElement({key: i}))} */
     );
   }
 }
 
-// Source is handled independently in the Parser
+export class TableSource extends AST.ASTNode {
+  source: AST.ASTNode;
+
+    constructor(from, to, source, options = {}) {
+      super(from, to, 's-table-src', options);
+      this.source = source;
+    }
+  
+    static spec = Spec.nodeSpec([
+      Spec.required('source')
+    ])
+  
+    longDescription(level) {
+      return `source getting table from ${this.source}`;
+    }
+  
+    pretty() {
+      return P.horz("source: ", this.source);
+    }
+  
+    render(props) {
+      return (
+          <Node node={this} {...props}>
+            <span className={"blocks-table-source"}>
+              source: {this.source.reactElement()}
+            </span>
+          </Node>
+      );
+    }
+}
 
 export class Sanitize extends AST.ASTNode {
+  name: Nodes.Literal;
+  sanitizer: Nodes.Literal; // AST.ASTNode;
 
+    constructor(from, to, name, sanitizer, options = {}) {
+      super(from, to, 's-sanitize', options);
+      this.name = name;
+      this.sanitizer = sanitizer;
+    }
+  
+    static spec = Spec.nodeSpec([
+      Spec.required('name'),
+      Spec.required('sanitizer')
+    ])
+  
+    longDescription(level) {
+      return `sanitizing ${this.name} with ${this.sanitizer}`;
+    }
+  
+    pretty() {
+      return P.horz("sanitize ", this.name, " using ", this.sanitizer);
+    }
+  
+    render(props) {
+      return (
+          <Node node={this} {...props}>
+            <span className={"blocks-sanitize"}>
+              sanitize {this.name.reactElement()} using {this.sanitizer.reactElement()}
+            </span>
+          </Node>
+      );
+    }
 }
 
 export class Paren extends AST.ASTNode {

@@ -19,14 +19,33 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
-[list: 1, [list: 1, 2, 3], 3]
+# [list: 1, [list: 1, 2, 3], 3]
 
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+
+for map(elem from range(0, 3)):
+  elem + 2
+end
 
 
 table: name :: String, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
   row: "E", 13, "red"
+end
+
+#|
+
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
 end
 
 
@@ -64,7 +83,6 @@ lam(x):
     a - z
   end
 end
-#|
 
 fun add(n :: Number) -> Number:
   fun sub(num :: Number) -> Number:
@@ -85,12 +103,7 @@ load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
 end
 
-load-table: name :: String, age :: Number, favorite-color :: String
-  source: imported-my-table.sheet-by-name("3-rows", true)
-  sanitize name using DS.string-sanitizer
-  sanitize age using DS.strict-num-sanitizer
-  sanitize favorite-color using DS.string-sanitizer
-end
+
 
 [...: 1, 2]
 

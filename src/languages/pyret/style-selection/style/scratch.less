@@ -174,6 +174,8 @@
   .blocks-s-let,
   .blocks-s-table,
   .blocks-loadTable,
+  // .blocks-s-sanitize,
+  // .blocks-s-table-src,
   .blocks-s-reactor,
   .blocks-specialImport,
   .blocks-s-tuple,
@@ -342,10 +344,10 @@
     border-radius: 0px;
     margin-bottom: -7px;
 
-    padding-top: 20px;
-    padding-bottom: @w-scale*40px;
+    padding-top: @w-scale*18px;
+    padding-bottom: @w-scale*30px;
     padding-left: 35px !important;
-    padding-right: 65px !important;
+    padding-right: @w-scale*65px !important;
     //  border-left: 10px solid @binop-color;
     // margin-left: @body-left-width;
     margin-top: 0px;
@@ -1159,8 +1161,15 @@
       // padding: @w-scale*6px @w-scale*10px;
 		}
 
-		tr:not(:first-child):nth-child(odd){
-			background-color: #ddd;
-		}
-	}
+    tr:not(:first-child):nth-child(odd){
+      background-color: #ddd;
+     }
+  }
+
+  // Load Table ----------------------------------------
+  .blocks-loadTable {
+    background-color: red;
+  }
+  
+
 }
