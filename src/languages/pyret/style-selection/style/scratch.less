@@ -1140,18 +1140,27 @@
       .blocks-drop-target {
         background-color: white !important;
       }
+
+			.aRow {
+				display: table-row;
+				> span{
+					display: table-cell;
+				}
+			}
+
+			> span{
+				display: table-row;
+			}
     }
+
 
     td , th,
     .blocks-literal{
       // padding: @w-scale*6px @w-scale*10px;
+		}
 
-    }
-
-    tr:not(:first-child):nth-child(odd){
-      background-color: #ddd;
-     }
-  }
-  
-
+		tr:not(:first-child):nth-child(odd){
+			background-color: #ddd;
+		}
+	}
 }
