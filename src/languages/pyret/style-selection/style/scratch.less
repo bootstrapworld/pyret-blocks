@@ -369,6 +369,9 @@
   .blocks-for-body,
   .blocks-cond-table{
     //Prevent default displaying
+    .blocks-block > span > span {
+      display: block;
+    }
     .blocks-drop-target{
       display: none;
     }
@@ -379,9 +382,7 @@
       margin-right: 5px !important;
       clip-path: none !important;
     }
-    .blocks-block > span > span {
-      display: block;
-    }
+    
     br {
       display: none;
     }
@@ -413,8 +414,10 @@
     }
   }
 
-  .blocks-editing{
-    display: inline !important;
+  .blocks-s-table, .blocks-doc-string {
+    .blocks-editing {
+      display: inline !important;
+    }
   }
   
   // ---------------------------------------------------------------------------------------------------------
@@ -587,6 +590,7 @@
     background-color: @func-background;
     border-radius: 0px 8px 8px 0px;
     padding: 5px;
+    padding-bottom: 10px;
     color: white;
     clip-path: @shiftin-output-path;
     // clip-path: @insert-output-path;
@@ -651,6 +655,7 @@
     clip-path: @shiftin-output-path;
 		// border-radius: 0px 8px 8px 0px;
     padding: 5px;
+    padding-bottom: 10px;
     color: white;
   }
 
@@ -1073,6 +1078,7 @@
     padding: 5px;
     color: white;
     clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
     // clip-path: @insert-output-path;
   }
 
@@ -1081,7 +1087,9 @@
     background: white;
     border-radius: 3px;
     color:blue;
-
+    display: stretch;
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   .blocks-s-for-bind {
