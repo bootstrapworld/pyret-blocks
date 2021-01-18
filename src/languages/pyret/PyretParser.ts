@@ -32,6 +32,8 @@ import {Binop,
   Lambda,
   Let,
   LoadTable,
+  TableSource,
+  Sanitize,
 	Table, 
 	ATableRow, 
   Paren,
@@ -611,6 +613,8 @@ const nodeTypes = {
   // "s-data-expr": function(l: Loc, name: string, namet: Name, params: Name[], mixins: Expr[], variants: Variant[], shared_members: Member[], check: Expr | null) {},
   's-for': function(l: Loc, iterator: Expr, bindings: ForBind[], ann: Ann, body: Expr, blocky: boolean) {
     if (DEBUG || true) console.log(arguments);
+    console.log("--------------- For -------------");
+    console.log(body);
     return new For(l.from, l.to, iterator, bindings, ann, body, blocky, {[ariaLabel]: `a for expression`});
   },
   "s-check": function(pos: Loc, name: string | undefined, body: any, keyword_check: boolean) {
@@ -641,6 +645,11 @@ const nodeTypes = {
 	},
   's-load-table': function (pos: Loc, rows: FieldName[], sources: LoadTableSpec[]) {
     if(DEBUG) console.log(arguments);
+    console.log("------------ Load Table -------------");
+    console.log(pos);
+    console.log(rows);
+    console.log(sources);
+
     return new LoadTable(
       pos.from, pos.to, rows, sources, {'aria-label': `load table with ${rows.length} columns`}
     );
@@ -776,11 +785,37 @@ end
     console.log(name);
     console.log(sanitizer);
     
-    return new Nodes.Literal(l.from, l.to, name, 'field-name');
+    let output = "sanitize " + name + " using " + sanitizer.value;
+
+    // return new Nodes.Literal(l.from, l.to, output, 'field-name');
+    
+    return new Sanitize(
+      l.from,
+      l.to,
+      name,
+      sanitizer,
+      {'aria-label': `sanitizing ${name} with ${sanitizer}`});
+
+    // return new Sanitize(
+    //   l.from,
+    //   l.to,
+    //   new Nodes.Literal(l.from, l.to, name, 'field-name'),
+    //   new Nodes.Literal(l.from, l.to, sanitizer.value, 'field-name'),
+    //   {'aria-label': `sanitizing ${name} with ${sanitizer}`});
   },
   's-table-src': function (pos: Loc, source: any) {
     if(DEBUG) console.log(arguments);
-    return source;
+    console.log("-------- Table Source  -----------");
+    console.log(pos);
+    console.log(source);
+
+
+    // return source;
+    return new TableSource(
+      pos.from,
+      pos.to,
+      source,
+      {'aria-label': `source getting table from ${source}`});
   },
 
   // not doing data VariantMemberType
