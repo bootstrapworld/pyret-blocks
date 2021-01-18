@@ -496,6 +496,35 @@ const nodeTypes = {
     let fun_from = { line: l.from.line, ch: l.from.ch + 4 };
     let fun_to = {line: l.from.line, ch: fun_from.ch + name.length};
     let real_name = (name == "")? null : new Nodes.Literal(fun_from, fun_to, name, 'lambda');
+
+    let docText = doc ? doc : "";
+
+    let func_head_start = l.from.line;
+    let func_body_start = body.from.line;
+    let func_body_ch = body.from.ch;
+
+   // func_body_start - func_head_start) == 0
+    let doc_from = {line: l.from.line, ch: func_body_ch - 2 - doc.length};
+    let doc_to = {line: l.from.line, ch: func_body_ch - 2};
+
+    if ((func_body_start - func_head_start) == 2) {
+      doc_from = {line: l.from.line + 1, ch: l.from.ch + 2 + 6};
+      doc_to = {line: l.from.line + 1, ch: doc_from.ch + doc.length};
+    }
+
+    // return new Func(
+    //   pos.from,
+    //   pos.to,
+		// 	new Nodes.Literal(fun_from, fun_to, name, 'function'),
+    //   args.map(a => idToLiteral(a)),
+    //   ann,
+    //   new Nodes.Literal(doc_from, doc_to, docText, 'operator', {'aria-label': `${docText}, the doc-string of ${name}`}),
+    //   body,
+    //   block,
+    //   {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
+
+
+
     return new Lambda(
       l.from,
       l.to,

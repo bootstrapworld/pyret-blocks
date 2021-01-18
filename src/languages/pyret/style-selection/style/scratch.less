@@ -829,6 +829,7 @@
       .blocks-cond-predicate{
 
         background-color: @untyped-color;// @checkTest-background;
+        padding-left: 0;
         padding-top: 2rem;
         padding-right: 1.5rem;
         padding-bottom: 1.8rem;
@@ -838,9 +839,18 @@
         margin-left: -2px;
         // clip-path: @insert-output-path;
         clip-path: @shiftin-shiftout-path;
-        float: none !important;
+        // float: left !important;
         
       }
+
+      .blocks-cond-row {
+        .blocks-cond-result{
+          width: 100%;
+          margin: 0 auto;
+        }
+      }
+
+
 
       .blocks-if-footer{
 

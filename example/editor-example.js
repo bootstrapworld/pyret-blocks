@@ -42,6 +42,26 @@ fun f(x :: Number) -> Number:
   x - 1
 end
 
+if x > 1: 1 else if x < 2: 1 else: 2 end
+
+if x > 1:
+  if x < 1:
+    x
+  else if x > 1:
+    1
+  else:
+    2
+  end
+else if x < 1:
+  if x < 1:
+    2
+  else if x > 1:
+    1
+  else:
+    2
+  end
+end
+
 #|
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
