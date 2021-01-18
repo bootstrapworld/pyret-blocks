@@ -19,10 +19,42 @@ const DELAY = 250;
 const smallExampleCode = `
 provide *
 
+
+
+
+
+lam(str :: String) -> String:
+  doc: "ABC"
+  y = str + "A"
+  y
+end
+
+a = lam(n): 1 end
+
+#|
+
+
+fun a(n):
+ doc: "ABC"
+ n
+end
+
+a = lam(n): 1 end
+
+lam(str :: String) -> String:
+  y = str + "A"
+  y
+end
+
+fun add(n :: (Number -> Number)):
+  n
+end
+
 a = string-length("Abc")
 
 # [list: 1, [list: 1, 2, 3], 3]
 
+"A" + "B"
 
 
 for map(elem from range(0, 3)):
@@ -355,6 +387,8 @@ if x > 5:
 else:
   x
 end
+
+|#
 `;
 
 const useBigCode = false;

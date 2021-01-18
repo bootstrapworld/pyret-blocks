@@ -6,6 +6,7 @@
 @string-color: #C8AD90;
 @boolean-color: #B378D3;
 @binop-color: #FFD0FF;
+@lambda-color: rgb(207, 99, 207);
 @constructor-color: #8080FF;
 @untyped-color: #878787;
 
@@ -84,6 +85,15 @@ th.untyped{ background-color: @untyped-color; }
 		background-color: @untyped-color; 
 	}
 	// background-color: rgba(128,255,128,.25);
+}
+
+.lambdaExp {
+	.blocks-var>span.blocks-literal,
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-let>span.blocks-literal{
+		background-color: @lambda-color; 
+	}
 }
 
 col.untyped{

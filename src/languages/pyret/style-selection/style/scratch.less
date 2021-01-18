@@ -628,28 +628,28 @@
     display: block;
     margin-bottom: -7px;
 
-    .blocks-doc-string {
-      text-align: left;
+  }
 
-      .blocks-editing {
+  .blocks-doc-string {
+    text-align: left;
+    max-width: 750px;
+    .blocks-editing {
+      white-space: pre-wrap;
+      word-break: keep-all; 
+    }
+
+    .blocks-node{
+
+      text-align: left;
+      height: 100%;
+      width: 95%;
+      min-height: 20px;
+      .blocks-literal-string,
+      .blocks-literal-operator{
+        
         white-space: pre-wrap;
         word-break: keep-all; 
       }
-
-      .blocks-node{
-
-        text-align: left;
-        height: 100%;
-        width: 95%;
-        min-height: 20px;
-        .blocks-literal-string,
-        .blocks-literal-operator{
-          
-          white-space: pre-wrap;
-          word-break: keep-all; 
-        }
-      }
-
     }
 
   }

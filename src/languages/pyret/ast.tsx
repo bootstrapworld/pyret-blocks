@@ -214,13 +214,12 @@ export class Func extends AST.ASTNode {
     );
   }
 }
-
 export class Lambda extends AST.ASTNode {
   name: AST.ASTNode | null;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   // doc: AST.ASTNode | null;
-  doc: string | null;
+  doc: AST.ASTNode;// string | null;
   body: AST.ASTNode;
   block: boolean
 
@@ -241,46 +240,65 @@ export class Lambda extends AST.ASTNode {
     Spec.optional('retAnn'),
     Spec.value('doc'),
     Spec.required('body'),
-    Spec.value('block'),
+    Spec.value('block')
+    // Spec.value('onDragOver'),
+    // Spec.value('onDragEnd')
   ])
 
   longDescription(level) {
-    return `a func expression with ${this.name.describe(level)}, ${this.args} and ${this.body.describe(level)}`;
+    return `a lambda expression with ${this.name.describe(level)}, ${this.args} and ${this.body.describe(level)}`;
   }
 
   pretty() {
     // TODO: show doc
     let retAnn = this.retAnn ? P.horz(" -> ", this.retAnn) : "";
     let header_ending = (this.block)? " block:" : ":";
-    let prefix = (this.name == null)? ["lam("] : ["lam ", this.name, "("];
+    let prefix = (this.name == null)? ["lam("] : ["lam", "("];
+    // let prefix = (this.name == null)? ["lam("] : ["lam", this.name, "("];
     let header = P.ifFlat(
       P.horz(P.horzArray(prefix), P.sepBy(this.args, ", ", ","), ")", retAnn, header_ending),
       P.vert(P.horzArray(prefix),
              P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":")));
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
-      P.horz(header, " ", this.body, " end"),
+      P.horz(header, " ", "doc: \"", this.name, "\" ", this.body, " end"),
+      // P.horz(header, " ", this.body, " end"),
       P.vert(header,
+             P.horz(INDENT, "doc: \"", this.name, "\""),
              P.horz(INDENT, this.body),
              "end"));
   }
+  /* Referenced From Function */
+  // onDragOver(e){
+
+  // };
+  // onDragEnd = function(e){
+
+  // };
 
   render(props) {
     // TODO: show doc
     let name = (this.name == null)? null : this.name.reactElement();
     let body = this.body.reactElement();
+    let doc = this.doc.reactElement();
     let args = <span className="blocks-args">
       <Args field="args">{this.args}</Args>
     </span>;
     let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
+    const NEWLINE = <br />;
+    let bodyClass = "blocks-lambda-body";
+
     return (
       <Node node={this} {...props}>
         <span className="blocks-lambda">
-          lam&nbsp;{name}({args}){header_ending}:
+          lam&nbsp;({args}){header_ending}:{NEWLINE}
+          <div className="blocks-doc-string">
+          doc: {name}
+          </div>
         </span>
-        <span className="blocks-lambda-body">
+        <span className={bodyClass}>
           {body}
         </span>
         <span className="blocks-lambda-footer" id="blocks-style-footer">

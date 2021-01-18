@@ -110,7 +110,10 @@ function getBackgroundColor(rhs: Expr) {
 	}
 	else if (rhs.type === "funApp"){
 		return (rhs.func.value.value) ? getReturnType(rhs.func.value.value) : "untyped";
-	}
+  }
+  else if (rhs.type === "lambdaExp"){
+    return "lambdaExp";
+  }
 	else{
 		return "untyped";
 	}
@@ -332,7 +335,7 @@ const nodeTypes = {
     if(DEBUG) console.log(arguments);
 
     let docText = doc ? doc : "";
-    console.log("DOC: ")
+    console.log("Function ----------------- DOC: ")
     console.log(docText);
     console.log(pos);
     console.log(_params);
@@ -354,7 +357,9 @@ const nodeTypes = {
       doc_from = {line: pos.from.line + 1, ch: pos.from.ch + 2 + 6};
       doc_to = {line: pos.from.line + 1, ch: doc_from.ch + doc.length};
     }
-  
+
+    let docBlock = new Nodes.Literal(doc_from, doc_to, docText, 'operator', {'aria-label': `${docText}, the doc-string of ${name}`});
+    console.log(docBlock);
 		// new Nodes.Literal(fun_from, fun_to, name, 'function'),
 		// new Nodes.Literal(doc_from, doc_to, doc, 'string'),
 		// new Nodes.Literal(doc_from, doc_to, "\"" + doc + "\"", 'string', {'aria-label': `${doc}, a docstring`}),
@@ -365,7 +370,7 @@ const nodeTypes = {
 			new Nodes.Literal(fun_from, fun_to, name, 'function'),
       args.map(a => idToLiteral(a)),
       ann,
-      new Nodes.Literal(doc_from, doc_to, docText, 'operator', {'aria-label': `${docText}, the doc-string of ${name}`}),
+      docBlock,
       body,
       block,
       {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
@@ -381,6 +386,8 @@ const nodeTypes = {
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
   "s-let": function (pos: Loc, id: Bind, rhs: Expr, _keyword_val: boolean) {
     if(DEBUG) console.log(arguments);
+    console.log(" ------------- Let -----------------");
+    console.log(rhs);
     let options = {};
     options['aria-label'] = `${id}, a value definition`;
 		let bgcClassName = getBackgroundColor(rhs);
@@ -462,6 +469,7 @@ const nodeTypes = {
         }
 
         if (leftType=="string" && rightType=="string") {
+          console.log("String!")
           bgcClassName="string";
         }
 
@@ -469,7 +477,7 @@ const nodeTypes = {
           bgcClassName="constructor";
         }
       }catch(err) {
-        bgcClassName="number";
+        // bgcClassName="number";
       }        
     }
     // --------------------------------------
@@ -517,29 +525,43 @@ const nodeTypes = {
       doc_to = {line: l.from.line + 1, ch: doc_from.ch + doc.length};
     }
 
-    // return new Func(
-    //   pos.from,
-    //   pos.to,
-		// 	new Nodes.Literal(fun_from, fun_to, name, 'function'),
-    //   args.map(a => idToLiteral(a)),
-    //   ann,
-    //   new Nodes.Literal(doc_from, doc_to, docText, 'operator', {'aria-label': `${docText}, the doc-string of ${name}`}),
-    //   body,
-    //   block,
-    //   {'aria-label': `${name}, a function definition with ${args.length} ${inputs_to_fun(args)}`});
+    console.log("----------- Lambda ------------");
+    console.log(name);
+    console.log(docText);
+    console.log(doc_from);
+    console.log(doc_to);
+    console.log(func_head_start);
+    console.log(func_body_start);
 
+    let docBlock = new Nodes.Literal(doc_from, doc_to, doc, 'lambda', {'aria-label': `${docText}, the doc-string of this lambda ${name}`});
 
+    console.log(docBlock);
 
+    // For some reason docBlock does not have a proper id, but name does, since Lambda does not have names, we decided to pass the 
+    // docstring through name and put it in where docstring is
     return new Lambda(
       l.from,
       l.to,
-      real_name,
+      new Nodes.Literal(doc_from, doc_to, doc, 'operator'),// new Nodes.Literal(fun_from, fun_to, name, 'lambda'),
       args.map(a => idToLiteral(a)),
       ann,
-      doc,
+      docBlock,// docBlock,
       body,
       blocky,
-      {'aria-label': `${name}, a function with ${args} with ${body}`});
+      {'aria-label': `${name}, a lambda function definition with ${args.length} ${inputs_to_fun(args)}`});
+
+
+
+    // return new Lambda(
+    //   l.from,
+    //   l.to,
+    //   real_name,
+    //   args.map(a => idToLiteral(a)),
+    //   ann,
+    //   doc,
+    //   body,
+    //   blocky,
+    //   {'aria-label': `${name}, a function with ${args} with ${body}`});
   },
 	// "s-method": function(l: Loc, name: string, params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, check: Expr | null, blocky: boolean) {},
   // "s-extend": function(l: Loc, supe: Expr, fields: Member[]) {},
