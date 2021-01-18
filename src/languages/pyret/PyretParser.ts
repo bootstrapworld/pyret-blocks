@@ -255,12 +255,18 @@ const nodeTypes = {
 		options['aria-label'] = `provides all`;
 		return new ProvideAll(pos.from, pos.to, options);
 	},
-	"s-provide-none": function(_pos: Loc) { return null; },
+	"s-provide-none": function(_pos: Loc) { 
+		// console.log("%c s provide none called", 'background-color: red');
+		return new Nodes.Literal(_pos.from, _pos.to, "provide all", 'operator', {"aria-label": `provide all`});
+	},
 
   // data ProvideTypes
   // "s-provide-types": function(pos: Loc, ann: AField[]) {},
   // "s-provide-types-all": function(l: Loc) {},
-  "s-provide-types-none": function(_l: Loc) { return null; },
+  "s-provide-types-none": function(_l: Loc) { 
+		// console.log("%c s provide types none called", 'background-color: red');
+		return new Nodes.Literal(_l.from, _l.to, "provide all", 'operator', {"aria-label": `provide all`});
+	},
 
   // data ImportType
   "s-const-import": function(l: Loc, mod: string) {

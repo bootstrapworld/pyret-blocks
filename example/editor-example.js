@@ -17,7 +17,9 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
-# provide *
+provide *
+
+#|
 
 # [list: 1, [list: 1, 2, 3], 3]
 
@@ -39,7 +41,6 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
-#|
 
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
