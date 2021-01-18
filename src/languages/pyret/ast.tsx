@@ -523,16 +523,19 @@ export class Construct extends AST.ASTNode {
 export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
+	bgcClassName: string;
 
-  constructor(from, to, func, args, options={}) {
+  constructor(from, to, func, args, bgcClassName, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -559,7 +562,7 @@ export class FunctionApp extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-funapp">
+        <span className={`blocks-funapp ${this.bgcClassName}`}>
           <Args field="func">{[this.func]}</Args>
         </span>
         <span className="blocks-args">

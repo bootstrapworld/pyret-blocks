@@ -19,7 +19,9 @@ const DELAY = 250;
 const smallExampleCode = `
 provide *
 
+a = string-length("Abc")
 
+#|
 # [list: 1, [list: 1, 2, 3], 3]
 
 
@@ -43,7 +45,6 @@ load-table: name :: String, age :: Number, favorite-color :: String
 end
 
 
-#|
 
 fun f(x :: Number) -> Number:
   doc: "test doc string!" 

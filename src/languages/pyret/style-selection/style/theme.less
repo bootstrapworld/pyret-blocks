@@ -17,7 +17,8 @@
 }
 .mutable{ 
 	/* .blocks-constructor, .blocks-var, .blocks-s-var:after{ */
-	.blocks-constructor, .blocks-var > span:first-child{
+	.blocks-constructor, 
+	.blocks-var > span:first-child{
 		background-color: @mutable-color; 
 	}
 }
@@ -26,6 +27,7 @@ th.number{ background-color: @number-color; }
 	> span.blocks-binop, 
 	.blocks-operator-container, 
 	.blocks-constructor, 
+	.blocks-funapp, 
 	.blocks-var>span, 
 	.blocks-let>span.blocks-literal{
 		background-color: @number-color; 
@@ -35,6 +37,7 @@ th.string{ background-color: @string-color; }
 .string{ 
 	> span.blocks-binop, 
 	.blocks-constructor, 
+	.blocks-funapp, 
 	.blocks-var>span, 
 	.blocks-let>span.blocks-literal{
 		background-color: @string-color; 
@@ -44,7 +47,8 @@ th.boolean{ background-color: @boolean-color; }
 .boolean{ 
 	> span.blocks-binop, 
 	.blocks-constructor, 
-	.blocks-var,
+	.blocks-funapp, 
+	.blocks-var>span,
 	.blocks-let>span.blocks-literal{
 		background-color: @boolean-color; 
 	}
@@ -54,6 +58,7 @@ th.binop{ background-color: @binop-color; }
 	.blocks-operator-container, 
 	.blocks-constructor, 
 	.blocks-var, 
+	.blocks-funapp, 
 	.blocks-let>span.blocks-literal{
 		background-color: @binop-color; 
 	}
@@ -63,6 +68,7 @@ th.constructor{ background-color: @constructor-color; }
 	/* .blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{ */
 	> span.blocks-binop,
 	.blocks-var>span, 
+	.blocks-funapp, 
 	.blocks-let>span:first-child{
 		background: @constructor-color; 
 	}
@@ -72,6 +78,7 @@ th.untyped{ background-color: @untyped-color; }
 	.blocks-constructor, 
 	.blocks-var, 
 	.blocks-let, 
+	.blocks-funapp, 
 	.blocks-s-let:after{
 		background-color: @untyped-color; 
 	}
