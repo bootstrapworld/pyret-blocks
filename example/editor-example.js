@@ -45,7 +45,6 @@ fun f(x :: Number) -> Number:
   x - 1
 end
 
-
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
   sanitize name using DS.string-sanitizer
