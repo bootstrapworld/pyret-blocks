@@ -19,6 +19,7 @@ const DELAY = 250;
 const smallExampleCode = `
 provide *
 
+a = string-length("Abc")
 
 # [list: 1, [list: 1, 2, 3], 3]
 
@@ -35,7 +36,14 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
-#|
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+
+
 
 fun f(x :: Number) -> Number:
   doc: "test doc string!" 
@@ -43,13 +51,6 @@ fun f(x :: Number) -> Number:
     xl - 1
   end
   x - 1
-end
-
-load-table: name :: String, age :: Number, favorite-color :: String
-  source: imported-my-table.sheet-by-name("3-rows", true)
-  sanitize name using DS.string-sanitizer
-  sanitize age using DS.strict-num-sanitizer
-  sanitize favorite-color using DS.string-sanitizer
 end
 
 
@@ -354,7 +355,6 @@ if x > 5:
 else:
   x
 end
-|#
 `;
 
 const useBigCode = false;

@@ -89,7 +89,6 @@ function getReturnType(name){
 			results = element;
 		}
 	})
-	console.log(`%c ${JSON.stringify(results, null, 2)}`, "background-color: green");
 	return (results) ? results.returnType.toLowerCase() : "untyped";
 }
 
@@ -571,8 +570,12 @@ const nodeTypes = {
   },
   "s-app": function(pos: Loc, fun: Expr, args: Expr[]) {
     if(DEBUG) console.log(arguments);
+		// console.log(`%c ${JSON.stringify(fun, null, 2)}`, "background-color: green");
+		// console.log(`%c ${JSON.stringify(args, null, 2)}`, "background-color: green");
+		// console.log(`%c ${JSON.stringify(fun.value.value, null, 2)}`, "background-color: green");
+		let bgcClassName = getReturnType(fun.value.value);
     return new FunctionApp(
-      pos.from, pos.to, fun, args, {'aria-label': `${fun} applied to ${args}`}, 
+      pos.from, pos.to, fun, args, bgcClassName, {'aria-label': `${fun} applied to ${args}`}, 
     );
   },
   // "s-prim-app": function(pos: Loc, fun: string, args: Expr[]) {},

@@ -523,16 +523,19 @@ export class Construct extends AST.ASTNode {
 export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
+	bgcClassName: string;
 
-  constructor(from, to, func, args, options={}) {
+  constructor(from, to, func, args, bgcClassName, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -559,7 +562,7 @@ export class FunctionApp extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-funapp">
+        <span className={`blocks-funapp ${this.bgcClassName}`}>
           <Args field="func">{[this.func]}</Args>
         </span>
         <span className="blocks-args">
@@ -848,17 +851,29 @@ export class LoadTable extends AST.ASTNode {
   }
 
   render(props) {
+
+		let sources = [];
+		sources.push(<DropTarget />);
+		this.sources.forEach((e, index) => {
+			sources.push(e.reactElement({key: index}))
+			sources.push(<DropTarget />);
+		});
+
+		let columns = [];
+		columns.push(<DropTarget />);
+		this.columns.forEach((e, index) => {
+			columns.push(e.reactElement({key: index}))
+			columns.push(<DropTarget />);
+		});
     return (
       <Node node={this} {...props}>
         <span className="blocks-load-table">
           load-table
         </span>
-        <span className="blocks-args">
-          <Args>{this.columns}</Args>
-        </span>
-        <Args>
-          {this.sources}
-        </Args>
+				<span className="blocks-args">
+					{columns}
+				</span>
+				{sources}
     </Node>
             /* {this.sources.map((e, i) => e.reactElement({key: i}))} */
     );
