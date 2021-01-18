@@ -887,10 +887,10 @@ export class LoadTable extends AST.ASTNode {
       <Node node={this} {...props}>
         <span className="blocks-load-table">
           load-table
-        </span>
-        <span className="blocks-args">
+          <span className="blocks-args">
 					{columns}
 				</span>
+        </span>
 				{sources}
         <span className="blocks-load-table-footer">
           end
