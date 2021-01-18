@@ -21,7 +21,6 @@ provide *
 
 a = string-length("Abc")
 
-#|
 # [list: 1, [list: 1, 2, 3], 3]
 
 
@@ -356,7 +355,6 @@ if x > 5:
 else:
   x
 end
-|#
 `;
 
 const useBigCode = false;
