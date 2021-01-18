@@ -848,17 +848,29 @@ export class LoadTable extends AST.ASTNode {
   }
 
   render(props) {
+
+		let sources = [];
+		sources.push(<DropTarget />);
+		this.sources.forEach((e, index) => {
+			sources.push(e.reactElement({key: index}))
+			sources.push(<DropTarget />);
+		});
+
+		let columns = [];
+		columns.push(<DropTarget />);
+		this.columns.forEach((e, index) => {
+			columns.push(e.reactElement({key: index}))
+			columns.push(<DropTarget />);
+		});
     return (
       <Node node={this} {...props}>
         <span className="blocks-load-table">
           load-table
         </span>
-        <span className="blocks-args">
-          <Args>{this.columns}</Args>
-        </span>
-        <Args>
-          {this.sources}
-        </Args>
+				<span className="blocks-args">
+					{columns}
+				</span>
+				{sources}
     </Node>
             /* {this.sources.map((e, i) => e.reactElement({key: i}))} */
     );
