@@ -1513,7 +1513,8 @@ export class Table extends AST.ASTNode {
 							{columnBranches}
 						</colgroup>
 						<tr className="blocks-table-header">{headerBranches}</tr>
-							{rowBranches}
+            {/* {rowBranches} */}
+							<Args>{this.rows}</Args>
 					</table>
 				</span>
       </Node>
@@ -1551,11 +1552,13 @@ export class ATableRow extends AST.ASTNode {
 	}
 
 	render(props) {
-		let branches = this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
+    let branches = this.elems.map((branch, index) => {return(branch.reactElement())});
+    // this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
     
 		return (
 			<Node node={this} {...props}>
-				{branches}
+				{/* {branches} */}
+        <Args>{this.elems}</Args>
 			</Node>
 		);
 	}

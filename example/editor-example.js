@@ -21,12 +21,7 @@ const smallExampleCode = `
 
 # [list: 1, [list: 1, 2, 3], 3]
 
-load-table: name :: String, age :: Number, favorite-color :: String
-  source: imported-my-table.sheet-by-name("3-rows", true)
-  sanitize name using DS.string-sanitizer
-  sanitize age using DS.strict-num-sanitizer
-  sanitize favorite-color using DS.string-sanitizer
-end
+
 
 for map(elem from range(0, 3)):
   elem + 2
@@ -40,6 +35,13 @@ table: name :: String, age :: Number, favorite-color :: String
 end
 
 #|
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+
 
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
