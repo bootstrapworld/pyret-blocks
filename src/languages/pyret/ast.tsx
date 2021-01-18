@@ -888,10 +888,13 @@ export class LoadTable extends AST.ASTNode {
         <span className="blocks-load-table">
           load-table
         </span>
-				<span className="blocks-args">
+        <span className="blocks-args">
 					{columns}
 				</span>
 				{sources}
+        <span className="blocks-load-table-footer">
+          end
+        </span>
     </Node>
             /* {this.sources.map((e, i) => e.reactElement({key: i}))} */
     );
