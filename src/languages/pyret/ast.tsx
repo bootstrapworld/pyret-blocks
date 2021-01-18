@@ -579,15 +579,17 @@ export class FunctionApp extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-        <span className={`blocks-funapp ${this.bgcClassName}`}>
-          <Args field="func">{[this.func]}</Args>
-        </span>
-        <span className="blocks-args">
-          <Args field="args">{this.args}</Args>
-        </span>
-    </Node>
-    );
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-funapp">
+						<Args field="func">{[this.func]}</Args>
+					</span>
+					<span className="blocks-args">
+						<Args field="args">{this.args}</Args>
+					</span>
+				</Node>
+			</span>
+		);
   }
 }
 
@@ -882,7 +884,11 @@ export class LoadTable extends AST.ASTNode {
 		this.columns.forEach((e, index) => {
 			columns.push(e.reactElement({key: index}))
 			columns.push(<DropTarget />);
-		});
+    });
+    
+    // DropTargets in LoadTable are hidden with CSS because source and sanitize cannot be rendered outside of the loadTable
+    // therefore "inserting blocks" into loadtable is not possible
+
     return (
       <Node node={this} {...props}>
         <span className="blocks-load-table">
@@ -925,7 +931,7 @@ export class TableSource extends AST.ASTNode {
       return (
           <Node node={this} {...props}>
             <span className={"blocks-table-source"}>
-              source: {this.source.reactElement()}
+              <span className="blocks-table-source-title"><b>source:</b></span> <span className="blocks-table-source-target">{this.source.reactElement()}</span>
             </span>
           </Node>
       );
@@ -958,8 +964,8 @@ export class Sanitize extends AST.ASTNode {
     render(props) {
       return (
           <Node node={this} {...props}>
-            <span className={"blocks-sanitize"}>
-              sanitize {this.name.reactElement()} using {this.sanitizer.reactElement()}
+            <span className={"blocks-sanitize"}><b>
+              <span className="blocks-sanitize-title">sanitize</span> <span className="blocks-sanitize-ident">{this.name.reactElement()}</span> using <span className="blocks-sanitizer">{this.sanitizer.reactElement()}</span></b>
             </span>
           </Node>
       );

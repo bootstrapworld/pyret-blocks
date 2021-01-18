@@ -174,8 +174,8 @@
   .blocks-s-let,
   .blocks-s-table,
   .blocks-loadTable,
-  // .blocks-s-sanitize,
-  // .blocks-s-table-src,
+  .blocks-s-sanitize,
+  .blocks-s-table-src,
   .blocks-s-reactor,
   .blocks-specialImport,
   .blocks-s-tuple,
@@ -288,7 +288,7 @@
   @var-color: @mutable-color;
   @for-color: green;
   @body-color: #EEE;
-  @table-color:  #FFD0FF;
+  // @table-color:  #FFD0FF;
   // Pathes for the Template
   @w-scale: 1;
   @height-setoff: 8px;
@@ -435,7 +435,8 @@
   .blocks-cond-result,
   .blocks-check-body,
   .blocks-for-body,
-  .blocks-cond-table{
+  .blocks-cond-table,
+  .blocks-loadTable{
     //Prevent default displaying
     .blocks-block > span > span {
       display: block;
@@ -1270,6 +1271,7 @@
 				display: table-cell;
 			}
 		}
+		background-color: @table-color;
 	}
 
   // Load Table ----------------------------------------
@@ -1313,6 +1315,62 @@
     clip-path: @shiftin-output-path;
     padding-bottom: 10px;
     // clip-path: @insert-output-path;
+  }
+
+  .blocks-s-table-src,
+  .blocks-s-sanitize {
+    position: relative;
+    text-align: left;
+    // padding-left: @body-left-width;
+  }
+
+  .blocks-s-table-src:after,
+  .blocks-s-sanitize::after {
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+
+  .blocks-table-source {
+		background-color: @untyped-color;
+    /* border-radius: 5px; */
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    // border: 2px solid black;
+    clip-path: @insert-output-path;
+
+
+
+    .blocks-table-source-title{
+      background-color: @util-color;
+      border-radius: 3px;
+      color: white;
+    }
+  }
+
+  .blocks-sanitize {
+		background-color: @untyped-color;
+    /* border-radius: 5px; */
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    // border: 2px solid black;
+    clip-path: @insert-output-path;
+    color: white;
+
+    .blocks-sanitize-title,
+    .blocks-sanitizer,
+    .blocks-sanitize-ident{
+      background-color: @util-color;
+      border-radius: 3px;
+      color: white;
+    }
   }
 
   
