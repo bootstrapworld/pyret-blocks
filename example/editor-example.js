@@ -34,6 +34,14 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
+fun f(x :: Number) -> Number:
+  doc: "test doc string!" 
+  fun t(xl :: Number) -> Number:
+    xl - 1
+  end
+  x - 1
+end
+
 #|
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
@@ -71,12 +79,7 @@ table: name :: String, age :: Number, favorite-color :: String
   row: "Alicgsdddddddde", 17, "green"
 end
 
-fun f(x :: Number) -> Number:
-  fun t(xl :: Number) -> Number:
-    xl - 1
-  end
-  x - 1
-end
+
 
 lam(x):
   lam(y):
