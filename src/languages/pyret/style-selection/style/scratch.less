@@ -340,8 +340,66 @@
   .blocks-block > span > span > .blocks-literal {
     // clip-path: @insert-output-path !important;
     clip-path: @shiftin-shiftout-path !important;
-    background-color:  #d3d3d3;
+    background-color:  @untyped-color;
     border-radius: 0px;
+    margin-bottom: -7px;
+
+    padding-top: @w-scale*18px;
+    padding-bottom: @w-scale*32px;
+    padding-left: 35px !important;
+    padding-right: @w-scale*65px !important;
+    //  border-left: 10px solid @binop-color;
+    margin-top: 0px;
+   
+
+      
+    .blocks-literal-number {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: @number-color;
+    }
+    .blocks-literal-string {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: @string-color;
+    }
+    .blocks-literal-char {
+
+    }
+    .blocks-literal-boolean {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: @boolean-color;
+    }
+    .blocks-literal-symbol {
+      // color: @literal-symbol-color;
+    }
+    // .blocks-lambdaExpression {
+
+    // }
+    .blocks-literal-s-id {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: black;
+    }
+
+  }
+
+  .blocks-block > span > span > .blocks-literal::before {
+    content: "⮑ ";
+    font-size: 25px;
+    margin-left: @w-scale*-25px;
+    margin-right: @w-scale*25px;
+  }
+
+  .blocks-block > span > span > span > .blocks-constructor {
+    clip-path: @shiftin-shiftout-path !important;
+    // background-color:  #d3d3d3;
+    // border-radius: 0px;
     margin-bottom: -7px;
 
     padding-top: @w-scale*18px;
@@ -351,11 +409,21 @@
     //  border-left: 10px solid @binop-color;
     // margin-left: @body-left-width;
     margin-top: 0px;
-    
+  }
+
+  .blocks-block > span > span > span > .blocks-constructor::before {
+    content: "⮑ ";
+    font-size: 25px;
+    position: absolute;
+    top: calc(40%);
+    left: 0;
+    // margin-left: @w-scale*-25px;
+    // margin-right: @w-scale*25px;
+    float: left;
   }
 
   .blocks-block > span > span > .blocks-literal > .blocks-literal-s-id {
-    font-size: 25px;
+    font-size: 18px;
   }
 
   // .blocks-drop-target:focus{
@@ -1142,7 +1210,7 @@
     padding-top: 20px;
     padding-bottom: 20px;
     padding-right: @body-left-width;
-    clip-path: @shiftin-shiftout-path;
+    clip-path: @insert-output-path;// @shiftin-shiftout-path;
 
     table {
       // background-color: red;
