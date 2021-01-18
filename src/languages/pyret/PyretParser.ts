@@ -83,13 +83,15 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // Function used to assign the color type of each block in Block Pyret
 
 function getReturnType(name){
-	var results;
+	let results;
 	PRIMITIVES_CONFIG.primitives.forEach(element => {
 		if (element.name === name){
 			results = element;
 		}
 	})
-	return (results) ? results.returnType.toLowerCase() : "untyped";
+	let availableTypes = ["number", "string", "boolean"];
+	let returnType = (results) ? results.returnType.toLowerCase() : "untyped";
+	return (availableTypes.includes(returnType)) ? returnType : "untyped";
 }
 
 function getBackgroundColor(rhs: Expr) {

@@ -561,15 +561,17 @@ export class FunctionApp extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-        <span className={`blocks-funapp ${this.bgcClassName}`}>
-          <Args field="func">{[this.func]}</Args>
-        </span>
-        <span className="blocks-args">
-          <Args field="args">{this.args}</Args>
-        </span>
-    </Node>
-    );
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-funapp">
+						<Args field="func">{[this.func]}</Args>
+					</span>
+					<span className="blocks-args">
+						<Args field="args">{this.args}</Args>
+					</span>
+				</Node>
+			</span>
+		);
   }
 }
 

@@ -17,7 +17,7 @@ import {
 const DELAY = 250;
 
 const smallExampleCode = `
-provide *
+# provide *
 
 a = string-length("Abc")
 
