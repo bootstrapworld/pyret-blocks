@@ -4,7 +4,7 @@
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 import { render } from 'react-dom';
-import { AST, AST } from 'eslint';
+// import { AST, AST } from 'eslint';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
@@ -100,6 +100,54 @@ export class Bind extends AST.ASTNode {
         (<span className="blocks-bind">{this.ident.reactElement()} :: {this.ann.reactElement()}</span>)
       }</Node>
   }
+}
+
+export class UserBlock extends AST.ASTNode {
+	body: AST.ASTNode;
+
+	constructor(from, to, body, options) {
+		super(from, to, "s-user-block", options);
+		this.body = body;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('body')
+	])
+
+  longDescription(level) {
+		return `a user block with ${this.body}`;
+  }
+
+	pretty() {
+		// TODO: show doc
+		let header = P.ifFlat(
+			P.horz("block:  "),
+			P.vert(P.horz("block: ")));
+
+		return P.ifFlat(
+			P.horz(header, this.body, " end"),
+			P.vert(header,
+				P.horz(INDENT, this.body),
+				"end"));
+	}
+
+	render(props){
+		let body = this.body.reactElement();
+		return (
+			<Node node={this} {...props}>
+				<span className="blocks-user-blocks-header">
+					blocks:
+          </span>
+					<span className="blocks-user-blocks-body">
+						{body}
+					</span>
+					<span className="blocks-user-blocks-footer">
+						end
+					</span>
+			</Node>
+		);
+	}
+
 }
 
 export class Func extends AST.ASTNode {
@@ -1703,10 +1751,16 @@ export class TableExtend extends AST.ASTNode{
 
   render(props) {
     return <Node node={this} {...props}>
-      <div className="blocks-table-extend">extend {this.column_binds.reactElement()} 
-      <div className="blocks-table-extend-body">
-        <Args>{this.extensions}</Args>
-        </div></div>
+			<div className="blocks-table-extend">extend {this.column_binds.reactElement()} </div>
+				<div className="blocks-table-extend-body">
+					<Args>
+						{this.extensions}
+					</Args>
+				</div>
+        <div className="blocks-table-extend-footer">
+          end
+        </div>
+
     </Node>
   }
 }
@@ -1741,7 +1795,7 @@ export class TableExtendFd extends AST.ASTNode {
         return (
             <Node node={this} {...props}>
               <div className="blocks-table-extend-field">
-              {this.name.reactElement()}: {this.value.reactElement()}
+              <span className="blocks-table-extend-field-title">{this.name.reactElement()}</span>: <span className="blocks-table-extend-field-cond">{this.value.reactElement()}</span>
               </div>
             </Node>
         );

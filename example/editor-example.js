@@ -19,18 +19,14 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+
+
+
+
+
+
+
 #|
-order some-table:
-  column1 ascending,
-  column3 descending,
-  column2 ascending
-end
-
-
-
-
-
-
 can-drive-col = extend my-table using age:
   can-drive: age >= 16,
   can-eat :: Boolean: age <= 1
@@ -48,12 +44,37 @@ load-table: name :: String, age :: Number, favorite-color :: String
   sanitize favorite-color using DS.string-sanitizer
 end
 
+block: 
+3
+4
+end
 
-extend batting
+
+lam(str :: String) -> String:
+  doc: "ABC"
+  y = str + "A"
+  y
+end
+
+
+
+can-var = extend batting
   using at-bats, singles, doubles, triples, home-runs:
   batting-average: (singles + doubles + triples + home-runs) / at-bats,
   slugging-percentage: (singles + (doubles * 2) +
     (triples * 3) + (home-runs * 4)) / at-bats
+end
+
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+
+toptracks-table = load-table: name, artists, year, danceability, energy, key,    loudness, mode, 
+  speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature
+  source: toptracks-sheet.sheet-by-name("2019", true)
 end
 
 fun add(n :: Number):

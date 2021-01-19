@@ -41,6 +41,7 @@ import {Binop,
   TableExtendFd,
   TableOrder,
   TableColumnSort,
+	UserBlock, 
   Paren,
   SpecialImport,
   ProvideAll,
@@ -56,7 +57,7 @@ import {Binop,
   ATuple,
   AArrow
 } from "./ast";
-import { AST } from "eslint";
+// import { AST } from "eslint";
 
 export interface Position {
   line: number;
@@ -398,7 +399,12 @@ const nodeTypes = {
       stmts,
       'block');
   },
-  // "s-user-block": function(l: Loc, body: Expr) {},
+	"s-user-block": function(l: Loc, body: Expr) {
+		console.log("%c user block called ------------", "background-color: purple");
+		console.log(JSON.stringify(body));
+		// return null;
+		return new UserBlock(l.from, l.to, body, {[ariaLabel]: "a user block"});
+	},
   // doc: string
   "s-fun": function (pos: Loc, name: string, _params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, _check_loc: Loc | null, _check: Expr | null, block: boolean) {
     // TODO: ignoring params, check, blocky
