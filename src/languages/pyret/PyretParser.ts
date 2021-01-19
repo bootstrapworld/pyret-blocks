@@ -114,22 +114,37 @@ function getLibraryFunctionArgTypes(name){
 }
 
 function annToType(ann: Ann) {
+  let fixedSizeDataTypes = ["number", "string", "boolean"];
   let type = ann + "";
   type = type.toLowerCase();
-
-  if (type.includes("<") && type.includes(">")) {
-    type = "constructor";
+  // keep in specific ordder
+  if (type.includes("->")) {
+    return "lambdaExp";
   }
 
-  if (type.includes("{") && type.includes("}")) {
-    type = "untyped";
+  let listPos = type.indexOf('<');
+  let tuplePos = type.indexOf("{");
+
+
+  if ((listPos == -1) && (tuplePos == -1)) {
+    if (fixedSizeDataTypes.includes(type)){
+      return type;
+    }
+    return "untyped";
   }
 
-  if (type.includes("(") && type.includes(")")) {
-    type = "lambdaExp";
+  if ((listPos >= 0) && (tuplePos == -1)) {
+    return "constructor";
   }
 
-  return type;
+  if ((listPos == -1) && (tuplePos >= 0)) {
+    return "untyped";
+  }
+
+  if ((listPos >= 0) && (tuplePos >= 0)) {
+    return listPos > tuplePos ? "untyped" : "constructor";
+  }
+
 }
 
 function getReturnType(name){
@@ -888,9 +903,12 @@ const nodeTypes = {
 
   // data ColumnBinds
 	's-column-binds': function(l: Loc, binds: Bind[], table: Expr) {
-		binds = binds.map((aBind, index) => idToLiteral(aBind));
-		// return new SomeColumnBinds(l.from, l.to, binds, table, {'aria-label': 'column bind'});
-		return new Nodes.Literal(l.from, l.to, "table-extend", "string", {'aria-label': `table extend`});
+    binds = binds.map((aBind, index) => idToLiteral(aBind));
+    console.log("-------------- Column Binds -------------");
+    console.log(table);
+    console.log(binds);
+		return new SomeColumnBinds(l.from, l.to, binds, table, {'aria-label': 'column bind'});
+		// return new Nodes.Literal(l.from, l.to, "table-extend", "string", {'aria-label': `table extend`});
 	},
 
   /**
@@ -926,9 +944,20 @@ end
 		// console.log(`${JSON.stringify(ann, null, 2)}`)
 		console.log("%c ----------------------------", "background-color: red");
 
+    let nameFrom = value.left.from;
+    let nameTo = value.left.to;
+
 
     // return new Nodes.Literal(l.from, l.to, value.type, value, {'aria-label': 'table extend'});
-		return new Nodes.Literal(l.from, l.to, "atableExtend", "string", {'aria-label': `table extend`});
+
+return new TableExtendFd(l.from,
+  l.to,
+  new Nodes.Literal(nameFrom, nameTo, name, "operator", {'aria-label': `extended column ${name}`}),
+  value,
+  ann,
+  {'aria-label': `Field of Extending Table with new column ${name} and criteria ${value}`});
+
+		// return new Nodes.Literal(l.from, l.to, "atableExtend", "string", {'aria-label': `table extend`});
 		// return value;
 		
     // let bgcClassName = getReturnType(value.op);

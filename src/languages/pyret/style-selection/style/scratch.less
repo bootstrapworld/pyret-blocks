@@ -47,7 +47,7 @@
 	@large-border-radius: 15px;
 
 	.blocks-contract {
-    background-color: @untyped-color;
+    // background-color: @untyped-color;
     border-radius: 0px;
     // opacity: 0.5;
   }
@@ -175,6 +175,9 @@
   .blocks-loadTable,
   .blocks-s-sanitize,
   .blocks-s-table-src,
+  .blocks-s-table-extend,
+  .blocks-s-column-binds,
+  .blocks-s-table-extend-field,
   .blocks-s-reactor,
   .blocks-specialImport,
   .blocks-s-tuple,
@@ -471,7 +474,8 @@
   .blocks-check-body,
   .blocks-for-body,
   .blocks-cond-table,
-  .blocks-loadTable{
+  .blocks-loadTable,
+  .blocks-s-table-extend{
     //Prevent default displaying
     .blocks-block > span > span {
       display: block;
@@ -512,12 +516,6 @@
   }
 
   .blocks-func-body-hover{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 10px;
-    // padding-left: 10px;
-    z-index: 1000;
-    // background-color: red;
   }
 
   .blocks-block > span > span > .blocks-drop-target {
@@ -740,6 +738,7 @@
 	.blocks-funDef{
     position: relative;
     text-align: left;
+    // border: 1rem white solid;
     // border-left: @sidebar-width solid @func-background;
 		// clip-path: @sidebar-path;
   }
@@ -1346,6 +1345,13 @@
           }
           background-color: @table-color;
           }
+
+  // Table Functions/Operations
+
+  // Extend
+  .blocks-s-table-extend {
+
+  }
 
 
   // Load Table ----------------------------------------

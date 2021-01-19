@@ -187,16 +187,16 @@ export class Func extends AST.ASTNode {
   }
   onDragOver(e){
     var target = e.target;
-    if(target.classList.contains('blocks-func-body-hover')){
+    //if(target.classList.contains('blocks-func-body-hover')){
     let cnFuncBody = this.findChild("blocks-func-body-hover");
     cnFuncBody.classList.add('blocks-hover');
-    }
+//}
   };
 
   //ondragenter="this.classList.add('blocks-hover')"
   onDragEnd = function(e){
     var target = e.target;
-
+    console.log(target);
       // console.log("--- Leaving --- ");
 
     if(target.classList.contains('blocks-func-body-hover')){
@@ -249,14 +249,14 @@ export class Func extends AST.ASTNode {
     let bodyClass = "blocks-func-body"; //+ (this.state.hover ? " blocks-hover" : "");
 
     return (
-      <Node node={this} {...props} onDragEnter={() => console.log('A')}>
+      <Node node={this} {...props}>
 				<span className="blocks-func">
 					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}
           <div className="blocks-doc-string">
           doc: {doc}
           </div>
 				</span>
-        <span onDragLeave={this.onDragEnd} className="blocks-func-body-hover" onDrop={this.onDrop} onDragOver={this.onDragOver}>
+        <span  onDragLeave={this.onDragEnd} className="blocks-func-body-hover" onDrop={this.onDrop} onDragOver={this.onDragOver}>
           <span className={bodyClass} >
             {body}
           </span>
@@ -1693,14 +1693,14 @@ export class SomeColumnBinds extends AST.ASTNode {
 	}
 
 	pretty() {
-    let prefix = "row:";
-    console.log("column binds ___________________________")
+    let prefix = P.horz(this.tableName, " ", "using");
+    // console.log("column binds ___________________________")
 		// let suffix = "end";
     let vertBranches = P.sepBy(this.branches, ", ", ",");
     let hortBranches = P.sepBy(this.branches, ", ", ",");
 		return P.ifFlat(
-			P.horz(prefix, " ", hortBranches),
-			P.vert(prefix, P.horz(INDENT, vertBranches))
+			P.horz(prefix, " ", hortBranches, ":"),
+			P.vert(prefix, P.horz(INDENT, vertBranches), ":")
 		);
 	}
 
@@ -1710,7 +1710,9 @@ export class SomeColumnBinds extends AST.ASTNode {
     
 		return (
 			<Node node={this} {...props}>
-				{branches} 
+        <span className="blocks-column-binds">
+        {this.tableName.reactElement()} using <Args>{this.branches}</Args>:
+        </span>
 			</Node>
 		);
 	}
@@ -1736,12 +1738,22 @@ export class TableExtend extends AST.ASTNode{
 	}
 
   pretty() {
-    return P.horz(P.txt("table extend"));
+    let prefix = P.horz("extend ", this.column_binds);
+    let suffix = "end";
+    let branches = P.sepBy(this.extensions, ", ", ",");
+
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
   }
 
   render(props) {
     return <Node node={this} {...props}>
-      <span>table extend</span>
+      <span className="blocks-table-extend">extend {this.column_binds.reactElement()} 
+      <span className="blocks-table-extend-body">
+        <Args>{this.extensions}</Args>
+        </span></span>
     </Node>
   }
 }
@@ -1754,6 +1766,7 @@ export class TableExtendFd extends AST.ASTNode {
       constructor(from, to, name, value, ann, options = {}) {
         super(from, to, 's-table-extend-field', options);
         this.name = name;
+        this.value = value;
         this.ann = ann;
       }
     
@@ -1764,19 +1777,19 @@ export class TableExtendFd extends AST.ASTNode {
       ])
     
       longDescription(level) {
-        return `sanitizing ${this.name} with ${this.ann}`;
+        return `Field of Extending Table with new column ${this.name} and criteria ${this.value}`;
       }
     
       pretty() {
-        return P.horz("sanitize ", this.name, " using ", this.ann);
+        return P.horz(this.name, ": ", this.value);
       }
     
       render(props) {
         return (
             <Node node={this} {...props}>
-              {/* <span className={"blocks-sanitize"}><b>
-                <span className="blocks-sanitize-title">sanitize</span> <span className="blocks-sanitize-ident">{this.name.reactElement()}</span> using <span className="blocks-sanitizer">{this.sanitizer.reactElement()}</span></b>
-              </span> */}
+              <span className="blocks-table-extend-field">
+              {this.name.reactElement()}: {this.value.reactElement()}
+              </span>
             </Node>
         );
       }

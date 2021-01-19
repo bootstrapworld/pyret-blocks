@@ -20,7 +20,41 @@ const smallExampleCode = `
 # provide *
 
 
+
+extend batting
+  using at-bats, singles, doubles, triples, home-runs:
+  batting-average: (singles + doubles + triples + home-runs) / at-bats,
+  slugging-percentage: (singles + (doubles * 2) +
+    (triples * 3) + (home-runs * 4)) / at-bats
+end
+
+
+
 #|
+fun add(n :: Number):
+  doc: ""
+  y = n + 1
+  n
+end
+
+can-drive-col = extend my-table using age:
+  can-drive: age >= 16,
+  can-eat :: Boolean: age <= 1
+end
+
+z = x + 1
+
+fun add(n): n end
+
+a = string-length("b")
+a = string-length(5)
+a = string-length("b", "c")
+a = sqr(3)
+a = sqr()
+a = customfunc()
+a = customfunc("A", "b")
+
+
 batting-avg-and-slugging = extend batting
   using at-bats, singles, doubles, triples, home-runs:
   batting-average: (singles + doubles + triples + home-runs) / at-bats,
@@ -77,13 +111,7 @@ j :: Number
 a :: {Number; Number}
 
 
-a = string-length("b")
-a = string-length(5)
-a = string-length("b", "c")
-a = sqr(3)
-a = sqr()
-a = customfunc()
-a = customfunc("A", "b")
+
 
 fun a(n):
  doc: "ABC"
