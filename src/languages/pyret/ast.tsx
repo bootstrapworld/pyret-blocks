@@ -122,10 +122,6 @@ export class Func extends AST.ASTNode {
     this.block = block;
     this.hoverName = "A ";
     this.className = "A ";
-    this.onDragOver = this.onDragOver.bind(this);
-    this.onDragEnd = this.onDragEnd.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.findChild = this.findChild.bind(this);
   }
 
   static spec = Spec.nodeSpec([
@@ -136,11 +132,7 @@ export class Func extends AST.ASTNode {
     Spec.required('body'),
     Spec.value('block'),
     Spec.value('hoverName'),
-    Spec.value('className'),
-    Spec.value('onDragOver'),
-    Spec.value('onDragEnd'),
-    Spec.value('onDrop'),
-    Spec.value('findChild')
+    Spec.value('className')
   ])
 
   longDescription(level) {
@@ -164,81 +156,16 @@ export class Func extends AST.ASTNode {
             P.horz(INDENT, "doc: \"", this.doc, "\""),
             P.horz(INDENT, this.body),
              "end"));
-  }
-  findChild(name) {
-    let blockID = eval('this.element.id');
-  //  console.log(blockID);
+      }
 
-    let currentNode = document.getElementById(blockID);
-    let cnFuncBody = null;
-    let cnChildren = currentNode.children;
-
-//    console.log(cnChildren);
-
-    for (var i = 0; i < cnChildren.length; i++) {
-    if (cnChildren[i].className.includes(name)) {
-    //  console.log(cnChildren[i].className);
-      cnFuncBody = cnChildren[i];
-      break;
-    } }
-
-    // console.log(cnFuncBody);
-    return cnFuncBody;
-  }
-  onDragOver(e){
-    var target = e.target;
-    //if(target.classList.contains('blocks-func-body-hover')){
-    let cnFuncBody = this.findChild("blocks-func-body-hover");
-    cnFuncBody.classList.add('blocks-hover');
-//}
-  };
-
-  //ondragenter="this.classList.add('blocks-hover')"
-  onDragEnd = function(e){
-    var target = e.target;
-    console.log(target);
-      // console.log("--- Leaving --- ");
-
-    if(target.classList.contains('blocks-func-body-hover')){
-      console.log(target);
-      let cnFuncBody = this.findChild("blocks-func-body-hover");
-      cnFuncBody.classList.remove('blocks-hover');
-    }
-
-
-
-    // var target = e.target;
-    // // console.log('exit', target);
-    // // while(!target.classList.contains('blocks-func-body'))
-    // // {
-    // //     target = target.parentNode;
-    // // }
-    // console.log(target);
-    // if (target.classList.contains('FuncBody')){
-    //   console.log("exit ------------");
-    //   console.log(target);
-    //   target.classList.remove('blocks-hover');
-    // }
-
-
-    // console.log('dragging end', target);
-  };
-
-  onDrop = function(e) {
-    console.log("Dropped");
-    let cnFuncBody = this.findChild("blocks-func-body-hover");
-    cnFuncBody.classList.remove('blocks-hover');
-  };
 
   render(props) {
-    // TODO: show doc
     let name = this.name.reactElement();
     let body = this.body.reactElement();
 		let doc = this.doc.reactElement();
-    // let docDOM = <span>
-    //   doc: {name} {this.doc}
-    // </span>
     
+    let dragOver = getDragEvent(this, 'blocks-func-body-hover');
+
     let args = <span className="blocks-args">
         <Args field="args">{this.args}</Args>
       </span>;
@@ -246,8 +173,6 @@ export class Func extends AST.ASTNode {
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     const NEWLINE = <br />;
-    let bodyClass = "blocks-func-body"; //+ (this.state.hover ? " blocks-hover" : "");
-
     return (
       <Node node={this} {...props}>
 				<span className="blocks-func">
@@ -256,8 +181,9 @@ export class Func extends AST.ASTNode {
           doc: {doc}
           </div>
 				</span>
-        <span  onDragLeave={this.onDragEnd} className="blocks-func-body-hover" onDrop={this.onDrop} onDragOver={this.onDragOver}>
-          <span className={bodyClass} >
+
+        <span className="blocks-func-body-hover" onDragOver={dragOver}>
+          <span className="blocks-func-body" >
             {body}
           </span>
         </span>
@@ -596,18 +522,25 @@ export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
 	bgcClassName: string;
+	argsBgcClassNames: string[];
+	isLibFunc: boolean;
 
   constructor(from, to, func, args, bgcClassName, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
 		this.bgcClassName = bgcClassName;
+
+		this.argsBgcClassNames = options["argsBgcClassNames"];
+		this.isLibFunc = (options["argsBgcClassNames"] !== null);
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
     Spec.value('bgcClassName'),
+    Spec.value('argsBgcClassNames'),
+    Spec.value('isLibFunc'),
   ])
 
   longDescription(level) {
@@ -632,14 +565,27 @@ export class FunctionApp extends AST.ASTNode {
   }
 
   render(props) {
+		let args = [];
+		args.push(<DropTarget />);
+		this.args.forEach((value, index) => {
+			if (this.isLibFunc){
+				args.push(<span className={`${this.argsBgcClassNames[index]} funapp-params`}>{ value.reactElement({key: index}) }</span>);
+			}
+			else{
+				args.push(value.reactElement({key: index}));
+			}
+			args.push(<DropTarget />);
+		});
+
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
 					<span className="blocks-funapp">
 						<Args field="func">{[this.func]}</Args>
 					</span>
+
 					<span className="blocks-args">
-						<Args field="args">{this.args}</Args>
+						{ args }
 					</span>
 				</Node>
 			</span>
@@ -2307,4 +2253,28 @@ export class ProvideAll extends AST.ASTNode {
       <span>provide hi *</span>
     </Node>
   }
+}
+
+function getDragEvent(node : any, className : string){
+  var dragTimeout;
+  function findChild(name : string) {
+    let currentNode = document.getElementById(node.element.id);
+    let cnFuncBody = null;
+    let cnChildren = currentNode.children;
+
+    for (var i = 0; i < cnChildren.length; i++) {
+      if (cnChildren[i].className.includes(name)) {
+        cnFuncBody = cnChildren[i];
+        break;
+      } 
+    }
+    return cnFuncBody;
+  }
+  function onDragOver(){
+    let cnFuncBody = findChild(className);
+    cnFuncBody.classList.add('blocks-hover');
+    clearInterval(dragTimeout);
+    dragTimeout = setTimeout(() => cnFuncBody.classList.remove('blocks-hover'), 250)
+  };
+  return onDragOver;
 }
