@@ -109,6 +109,8 @@ export class Func extends AST.ASTNode {
   // doc: string | null;
   body: AST.ASTNode;
   block: boolean;
+  hoverName: string;
+  className: string;
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
     super(from, to, 'funDef', options);
@@ -118,6 +120,12 @@ export class Func extends AST.ASTNode {
     this.doc = doc;
     this.body = body;
     this.block = block;
+    this.hoverName = "A ";
+    this.className = "A ";
+    this.onDragOver = this.onDragOver.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
+    this.onDrop = this.onDrop.bind(this);
+    this.findChild = this.findChild.bind(this);
   }
 
   static spec = Spec.nodeSpec([
@@ -127,8 +135,12 @@ export class Func extends AST.ASTNode {
     Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block'),
+    Spec.value('hoverName'),
+    Spec.value('className'),
     Spec.value('onDragOver'),
-    Spec.value('onDragEnd')
+    Spec.value('onDragEnd'),
+    Spec.value('onDrop'),
+    Spec.value('findChild')
   ])
 
   longDescription(level) {
@@ -153,27 +165,60 @@ export class Func extends AST.ASTNode {
             P.horz(INDENT, this.body),
              "end"));
   }
+  findChild(name) {
+    let blockID = eval('this.element.id');
+  //  console.log(blockID);
+
+    let currentNode = document.getElementById(blockID);
+    let cnFuncBody = null;
+    let cnChildren = currentNode.children;
+
+//    console.log(cnChildren);
+
+    for (var i = 0; i < cnChildren.length; i++) {
+    if (cnChildren[i].className.includes(name)) {
+    //  console.log(cnChildren[i].className);
+      cnFuncBody = cnChildren[i];
+      break;
+    } }
+
+    // console.log(cnFuncBody);
+    return cnFuncBody;
+  }
   onDragOver(e){
-    //this.setState({ hover: true });
-    /*
-    var target = e.target;
-    console.log('enter', target);
-    if(target.classList.contains('blocks-func-body'))
-    {
-      e.target.classList.add('blocks-hover');
-      console.log('dragging over', this, target, e.sender );
-    } 
-    */
+    let cnFuncBody = this.findChild("blocks-func-body-hover");
+    cnFuncBody.classList.add('blocks-hover');
   };
+
+  //ondragenter="this.classList.add('blocks-hover')"
   onDragEnd = function(e){
     var target = e.target;
-    console.log('exit', target);
-    while(!target.classList.contains('blocks-func-body'))
-    {
-        target = target.parentNode;
-    }
-    target.classList.remove('blocks-hover');
-    console.log('dragging end', target);
+      // console.log("--- Leaving --- ");
+      let cnFuncBody = this.findChild("blocks-func-body-hover");
+      cnFuncBody.classList.remove('blocks-hover');
+
+
+    // var target = e.target;
+    // // console.log('exit', target);
+    // // while(!target.classList.contains('blocks-func-body'))
+    // // {
+    // //     target = target.parentNode;
+    // // }
+    // console.log(target);
+    // if (target.classList.contains('FuncBody')){
+    //   console.log("exit ------------");
+    //   console.log(target);
+    //   target.classList.remove('blocks-hover');
+    // }
+
+
+    // console.log('dragging end', target);
+  };
+
+  onDrop = function(e) {
+    console.log("Dropped");
+    let cnFuncBody = this.findChild("blocks-func-body-hover");
+    cnFuncBody.classList.remove('blocks-hover');
   };
 
   render(props) {
@@ -202,7 +247,7 @@ export class Func extends AST.ASTNode {
           doc: {doc}
           </div>
 				</span>
-        <span onDragLeave={this.onDragEnd} className="NameBlock" onDragEnter={(e) => console.log("Drag Enter!!!")} onClick={(e) => console.log("Drag Enter!!!")}>
+        <span onDragLeave={this.onDragEnd} className="blocks-func-body-hover" onDrop={this.onDrop} onDragOver={this.onDragOver}>
           <span className={bodyClass} >
             {body}
           </span>
