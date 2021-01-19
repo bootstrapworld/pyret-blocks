@@ -20,6 +20,19 @@ const smallExampleCode = `
 # provide *
 
 
+
+
+fun a(n):
+ doc: "ABC"
+ x = n / 2
+ n
+end
+
+y = n + 1
+
+
+#|
+
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
   sanitize name using DS.string-sanitizer
@@ -27,10 +40,6 @@ load-table: name :: String, age :: Number, favorite-color :: String
   sanitize favorite-color using DS.string-sanitizer
 end
 
-
-
-
-#|
 lam(str :: String) -> String:
   doc: "ABC"
   y = str + "A"

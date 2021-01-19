@@ -202,7 +202,7 @@ export class Func extends AST.ASTNode {
           doc: {doc}
           </div>
 				</span>
-        <span onDragLeave={this.onDragEnd}>
+        <span onDragLeave={this.onDragEnd} className="NameBlock" onDragEnter={(e) => console.log("Drag Enter!!!")} onClick={(e) => console.log("Drag Enter!!!")}>
           <span className={bodyClass} >
             {body}
           </span>
@@ -886,7 +886,7 @@ export class LoadTable extends AST.ASTNode {
 			columns.push(<DropTarget />);
     });
     
-    // DropTargets in LoadTable are hidden with CSS because source and sanitize cannot be rendered outside of the loadTable
+    // Note that source and sanitize cannot be rendered outside of the loadTable
     // therefore "inserting blocks" into loadtable is not possible
 
     return (

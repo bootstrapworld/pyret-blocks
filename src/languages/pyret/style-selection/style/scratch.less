@@ -352,6 +352,7 @@
     margin-top: 0px;
    
 
+
       
     .blocks-literal-number {
       color: white;
@@ -384,7 +385,7 @@
       color: white;
       padding: 0.5rem;
       border-radius: 4px;
-      background-color: black;
+    //  background-color: black;
     }
 
   }
@@ -420,6 +421,10 @@
     // margin-left: @w-scale*-25px;
     // margin-right: @w-scale*25px;
     float: left;
+  }
+
+  .blocks-block > span > span > span > .blocks-constructor:hover{
+    background-color: red;
   }
 
   .blocks-block > span > span > .blocks-literal > .blocks-literal-s-id {
@@ -989,14 +994,24 @@
     background: transparent;
   }
 
-  .blocks-ask-footer,
-  .blocks-otherwise {
+  .blocks-ask-footer{
     background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
     clip-path: @shiftin-output-path;
     // clip-path: @insert-output-path;
+    text-align: left;
+  }
+
+
+  .blocks-otherwise {
+    background-color: @untyped-color;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    // clip-path: @shiftin-output-path;
+    clip-path: @shiftin-shiftout-path;
     text-align: left;
   }
   // -------------------------------------------------
