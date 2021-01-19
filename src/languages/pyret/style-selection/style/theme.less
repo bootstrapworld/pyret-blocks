@@ -11,6 +11,7 @@
 @untyped-color: #878787;
 
 .util{ 
+	> .blocks-literal, 
 	.blocks-constructor, 
 	.blocks-var>span, 
 	.blocks-let>span.blocks-literal{
@@ -20,6 +21,7 @@
 .mutable{ 
 	/* .blocks-constructor, .blocks-var, .blocks-s-var:after{ */
 	.blocks-constructor, 
+	> .blocks-literal, 
 	.blocks-var > span:first-child{
 		background-color: @mutable-color; 
 	}
@@ -27,6 +29,7 @@
 th.number{ background-color: @number-color; }
 .number{ 
 	> span.blocks-binop, 
+	> .blocks-literal, 
 	.blocks-operator-container, 
 	.blocks-constructor, 
 	.blocks-funapp, 
@@ -38,6 +41,7 @@ th.number{ background-color: @number-color; }
 th.string{ background-color: @string-color; }
 .string{ 
 	> span.blocks-binop, 
+	> .blocks-literal, 
 	.blocks-constructor, 
 	.blocks-funapp, 
 	.blocks-var>span, 
@@ -48,6 +52,7 @@ th.string{ background-color: @string-color; }
 th.boolean{ background-color: @boolean-color; }
 .boolean{ 
 	> span.blocks-binop, 
+	> .blocks-literal, 
 	.blocks-constructor, 
 	.blocks-funapp, 
 	.blocks-var>span,
@@ -57,6 +62,7 @@ th.boolean{ background-color: @boolean-color; }
 }
 th.binop{ background-color: @binop-color; }
 .binop{ 
+	> .blocks-literal, 
 	.blocks-operator-container, 
 	.blocks-constructor, 
 	.blocks-var, 
@@ -68,6 +74,7 @@ th.binop{ background-color: @binop-color; }
 th.constructor{ background-color: @constructor-color; }
 .constructor{ 
 	/* .blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{ */
+	> .blocks-literal, 
 	> span.blocks-binop,
 	.blocks-var>span, 
 	.blocks-funapp, 
@@ -77,6 +84,7 @@ th.constructor{ background-color: @constructor-color; }
 }
 th.untyped{ background-color: @untyped-color; }
 .untyped{ 
+	> .blocks-literal, 
 	.blocks-constructor, 
 	.blocks-var, 
 	.blocks-let, 
@@ -85,6 +93,11 @@ th.untyped{ background-color: @untyped-color; }
 		background-color: @untyped-color; 
 	}
 	// background-color: rgba(128,255,128,.25);
+	
+	.blocks-literal{
+		padding: 2px 0;
+		background-color: @untyped-color; 
+	}
 }
 
 .lambdaExp {

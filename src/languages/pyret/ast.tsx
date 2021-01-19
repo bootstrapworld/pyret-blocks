@@ -106,7 +106,6 @@ export class Func extends AST.ASTNode {
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   doc: AST.ASTNode | null;
-  // doc: string | null;
   body: AST.ASTNode;
   block: boolean;
 
@@ -542,18 +541,21 @@ export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
 	bgcClassName: string;
+	argsBgcClassNames: string[];
 
-  constructor(from, to, func, args, bgcClassName, options={}) {
+  constructor(from, to, func, args, bgcClassName, argsBgcClassNames, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
 		this.bgcClassName = bgcClassName;
+		this.argsBgcClassNames = argsBgcClassNames;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
     Spec.value('bgcClassName'),
+    Spec.value('argsBgcClassNames'),
   ])
 
   longDescription(level) {
@@ -578,6 +580,12 @@ export class FunctionApp extends AST.ASTNode {
   }
 
   render(props) {
+		let args = [];
+		args.push(<DropTarget />);
+		this.args.forEach((arg, index) => {
+			args.push(<span className={`${this.argsBgcClassNames[index]} funapp-params`}>{ arg.reactElement({key: index}) }</span>);
+			args.push(<DropTarget />);
+		})
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
@@ -585,7 +593,7 @@ export class FunctionApp extends AST.ASTNode {
 						<Args field="func">{[this.func]}</Args>
 					</span>
 					<span className="blocks-args">
-						<Args field="args">{this.args}</Args>
+						{args}
 					</span>
 				</Node>
 			</span>

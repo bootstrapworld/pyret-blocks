@@ -19,7 +19,13 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+a = string-length("b")
+a = string-length("b", "c")
+a = sqr(3)
+a = sqr()
 
+
+#|
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
   sanitize name using DS.string-sanitizer
@@ -30,7 +36,14 @@ end
 
 
 
-#|
+fun f(x :: Number) -> Number:
+  doc: "test doc string!" 
+  fun t(xl :: Number) -> Number:
+    xl - 1
+  end
+  x - 1
+end
+
 lam(str :: String) -> String:
   doc: "ABC"
   y = str + "A"
@@ -76,14 +89,6 @@ end
 
 
 
-
-fun f(x :: Number) -> Number:
-  doc: "test doc string!" 
-  fun t(xl :: Number) -> Number:
-    xl - 1
-  end
-  x - 1
-end
 
 
 table: name :: List<String>, age :: Number, favorite-color :: String

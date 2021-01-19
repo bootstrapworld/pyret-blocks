@@ -88,10 +88,33 @@ function getReturnType(name){
 		if (element.name === name){
 			results = element;
 		}
-	})
+	});
 	let availableTypes = ["number", "string", "boolean"];
 	let returnType = (results) ? results.returnType.toLowerCase() : "untyped";
 	return (availableTypes.includes(returnType)) ? returnType : "untyped";
+}
+
+function getLibraryFunctionArgTypes(name){
+	let results;
+	PRIMITIVES_CONFIG.primitives.forEach(element => {
+		if (element.name === name){
+			results = element;
+		}
+	})
+
+	let availableTypes = ["number", "string", "boolean"];
+	if (!results){
+		return null;
+	}
+
+	let argumentTypes = [];
+	results.argumentTypes.forEach((value) => {
+		let formatted = value.toLowerCase();
+		let aType = availableTypes.includes(formatted) ? formatted : "untyped";
+		argumentTypes.push(aType);
+	});
+
+	return argumentTypes;
 }
 
 function getBackgroundColor(rhs: Expr) {
@@ -598,8 +621,10 @@ const nodeTypes = {
 		// console.log(`%c ${JSON.stringify(args, null, 2)}`, "background-color: green");
 		// console.log(`%c ${JSON.stringify(fun.value.value, null, 2)}`, "background-color: green");
 		let bgcClassName = getReturnType(fun.value.value);
+		let argsBgcClassNames = getLibraryFunctionArgTypes(fun.value.value);
+
     return new FunctionApp(
-      pos.from, pos.to, fun, args, bgcClassName, {'aria-label': `${fun} applied to ${args}`}, 
+      pos.from, pos.to, fun, args, bgcClassName, argsBgcClassNames, {'aria-label': `${fun} applied to ${args}`}, 
     );
   },
   // "s-prim-app": function(pos: Loc, fun: string, args: Expr[]) {},
