@@ -25,6 +25,7 @@ table: name :: {String; Number}, age :: Number, favorite-color :: String
   row: "E", 13, "red"
 end
 
+
 table: name :: List<String>, age :: Number, favorite-color :: String
   row: [list: "B"], 12, "blue"
   row: [list: "A"], 17, "green"
@@ -33,6 +34,15 @@ end
 
 "B"
 #|
+
+age-fixed = update my-table using age:
+  age: age + 1
+end
+
+can-drive-col = extend my-table using age:
+  can-drive: age >= 16
+end
+
 
 a :: (Number, Number -> Number)
 bda :: Number, Number -> String
@@ -55,6 +65,8 @@ fun a(n):
 end
 
 y = n + 1
+
+
 
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
@@ -108,12 +120,6 @@ for map(elem from range(0, 3)):
   elem + 2
 end
 
-
-table: name :: String, age :: Number, favorite-color :: String
-  row: "B", 12, "blue"
-  row: "A", 17, "green"
-  row: "E", 13, "red"
-end
 
 
 
@@ -417,8 +423,9 @@ if x > 5:
 else:
   x
 end
-
 |#
+
+
 `;
 
 const useBigCode = false;

@@ -1672,6 +1672,81 @@ export class ATableRow extends AST.ASTNode {
 		);
 	}
 }
+
+export class SomeColumnBinds extends AST.ASTNode {
+	branches: AST.ASTNode[];
+	tableName: AST.ASTNode;
+	
+	constructor(from, to, branches, tableName, options) {
+		super(from, to, 's-column-binds', branches, tableName, options);
+		this.branches = branches;
+		this.tableName = tableName;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.list('branches'),
+		Spec.required('tableName'),
+	])
+
+	longDescription(level) {
+		return `${enumerateList(this.branches, level)} in column binds`;
+	}
+
+	pretty() {
+    let prefix = "row:";
+    console.log("column binds ___________________________")
+		// let suffix = "end";
+    let vertBranches = P.sepBy(this.branches, ", ", ",");
+    let hortBranches = P.sepBy(this.branches, ", ", ",");
+		return P.ifFlat(
+			P.horz(prefix, " ", hortBranches),
+			P.vert(prefix, P.horz(INDENT, vertBranches))
+		);
+	}
+
+	render(props) {
+    let branches = this.branches.map((branch, index) => {return(branch.reactElement())});
+    // this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
+    
+		return (
+			<Node node={this} {...props}>
+				{branches} 
+			</Node>
+		);
+	}
+}
+
+export class TableExtend extends AST.ASTNode{
+	column_binds: AST.ASTNode;
+	extensions: AST.ASTNode[];
+
+	constructor(from, to, column_binds, extensions, options) {
+		super(from, to, 's-table-extend', options);
+		this.column_binds = column_binds;
+		this.extensions = extensions;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('column_binds'), 
+		Spec.list('extensions')
+	])
+	
+	longDescription(level) {
+		return `${enumerateList(this.extensions, level)} in table extend`;
+	}
+
+  pretty() {
+    return P.horz(P.txt("table extend"));
+  }
+
+  render(props) {
+    return <Node node={this} {...props}>
+      <span>table extend</span>
+    </Node>
+  }
+}
+
+
 // ------------------  xx  ------------ Table Render Implemented ------ xx  ----------------------
 export class IfBranch extends AST.ASTNode {
   test: AST.ASTNode;

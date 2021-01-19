@@ -36,6 +36,8 @@ import {Binop,
   Sanitize,
 	Table, 
 	ATableRow, 
+	SomeColumnBinds, 
+	TableExtend,
   Paren,
   SpecialImport,
   ProvideAll,
@@ -147,7 +149,10 @@ function getBackgroundColor(rhs: Expr) {
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
   // console.log(`%c ${rhs.type}`, "background-color: red");
 
-	if (fixedSizeDataTypes.includes(rhs.dataType)){
+	if (!rhs){
+		return "untyped";
+	}
+	else if (fixedSizeDataTypes.includes(rhs.dataType)){
 		return rhs.dataType;
 	}
 	else if (rhs.type === "constructor"){
@@ -754,8 +759,22 @@ const nodeTypes = {
     if (DEBUG) console.log(arguments);
     return new Reactor(l.from, l.to, fields, {'aria-label': `reactor`});
   },
-  // 's-table-extend': function(l: LoadTable, column_binds: ColumnBinds, extensions: TableExtendField[]) {},
-  // 's-table-update': function(l: Loc, column_binds: ColumnBinds, updates: Member[]) {},
+	's-table-extend': function(l: Loc, column_binds: ColumnBinds, extensions: TableExtendField[]) {
+		console.log("%c s-table-extend called", "background-color: red");
+		// console.log(`${JSON.stringify(l, null, 2)}`);
+		// console.log(column_binds);
+		// console.log(`${JSON.stringify(column_binds, null, 2)}`)
+		// console.log(extensions);
+		// console.log(`${JSON.stringify(extensions, null, 2)}`)
+		
+		// return new Nodes.Literal(l.from, l.to, "table-extend", "string", {'aria-label': `table extend`});
+		return new TableExtend(l.from, l.to, column_binds, extensions, {'aria-label': `table extend`});
+		// return new ATableRow(l.from, l.to, extensions, {'aria-label': `table-row`});
+	},
+	's-table-update': function(l: Loc, column_binds: ColumnBinds, updates: Member[]) {
+		console.log("%c s-table-update called", "background-color: red");
+		return null;
+	},
   // 's-table-select': function(l: Loc, columns: Name[], table: Expr) {},
   // 's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {},
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
@@ -862,7 +881,11 @@ const nodeTypes = {
   },
 
   // data ColumnBinds
-  // 's-column-binds': function(l: Loc, binds: Bind[], table: Expr) {},
+	's-column-binds': function(l: Loc, binds: Bind[], table: Expr) {
+		binds = binds.map((aBind, index) => idToLiteral(aBind));
+		// return new SomeColumnBinds(l.from, l.to, binds, table, {'aria-label': 'column bind'});
+		return new Nodes.Literal(l.from, l.to, "table-extend", "string", {'aria-label': `table extend`});
+	},
 
   /**
    * Not sure what to do with this for now...
@@ -886,8 +909,37 @@ end
   // 's-column-sort': function(l: LoadTable, column: Name, direction: ColumnSortOrder) {},
 
   // data TableExtendField
-  // 's-table-extend-field': function(l: Loc, name: string, value: Expr, ann: Ann) {},
-  // 's-table-extend-reducer': function(l: Loc, name: string, reducer: Expr, col: Name, ann: Ann) {},
+	's-table-extend-field': function(l: Loc, name: string, value: Expr, ann: Ann) {
+		console.log("%c s-table-extend-field called", "background-color: red");
+
+		console.log(`${JSON.stringify(l, null, 2)}`);
+		console.log("name: " + name);
+		console.log(`${JSON.stringify(value, null, 2)}`)
+		console.log(`${JSON.stringify(ann, null, 2)}`)
+		console.log("%c ----------------------------", "background-color: red");
+
+
+    // return new Nodes.Literal(l.from, l.to, value.type, value, {'aria-label': 'table extend'});
+		return new Nodes.Literal(l.from, l.to, "atableExtend", "string", {'aria-label': `table extend`});
+		// return value;
+		
+    // let bgcClassName = getReturnType(value.op);
+		// return new Nodes.Literal(l.from, l.to, name, value, {'aria-label': `table extend`});
+
+		// return new Binop(
+		//   l.from,
+		//   l.to,
+		//   new Nodes.Literal(value.from, value.to, value.op, 'operator'),
+		//   value.left,
+		//   value.right,
+		//   bgcClassName,
+		//   {'aria-label': `${name} expression`});
+
+	},
+	's-table-extend-reducer': function(l: Loc, name: string, reducer: Expr, col: Name, ann: Ann) {
+		console.log("%c s-table-extend-reducer", "background-color: red");
+		return new Nodes.Literal(l.from, l.to, "table-extend-reucer", "string", {'aria-label': `table extend`});
+	},
 
   // data LoadTableSpec
   's-sanitize': function(l: Loc, name: Name, sanitizer: Expr) {
