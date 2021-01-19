@@ -4,6 +4,7 @@
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 import { render } from 'react-dom';
+import { AST, AST } from 'eslint';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
@@ -1745,6 +1746,84 @@ export class TableExtendFd extends AST.ASTNode {
             </Node>
         );
       }
+}
+
+export class TableOrder extends AST.ASTNode {
+  tableName: AST.ASTNode;
+  ordering: AST.ASTNode[];
+
+  constructor(from, to, tableName, ordering, options) {
+    super(from, to, 's-column-sort', options);
+    this.tableName = tableName;
+    this.ordering = ordering;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('tableName'),
+    Spec.required('ordering')
+  ])
+
+  longDescription(level) {
+    return `Ordering Table ${this.tableName} with directions ${this.ordering}`;
+  }
+
+  pretty() {
+    let prefix = P.horz("order ", this.tableName, ":");
+    let suffix = "end";
+    let branches = P.sepBy(this.ordering, ", ", ",");
+
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
+  }
+
+  render(props) {
+    return(<Node node={this} {...props}>
+      <div className="blocks-table-order">
+        order {this.tableName.reactElement()}
+      </div>
+      <div className="blocks-table-order-body">
+        <Args>{this.ordering}</Args>
+      </div>
+      <div className="blocks-table-order-footer">
+        end
+      </div>
+    </Node>);
+  }
+
+}
+export class TableColumnSort extends AST.ASTNode {
+  name: AST.ASTNode;
+  direction: AST.ASTNode;
+
+  constructor(from, to, name, direction, options) {
+    super(from, to, 's-column-sort', options);
+    this.name = name;
+    this.direction = direction;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('name'),
+    Spec.required('direction')
+  ])
+
+  longDescription(level) {
+    return `Column ${this.name} with direction ${this.direction} in Ordering the Table`;
+  }
+
+  pretty() {
+    return P.horz(this.name, ": ", this.direction);
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-column-sort">
+        {this.name.reactElement()}: {this.direction.reactElement()}
+        </div>
+      </Node>)
+  }
 }
 
 

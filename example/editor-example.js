@@ -19,11 +19,21 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
-load-table: name :: String, age :: Number, favorite-color :: String
-  source: imported-my-table.sheet-by-name("3-rows", true)
-  sanitize name using DS.string-sanitizer
-  sanitize age using DS.strict-num-sanitizer
-  sanitize favorite-color using DS.string-sanitizer
+#|
+order some-table:
+  column1 ascending,
+  column3 descending,
+  column2 ascending
+end
+
+
+
+
+
+
+can-drive-col = extend my-table using age:
+  can-drive: age >= 16,
+  can-eat :: Boolean: age <= 1
 end
 
 toptracks-table = load-table: name, artists, year, danceability, energy, key,    loudness, mode, 
@@ -31,10 +41,12 @@ toptracks-table = load-table: name, artists, year, danceability, energy, key,   
   source: toptracks-sheet.sheet-by-name("2019", true)
 end
 
-
-
-
-#|
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
 
 
 extend batting
