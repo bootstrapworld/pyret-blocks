@@ -486,29 +486,16 @@
       margin-right: 5px !important;
       clip-path: none !important;
     }
-    
     br {
       display: none;
     }
-    //Force it to display on hover over the main element   
-
   }
 
-
-  // .blocks-func-body-hover {
-  //   padding-top: 1rem;
-  //   padding-bottom: 1rem;
-  // }
-
   .blocks-hover {
-    * {
-     // pointer-events: none;
-    }
     .blocks-drop-target{
       display: inherit !important;
       margin: 10px;
     }
-
   }
 
   .blocks-func-body-hover{
@@ -523,23 +510,24 @@
   .blocks-block > span > span > .blocks-drop-target {
     .target-jigsaw();
   }
-    
-  .blocks-block {
-    > span:hover { 
-      .blocks-drop-target{
-        .on-target-hover();
-      }
-    }
+  //General case for drop targets in a block (works for lambda, func, etc...)
+  .blocks-block > span:hover > span > .blocks-drop-target{ 
+    .on-target-hover();
   }
-  .blocks-hover {
-    .blocks-drop-target{
-      .on-target-hover();
-    }
+  
+  .blocks-hover > span > .blocks-drop-target{
+    .on-target-hover();
   }
+  
+  //Specific targets 
   .blocks-loadTable:hover > .blocks-drop-target{
     .on-target-hover();
   }
   .blocks-loadTable > .blocks-drop-target{
+    .target-jigsaw();
+  }
+  .blocks-cond-table > span > .blocks-drop-target,
+  .blocks-cond-table > .blocks-drop-target{
     .target-jigsaw();
   }
   .blocks-s-table, .blocks-doc-string {
@@ -909,7 +897,9 @@
 
 	.blocks-if-footer{
     background-color: @untyped-color;// @checkTest-background;
-		border-radius: 0px 8px 8px 0px;
+    border-radius: 0px 8px 8px 0px;
+    margin-top: -2px;
+    margin-bottom: 1px;
     padding: 5px;
     color: white;
     clip-path:  @if-shiftin-out-path;// @shiftin-output-path;
@@ -922,6 +912,7 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     padding-bottom: 10px;
+    margin-top: -2px;
     color: white;
     clip-path: @if-shiftin-shiftout-path;
     // clip-path: @insert-output-path;
@@ -965,7 +956,7 @@
         padding-bottom: 1.8rem;
         padding-left: 0rem;
         margin-bottom: -6px;
-        margin-left: 2px;
+        margin-left: 0px;
         // clip-path: @insert-output-path;
         clip-path: @shiftin-shiftout-path;
         

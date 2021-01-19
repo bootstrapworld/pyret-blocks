@@ -455,8 +455,8 @@ end
 
 `;
 
-const useBigCode = false;
-const exampleCode = useBigCode? dsExampleCode : smallExampleCode;
+const useBigCode = true;
+const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
 const container = document.getElementById('cmb-editor');
