@@ -551,6 +551,8 @@
 
     .blocks-operator-container{
       margin: 0px;
+      padding-top: 2px;
+      padding-bottom: 10px;
       
       // display: inline-block;
       *display: inline;
@@ -567,17 +569,7 @@
     }
   }
 
-  .blocks-block > span > span > .blocks-binop {
-    // clip-path: @insert-output-path !important;
-    clip-path: @shiftin-shiftout-path !important;
-    border-radius: 0px;
-    border-radius: 0px;
-    margin-bottom: -7px;
-    //  border-left: 10px solid @binop-color;
-    // margin-left: @body-left-width;
-    margin-top: 0px;
-  }
-
+  .blocks-block > span > span > .blocks-binop,
   .blocks-block > span > span > span > .blocks-binop {
     // clip-path: @insert-output-path !important;
     clip-path: @shiftin-shiftout-path !important;
@@ -588,6 +580,10 @@
     // margin-left: @body-left-width;
     margin-top: 0px;
   }
+  .blocks-block > span > span > span> .blocks-funApp{
+    padding: 17px;
+  }
+
   /*  xx Binary Operations xx  */
   // ---------------------------------------------------------------------------------------------------------
   /* Identifiers 
@@ -1493,8 +1489,12 @@
   // Include, Import Statements, etc.
 	.blocks-s-include, 
 	.blocks-include {
-		background-color: @util-color;
-	}
+    background-color: @util-color;
+    margin-bottom: 4px;
+  }
+  .blocks-specialImport{
+    padding: 5px;
+  }
 
 	.funapp-params{
 		> .blocks-literal{

@@ -211,8 +211,6 @@ export class Func extends AST.ASTNode {
     let name = this.name.reactElement();
     let body = this.body.reactElement();
 		let doc = this.doc.reactElement();
-    
-    let dragOver = getDragEvent(this, 'blocks-func-body-hover');
 
     let args = <span className="blocks-args">
         <Args field="args">{this.args}</Args>
@@ -230,7 +228,7 @@ export class Func extends AST.ASTNode {
           </div>
 				</span>
 
-        <span className="blocks-func-body-hover" onDragOver={dragOver}>
+        <span className="blocks-func-body-hover" onDragOver={getDragEvent(this, 'blocks-func-body-hover')}>
           <span className="blocks-func-body" >
             {body}
           </span>
@@ -296,13 +294,6 @@ export class Lambda extends AST.ASTNode {
              P.horz(INDENT, this.body),
              "end"));
   }
-  /* Referenced From Function */
-  // onDragOver(e){
-
-  // };
-  // onDragEnd = function(e){
-
-  // };
 
   render(props) {
     // TODO: show doc
@@ -316,7 +307,6 @@ export class Lambda extends AST.ASTNode {
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     const NEWLINE = <br />;
-    let bodyClass = "blocks-lambda-body";
 
     return (
       <Node node={this} {...props}>
@@ -326,7 +316,7 @@ export class Lambda extends AST.ASTNode {
           doc: {name}
           </div>
         </span>
-        <span className={bodyClass}>
+        <span className="blocks-lambda-body" onDragOver={getDragEvent(this, 'blocks-lambda-body')}>
           {body}
         </span>
         <span className="blocks-lambda-footer" id="blocks-style-footer">
@@ -1103,7 +1093,7 @@ export class IfPipe extends AST.ASTNode {
         <span className="blocks-ask">
           ask:
         </span>
-        <div className="blocks-cond-table">
+        <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
           {branches}
         </div>
         <span className="blocks-ask-footer" id="blocks-style-footer">
@@ -1143,12 +1133,12 @@ export class IfPipeBranch extends AST.ASTNode {
   render(props) {
     const NEWLINE = <br />
     return (
-			<Node node={this} {...props}>
-				<div className="blocks-cond-predicate">
+			<Node node={this} {...props} >
+				<div className="blocks-cond-predicate" onDragOver={getDragEvent(this, 'blocks-cond-predicate')}>
 					{this.test.reactElement()}
 				</div>
 				{NEWLINE}
-				<div className="blocks-cond-result">
+				<div className="blocks-cond-result" onDragOver={getDragEvent(this, 'blocks-cond-result')}>
 					{this.body.reactElement()}
 				</div>
       </Node>
@@ -1922,13 +1912,13 @@ export class IfExpression extends AST.ASTNode {
       branches.push(span);
     });
     branches.push(<DropTarget key={this.branches.length} />);
-
+    let dragOver = getDragEvent(this, 'blocks-cond-table');
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
           if:
         </span>
-        <div className="blocks-cond-table">
+        <div className="blocks-cond-table" onDragOver={dragOver}>
           {branches}
         </div>
         <span className="blocks-if-footer" id="blocks-style-footer">
@@ -1977,20 +1967,19 @@ export class IfElseExpression extends AST.ASTNode {
       branches.push(span);
     });
     branches.push(<DropTarget key={this.branches.length} />);
-
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
           if:
         </span>
-        <div className="blocks-cond-table">
+        <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
 					{branches}
           {NEWLINE}
 				</div>
 				<span className="blocks-else">
 					else:
 				</span>
-				<div className="blocks-cond-table">
+				<div className="blocks-cond-table blocks-cond-table-else" onDragOver={getDragEvent(this, 'blocks-cond-table-else')}>
 					{NEWLINE}
           {(this.else_branch as any).reactElement()}
         </div>
@@ -2311,7 +2300,8 @@ export class ProvideAll extends AST.ASTNode {
     </Node>
   }
 }
-
+//Creates a drag over event handler for blocks, such that when they are dragged over this handler finds the head node
+//and adds the proper corresponding 
 function getDragEvent(node : any, className : string){
   var dragTimeout;
   function findChild(name : string) {
