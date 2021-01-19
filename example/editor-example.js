@@ -20,9 +20,12 @@ const smallExampleCode = `
 # provide *
 
 a = string-length("b")
+a = string-length(5)
 a = string-length("b", "c")
 a = sqr(3)
 a = sqr()
+a = customfunc()
+a = customfunc("A", "b")
 
 
 #|

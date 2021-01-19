@@ -82,27 +82,19 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // getBackgroundColor():: Bind, Expr -> VOID
 // Function used to assign the color type of each block in Block Pyret
 
-function getReturnType(name){
-	let results;
+function getLibraryFunctionInfo(name){
+	let results = null;
 	PRIMITIVES_CONFIG.primitives.forEach(element => {
 		if (element.name === name){
 			results = element;
 		}
 	});
-	let availableTypes = ["number", "string", "boolean"];
-	let returnType = (results) ? results.returnType.toLowerCase() : "untyped";
-	return (availableTypes.includes(returnType)) ? returnType : "untyped";
+	return results;
 }
 
 function getLibraryFunctionArgTypes(name){
-	let results;
-	PRIMITIVES_CONFIG.primitives.forEach(element => {
-		if (element.name === name){
-			results = element;
-		}
-	})
-
 	let availableTypes = ["number", "string", "boolean"];
+	let results = getLibraryFunctionInfo(name);
 	if (!results){
 		return null;
 	}
@@ -113,8 +105,18 @@ function getLibraryFunctionArgTypes(name){
 		let aType = availableTypes.includes(formatted) ? formatted : "untyped";
 		argumentTypes.push(aType);
 	});
-
 	return argumentTypes;
+}
+
+function getReturnType(name){
+	let results = getLibraryFunctionInfo(name);
+	if(results === null){
+		return "untyped";
+	}
+
+	let availableTypes = ["number", "string", "boolean"];
+	let returnType = results.returnType.toLowerCase();
+	return (availableTypes.includes(returnType)) ? returnType : "untyped";
 }
 
 function getBackgroundColor(rhs: Expr) {
@@ -623,9 +625,23 @@ const nodeTypes = {
 		let bgcClassName = getReturnType(fun.value.value);
 		let argsBgcClassNames = getLibraryFunctionArgTypes(fun.value.value);
 
-    return new FunctionApp(
-      pos.from, pos.to, fun, args, bgcClassName, argsBgcClassNames, {'aria-label': `${fun} applied to ${args}`}, 
-    );
+		if (argsBgcClassNames){
+			let lengthDifference = args.length - argsBgcClassNames.length;
+
+			argsBgcClassNames = argsBgcClassNames.map((value, index) => 
+				(args[index] && value == args[index].dataType) ? value : "error");
+				
+			for(let i = 0; i < lengthDifference; i++){
+				argsBgcClassNames.push("error");
+			}
+		}
+
+		let options = { 
+			'aria-label': `${fun} applied to ${args}`, 
+			'argsBgcClassNames': argsBgcClassNames
+		};
+
+    return new FunctionApp(pos.from, pos.to, fun, args, bgcClassName, options);
   },
   // "s-prim-app": function(pos: Loc, fun: string, args: Expr[]) {},
   // "s-prim-val": function(pos: Loc, name: string) {},

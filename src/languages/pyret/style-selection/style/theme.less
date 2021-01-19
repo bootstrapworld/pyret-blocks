@@ -133,3 +133,17 @@ col.constructor{
 	background: @constructor-color; 
 }
 
+.error{ 
+	> span.blocks-binop, 
+	> .blocks-literal, 
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal{
+		background-color: @mutable-color; 
+	}
+	&:before, 
+	&:after{
+    content: "\1F6AB";
+	}
+}
