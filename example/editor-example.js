@@ -20,7 +20,15 @@ const smallExampleCode = `
 # provide *
 
 
+a :: (Number, Number -> Number)
 
+bda :: Number, Number -> String
+
+j :: Number
+
+
+
+a :: {Number; Number}
 
 fun a(n):
  doc: "ABC"
@@ -29,9 +37,6 @@ fun a(n):
 end
 
 y = n + 1
-
-
-#|
 
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
@@ -397,7 +402,6 @@ else:
   x
 end
 
-|#
 `;
 
 const useBigCode = false;

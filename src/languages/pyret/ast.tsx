@@ -186,16 +186,25 @@ export class Func extends AST.ASTNode {
     return cnFuncBody;
   }
   onDragOver(e){
+    var target = e.target;
+    if(target.classList.contains('blocks-func-body-hover')){
     let cnFuncBody = this.findChild("blocks-func-body-hover");
     cnFuncBody.classList.add('blocks-hover');
+    }
   };
 
   //ondragenter="this.classList.add('blocks-hover')"
   onDragEnd = function(e){
     var target = e.target;
+
       // console.log("--- Leaving --- ");
+
+    if(target.classList.contains('blocks-func-body-hover')){
+      console.log(target);
       let cnFuncBody = this.findChild("blocks-func-body-hover");
       cnFuncBody.classList.remove('blocks-hover');
+    }
+
 
 
     // var target = e.target;
@@ -1312,8 +1321,26 @@ export class Contract extends AST.ASTNode {
   }
 
   render(props) {
+
+    let type = this.ann + "";
+    type = type.toLowerCase();
+
+    if (type.includes("<") && type.includes(">")) {
+      type = "constructor";
+    }
+
+    if (type.includes("{") && type.includes("}")) {
+      type = "untyped";
+    }
+
+    if (type.includes("(") && type.includes(")")) {
+      type = "lambdaExp";
+    }
+
     return <Node node={this} {...props}>
+      <span className={type}>
       <span className="blocks-contract">{this.name.reactElement()} :: {this.ann.reactElement()}</span>
+      </span>
     </Node>
   }
 }
@@ -2048,6 +2075,94 @@ export class AnnotationApp extends AST.ASTNode {
       </span>
     </Node>
   }
+}
+
+export class ATuple extends AST.ASTNode {
+
+  fields: AST.ASTNode;
+  // Current Editor Only Supports 1 AST Node with all the Tuples as a single Node Literal
+  // fields: AST.ASTNode[];
+
+  constructor(from, to, fields, options = {}) {
+    super(from, to, 'a-tuple', options);
+    console.log(fields);
+    this.fields = fields;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('fields')
+  ])
+
+  longDescription(level) {
+    return `a tuple with type ${this.fields}`;
+  }
+
+  pretty() {
+    return P.horz(P.txt(this.fields));
+    // return P.horz(P.txt("{"), P.sepBy(this.fields, "; ", ";"), P.txt("}"));
+  }
+
+  render(props) {
+    // let typeArgument = "<" + String(this.args) + ">";
+    return <Node node={this} {...props}>
+    <span className="blocks-a-tuple">
+      {this.fields.reactElement()}
+    </span>
+  </Node>
+    // return <Node node={this} {...props}>
+    //   <span className="blocks-a-tuple">
+		// {"{"} <Args field="args">{this.fields}</Args> {"}"}
+    //   </span>
+    // </Node>
+  }
+
+}
+
+
+export class AArrow extends AST.ASTNode {
+
+  functionLiteral: AST.ASTNode;
+  use_parens: boolean;
+  // Current Editor Only Supports 1 AST Node with the entire Function Retun Type as a single Node Literal
+
+  constructor(from, to, functionLiteral, use_parens, options = {}) {
+    super(from, to, 'a-arrow', options);
+    this.functionLiteral = functionLiteral;
+    this.use_parens = use_parens;
+    console.log(this.use_parens);
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('functionLiteral'),
+    Spec.required('use_parens')
+  ])
+
+  longDescription(level) {
+    return `a function type with signature ${this.functionLiteral}`;
+  }
+
+  pretty() {
+    let result = this.use_parens ? P.horz(P.txt("("), this.functionLiteral, P.txt(")")) : P.horz(P.txt(this.functionLiteral));
+    // console.log(this.use_parens);
+    return result;
+  }
+
+  render(props) {
+    
+    return this.use_parens ? 
+    <Node node={this} {...props}>
+    <span className="blocks-a-arrow">
+     {"("} {this.functionLiteral.reactElement()} {")"}
+    </span>
+  </Node> : 
+  <Node node={this} {...props}>
+    <span className="blocks-a-arrow">
+      {this.functionLiteral.reactElement()}
+    </span>
+  </Node>
+
+  }
+
 }
 
 export class ProvideAll extends AST.ASTNode {

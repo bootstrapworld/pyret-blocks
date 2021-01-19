@@ -18,7 +18,6 @@
 }
 
 
-
 .blocks-language-pyret {
   // Import the default style, using the parameters set below.
   // Yes, the parameters below here really get passed into the style file imported above them.
@@ -48,7 +47,7 @@
 	@large-border-radius: 15px;
 
 	.blocks-contract {
-    background-color: black;
+    background-color: @untyped-color;
     border-radius: 0px;
     // opacity: 0.5;
   }
@@ -331,9 +330,21 @@
   .react-container {
     // filter: drop-shadow(2px 2px 2px #000000);
   }
-
+  /* Contract With Types */
   .blocks-s-contract {
     padding-left: 0px;
+  }
+
+  .blocks-a-tuple {
+    .blocks-literal-a-tuple{
+      color: white;
+    }
+  }
+
+  .blocks-a-arrow {
+    .blocks-literal-a-arrow {
+      color: white;
+    }
   }
 
   .FuncBody {
@@ -439,6 +450,20 @@
   //   background-color: red;
   // }
       // Drop/hover functionality: hide drop targets when not dropping or hovering over it
+  .on-target-hover(){
+    display: inherit !important;
+    margin: 10px;
+  }
+
+  .target-jigsaw(){
+    clip-path: @insert-output-path;
+    min-height: 30px;
+    min-width: 100px;
+    margin-bottom: -7px !important;
+    margin-top: 0px !important;
+    margin-left: 10px;
+  }
+
   .blocks-func-body,
   .blocks-lambda-body,
   .blocks-cond-result,
@@ -464,8 +489,7 @@
     br {
       display: none;
     }
-    //Force it to display on hover over the main element
-    
+    //Force it to display on hover over the main element   
 
   }
 
@@ -477,36 +501,53 @@
 
   .blocks-hover {
     * {
-     
+     // pointer-events: none;
     }
     .blocks-drop-target{
       display: inherit !important;
       margin: 10px;
     }
+
   }
+
+  .blocks-func-body-hover{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    // padding-left: 10px;
+    z-index: 1000;
+    // background-color: red;
+  }
+
   .blocks-block > span > span > .blocks-drop-target {
-    clip-path: @insert-output-path;
-    min-height: 60px;
-    min-width: 100px;
-    margin-bottom: -7px !important;
-    margin-top: 0px !important;
-    margin-left: 10px;
+    .target-jigsaw();
   }
     
   .blocks-block {
-    > span:hover{ 
+    > span:hover { 
       .blocks-drop-target{
-        display: inherit !important;
-        margin: 10px;
+        .on-target-hover();
       }
     }
   }
-
+  .blocks-hover {
+    .blocks-drop-target{
+      .on-target-hover();
+    }
+  }
+  .blocks-loadTable:hover > .blocks-drop-target{
+    .on-target-hover();
+  }
+  .blocks-loadTable > .blocks-drop-target{
+    .target-jigsaw();
+  }
   .blocks-s-table, .blocks-doc-string {
     .blocks-editing {
       display: inline !important;
     }
   }
+
+
   
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
@@ -922,12 +963,10 @@
         padding-right: 1.5rem;
         padding-bottom: 1.8rem;
         padding-left: 0rem;
-        margin-bottom: -7px;
-        margin-top: -9px;
-        margin-left: -2px;
+        margin-bottom: -6px;
+        margin-left: 2px;
         // clip-path: @insert-output-path;
         clip-path: @shiftin-shiftout-path;
-        // float: left !important;
         
       }
 
@@ -942,15 +981,8 @@
       .blocks-cond-row {
         .blocks-cond-result{
           width: 100%;
-          margin: 0 auto;
+          margin-left: 2px;
         }
-      }
-
-
-
-      .blocks-if-footer{
-
-        // clip-path: @insert-output-path;
       }
     }
   }
@@ -1002,12 +1034,12 @@
   .blocks-ask {
     background-color: @untyped-color;
     // border-radius: 8px;
-    border-bottom-left-radius: 0px;
+    // border-bottom-left-radius: 0px;
     clip-path: @input-shiftout-path;
     // clip-path: @insert-output-path;
     // clip-path: @start-finish-path;
-    
-		padding: 1rem;
+    padding: 1rem;
+    margin-bottom: -7px;
 		text-align: left;
     display: block;
   }
@@ -1016,10 +1048,11 @@
     background: transparent;
   }
 
-  .blocks-ask-footer{
+  .blocks-ask-footer {
     background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
+    padding-bottom: 10px;
     color: white;
     clip-path: @shiftin-output-path;
     // clip-path: @insert-output-path;
@@ -1416,7 +1449,7 @@
 	.blocks-s-include, 
 	.blocks-include {
 		background-color: @util-color;
-	}
+  }
   
-
+  // 
 }

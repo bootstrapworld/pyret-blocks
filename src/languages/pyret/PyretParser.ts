@@ -47,7 +47,9 @@ import {Binop,
   IfExpression,
   IfElseExpression,
   IfPipeElseExpression,
-  AnnotationApp
+  AnnotationApp,
+  ATuple,
+  AArrow
 } from "./ast";
 
 export interface Position {
@@ -99,7 +101,7 @@ function getBackgroundColor(rhs: Expr) {
 	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
-	// console.log(`%c ${rhs.type}`, "background-color: red");
+  // console.log(`%c ${rhs.type}`, "background-color: red");
 
 	if (fixedSizeDataTypes.includes(rhs.dataType)){
 		return rhs.dataType;
@@ -388,8 +390,8 @@ const nodeTypes = {
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
   "s-let": function (pos: Loc, id: Bind, rhs: Expr, _keyword_val: boolean) {
     if(DEBUG) console.log(arguments);
-    console.log(" ------------- Let -----------------");
-    console.log(rhs);
+    // console.log(" ------------- Let -----------------");
+    // console.log(rhs);
     let options = {};
     options['aria-label'] = `${id}, a value definition`;
 		let bgcClassName = getBackgroundColor(rhs);
@@ -406,6 +408,8 @@ const nodeTypes = {
   // "s-ref": function(l: Loc, ann: Ann | null) {},
   "s-contract": function(l: Loc, name: Name, _params: Name[], ann: Ann) {
     if(DEBUG) console.log(arguments);
+    console.log("-------- Contract --------");
+    console.log(ann);
     // TODO: don't know what params do, using binding for now
     return new Contract(l.from, l.to, name, ann, {'aria-label': `contract for ${name}: ${ann}`});
   },
@@ -925,7 +929,24 @@ end
       {'aria-label': `${id}, an identifier`});
   },
   // 'a-type-var': function(l: Loc, id: Name) {},
-  // 'a-arrow': function(l: Loc, args: Ann[], ret: Ann, use_parens: boolean) {},
+  'a-arrow': function(l: Loc, args: Ann[], ret: Ann, use_parens: boolean) {
+    // console.log('---------- Ann Arrow Func ------------');
+    // console.log(args);
+    // console.log(ret);
+    // console.log(use_parens);
+
+    let functionLiteral = args.join(", ") + " -> " + ret;
+
+    console.log(functionLiteral);
+
+    return new AArrow(
+      l.from,
+      l.to,
+      new Nodes.Literal(l.from, l.to, functionLiteral, "a-arrow"),
+      new Nodes.Literal(l.from, l.to, use_parens, "boolean", {'aria-label': `${use_parens}, a boolean`}),
+      {'aria-label': `a function type with signature }`}
+    );
+  },
   'a-arrow-argnames': function(l: Loc, args: AField[], ret: Ann, uses_parens: boolean) {
     if(DEBUG) console.log(arguments);
     return new ArrowArgnames(l.from, l.to,
@@ -936,7 +957,21 @@ end
   },
   // 'a-method': function(l: Let, args: Ann[], ret: Ann) {},
   // 'a-record': function(l: Loc, fields: AField[]) {},
-  // 'a-tuple': function(l: Loc, fields: AField[]) {},
+  'a-tuple': function(l: Loc, fields: AField[]) {
+    // console.log('---------- Ann Tuple ------------');
+    // console.log(fields);
+    let tupleText = "{ " + fields.join("; ") + " }"; 
+
+    // return new Nodes.Literal(l.from, l.to, "hello", "a-tupe")
+
+    return new ATuple(
+      l.from,
+      l.to,
+      new Nodes.Literal(l.from, l.to, tupleText, "a-tuple"),
+      // fields,
+      {"aria-label": `type tuple with ${fields}`});
+
+  },
   'a-app': function(l: Loc, ann: Ann, args: Ann[]) {
     if (DEBUG || true) console.log(arguments);
     return new AnnotationApp(l.from, l.to, ann, args, {[ariaLabel]: `appication annotation`});
@@ -947,6 +982,7 @@ end
 
   // data AField
   'a-field': function(l: Loc, name: string, ann: Ann) {
+    console.log("A-Field ------------");
     if(DEBUG) console.log(arguments);
     return new Nodes.Literal(
       l.from, l.to,
