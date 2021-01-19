@@ -1287,8 +1287,8 @@
 
     table {
       // background-color: red;
-      border-collapse: collapse;
-      border-spacing: 0;
+			border-collapse: separate;
+			border-spacing: 0 2rem;
       box-shadow: 0 2px 15px rgba(64,64,64,.7);
       border-radius: 9px;
       overflow: hidden;
@@ -1306,6 +1306,15 @@
         background-color: white !important;
       }
 
+			position: relative;
+			> .blocks-drop-target{
+				display: block;
+				position: absolute;
+				width: 100%;
+				transform: translateY(-10px);
+				margin: 0;
+			}
+
 			.aRow {
 				display: table-row;
 				> span{
@@ -1315,7 +1324,8 @@
 
 			> .blocks-s-table-row{
 				display: table-row;
-      }
+				text-align: center;
+			}
       
       // .blocks-drop-target {
       //   background-color: red;
