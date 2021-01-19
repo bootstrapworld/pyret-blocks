@@ -106,6 +106,7 @@ export class Func extends AST.ASTNode {
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   doc: AST.ASTNode | null;
+  // doc: string | null;
   body: AST.ASTNode;
   block: boolean;
   hoverName: string;
@@ -552,7 +553,7 @@ export class Construct extends AST.ASTNode {
     Spec.value('modifier'),
     Spec.required('construktor'),
     Spec.list('values'),
-    Spec.value('bgcClassName'),
+    Spec.value('bgcClassName')
   ])
 
   longDescription(level) {
@@ -595,24 +596,18 @@ export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
 	bgcClassName: string;
-	argsBgcClassNames: string[];
-	isLibFunc: boolean;
 
   constructor(from, to, func, args, bgcClassName, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
 		this.bgcClassName = bgcClassName;
-		this.argsBgcClassNames = options["argsBgcClassNames"];
-		this.isLibFunc = (options["argsBgcClassNames"] !== null);
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
     Spec.value('bgcClassName'),
-    Spec.value('argsBgcClassNames'),
-    Spec.value('isLibFunc'),
   ])
 
   longDescription(level) {
@@ -637,19 +632,6 @@ export class FunctionApp extends AST.ASTNode {
   }
 
   render(props) {
-
-		let args = [];
-		args.push(<DropTarget />);
-		this.args.forEach((value, index) => {
-			if (this.isLibFunc){
-				args.push(<span className={`${this.argsBgcClassNames[index]} funapp-params`}>{ value.reactElement({key: index}) }</span>);
-			}
-			else{
-				args.push(value.reactElement({key: index}));
-			}
-			args.push(<DropTarget />);
-		});
-
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
@@ -657,7 +639,7 @@ export class FunctionApp extends AST.ASTNode {
 						<Args field="func">{[this.func]}</Args>
 					</span>
 					<span className="blocks-args">
-						{ args }
+						<Args field="args">{this.args}</Args>
 					</span>
 				</Node>
 			</span>
@@ -1318,16 +1300,19 @@ export class ArrowArgnames extends AST.ASTNode {
 export class Contract extends AST.ASTNode {
   ann: AST.ASTNode;
   name: Nodes.Literal;
+  bgcClassName: string;
 
-  constructor(from, to, id: Nodes.Literal, ann, options = {}) {
+  constructor(from, to, id: Nodes.Literal, ann, bgcClassName, options = {}) {
     super(from, to, 's-contract', options);
     this.name = id;
     this.ann = ann;
+    this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('name'),
     Spec.required('ann'),
+    Spec.value('bgcClassName')
   ])
 
   longDescription(level) {
@@ -1340,23 +1325,8 @@ export class Contract extends AST.ASTNode {
 
   render(props) {
 
-    let type = this.ann + "";
-    type = type.toLowerCase();
-
-    if (type.includes("<") && type.includes(">")) {
-      type = "constructor";
-    }
-
-    if (type.includes("{") && type.includes("}")) {
-      type = "untyped";
-    }
-
-    if (type.includes("(") && type.includes(")")) {
-      type = "lambdaExp";
-    }
-
     return <Node node={this} {...props}>
-      <span className={type}>
+      <span className={this.bgcClassName}>
       <span className="blocks-contract">{this.name.reactElement()} :: {this.ann.reactElement()}</span>
       </span>
     </Node>
@@ -1600,7 +1570,7 @@ export class Table extends AST.ASTNode {
   render(props) {
     let headerBranches = <Args>{this.headers}</Args>;
     // let headerBranches = this.headers.map((branch, index) => <th key={index} className={branch.options.bgcClassName}> {branch.reactElement()} </th>);
-
+    const NEWLINE = <br />;
 		let rowBranches = [];
 		this.rows.forEach((aRow, index) => {
 			let cellElements = [];
@@ -1613,8 +1583,13 @@ export class Table extends AST.ASTNode {
 			// let rowElement = <tr key={index} draggable="true"> <Args>{aRow.elems}</Args> </tr>
 			// let rowElement = <span key={index} draggable="true" className="aRow"> {aRow.elems}</Args> </span>
 			// let rowElement = <span key={index} draggable="true" className="aRow"> <Args>{cellElements}</Args> </span>
-			// rowBranches.push(rowElement);
-			rowBranches.push(aRow.reactElement());
+			// rowBranches.push(rowElement);        
+			rowBranches.push(<span className="">
+        <DropTarget />
+        {NEWLINE}
+        {aRow.reactElement()}
+        {NEWLINE}
+      </span>);
 		});
 
 		// let rowBranches = this.rows;

@@ -1268,81 +1268,116 @@
   
   // -------------------------------------------------------
   // Table
-  .blocks-s-table::after {
-    content: "";
-		background: @table-color;
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: calc(100% - @height-setoff);
-		width: @body-left-width;
-  }
+  // .blocks-s-table::after {
+  //   content: "";
+	// 	background: @table-color;
+	// 	position: absolute;
+	// 	top: 0;
+	// 	left: 0;
+	// 	height: calc(100% - @height-setoff);
+	// 	width: @body-left-width;
+  // }
 
-  .blocks-table {
-    background-color: @table-color;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-right: @body-left-width;
-    clip-path: @insert-output-path;// @shiftin-shiftout-path;
+  // .blocks-table {
+  //   background-color: @table-color;
+  //   padding-top: 20px;
+  //   padding-bottom: 20px;
+  //   padding-right: @body-left-width;
+  //   clip-path: @insert-output-path;// @shiftin-shiftout-path;
 
-    table {
-      // background-color: red;
-      border-collapse: collapse;
-      border-spacing: 0;
-      box-shadow: 0 2px 15px rgba(64,64,64,.7);
-      border-radius: 9px;
-      overflow: hidden;
+  //   table {
+  //     // background-color: red;
+  //     border-collapse: collapse;
+  //     border-spacing: 0;
+  //     box-shadow: 0 2px 15px rgba(64,64,64,.7);
+  //     border-radius: 9px;
+  //     overflow: hidden;
 
-			tr{
-				> span{
-          display: table-cell;
-          text-align: center;
-          vertical-align: middle;
-          padding: @w-scale*6px @w-scale*10px;
-				}
-      }
+  //     tr{
+	// 			> span{
+  //         display: table-cell;
+  //         text-align: center;
+  //         vertical-align: middle;
+  //         padding: @w-scale*6px @w-scale*10px;
+	// 			}
+  //     }
+
+  //     > span:nth-child(even) {
+  //       > span {
+  //         // display: table-cell;
+  //         text-align: center;
+  //         // vertical-align: middle;
+  //         // padding: @w-scale*6px @w-scale*10px;
+  //       }
+  //       .blocks-editing {
+
+  //         margin-left: 44%;
+  //        //  margin: 0 auto;
+  //       }
+  //     }
+
+  //     > span:nth-child(odd) {
+  //         padding-top: 25px;
+  //         padding-bottom: 25px;
+  //     }
+
+  //     tr > .blocks-literal > span {
+  //       background: white;
+  //       border-radius: 3px;
+  //       font-weight: bold;
+  //     }
       
-      .blocks-drop-target {
-        background-color: white !important;
-      }
+  //     .blocks-drop-target {
+  //      background-color: white !important;
+  //     }
 
-			.aRow {
-				display: table-row;
-				> span{
-					display: table-cell;
-				}
-			}
+	// 		.aRow {
+	// 			display: table-row;
+	// 			> span{
+	// 				display: table-cell;
+	// 			}
+	// 		}
 
-			> .blocks-s-table-row{
-				display: table-row;
-      }
+	// 		> .blocks-s-table-row{
+	// 			display: table-row;
+  //     }
       
-      // .blocks-drop-target {
-      //   background-color: red;
-      // }
-    }
+  //     // .blocks-drop-target {
+  //     //   background-color: red;
+  //     // }
+  //   }
+
+  //   table > .blocks-drop-target {
+  //     background: red;
+  //     // display: table-row;
+  //     // position: absolute;
+  //     // top: 0;
+  //     // left: 0;
+  //   }
 
 
-    // td , th,
-    // .blocks-literal{
-    //   // padding: @w-scale*6px @w-scale*10px;
-		// }
 
-    // tr:not(:first-child):nth-child(odd){
-    //   background-color: #ddd;
-    //  }
-  }
+
+  //   // td , th,
+  //   // .blocks-literal{
+  //   //   // padding: @w-scale*6px @w-scale*10px;
+	// 	// }
+
+  //   // tr:not(:first-child):nth-child(odd){
+  //   //   background-color: #ddd;
+  //   //  }
+  // }
 
 	
-	table{
-		> span{
-			display: table-row;
-			> span{
-				display: table-cell;
-			}
-		}
-		background-color: @table-color;
-	}
+	// table{
+	// 	> span{
+	// 		display: table-row;
+	// 		> span{
+	// 			display: table-cell;
+	// 		}
+	// 	}
+	// 	background-color: @table-color;
+	// }
 
   // Load Table ----------------------------------------
   .blocks-loadTable {

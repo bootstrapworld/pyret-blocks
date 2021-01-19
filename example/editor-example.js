@@ -19,6 +19,21 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+table: name :: {String; Number}, age :: Number, favorite-color :: String
+  row: "B", 12, "blue"
+  row: "A", 17, "green"
+  row: "E", 13, "red"
+end
+
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: [list: "B"], 12, "blue"
+  row: [list: "A"], 17, "green"
+  row: [list: "E"], 13, "red"
+end
+
+"B"
+#|
+
 a :: (Number, Number -> Number)
 bda :: Number, Number -> String
 j :: Number
@@ -105,11 +120,7 @@ end
 
 
 
-table: name :: List<String>, age :: Number, favorite-color :: String
-  row: [list: "B"], 12, "blue"
-  row: [list: "A"], 17, "green"
-  row: [list: "E"], 13, "red"
-end
+
 
 table: name :: String, age :: Number, favorite-color :: String
   row: "Bobdgssssssss", 12, "blue"
@@ -407,6 +418,7 @@ else:
   x
 end
 
+|#
 `;
 
 const useBigCode = false;

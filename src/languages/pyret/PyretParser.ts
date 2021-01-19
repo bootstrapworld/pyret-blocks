@@ -110,6 +110,25 @@ function getLibraryFunctionArgTypes(name){
 	return argumentTypes;
 }
 
+function annToType(ann: Ann) {
+  let type = ann + "";
+  type = type.toLowerCase();
+
+  if (type.includes("<") && type.includes(">")) {
+    type = "constructor";
+  }
+
+  if (type.includes("{") && type.includes("}")) {
+    type = "untyped";
+  }
+
+  if (type.includes("(") && type.includes(")")) {
+    type = "lambdaExp";
+  }
+
+  return type;
+}
+
 function getReturnType(name){
 	let results = getLibraryFunctionInfo(name);
 	if(results === null){
@@ -435,8 +454,10 @@ const nodeTypes = {
     if(DEBUG) console.log(arguments);
     console.log("-------- Contract --------");
     console.log(ann);
+    let bgcClassName = annToType(ann);
+    console.log(bgcClassName);
     // TODO: don't know what params do, using binding for now
-    return new Contract(l.from, l.to, name, ann, {'aria-label': `contract for ${name}: ${ann}`});
+    return new Contract(l.from, l.to, name, ann, bgcClassName, {'aria-label': `contract for ${name}: ${ann}`});
   },
   "s-when": function(l: Loc, test: Expr, block: Expr, blocky: boolean) {
     if (DEBUG) console.log(arguments);
@@ -824,29 +845,12 @@ const nodeTypes = {
     // console.log(_other.args);
 
 		let options = {};
-		options['aria-label'] = `${name}, a column`;
+    options['aria-label'] = `${name}, a column`;
+    
+    console.log(_other + "");
 
 		if (_other){
-			// console.log("%c-----------------", "background-color: purple");
-      // console.log(JSON.stringify(_other.value.value, null, 2));
-      if (_other.value){
-        options['datatype'] = _other.value.value;
-        name = `${name} :: ${_other.value.value}`;
-      }else{
-        console.log("No value field");
-        let header = _other.ann.value.value;
-        let temp = "";
-        let body = _other.args.map((branch, index) => {
-            return(branch.value.value);
-        });
-
-        let type = header + "<" + body.join() + ">";
-
-        console.log(type);
-        options['datatype'] = type;
-        name = `${name} :: ${type}`;
-      }
-
+      name =  `${name} :: ${_other}`;
 		}
     return new Nodes.Literal(pos.from, pos.to, name, 'field-name', options);
   },
