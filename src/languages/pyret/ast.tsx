@@ -106,7 +106,6 @@ export class Func extends AST.ASTNode {
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   doc: AST.ASTNode | null;
-  // doc: string | null;
   body: AST.ASTNode;
   block: boolean;
   hoverName: string;
@@ -596,18 +595,24 @@ export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
 	bgcClassName: string;
+	argsBgcClassNames: string[];
+	isLibFunc: boolean;
 
   constructor(from, to, func, args, bgcClassName, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
 		this.bgcClassName = bgcClassName;
+		this.argsBgcClassNames = options["argsBgcClassNames"];
+		this.isLibFunc = (options["argsBgcClassNames"] !== null);
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
     Spec.value('bgcClassName'),
+    Spec.value('argsBgcClassNames'),
+    Spec.value('isLibFunc'),
   ])
 
   longDescription(level) {
@@ -632,6 +637,19 @@ export class FunctionApp extends AST.ASTNode {
   }
 
   render(props) {
+
+		let args = [];
+		args.push(<DropTarget />);
+		this.args.forEach((value, index) => {
+			if (this.isLibFunc){
+				args.push(<span className={`${this.argsBgcClassNames[index]} funapp-params`}>{ value.reactElement({key: index}) }</span>);
+			}
+			else{
+				args.push(value.reactElement({key: index}));
+			}
+			args.push(<DropTarget />);
+		});
+
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
@@ -639,7 +657,7 @@ export class FunctionApp extends AST.ASTNode {
 						<Args field="func">{[this.func]}</Args>
 					</span>
 					<span className="blocks-args">
-						<Args field="args">{this.args}</Args>
+						{ args }
 					</span>
 				</Node>
 			</span>

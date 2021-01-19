@@ -19,16 +19,19 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
-
 a :: (Number, Number -> Number)
-
 bda :: Number, Number -> String
-
 j :: Number
-
-
-
 a :: {Number; Number}
+
+
+a = string-length("b")
+a = string-length(5)
+a = string-length("b", "c")
+a = sqr(3)
+a = sqr()
+a = customfunc()
+a = customfunc("A", "b")
 
 fun a(n):
  doc: "ABC"
@@ -43,6 +46,16 @@ load-table: name :: String, age :: Number, favorite-color :: String
   sanitize name using DS.string-sanitizer
   sanitize age using DS.strict-num-sanitizer
   sanitize favorite-color using DS.string-sanitizer
+end
+
+
+
+fun f(x :: Number) -> Number:
+  doc: "test doc string!" 
+  fun t(xl :: Number) -> Number:
+    xl - 1
+  end
+  x - 1
 end
 
 lam(str :: String) -> String:
@@ -90,14 +103,6 @@ end
 
 
 
-
-fun f(x :: Number) -> Number:
-  doc: "test doc string!" 
-  fun t(xl :: Number) -> Number:
-    xl - 1
-  end
-  x - 1
-end
 
 
 table: name :: List<String>, age :: Number, favorite-color :: String
