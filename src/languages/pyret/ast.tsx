@@ -101,6 +101,54 @@ export class Bind extends AST.ASTNode {
   }
 }
 
+export class UserBlock extends AST.ASTNode {
+	body: AST.ASTNode;
+
+	constructor(from, to, body, options) {
+		super(from, to, "user-block-expr", options);
+		this.body = body;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('body')
+	])
+
+  longDescription(level) {
+		return `a user block with ${this.body}`;
+  }
+
+	pretty() {
+		// TODO: show doc
+		let header = P.ifFlat(
+			P.horz("block:  "),
+			P.vert(P.horz("block: ")));
+
+		return P.ifFlat(
+			P.horz(header, this.body, " end"),
+			P.vert(header,
+				P.horz(INDENT, this.body),
+				"end"));
+	}
+
+	render(props){
+		let body = this.body.reactElement();
+		return (
+			<Node node={this} {...props}>
+				<span className="blocks-user-blocks">
+					blocks:
+					<span className="blocks-user-blocks-body">
+						{body}
+					</span>
+					<span className="blocks-user-blocks-footer">
+						end
+					</span>
+				</span>
+			</Node>
+		);
+	}
+
+}
+
 export class Func extends AST.ASTNode {
   name: AST.ASTNode;
   args: AST.ASTNode[];

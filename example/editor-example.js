@@ -19,6 +19,20 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+block: 
+3
+4
+end
+
+
+lam(str :: String) -> String:
+  doc: "ABC"
+  y = str + "A"
+  y
+end
+
+#|
+
 can-var = extend batting
   using at-bats, singles, doubles, triples, home-runs:
   batting-average: (singles + doubles + triples + home-runs) / at-bats,
@@ -37,12 +51,6 @@ toptracks-table = load-table: name, artists, year, danceability, energy, key,   
   speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature
   source: toptracks-sheet.sheet-by-name("2019", true)
 end
-
-
-
-
-#|
-
 
 fun add(n :: Number):
   doc: ""

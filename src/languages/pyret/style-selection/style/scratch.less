@@ -80,6 +80,7 @@
   .blocks-include,
   .blocks-if,
   .blocks-lambda,
+  .blocks-user-blocks,
   .blocks-let,
   .blocks-load-table,
   .blocks-reactor,
@@ -469,6 +470,7 @@
   }
 
   .blocks-func-body,
+  .blocks-user-blocks-body,
   .blocks-lambda-body,
   .blocks-cond-result,
   .blocks-check-body,
@@ -675,7 +677,6 @@
     // min-height: 1000px;
     display: block;
     margin-bottom: -7px;
-
   }
 
   .blocks-doc-string {
@@ -829,6 +830,49 @@
   // }
 
   // ---------------------------------------------------------------------------------------------------------
+  
+	/* .blocks-user-blocks { */
+  /*   background-color: @util-color; */
+  /*   border-bottom-left-radius: 0px; */
+  /*   clip-path: @input-shiftout-path; */
+  /*   padding: 1rem; */
+  /*   text-align: left; */
+  /*   display: block; */
+  /*   margin-bottom: -7px; */
+  /* } */
+
+	.blocks-user-blocks {
+    background-color: @util-color;
+    clip-path: @input-shiftout-path;
+		padding: 0.7rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+	}
+
+  .blocks-user-blocks-footer {
+    background-color: @util-color;
+    clip-path: @shiftin-output-path;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
+  }
+
+	.blocks-user-blocks-body {
+    position: relative;
+    text-align: left;
+    padding-left: @body-left-width;
+	}
+
+	.blocks-user-blocks-body:before {
+    content: "";
+    background: @util-color;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+	}
 
 
   // ---------------------------------------------------------------------------------------------------------
