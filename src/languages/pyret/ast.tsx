@@ -1746,6 +1746,42 @@ export class TableExtend extends AST.ASTNode{
   }
 }
 
+export class TableExtendFd extends AST.ASTNode {
+    name: Nodes.Literal;
+    value: AST.ASTNode;
+    ann:  AST.ASTNode[] | null;
+  
+      constructor(from, to, name, value, ann, options = {}) {
+        super(from, to, 's-table-extend-field', options);
+        this.name = name;
+        this.ann = ann;
+      }
+    
+      static spec = Spec.nodeSpec([
+        Spec.required('name'),
+        Spec.required('value'),
+        Spec.optional('ann')
+      ])
+    
+      longDescription(level) {
+        return `sanitizing ${this.name} with ${this.ann}`;
+      }
+    
+      pretty() {
+        return P.horz("sanitize ", this.name, " using ", this.ann);
+      }
+    
+      render(props) {
+        return (
+            <Node node={this} {...props}>
+              {/* <span className={"blocks-sanitize"}><b>
+                <span className="blocks-sanitize-title">sanitize</span> <span className="blocks-sanitize-ident">{this.name.reactElement()}</span> using <span className="blocks-sanitizer">{this.sanitizer.reactElement()}</span></b>
+              </span> */}
+            </Node>
+        );
+      }
+}
+
 
 // ------------------  xx  ------------ Table Render Implemented ------ xx  ----------------------
 export class IfBranch extends AST.ASTNode {

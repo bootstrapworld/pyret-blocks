@@ -19,6 +19,33 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+
+#|
+batting-avg-and-slugging = extend batting
+  using at-bats, singles, doubles, triples, home-runs:
+  batting-average: (singles + doubles + triples + home-runs) / at-bats,
+  slugging-percentage: (singles + (doubles * 2) +
+    (triples * 3) + (home-runs * 4)) / at-bats
+end
+
+
+can-drive-col = extend my-table using age:
+  can-drive: age >= 16,
+  can-eat :: Boolean: age <= 1
+end
+
+my-table = table: name, age
+    row: "Bob", 12
+    row: "Alice", 17
+    row: "Eve", 13
+  end
+
+
+can-drive-col = extend my-table using age:
+  can-drive: age >= 16,
+  can-eat: age <= 1
+end
+
 table: name :: {String; Number}, age :: Number, favorite-color :: String
   row: "B", 12, "blue"
   row: "A", 17, "green"
@@ -33,7 +60,7 @@ table: name :: List<String>, age :: Number, favorite-color :: String
 end
 
 "B"
-#|
+
 
 age-fixed = update my-table using age:
   age: age + 1

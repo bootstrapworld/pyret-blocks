@@ -322,6 +322,7 @@
   @only-shiftin-path:  polygon(0% 0%, calc(@w-scale*12px + @body-left-width) 0%, calc(@w-scale*24px + @body-left-width) @height-setoff, calc(@w-scale*36px + @body-left-width) @height-setoff, calc(@w-scale*48px + @body-left-width) 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
   @if-adjust: 1.3;
   @if-shiftin-shiftout-path: polygon(0% 0%, calc(@w-scale*12px + @if-adjust*@body-left-width) 0%, calc(@w-scale*24px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*36px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*48px + @if-adjust*@body-left-width) 0%, 100% 0%, 100% calc(100% - @height-setoff), calc(@w-scale*48px + @if-adjust*@body-left-width) calc(100% - @height-setoff), calc(@w-scale*36px + @if-adjust*@body-left-width) 100%, calc(@w-scale*24px + @if-adjust*@body-left-width) 100%, calc(@w-scale*12px + @if-adjust*@body-left-width) calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
+  @if-shiftin-out-path: polygon(0% 0%, calc(@w-scale*12px + @if-adjust*@body-left-width) 0%, calc(@w-scale*24px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*36px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*48px + @if-adjust*@body-left-width) 0%, 100% 0%, 100% calc(100% - @height-setoff), calc(@w-scale*48px) calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
   #blocks-style-footer {
     // clip-path: @only-input-path;
    //clip-path: polygon(0% 0%, 0% calc(100% - @height-setoff/2), 100% calc(100% - @height-setoff/2), 100% 0%);
@@ -911,7 +912,7 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
-    clip-path: @shiftin-output-path;
+    clip-path:  @if-shiftin-out-path;// @shiftin-output-path;
     // clip-path: @insert-output-path;
     // clip-path: @only-input-path;
   }

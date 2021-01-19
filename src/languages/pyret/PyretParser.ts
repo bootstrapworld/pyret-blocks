@@ -37,7 +37,8 @@ import {Binop,
 	Table, 
 	ATableRow, 
 	SomeColumnBinds, 
-	TableExtend,
+  TableExtend,
+  TableExtendFd,
   Paren,
   SpecialImport,
   ProvideAll,
@@ -760,7 +761,12 @@ const nodeTypes = {
     return new Reactor(l.from, l.to, fields, {'aria-label': `reactor`});
   },
 	's-table-extend': function(l: Loc, column_binds: ColumnBinds, extensions: TableExtendField[]) {
-		console.log("%c s-table-extend called", "background-color: red");
+    // console.log("%c s-table-extend called", "background-color: red");
+    console.log("----------------- Table Extend ------------------");
+    console.log(column_binds);
+    console.log(column_binds + "");
+    console.log(extensions);
+    console.log(extensions.join(" "));
 		// console.log(`${JSON.stringify(l, null, 2)}`);
 		// console.log(column_binds);
 		// console.log(`${JSON.stringify(column_binds, null, 2)}`)
@@ -913,9 +919,11 @@ end
 		console.log("%c s-table-extend-field called", "background-color: red");
 
 		console.log(`${JSON.stringify(l, null, 2)}`);
-		console.log("name: " + name);
-		console.log(`${JSON.stringify(value, null, 2)}`)
-		console.log(`${JSON.stringify(ann, null, 2)}`)
+    console.log("name: " + name);
+    console.log(value);
+    console.log(ann);
+		// console.log(`${JSON.stringify(value, null, 2)}`)
+		// console.log(`${JSON.stringify(ann, null, 2)}`)
 		console.log("%c ----------------------------", "background-color: red");
 
 
