@@ -855,17 +855,23 @@ export class LoadTable extends AST.ASTNode {
 
   pretty() {
     let header = P.txt("load-table: ");
-    let row_names = P.sepBy(this.columns.map(e => e.pretty()), ", ", "");
+    let row_names = P.sepBy(this.columns.map(e => e.pretty()), ", ", ", ");
     let row_pretty = P.ifFlat(row_names, P.vertArray(this.columns.map(e => e.pretty())));
-    let sources = P.horz(P.sepBy(this.sources.map(s => s.pretty())));
+    let sources = P.horz(P.sepBy(this.sources.map(s => s.pretty()), ", ", ""));
+
+    console.log("--- Load Table Pretty --");
+    console.log(row_names);
+    console.log(row_pretty);
+    console.log(sources);
+
     // let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty())));
     // let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty()), "", "source: "));
     let footer = P.txt("end");
     return P.vert(
       P.ifFlat(
-        P.horz(header, row_pretty),
+        P.horz(header, row_names),
         P.vert(header,
-               P.horz(P.txt("  "), row_pretty))),
+               P.horz(P.txt("  "), row_names))),
       P.horz("  ", sources),
       footer);
   }
@@ -1696,10 +1702,10 @@ export class TableExtend extends AST.ASTNode{
 
   render(props) {
     return <Node node={this} {...props}>
-      <span className="blocks-table-extend">extend {this.column_binds.reactElement()} 
-      <span className="blocks-table-extend-body">
+      <div className="blocks-table-extend">extend {this.column_binds.reactElement()} 
+      <div className="blocks-table-extend-body">
         <Args>{this.extensions}</Args>
-        </span></span>
+        </div></div>
     </Node>
   }
 }
@@ -1733,9 +1739,9 @@ export class TableExtendFd extends AST.ASTNode {
       render(props) {
         return (
             <Node node={this} {...props}>
-              <span className="blocks-table-extend-field">
+              <div className="blocks-table-extend-field">
               {this.name.reactElement()}: {this.value.reactElement()}
-              </span>
+              </div>
             </Node>
         );
       }

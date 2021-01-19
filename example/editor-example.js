@@ -19,6 +19,22 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+
+toptracks-table = load-table: name, artists, year, danceability, energy, key,    loudness, mode, 
+  speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature
+  source: toptracks-sheet.sheet-by-name("2019", true)
+end
+
+
+
+
+#|
 
 
 extend batting
@@ -28,9 +44,6 @@ extend batting
     (triples * 3) + (home-runs * 4)) / at-bats
 end
 
-
-
-#|
 fun add(n :: Number):
   doc: ""
   y = n + 1
@@ -483,7 +496,7 @@ end
 
 `;
 
-const useBigCode = true;
+const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
