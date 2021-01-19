@@ -1702,10 +1702,13 @@ export class TableExtend extends AST.ASTNode{
 
   render(props) {
     return <Node node={this} {...props}>
-      <div className="blocks-table-extend">extend {this.column_binds.reactElement()} 
-      <div className="blocks-table-extend-body">
-        <Args>{this.extensions}</Args>
-        </div></div>
+			<div className="blocks-table-extend">extend {this.column_binds.reactElement()} 
+				<div className="blocks-table-extend-body">
+					<Args>
+						{this.extensions}
+					</Args>
+				</div>
+			</div>
     </Node>
   }
 }

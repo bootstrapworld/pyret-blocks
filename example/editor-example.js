@@ -19,6 +19,13 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+can-var = extend batting
+  using at-bats, singles, doubles, triples, home-runs:
+  batting-average: (singles + doubles + triples + home-runs) / at-bats,
+  slugging-percentage: (singles + (doubles * 2) +
+    (triples * 3) + (home-runs * 4)) / at-bats
+end
+
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
   sanitize name using DS.string-sanitizer
@@ -36,13 +43,6 @@ end
 
 #|
 
-
-extend batting
-  using at-bats, singles, doubles, triples, home-runs:
-  batting-average: (singles + doubles + triples + home-runs) / at-bats,
-  slugging-percentage: (singles + (doubles * 2) +
-    (triples * 3) + (home-runs * 4)) / at-bats
-end
 
 fun add(n :: Number):
   doc: ""
