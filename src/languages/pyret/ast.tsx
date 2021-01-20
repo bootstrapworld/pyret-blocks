@@ -1887,8 +1887,41 @@ export class TableExtract extends AST.ASTNode {
       </Node>
     )
   }
+}
 
 
+export class TableSelect extends AST.ASTNode {
+  columns: AST.ASTNode[];
+  table: AST.ASTNode;
+
+  constructor(from, to, columns, table, options) {
+    super(from, to, 's-table-select', options);
+    this.columns = columns;
+    this.table = table;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.list('columns'),
+    Spec.required('table'),
+  ])
+
+  longDescription(level) {
+    return `selecting the columns ${this.columns} from the table ${this.table}`;
+  }
+
+  pretty() {
+    return P.horz("select ", P.sepBy(this.columns, ", ", ","), " from ", this.table, " end");
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-table-select">
+          select <span className="blocks-table-select-col"><Args>{this.columns}</Args></span> from <span className="blocks-table-select-table">{this.table.reactElement()}</span> end
+        </div>
+      </Node>
+    )
+  }
 }
 
 // ------------------  xx  ------------ Table Render Implemented ------ xx  ----------------------

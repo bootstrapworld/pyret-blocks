@@ -42,6 +42,7 @@ import {Binop,
   TableOrder,
   TableColumnSort,
   TableExtract,
+  TableSelect,
 	UserBlock, 
   Paren,
   SpecialImport,
@@ -191,6 +192,9 @@ function getBackgroundColor(rhs: Expr) {
   }
   else if (rhs.type === "s-table-extract") {
     return "constructor";
+  }
+  else if (rhs.type === "s-table-select"){
+    return "table";
   }
 	else{
 		return "untyped";
@@ -803,11 +807,11 @@ const nodeTypes = {
   },
 	's-table-extend': function(l: Loc, column_binds: ColumnBinds, extensions: TableExtendField[]) {
     // console.log("%c s-table-extend called", "background-color: red");
-    console.log("----------------- Table Extend ------------------");
-    console.log(column_binds);
-    console.log(column_binds + "");
-    console.log(extensions);
-    console.log(extensions.join(" "));
+    // console.log("----------------- Table Extend ------------------");
+    // console.log(column_binds);
+    // console.log(column_binds + "");
+    // console.log(extensions);
+    // console.log(extensions.join(" "));
 		// console.log(`${JSON.stringify(l, null, 2)}`);
 		// console.log(column_binds);
 		// console.log(`${JSON.stringify(column_binds, null, 2)}`)
@@ -819,11 +823,15 @@ const nodeTypes = {
 		console.log("%c s-table-update called", "background-color: red");
 		return null;
 	},
-  // 's-table-select': function(l: Loc, columns: Name[], table: Expr) {},
+  's-table-select': function(l: Loc, columns: Name[], table: Expr) {
+
+    return new TableSelect(l.from, l.to, columns, table, {'aria-label': `selecting the columns ${columns} from the table ${table}`});
+
+  },
   's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {
-    console.log('-------------- S Table Order --------------');
-    console.log(table);
-    console.log(ordering);
+    // console.log('-------------- S Table Order --------------');
+    // console.log(table);
+    // console.log(ordering);
 
     let orderingText = ordering.join(", ");
     return new TableOrder(l.from, l.to, table, ordering, {'aria-label': `Ordering Table ${table} with directions ${ordering}`});
@@ -832,9 +840,9 @@ const nodeTypes = {
   },
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   's-table-extract': function(l: Loc, column: Name, table: Expr) {
-    console.log("----------- Table Extract ===========");
-    console.log(column);
-    console.log(table);
+    // console.log("----------- Table Extract ===========");
+    // console.log(column);
+    // console.log(table);
 
     return new TableExtract(l.from, l.to, column, table, {'aria-label': `extracting the column ${column} from the table ${table}`});
 
