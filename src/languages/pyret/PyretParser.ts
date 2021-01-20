@@ -38,6 +38,7 @@ import {Binop,
 	Table, 
 	SomeColumnBinds, 
   TableExtend,
+  TableFilter,
   TableExtendFd,
   TableOrder,
   TableColumnSort,
@@ -838,7 +839,13 @@ const nodeTypes = {
      // return new TableOrder(l.from, l.to, table, new Nodes.Literal(l.from, l.to, orderingText, 'operator'), {'aria-label': `Ordering Table ${table} with directions ${ordering}`});
 
   },
-  // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
+  's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {
+    // console.log('----------- Table Filter -------------');
+    // console.log(column_binds + "");
+    // console.log(predicate + "");
+    return new TableFilter(l.from, l.to, column_binds, predicate, {'aria-label': `filtering the table ${column_binds} under condition ${predicate}`})
+
+  },
   's-table-extract': function(l: Loc, column: Name, table: Expr) {
     // console.log("----------- Table Extract ===========");
     // console.log(column);

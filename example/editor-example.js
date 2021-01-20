@@ -19,13 +19,19 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+can-drive = sieve my-table using age:
+  age >= 16
+end
 
-select name, artists, year, danceability, energy, key,    loudness, mode, 
-speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature from my-table end
+
+
 
 var y = extract name from my-table end
 
 #|
+
+select name, artists, year, danceability, energy, key,    loudness, mode, 
+speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature from my-table end
 
 extract name from my-table end
 

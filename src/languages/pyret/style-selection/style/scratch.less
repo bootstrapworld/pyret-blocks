@@ -163,6 +163,7 @@
   .blocks-s-column-binds,
   .blocks-s-table-extend-field,
   .blocks-s-table-order,
+  .blocks-s-table-filter,
   .blocks-s-table-extract,
   .blocks-s-table-select,
   .blocks-s-column-sort,
@@ -1182,7 +1183,8 @@
 
   // Extend
   .blocks-s-table-extend,
-  .blocks-s-table-order {
+  .blocks-s-table-order,
+  .blocks-s-table-filter{
     position: relative;
     text-align: left;
     height: 100%;
@@ -1190,7 +1192,8 @@
 
     
   .blocks-s-table-extend:after,
-  .blocks-s-table-order:after {
+  .blocks-s-table-order:after,
+  .blocks-s-table-filter:after {
     content: "";
     background: @table-color;
     position: absolute;
@@ -1201,7 +1204,8 @@
   }
 
   .blocks-table-order,
-  .blocks-table-extend {
+  .blocks-table-extend,
+  .blocks-table-filter {
     background-color: @table-color;
     border-bottom-left-radius: 0px;
 
@@ -1221,7 +1225,8 @@
   }
 
   .blocks-table-order-footer,
-  .blocks-table-extend-footer {
+  .blocks-table-extend-footer,
+  .blocks-table-filter-footer {
     background: @table-color;
     border-radius: 0px 8px 8px 0px;
     padding: 5px;
@@ -1234,6 +1239,7 @@
   .blocks-table-order-body > .blocks-s-column-sort{
     display: block;
   }
+
   .blocks-s-table-extend-field,
   .blocks-s-column-sort {
     position: relative;
@@ -1271,13 +1277,22 @@
     font-weight: bold;
   }
 
+
+
+  .blocks-table-filter-body{
+
+  }
+
+
+//---------------------------------------------------------------------------------------------------
   // Extract
-  .blocks-s-table-extract {
+  .blocks-table-extract {
     background-color: @constructor-color;
-    border-radius: 3px;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
     color: white;
-    padding-top: 5px;
-    padding-bottom: 5px;
     font-weight: bold;
 
     .blocks-table-extract-col,
@@ -1285,6 +1300,21 @@
       background-color: white;
       border-radius: 1px;
     }
+  }
+
+  .blocks-s-table-extract {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-table-extract:after{
+		content: "";
+		background: @constructor-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
   }
 
   // Select

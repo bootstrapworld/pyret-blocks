@@ -1775,6 +1775,49 @@ export class TableExtendFd extends AST.ASTNode {
       }
 }
 
+export class TableFilter extends AST.ASTNode{
+	column_binds: AST.ASTNode;
+	predicate: AST.ASTNode;
+
+	constructor(from, to, column_binds, predicate, options) {
+		super(from, to, 's-table-filter', options);
+		this.column_binds = column_binds;
+		this.predicate = predicate;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('column_binds'), 
+		Spec.required('predicate')
+	])
+	
+	longDescription(level) {
+		return `filtering the table ${this.column_binds} under condition ${this.predicate}`;
+	}
+
+  pretty() {
+    let prefix = P.horz("sieve ", this.column_binds);
+    let suffix = "end";
+    let cond = this.predicate;
+
+    return P.ifFlat(
+      P.horz(prefix, " ", cond, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, cond), suffix)
+    );
+  }
+
+  render(props) {
+    return <Node node={this} {...props}>
+			<div className="blocks-table-filter">sieve {this.column_binds.reactElement()} </div>
+				<div className="blocks-table-filter-body">
+						{this.predicate.reactElement()}
+				</div>
+        <div className="blocks-table-filter-footer">
+          end
+        </div>
+    </Node>
+  }
+}
+
 export class TableOrder extends AST.ASTNode {
   tableName: AST.ASTNode;
   ordering: AST.ASTNode;
