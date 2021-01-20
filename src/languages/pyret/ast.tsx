@@ -1775,6 +1775,50 @@ export class TableExtendFd extends AST.ASTNode {
       }
 }
 
+export class TableExtendReducer extends AST.ASTNode {
+  name: Nodes.Literal;
+  reducer: AST.ASTNode;
+  col:  AST.ASTNode;
+  ann:  AST.ASTNode | null;
+
+    constructor(from, to, name, reducer, col, ann, options = {}) {
+      super(from, to, 's-table-extend-reducer', options);
+      this.name = name;
+      this.reducer = reducer;
+      this.col = col;
+      this.ann = ann;
+    }
+  
+    static spec = Spec.nodeSpec([
+      Spec.required('name'),
+      Spec.required('reducer'),
+      Spec.required('col'),
+      Spec.optional('ann')
+    ])
+  
+    longDescription(level) {
+      return `Field of Extending Table with name  ${this.name} that has the reducer ${this.reducer} and the col ${this.col}`;
+    }
+  
+    pretty() {
+      return this.ann ? P.horz(this.name, " :: ", this.ann, ": ", this.reducer, " of ", this.col) : P.horz(this.name, ": ", this.reducer, " of ", this.col);
+    }
+  
+    render(props) {
+      return this.ann ?
+          <Node node={this} {...props}>
+            <div className="blocks-table-extend-reducer-field">
+            <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> :: {this.ann.reactElement()} : {this.reducer.reactElement()} of {this.col.reactElement()}
+            </div>
+          </Node> :
+          <Node node={this} {...props}>
+          <div className="blocks-table-extend-reducer-field">
+          <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span>: {this.reducer.reactElement()} of {this.col.reactElement()}
+          </div>
+        </Node>
+    }
+}
+
 export class TableFilter extends AST.ASTNode{
 	column_binds: AST.ASTNode;
 	predicate: AST.ASTNode;

@@ -25,6 +25,11 @@ end
 
 
 
+with-min-max = extend some-numbers using n:
+  max :: Number: T.running-max of n,
+  min :: Number: T.running-min of n
+end
+
 
 select name, artists, year, danceability, energy, key, loudness, mode, 
 speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature from my-table end

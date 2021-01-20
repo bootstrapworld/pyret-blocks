@@ -40,6 +40,7 @@ import {Binop,
   TableExtend,
   TableFilter,
   TableExtendFd,
+  TableExtendReducer,
   TableOrder,
   TableColumnSort,
   TableExtract,
@@ -1060,8 +1061,18 @@ return new TableExtendFd(l.from,
 
 	},
 	's-table-extend-reducer': function(l: Loc, name: string, reducer: Expr, col: Name, ann: Ann) {
-		console.log("%c s-table-extend-reducer", "background-color: red");
-		return new Nodes.Literal(l.from, l.to, "table-extend-reucer", "string", {'aria-label': `table extend`});
+    console.log("%c s-table-extend-reducer", "background-color: red");
+    // console.log(name);
+    // console.log(reducer);
+    // console.log(col);
+    // console.log(ann);
+
+    return new TableExtendReducer(l.from, l.to,
+      new Nodes.Literal(l.from, {line: l.from.line, ch: l.from.ch+name.length}, name, "operator", {'aria-label': `${name}`}),
+      reducer,
+      col,
+      ann,
+      {'aria-label': `Field of Extending Table with name  ${name} that has the reducer ${reducer} and the col ${col}`});
 	},
 
   // data LoadTableSpec
