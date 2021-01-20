@@ -23,6 +23,8 @@ can-drive = sieve my-table using age:
   age >= 16
 end
 
+extend ball-info using pos-y: vel-y: T.difference-from(25) of pos-y end
+
 
 
 with-min-max = extend some-numbers using n:

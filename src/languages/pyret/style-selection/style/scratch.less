@@ -164,6 +164,7 @@
   .blocks-s-table-extend-field,
   .blocks-s-table-order,
   .blocks-s-table-filter,
+  .blocks-s-table-extend-reducer,
   .blocks-s-table-extract,
   .blocks-s-table-select,
   .blocks-s-column-sort,
@@ -1357,6 +1358,30 @@
   .indent{
     margin-left: 20px;
     display: block;
+  }
+
+  // reducer - --- ~ Let
+  .blocks-s-table-extend-reducer {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-table-extend-reducer:after {
+		content: "";
+		background: @table-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  
+  .blocks-table-extend-reducer-field {
+		background-color: @table-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
   }
 
   // Load Table ----------------------------------------
