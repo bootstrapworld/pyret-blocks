@@ -1538,27 +1538,6 @@ export class Table extends AST.ASTNode {
 		super(from, to, 's-table', options);
     this.headers = headers;
     this.rows = rows;
-    // let rowBranches = this.rows.map((rowBranches, index) => console.log(rowBranches));
-    // let rowBranches = this.rows.map((rowBranches, index) => rowBranches.reactElement({key: index}));
-    // console.log(`%c ${JSON.stringify(headers, null, 2)}`, 'background-color: blue');
-    
-
-		// console.log(`%c ${JSON.stringify(this.headers, null, 2)}`, 'background-color: purple');
-		// console.log(`%c ${JSON.stringify(this.rows[0], null, 2)}`, 'background-color: blue');
-
-		// console.log(`%c ${this.headers}`, 'background-color: purple');
-		// console.log(`%c ${this.rows}`, 'background-color: blue');
-    
-    // console.log(`%c ${JSON.stringify(this.headers, null, 2)}`);
-    // console.log(`%c ${JSON.stringify(this.rows, null, 2)}`);
-    
-    // console.log("Headers");
-		// console.log(`%c ${this.headers}`);
-    // console.log("Rows:")
-    // console.log(`%c ${this.rows}`);
-
-		// console.log(this.headers);
-		// console.log(this.rows);
   }
 
   static spec = Spec.nodeSpec([
@@ -1578,10 +1557,6 @@ export class Table extends AST.ASTNode {
     let suffix = "end";
     let branches = P.sepBy(this.headers, ", ", "");
     let rowBranches = P.sepBy(this.rows, " ", "");
-    // let rowBranches = P.sepBy(this.rows, ", ", "");
-    // console.log(this.rows[0]);
-    // console.log(branches);
-    // console.log(rowBranches);
     return P.ifFlat(
       P.horz(prefix, " ", branches, " ", rowBranches, " ", suffix),
       P.vert(header, P.horz(INDENT, rowBranches), suffix)
@@ -1590,21 +1565,10 @@ export class Table extends AST.ASTNode {
 
   render(props) {
     let headerBranches = <Args>{this.headers}</Args>;
-    // let headerBranches = this.headers.map((branch, index) => <th key={index} className={branch.options.bgcClassName}> {branch.reactElement()} </th>);
     const NEWLINE = <br />;
 		let rowBranches = [];
 		this.rows.forEach((aRow, index) => {
-			let cellElements = [];
-			// aRow.elems.forEach((cell, cellIndex) => {
-			//   console.log(`%c ---------------------------`, "background-color: red");
-			//   console.log(cell);
-			//   cellElements.push(<td key={cellIndex}>cell.reactElement()</td>);
-			// });
-			// console.log(aRow);
-			// let rowElement = <tr key={index} draggable="true"> <Args>{aRow.elems}</Args> </tr>
-			// let rowElement = <span key={index} draggable="true" className="aRow"> {aRow.elems}</Args> </span>
-			// let rowElement = <span key={index} draggable="true" className="aRow"> <Args>{cellElements}</Args> </span>
-			// rowBranches.push(rowElement);        
+			let cellElements = [];       
 			rowBranches.push(<span className="">
         <DropTarget />
         {NEWLINE}
@@ -1613,12 +1577,6 @@ export class Table extends AST.ASTNode {
       </span>);
 		});
 
-		// let rowBranches = this.rows;
-		// rowBranches.map((aRow, index) => {
-		//   aRow.reactElement({key: index});
-		//   console.log(aRow);
-		// });
-
     let columnBranches = this.headers.map((branch, index) => {
       let colType = "untyped";
       let strBranch = String(branch).split(" ");
@@ -1626,8 +1584,6 @@ export class Table extends AST.ASTNode {
         colType = strBranch[2];
         if (colType.includes("<") || colType.includes(">")) {
           colType = "constructor";
-          // let startPos = colType.indexOf('<');
-          // colType = colType.substring(0, startPos);
         }
       }
       return(<col key={index} span={2} className={colType.toLowerCase()}/>);
@@ -1672,7 +1628,6 @@ export class ATableRow extends AST.ASTNode {
     let prefix = "row:";
     console.log("TABLE ROW ___________________________")
     console.log(this.elems);
-		// let suffix = "end";
     let vertBranches = P.sepBy(this.elems, ", ", ",");
     let hortBranches = P.sepBy(this.elems, ", ", ",");
 		return P.ifFlat(
@@ -1683,7 +1638,6 @@ export class ATableRow extends AST.ASTNode {
 
 	render(props) {
     let branches = this.elems.map((branch, index) => {return(branch.reactElement())});
-    // this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
     
 		return (
 			<Node node={this} {...props}>
@@ -1715,8 +1669,6 @@ export class SomeColumnBinds extends AST.ASTNode {
 
 	pretty() {
     let prefix = P.horz(this.tableName, " ", "using");
-    // console.log("column binds ___________________________")
-		// let suffix = "end";
     let vertBranches = P.sepBy(this.branches, ", ", ",");
     let hortBranches = P.sepBy(this.branches, ", ", ",");
 		return P.ifFlat(
@@ -1727,7 +1679,6 @@ export class SomeColumnBinds extends AST.ASTNode {
 
 	render(props) {
     let branches = this.branches.map((branch, index) => {return(branch.reactElement())});
-    // this.elems.map((branch, index) => <td key={index}> {branch.reactElement()} </td>);
     
 		return (
 			<Node node={this} {...props}>
@@ -1939,16 +1890,6 @@ export class IfBranch extends AST.ASTNode {
           </div>
         </div>
       </Node>
-      // <Node node={this} {...props}>
-      //   <div className="blocks-cond-row">
-      //     <div className="blocks-cond-predicate">
-      //       {this.test.reactElement()}
-      //     </div>
-      //     <div className="blocks-cond-result">
-      //       {this.body.reactElement()}
-      //     </div>
-      //   </div>
-      // </Node>
     )
   }
 }
@@ -2249,18 +2190,6 @@ export class When extends AST.ASTNode {
             end
             </span>
       </Node>
-
-          //   <Node node={this} {...props}>
-          //   <div className="blocks-when">
-          //     when
-          //     <div className="blocks-cond-predicate">
-          //       {this.test.reactElement()}
-          //     </div>
-          //     <div className="blocks-cond-result">
-          //       {this.body.reactElement()}
-          //     </div>
-          //   </div>
-          // </Node>
     )
   }
 }
@@ -2289,7 +2218,6 @@ export class AnnotationApp extends AST.ASTNode {
   }
 
   render(props) {
-		// let typeArgument = "<" + String(this.args) + ">";
     return <Node node={this} {...props}>
       <span className="blocks-a-app">{this.ann.reactElement()}
 		{"<"} <Args field="args">{this.args}</Args> {">"}
@@ -2364,7 +2292,6 @@ export class AArrow extends AST.ASTNode {
 
   pretty() {
     let result = this.use_parens ? P.horz(P.txt("("), this.functionLiteral, P.txt(")")) : P.horz(P.txt(this.functionLiteral));
-    // console.log(this.use_parens);
     return result;
   }
 
@@ -2405,15 +2332,17 @@ export class ProvideAll extends AST.ASTNode {
   }
 
   render(props) {
-		// let typeArgument = "<" + String(this.args) + ">";
 		console.log("%c provide all called from render", "background-color: green");
     return <Node node={this} {...props}>
       <span>provide hi *</span>
     </Node>
   }
 }
+
 //Creates a drag over event handler for blocks, such that when they are dragged over this handler finds the head node
-//and adds the proper corresponding 
+//and adds the proper corresponding 'blocks-hover' css class to indicate that the node is being dropped over.
+//node: The React node that we want to reference (passed using 'this' in the function itself)
+//className: the classname of the child node we want to find (note: this will only find the first one!)
 function getDragEvent(node : any, className : string){
   var dragTimeout;
   function findChild(name : string) {
