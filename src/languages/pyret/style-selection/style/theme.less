@@ -115,6 +115,17 @@ th.untyped{ background-color: @untyped-color; }
 	}
 }
 
+.table {
+	.blocks-var>span.blocks-literal,
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-let>span.blocks-literal,
+	.blocks-contract{
+		background-color: @table-color; 
+		color: black;
+	}
+}
+
 col.untyped{
 	background-color: @untyped-color;
 }

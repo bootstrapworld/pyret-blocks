@@ -19,9 +19,29 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
+data Posn:
+  | posn(x :: Number, y :: Number) 
+  | nice(s :: String)
+end
+
+data Posn:
+  | posn(x :: Number, y :: Number) 
+end
+
+#|
+reactor:
+  seconds-per-tick: 0.1,
+  title: "Count by 10",
+  on-tick: tencrement,
+  init: 10,
+end
+
+
+
 can-drive = sieve my-table using age:
   age >= 16
 end
+
 
 extend ball-info using pos-y: vel-y: T.difference-from(25) of pos-y end
 
@@ -40,7 +60,6 @@ select name, artists, year from my-table end
 
 var y = extract name from my-table end
 
-#|
 
 select name, artists, year, danceability, energy, key,    loudness, mode, 
 speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature from my-table end
@@ -48,7 +67,8 @@ speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-
 extract name from my-table end
 
 order some-table:
-  column1 ascending
+  column1 ascending,
+  column2 descending
 end
 
 
@@ -167,13 +187,12 @@ end
 "B"
 
 
-age-fixed = update my-table using age:
-  age: age + 1
-end
+
 
 can-drive-col = extend my-table using age:
   can-drive: age >= 16
 end
+
 
 
 a :: (Number, Number -> Number)
@@ -549,6 +568,7 @@ if x > 5:
 else:
   x
 end
+
 |#
 `;
 

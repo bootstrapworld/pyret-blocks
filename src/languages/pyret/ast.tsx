@@ -1355,7 +1355,7 @@ export class Include extends AST.ASTNode {
 
 export class Data extends AST.ASTNode {
   variants: AST.ASTNode[];
-	name: string;
+	name: Nodes.Literal;
 
   constructor(from, to, name, variants, options = {}) {
     super(from, to, 's-data', options);
@@ -1373,12 +1373,22 @@ export class Data extends AST.ASTNode {
   }
 
   pretty() {
-    return P.horz(P.txt("data "), this.name);
+    let header = P.horz(P.txt("data "), this.name, ":");
+    let value = P.sepBy(this.variants, " ", "");
+  
+    return P.ifFlat(
+      P.horz(header, value, " end"),
+      P.vert(header,
+             P.horz(INDENT, value),
+             "end"));
+    
   }
 
   render(props) {
     return <Node node={this} {...props}>
-      <span className="blocks-include">data</span>
+      <div className="blocks-data-type">data {this.name.reactElement()}:</div>
+      <Args>{this.variants}</Args>
+      <div className="blocks-data-type-footer">end</div>
     </Node>
   }
 }
@@ -2477,6 +2487,70 @@ export class AArrow extends AST.ASTNode {
 
   }
 
+}
+
+// CUSTOM DATATYPE
+export class SomeVariantMember extends AST.ASTNode {
+  bind: AST.ASTNode;
+
+  constructor(from, to, bind, options = {}) {
+    super(from, to, 's-variant-member', options);
+    this.bind = bind;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('bind')
+  ])
+
+  longDescription(level) {
+    return `${this.bind}`;
+  }
+
+  pretty() {
+    return P.horz(this.bind);
+  }
+
+  render(props) {
+    return(<Node node={this} {...props}>
+      <div className="blocks-variant-member">{this.bind.reactElement()}</div>
+  </Node>)
+  }
+
+}
+
+export class NewVariant extends AST.ASTNode {
+  name: Nodes.Literal;
+  members: AST.ASTNodes[];
+  with_members: AST.ASTNodes[] | null;
+
+  constructor(from, to, name, members, with_members, options = {}) {
+    super(from, to, 's-variant', options);
+    this.name = name;
+    this.members = members;
+    this.with_members = with_members;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('name'),
+    Spec.list('members'),
+    Spec.list('with_members')
+  ])
+
+  longDescription(level) {
+    return `Variant ${this.name} with ${this.members}`;
+  }
+
+  pretty() {
+    return P.horz("| ", this.name, "(", P.sepBy(this.members, ", ", ","), ")");
+  }
+
+  render(props) {
+    return(<Node node={this} {...props}>
+      <div className="blocks-variant">
+        | {this.name.reactElement()}({<Args>{this.members}</Args>})
+        </div>
+  </Node>)
+  }
 }
 
 export class ProvideAll extends AST.ASTNode {

@@ -20,7 +20,9 @@ import {Binop,
   CheckTest,
   Construct,
   Contract,
-	Data, 
+  Data,
+  SomeVariantMember,
+  NewVariant,
   DataField,
   For,
   ForBind,
@@ -168,7 +170,8 @@ function getReturnType(name){
 }
 
 function getBackgroundColor(rhs: Expr) {
-	let fixedSizeDataTypes = ["number", "string", "boolean"];
+  let fixedSizeDataTypes = ["number", "string", "boolean"];
+  let tableFunctions = ['s-table-select', 's-table-extend', 's-table-filter', 's-table']
 	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: blue");
@@ -195,7 +198,7 @@ function getBackgroundColor(rhs: Expr) {
   else if (rhs.type === "s-table-extract") {
     return "constructor";
   }
-  else if (rhs.type === "s-table-select"){
+  else if (tableFunctions.includes(rhs.type)){
     return "table";
   }
 	else{
@@ -776,19 +779,40 @@ const nodeTypes = {
     )
   },
 	"s-data": function(l: Loc, name: string, params: Name[], mixins: Expr[], variants: Variant[], shared_members: Member[], check: Expr | null) {
-		console.log("%c s-data called ------------", "background-color: purple");
+    console.log("%c s-data called ------------", "background-color: purple");
+    console.log(';---------------- Custom Data Type-----------');
+    console.log(name);
+    console.log(params);
+    console.log(mixins);
+    console.log(variants+"");
+    console.log(shared_members);
+    console.log(check);
 
-		return new Nodes.Literal(l.from, l.to, "s-data", "string", {'aria-label': `s-data`});
-		// return new Data(l.from, l.to, name, variants, {'aria-label': 's-data'});
+    let nameNode = new Nodes.Literal({line: l.from.line, ch: l.from.ch+5 }, {line: l.from.line, ch: l.from.ch+5+name.length}, name, "operator", {'aria-label': `${name}`});
+
+
+		// return new Nodes.Literal(l.from, l.to, "s-data", "string", {'aria-label': `s-data`});
+		return new Data(l.from, l.to, nameNode, variants, {'aria-label': 's-data'});
 	},
 	"s-data-expr": function(l: Loc, name: string, namet: Name, params: Name[], mixins: Expr[], variants: Variant[], shared_members: Member[], check: Expr | null) {
-		console.log("%c s-expression called ------------", "background-color: green");
-		console.log(JSON.stringify(name));
-		// console.log(JSON.stringify(mixins));
-		console.log(JSON.stringify(variants));
+		// console.log("%c s-expression called ------------", "background-color: green");
+    // console.log(JSON.stringify(name));
+		// // console.log(JSON.stringify(mixins));
+		// console.log(JSON.stringify(variants));
 		// console.log(JSON.stringify(shared_members));
 		// console.log(JSON.stringify(check));
-		// console.log("%c ----------------------", "background-color: purple");
+    // console.log("%c ----------------------", "background-color: purple");
+    
+    // console.log(';---------------- Custom Data Type Expr-----------');
+    // console.log(name);
+    // console.log(namet);
+    // console.log(params);
+    // console.log(mixins);
+    // console.log(variants);
+    // console.log(variants);
+    // console.log(shared_members);
+    // console.log(check);
+
 		// return null;
 		return new Nodes.Literal(l.from, l.to, "custom datatype", "string", {'aria-label': `s-data-expr`});
 	},
@@ -1119,20 +1143,29 @@ return new TableExtendFd(l.from,
 
 	// data VariantMember
 	's-variant-member': function(l: Loc, member_type: VariantMemberType, bind: Bind) {
-		console.log("%c variant member called ------------", "background-color: purple");
-		console.log(JSON.stringify(bind, null, 2))
+    console.log("%c variant member called ------------", "background-color: blue");
+    console.log(member_type);
+    console.log(bind + "");
+    console.log(JSON.stringify(bind, null, 2))
+    
+    return new SomeVariantMember(l.from, l.to, bind, {'aria-label': `${bind}`});
 		// return null;
 		// return new AVariantMember(l.from, l.to, bind);
-		return new Nodes.Literal(l.from, l.to, "variant member placeholder", "string", {'aria-label': `s-variant-member`});
+	// 	return new Nodes.Literal(l.from, l.to, "variant member placeholder", "string", {'aria-label': `s-variant-member`});
 	},
 
   // data Variant
 	's-variant': function(l: Loc, constr_loc: Loc, name: string, members: VariantMember[], with_members: Member[]) {
-		console.log("%c variant called ------------", "background-color: purple");
-		// console.log(JSON.stringify(bind, null, 2))
-		// return null;
-		// return new AVariantMember(l.from, l.to, bind);
-		return new Nodes.Literal(l.from, l.to, "pipe placeholder", "string", {'aria-label': `s-variant`});
+    console.log("%c variant called ------------", "background-color: purple");
+    console.log(l);
+    console.log(constr_loc);
+    console.log(name);
+    console.log(members);
+    console.log(with_members);
+
+    let nameNode = new Nodes.Literal(l.from, {line: l.from.line, ch: l.from.ch+name.length}, name, "operator", {'aria-label': `${name}`});
+     return new NewVariant(l.from, l.to, nameNode, members, with_members, {'aria-label': `Variant ${name} with ${members}`});
+//		return new Nodes.Literal(l.from, l.to, "pipe placeholder", "string", {'aria-label': `s-variant`});
 	},
   // 's-singleton-variant': function(l: Loc, name: string, with_members: Member[]) {},
 
