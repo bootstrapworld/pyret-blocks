@@ -1808,12 +1808,12 @@ export class TableExtendReducer extends AST.ASTNode {
       return this.ann ?
           <Node node={this} {...props}>
             <div className="blocks-table-extend-reducer-field">
-            <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> :: {this.ann.reactElement()} : {this.reducer.reactElement()} of {this.col.reactElement()}
+              <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> :: {this.ann.reactElement()} : {this.reducer.reactElement()} of {this.col.reactElement()}
             </div>
           </Node> :
           <Node node={this} {...props}>
           <div className="blocks-table-extend-reducer-field">
-          <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span>: {this.reducer.reactElement()} of {this.col.reactElement()}
+            <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> : {this.reducer.reactElement()} of {this.col.reactElement()}
           </div>
         </Node>
     }
