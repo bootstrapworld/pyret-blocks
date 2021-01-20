@@ -358,7 +358,8 @@
   }
 
   /* Returning Literals in Functions/etc. */
-  .blocks-block > span > span > .blocks-literal {
+  .blocks-block > span > span > .blocks-literal,
+  .blocks-block > span > span > span > .blocks-funApp {
     // clip-path: @insert-output-path !important;
     clip-path: @shiftin-shiftout-path !important;
     background-color:  @untyped-color;
@@ -371,9 +372,6 @@
     padding-right: @w-scale*65px !important;
     //  border-left: 10px solid @binop-color;
     margin-top: 0px;
-   
-
-
       
     .blocks-literal-number {
       color: white;
@@ -411,11 +409,14 @@
 
   }
 
-  .blocks-block > span > span > .blocks-literal::before {
-    content: "⮑ ";
+  .blocks-block > span > span > .blocks-literal::before,
+  .blocks-block > span > span > span > .blocks-funApp::before {
+    content: "⮑";
+    //display: inline-flex;
     font-size: 25px;
-    margin-left: @w-scale*-25px;
-    margin-right: @w-scale*25px;
+    margin-left: @w-scale*-30px;
+    //margin-right: @w-scale*25px; 
+    height: 0px;
   }
 
   .blocks-block > span > span > span > .blocks-constructor {
@@ -542,7 +543,6 @@
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
   .blocks-binop{
-    margin-top: -10px;
     /* background-color: @binop-color; */
     border-radius: 20px;
     padding: 9px;
@@ -580,9 +580,6 @@
     //  border-left: 10px solid @binop-color;
     // margin-left: @body-left-width;
     margin-top: 0px;
-  }
-  .blocks-block > span > span > span> .blocks-funApp{
-    padding: 17px;
   }
 
   /*  xx Binary Operations xx  */
@@ -714,11 +711,12 @@
     border-radius: 5px;
     /* background-color: @func-background; */
     margin-bottom: 2px;
-  }
-  
-  .blocks-funApp{
     padding-left: 0;
     padding-bottom: 5px;
+  }
+
+  .blocks-funApp{
+    padding: 5px;
   }
 
 	.blocks-funDef{
