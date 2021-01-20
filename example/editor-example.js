@@ -19,14 +19,18 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
-
-
-
+order some-table:
+  column1 ascending
+end
 
 
 
 
 #|
+
+
+
+
 can-drive-col = extend my-table using age:
   can-drive: age >= 16,
   can-eat :: Boolean: age <= 1

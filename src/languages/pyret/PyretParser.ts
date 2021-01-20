@@ -803,14 +803,14 @@ const nodeTypes = {
 		return null;
 	},
   // 's-table-select': function(l: Loc, columns: Name[], table: Expr) {},
-  // 's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {
-    's-table-order': function(l: Loc, table: Expr, ordering: ASTNode[]) {
+  's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {
     console.log('-------------- S Table Order --------------');
     console.log(table);
     console.log(ordering);
 
-
-      return new TableOrder(l.from, l.to, table, ordering, {'aria-label': `Ordering Table ${table} with directions ${ordering}`});
+    let orderingText = ordering.join(", ");
+    return new TableOrder(l.from, l.to, table, ordering, {'aria-label': `Ordering Table ${table} with directions ${ordering}`});
+     // return new TableOrder(l.from, l.to, table, new Nodes.Literal(l.from, l.to, orderingText, 'operator'), {'aria-label': `Ordering Table ${table} with directions ${ordering}`});
 
   },
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
@@ -963,14 +963,16 @@ end
     let directionLength = columnsortEnd - columnsortStart - columnName.length - 1;
     let directionName = (directionLength == 9) ? "descending" : "ascending";
     
-    let directionFrom = {line: l.from.line, ch: columnsortStart + column.length + 1};
-    let directionTo = columnsortEnd;
+    console.log(column.from);
+    console.log(column.to);
+    // let directionFrom = {line: l.from.line, ch: column.to + 1};
+    // let directionTo = {line: l.from.line, ch: l.to.ch};
     
     console.log(directionName);
 
     return new TableColumnSort(l.from, l.to,
       new Nodes.Literal(column.from, column.to, column, "operator", {'aria-label': `Column with name ${column}`}),
-      new Nodes.Literal(directionFrom, directionTo, directionName, "operator", {'aria-label': `Sorting Column with Direction ${directionName}`}),
+      new Nodes.Literal({line: l.from.line, ch: column.to.ch+1}, {line: l.from.line, ch: column.to.ch+1+directionLength}, directionName, "operator", {'aria-label': `Sorting Column with Direction ${directionName}`}),
       {'aria-label': `Column ${column} with direction ${directionName} in Ordering the Table`}
       );
 

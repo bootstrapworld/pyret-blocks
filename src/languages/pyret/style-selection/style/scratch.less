@@ -179,6 +179,8 @@
   .blocks-s-table-extend,
   .blocks-s-column-binds,
   .blocks-s-table-extend-field,
+  .blocks-s-table-order,
+  .blocks-s-column-sort,
   .blocks-s-reactor,
   .blocks-specialImport,
   .blocks-s-tuple,
@@ -478,7 +480,8 @@
   .blocks-for-body,
   .blocks-cond-table,
   .blocks-loadTable,
-  .blocks-table-extend-body{
+  .blocks-table-extend-body,
+  .blocks-table-order-body{
     //Prevent default displaying
     .blocks-block > span > span {
       display: block;
@@ -1413,14 +1416,16 @@
   // Table Functions/Operations
 
   // Extend
-  .blocks-s-table-extend {
+  .blocks-s-table-extend,
+  .blocks-s-table-order {
     position: relative;
     text-align: left;
     height: 100%;
   }
 
     
-  .blocks-s-table-extend:after {
+  .blocks-s-table-extend:after,
+  .blocks-s-table-order:after {
     content: "";
     background: @table-color;
     position: absolute;
@@ -1430,6 +1435,7 @@
     width: @body-left-width;
   }
 
+  .blocks-table-order,
   .blocks-table-extend {
     background-color: @table-color;
     border-bottom-left-radius: 0px;
@@ -1451,7 +1457,7 @@
     
   }
 
-
+  .blocks-table-order-footer,
   .blocks-table-extend-footer {
     background: @table-color;
     border-radius: 0px 8px 8px 0px;
@@ -1463,12 +1469,14 @@
     // clip-path: @insert-output-path;
   }
 
-  .blocks-s-table-extend-field {
+  .blocks-s-table-extend-field,
+  .blocks-s-column-sort {
     position: relative;
     text-align: left;
   }
   
-  .blocks-s-table-extend-field:after{
+  .blocks-s-table-extend-field:after,
+  .blocks-s-column-sort:after{
 		content: "";
 		background: @untyped-color;
 		position: absolute;
@@ -1479,7 +1487,8 @@
   }
 
 
-  .blocks-table-extend-field {
+  .blocks-table-extend-field,
+  .blocks-column-sort {
 		background-color: @untyped-color;
     /* border-radius: 5px; */
     padding-top: 15px;
@@ -1488,13 +1497,19 @@
     // border: 2px solid black;
     clip-path: @insert-output-path;
 
-    .blocks-table-extend-field-title {
-      background: @table-color;
-      color: white;
-      border-radius: 3px;
-      font-weight: bold;
-    }
+
   }
+
+  .blocks-table-extend-field-title,
+  .blocks-column-sort-title {
+    background: @table-color;
+    color: white;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+
+  // Order
+
 
 
 

@@ -4,6 +4,7 @@
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 import { render } from 'react-dom';
+
 // import { AST, AST } from 'eslint';
 
 const {pluralize, enumerateList } = AST;
@@ -1794,17 +1795,18 @@ export class TableExtendFd extends AST.ASTNode {
 
 export class TableOrder extends AST.ASTNode {
   tableName: AST.ASTNode;
-  ordering: AST.ASTNode[];
+  ordering: AST.ASTNode;
 
   constructor(from, to, tableName, ordering, options) {
-    super(from, to, 's-column-sort', options);
+    super(from, to, 's-table-order', options);
     this.tableName = tableName;
     this.ordering = ordering;
+    // this.orderList = orderList;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('tableName'),
-    Spec.required('ordering')
+    Spec.list('ordering')
   ])
 
   longDescription(level) {
@@ -1825,7 +1827,7 @@ export class TableOrder extends AST.ASTNode {
   render(props) {
     return(<Node node={this} {...props}>
       <div className="blocks-table-order">
-        order {this.tableName.reactElement()}
+        order {this.tableName.reactElement()}:
       </div>
       <div className="blocks-table-order-body">
         <Args>{this.ordering}</Args>
@@ -1857,14 +1859,14 @@ export class TableColumnSort extends AST.ASTNode {
   }
 
   pretty() {
-    return P.horz(this.name, ": ", this.direction);
+    return P.horz(this.name, " ", this.direction);
   }
 
   render(props) {
     return (
       <Node node={this} {...props}>
         <div className="blocks-column-sort">
-        {this.name.reactElement()}: {this.direction.reactElement()}
+        <span className="blocks-column-sort-title">{this.name.reactElement()}</span> <span className="blocks-column-sort-dir">{this.direction.reactElement()}</span>
         </div>
       </Node>)
   }
