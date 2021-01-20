@@ -1509,4 +1509,33 @@
 		}
 	}
 
+	.blocks-reactor{
+    clip-path: @shiftin-shiftout-path !important;
+		background-color: #777777;
+    border-radius: 0px;
+
+    padding-top: @w-scale*18px;
+    padding-bottom: @w-scale*32px;
+    padding-left: 35px !important;
+    padding-right: @w-scale*65px !important;
+    /* margin-top: 0px; */
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+
+		.blocks-reactor-header{
+			&:before{
+				content: "\1F680"
+			}
+		}
+
+		.blocks-reactor-body{
+			text-align: left;
+		}
+
+		.blocks-reactor-footer{
+			margin-top: 20px;
+		}
+	}
+
 }

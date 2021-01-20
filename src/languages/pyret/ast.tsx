@@ -1517,16 +1517,27 @@ export class Reactor extends AST.ASTNode {
   }
 
   render(props) {
-    let branches = this.fields.map((branch, index) => branch.reactElement({key: index}));
+    const NEWLINE = <br />;
+		let branches = [];
+		branches.push(NEWLINE);
+		this.fields.forEach((branch, index) => {
+			branches.push(branch.reactElement({key: index}));
+			branches.push(NEWLINE);
+		});
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-reactor">
-          reactor:
-        </span>
-        <div className="blocks-cond-table">
-          {branches}
-        </div>
-      </Node>
+			<Node node={this} {...props}>
+				<div className="blocks-reactor">
+					<span className="blocks-reactor-header">
+						reactor:
+					</span>
+					<span className="blocks-reactor-body">
+						{branches}
+					</span>
+					<span className="blocks-reactor-footer">
+						end
+					</span>
+				</div>
+			</Node>
     );
   }
 }
