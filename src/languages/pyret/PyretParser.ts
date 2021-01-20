@@ -39,6 +39,8 @@ import {Binop,
 	SomeColumnBinds, 
   TableExtend,
   TableExtendFd,
+  TableOrder,
+  TableColumnSort,
 	UserBlock, 
   Paren,
   SpecialImport,
@@ -56,6 +58,7 @@ import {Binop,
   AArrow, 
 	ATableRow, 
 } from "./ast";
+// import { AST } from "eslint";
 
 export interface Position {
   line: number;
@@ -806,17 +809,23 @@ const nodeTypes = {
 		// console.log(`${JSON.stringify(column_binds, null, 2)}`)
 		// console.log(extensions);
 		// console.log(`${JSON.stringify(extensions, null, 2)}`)
-		
-		// return new Nodes.Literal(l.from, l.to, "table-extend", "string", {'aria-label': `table extend`});
 		return new TableExtend(l.from, l.to, column_binds, extensions, {'aria-label': `table extend`});
-		// return new ATableRow(l.from, l.to, extensions, {'aria-label': `table-row`});
 	},
 	's-table-update': function(l: Loc, column_binds: ColumnBinds, updates: Member[]) {
 		console.log("%c s-table-update called", "background-color: red");
 		return null;
 	},
   // 's-table-select': function(l: Loc, columns: Name[], table: Expr) {},
-  // 's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {},
+  // 's-table-order': function(l: Loc, table: Expr, ordering: ColumnSort) {
+    's-table-order': function(l: Loc, table: Expr, ordering: ASTNode[]) {
+    console.log('-------------- S Table Order --------------');
+    console.log(table);
+    console.log(ordering);
+
+
+      return new TableOrder(l.from, l.to, table, ordering, {'aria-label': `Ordering Table ${table} with directions ${ordering}`});
+
+  },
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
   // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
@@ -947,9 +956,38 @@ sharing:
   end
 end
    */
+  // 's-column-sort-order': function(direction: Name) {
+  //   console.log('--------------- S Column Sort Order ----------------');
+  //   console.log(direction);
+  // },
   
   // data ColumnSort
-  // 's-column-sort': function(l: LoadTable, column: Name, direction: ColumnSortOrder) {},
+  // 's-column-sort': function(l: LoadTable, column: Name, direction: ColumnSortOrder) {
+    's-column-sort': function(l: Loc, column: ASTNode, direction: ColumnSortOrder) {
+    console.log('--------------- S Column Sort ----------------');
+    console.log(l);
+    console.log(column);
+    console.log(direction);
+      // Short Fix for Now, using length of the word to determine direction
+    let columnsortStart = l.from.ch;
+    let columnsortEnd = l.to.ch;
+    let columnName = column + "";
+
+    let directionLength = columnsortEnd - columnsortStart - columnName.length - 1;
+    let directionName = (directionLength == 9) ? "descending" : "ascending";
+    
+    let directionFrom = {line: l.from.line, ch: columnsortStart + column.length + 1};
+    let directionTo = columnsortEnd;
+    
+    console.log(directionName);
+
+    return new TableColumnSort(l.from, l.to,
+      new Nodes.Literal(column.from, column.to, column, "operator", {'aria-label': `Column with name ${column}`}),
+      new Nodes.Literal(directionFrom, directionTo, directionName, "operator", {'aria-label': `Sorting Column with Direction ${directionName}`}),
+      {'aria-label': `Column ${column} with direction ${directionName} in Ordering the Table`}
+      );
+
+  },
 
   // data TableExtendField
 	's-table-extend-field': function(l: Loc, name: string, value: Expr, ann: Ann) {
@@ -963,10 +1001,11 @@ end
 		// console.log(`${JSON.stringify(ann, null, 2)}`)
 		console.log("%c ----------------------------", "background-color: red");
 
-    let nameFrom = value.left.from;
-    let nameTo = value.left.to;
+    let nameFrom = {line: value.from.line, ch: value.from.ch- 2 - name.length};
+    let nameTo = {line: value.from.line, ch: value.from.ch - 2};
 
-
+    console.log(nameFrom);
+    console.log(nameTo);
     // return new Nodes.Literal(l.from, l.to, value.type, value, {'aria-label': 'table extend'});
 
 return new TableExtendFd(l.from,

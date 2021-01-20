@@ -184,7 +184,8 @@
   .blocks-s-tuple,
   .blocks-tuple-get,
   .blocks-s-var,
-  .blocks-s-when
+  .blocks-s-when,
+  .blocks-s-user-block
   {
     display: inline-flex;
     flex-direction: column;
@@ -357,7 +358,8 @@
   }
 
   /* Returning Literals in Functions/etc. */
-  .blocks-block > span > span > .blocks-literal {
+  .blocks-block > span > span > .blocks-literal,
+  .blocks-block > span > span > span > .blocks-funApp {
     // clip-path: @insert-output-path !important;
     clip-path: @shiftin-shiftout-path !important;
     background-color:  @untyped-color;
@@ -370,9 +372,6 @@
     padding-right: @w-scale*65px !important;
     //  border-left: 10px solid @binop-color;
     margin-top: 0px;
-   
-
-
       
     .blocks-literal-number {
       color: white;
@@ -410,11 +409,14 @@
 
   }
 
-  .blocks-block > span > span > .blocks-literal::before {
-    content: "⮑ ";
+  .blocks-block > span > span > .blocks-literal::before,
+  .blocks-block > span > span > span > .blocks-funApp::before {
+    content: "⮑";
+    //display: inline-flex;
     font-size: 25px;
-    margin-left: @w-scale*-25px;
-    margin-right: @w-scale*25px;
+    margin-left: @w-scale*-30px;
+    //margin-right: @w-scale*25px; 
+    height: 0px;
   }
 
   .blocks-block > span > span > span > .blocks-constructor {
@@ -477,7 +479,7 @@
   .blocks-for-body,
   .blocks-cond-table,
   .blocks-loadTable,
-  .blocks-s-table-extend{
+  .blocks-table-extend-body{
     //Prevent default displaying
     .blocks-block > span > span {
       display: block;
@@ -541,7 +543,6 @@
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
   .blocks-binop{
-    margin-top: -10px;
     /* background-color: @binop-color; */
     border-radius: 20px;
     padding: 9px;
@@ -551,6 +552,8 @@
 
     .blocks-operator-container{
       margin: 0px;
+      padding-top: 2px;
+      padding-bottom: 10px;
       
       // display: inline-block;
       *display: inline;
@@ -567,17 +570,7 @@
     }
   }
 
-  .blocks-block > span > span > .blocks-binop {
-    // clip-path: @insert-output-path !important;
-    clip-path: @shiftin-shiftout-path !important;
-    border-radius: 0px;
-    border-radius: 0px;
-    margin-bottom: -7px;
-    //  border-left: 10px solid @binop-color;
-    // margin-left: @body-left-width;
-    margin-top: 0px;
-  }
-
+  .blocks-block > span > span > .blocks-binop,
   .blocks-block > span > span > span > .blocks-binop {
     // clip-path: @insert-output-path !important;
     clip-path: @shiftin-shiftout-path !important;
@@ -588,6 +581,7 @@
     // margin-left: @body-left-width;
     margin-top: 0px;
   }
+
   /*  xx Binary Operations xx  */
   // ---------------------------------------------------------------------------------------------------------
   /* Identifiers 
@@ -717,11 +711,12 @@
     border-radius: 5px;
     /* background-color: @func-background; */
     margin-bottom: 2px;
-  }
-  
-  .blocks-funApp{
     padding-left: 0;
     padding-bottom: 5px;
+  }
+
+  .blocks-funApp{
+    padding: 5px;
   }
 
 	.blocks-funDef{
@@ -830,7 +825,49 @@
   // }
 
   // ---------------------------------------------------------------------------------------------------------
+  // Blocks
+
+  .blocks-user-blocks-header {
+    background-color: @mutable-color;
+    border-bottom-left-radius: 0px;
+    color: white;
+    font-weight: bold;
+
+    // clip-path: @start-finish-path;
+    // clip-path:  @insert-output-path;
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+  }
+
+  .blocks-s-user-block {
+    position: relative;
+    text-align: left;
+  }
   
+  .blocks-s-user-block:after {
+    content: "";
+    background: @mutable-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+
+  .blocks-user-blocks-footer {
+    font-weight: bold;
+    background: @mutable-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
+  }
+
 	/* .blocks-user-blocks { */
   /*   background-color: @util-color; */
   /*   border-bottom-left-radius: 0px; */
@@ -841,38 +878,38 @@
   /*   margin-bottom: -7px; */
   /* } */
 
-	.blocks-user-blocks {
-    background-color: @util-color;
-    clip-path: @input-shiftout-path;
-		padding: 0.7rem;
-		text-align: left;
-    display: block;
-    margin-bottom: -7px;
-	}
+	// .blocks-user-blocks {
+  //   background-color: @util-color;
+  //   clip-path: @input-shiftout-path;
+	// 	padding: 0.7rem;
+	// 	text-align: left;
+  //   display: block;
+  //   margin-bottom: -7px;
+	// }
 
-  .blocks-user-blocks-footer {
-    background-color: @util-color;
-    clip-path: @shiftin-output-path;
-    padding: 5px;
-    padding-bottom: 10px;
-    color: white;
-  }
+  // .blocks-user-blocks-footer {
+  //   background-color: @util-color;
+  //   clip-path: @shiftin-output-path;
+  //   padding: 5px;
+  //   padding-bottom: 10px;
+  //   color: white;
+  // }
 
-	.blocks-user-blocks-body {
-    position: relative;
-    text-align: left;
-    padding-left: @body-left-width;
-	}
+	// .blocks-user-blocks-body {
+  //   position: relative;
+  //   text-align: left;
+  //   padding-left: @body-left-width;
+	// }
 
-	.blocks-user-blocks-body:before {
-    content: "";
-    background: @util-color;
-    position: absolute;
-    top: 0;
-    left: 0px;
-    height: calc(100% - @height-setoff);
-    width: @body-left-width;
-	}
+	// .blocks-user-block-expr:before {
+  //   content: "";
+  //   background: @util-color;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0px;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-left-width;
+	// }
 
 
   // ---------------------------------------------------------------------------------------------------------
@@ -1249,16 +1286,6 @@
     width: @body-left-width;
   }
 
-  // .blocks-s-for:before {
-  //   content: "";
-  //   background:  @for-color;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-left-width;
-  // }
-
   .blocks-for-footer {
     background: @for-color;
     border-radius: 0px 8px 8px 0px;
@@ -1385,8 +1412,88 @@
 
   // Extend
   .blocks-s-table-extend {
-
+    position: relative;
+    text-align: left;
+    height: 100%;
   }
+
+    
+  .blocks-s-table-extend:after {
+    content: "";
+    background: @table-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-table-extend {
+    background-color: @table-color;
+    border-bottom-left-radius: 0px;
+
+    // clip-path: @start-finish-path;
+    // clip-path:  @insert-output-path;
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+    color: black;
+    font-weight: bold;
+
+    .blocks-s-column-binds {
+      background: white;
+      border-radius: 3px;
+    }
+    
+  }
+
+
+  .blocks-table-extend-footer {
+    background: @table-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: black;
+    clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
+    font-weight: bold;
+    // clip-path: @insert-output-path;
+  }
+
+  .blocks-s-table-extend-field {
+    position: relative;
+    text-align: left;
+  }
+  
+  .blocks-s-table-extend-field:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+
+  .blocks-table-extend-field {
+		background-color: @untyped-color;
+    /* border-radius: 5px; */
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    // border: 2px solid black;
+    clip-path: @insert-output-path;
+
+    .blocks-table-extend-field-title {
+      background: @table-color;
+      color: white;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+  }
+
 
 
   // Load Table ----------------------------------------
@@ -1493,8 +1600,12 @@
   // Include, Import Statements, etc.
 	.blocks-s-include, 
 	.blocks-include {
-		background-color: @util-color;
-	}
+    background-color: @util-color;
+    margin-bottom: 4px;
+  }
+  .blocks-specialImport{
+    padding: 5px;
+  }
 
 	.funapp-params{
 		> .blocks-literal{
