@@ -41,6 +41,7 @@ import {Binop,
   TableExtendFd,
   TableOrder,
   TableColumnSort,
+  TableExtract,
 	UserBlock, 
   Paren,
   SpecialImport,
@@ -187,6 +188,9 @@ function getBackgroundColor(rhs: Expr) {
   }
   else if (rhs.type === "lambdaExp"){
     return "lambdaExp";
+  }
+  else if (rhs.type === "s-table-extract") {
+    return "constructor";
   }
 	else{
 		return "untyped";
@@ -462,8 +466,8 @@ const nodeTypes = {
   // "s-rec": function(l: Loc, name: Bind, value: Expr) {},
   "s-let": function (pos: Loc, id: Bind, rhs: Expr, _keyword_val: boolean) {
     if(DEBUG) console.log(arguments);
-    // console.log(" ------------- Let -----------------");
-    // console.log(rhs);
+    console.log(" ------------- Let -----------------");
+    console.log(rhs);
     let options = {};
     options['aria-label'] = `${id}, a value definition`;
 		let bgcClassName = getBackgroundColor(rhs);
@@ -827,7 +831,14 @@ const nodeTypes = {
 
   },
   // 's-table-filter': function(l: Loc, column_binds: ColumnBinds, predicate: Expr) {},
-  // 's-table-extract': function(l: Loc, column: Name, table: Expr) {},
+  's-table-extract': function(l: Loc, column: Name, table: Expr) {
+    console.log("----------- Table Extract ===========");
+    console.log(column);
+    console.log(table);
+
+    return new TableExtract(l.from, l.to, column, table, {'aria-label': `extracting the column ${column} from the table ${table}`});
+
+  },
 	's-table': function(l: Loc, headers: FieldName[], rows: TableRow[]) {
 		if(DEBUG) console.log(arguments);
     console.log("------------ Table Parser -------------");

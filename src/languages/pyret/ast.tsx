@@ -5,6 +5,7 @@ import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 import { render } from 'react-dom';
 
+
 // import { AST, AST } from 'eslint';
 
 const {pluralize, enumerateList } = AST;
@@ -1853,6 +1854,42 @@ export class TableColumnSort extends AST.ASTNode {
   }
 }
 
+// Extract
+export class TableExtract extends AST.ASTNode {
+  column: AST.ASTNode;
+  table: AST.ASTNode;
+
+  constructor(from, to, column, table, options) {
+    super(from, to, 's-table-extract', options);
+    this.column = column;
+    this.table = table;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('column'),
+    Spec.required('table'),
+  ])
+
+  longDescription(level) {
+    return `extracting the column ${this.column} from the table ${this.table}`;
+  }
+
+  pretty() {
+    return P.horz("extract ", this.column, " from ", this.table, " end");
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-table-extract">
+          extract <span className="blocks-table-extract-col">{this.column.reactElement()}</span> from <span className="blocks-table-extract-table">{this.table.reactElement()}</span> end
+        </div>
+      </Node>
+    )
+  }
+
+
+}
 
 // ------------------  xx  ------------ Table Render Implemented ------ xx  ----------------------
 export class IfBranch extends AST.ASTNode {

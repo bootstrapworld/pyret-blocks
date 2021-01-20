@@ -163,6 +163,7 @@
   .blocks-s-column-binds,
   .blocks-s-table-extend-field,
   .blocks-s-table-order,
+  .blocks-s-table-extract,
   .blocks-s-column-sort,
   .blocks-s-reactor,
   .blocks-specialImport,
@@ -1276,7 +1277,23 @@
     font-weight: bold;
   }
 
-  // Order
+  // Extract
+  .blocks-s-table-extract {
+    background-color: @constructor-color;
+    border-radius: 3px;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+
+    .blocks-table-extract-col,
+    .blocks-table-extract-table{
+      background-color: white;
+      border-radius: 1px;
+    }
+  }
+
+
 
 
 

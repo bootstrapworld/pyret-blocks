@@ -19,16 +19,17 @@ const DELAY = 250;
 const smallExampleCode = `
 # provide *
 
-order some-table:
-  column1 ascending
-end
 
 
-
+var y = extract name from my-table end
 
 #|
 
+extract name from my-table end
 
+order some-table:
+  column1 ascending
+end
 
 
 can-drive-col = extend my-table using age:
@@ -533,7 +534,7 @@ end
 
 `;
 
-const useBigCode = true;
+const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
