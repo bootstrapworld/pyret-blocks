@@ -1385,13 +1385,14 @@ export class Data extends AST.ASTNode {
 			variants.push(NEWLINE);
 		});
 
-    return <Node node={this} {...props}>
-      <div className="blocks-data-type">data {this.name.reactElement()}:</div>
-			<span className="blocks-cond-row">
-				{variants}
-			</span>
-      <div className="blocks-data-type-footer">end</div>
-    </Node>
+		return <Node node={this} {...props}>
+			<div className="blocks-custom-data-type">
+				<span className="blocks-data-type">data {this.name.reactElement()}:</span>
+				{NEWLINE}
+				<span className="blocks-cond-row">{variants}</span>
+				<span className="blocks-data-type-footer">end</span>
+			</div>
+	</Node>
   }
 }
 
