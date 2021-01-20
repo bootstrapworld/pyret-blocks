@@ -1360,6 +1360,36 @@ export class Include extends AST.ASTNode {
   }
 }
 
+export class Data extends AST.ASTNode {
+  variants: AST.ASTNode[];
+	name: string;
+
+  constructor(from, to, name, variants, options = {}) {
+    super(from, to, 's-data', options);
+    this.name = name;
+    this.variants = variants;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.value('name'),
+    Spec.list('variants'),
+  ])
+
+  longDescription(level) {
+    return `custom datatype ${this.name}`;
+  }
+
+  pretty() {
+    return P.horz(P.txt("data "), this.name);
+  }
+
+  render(props) {
+    return <Node node={this} {...props}>
+      <span className="blocks-include">data</span>
+    </Node>
+  }
+}
+
 // export class ProvideAll extends AST.ASTNode{
 
 //   constructor(from, to, options = {}) {
