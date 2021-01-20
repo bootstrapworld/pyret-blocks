@@ -1522,7 +1522,8 @@
 
 	.blocks-reactor{
     clip-path: @shiftin-shiftout-path !important;
-		background-color: #777777;
+    background-color: @util-color;
+	// 	background-color: #777777;
     border-radius: 0px;
 
     padding-top: @w-scale*18px;
@@ -1547,7 +1548,23 @@
 		.blocks-reactor-footer{
 			margin-top: 20px;
 		}
-	}
+  }
+
+  .blocks-s-reactor {
+    position: relative;
+    text-align: left;
+  }
+  
+  
+  .blocks-s-reactor:after{
+		content: "";
+		background: @util-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
 
 	.blocks-custom-data-type{
 		background-color: @untyped-color;
@@ -1559,6 +1576,23 @@
     padding-left: 35px !important;
     padding-right: @w-scale*65px !important;
     margin-top: 0px;
-	}
+  }
+  
+  .blocks-s-data {
+    font-weight: bold;
+    color: white;
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-data:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
 
 }

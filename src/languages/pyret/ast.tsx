@@ -70,16 +70,19 @@ export class Binop extends AST.ASTNode {
 export class Bind extends AST.ASTNode {
   ann: AST.ASTNode | null;
   ident: Nodes.Literal;
+  bgcClassName: string;
 
-  constructor(from, to, id: Nodes.Literal, ann, options = {}) {
+  constructor(from, to, id: Nodes.Literal, ann, bgcClassName,  options = {}) {
     super(from, to, 's-bind', options);
     this.ident = id;
     this.ann = ann;
+    this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('ident'),
     Spec.optional('ann'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -97,9 +100,9 @@ export class Bind extends AST.ASTNode {
 
   render(props) {
     return <Node node={this} {...props}>
-      {(this.ann === null) ? <span className="blocks-bind">{this.ident.reactElement()}</span>
+      {(this.ann === null) ? <span className="untyped"><span className="blocks-bind">{this.ident.reactElement()}</span></span>
         :
-        (<span className="blocks-bind">{this.ident.reactElement()} :: {this.ann.reactElement()}</span>)
+        (<span className={this.bgcClassName}><span className="blocks-bind">{this.ident.reactElement()} :: {this.ann.reactElement()}</span></span>)
       }</Node>
   }
 }
@@ -1534,8 +1537,9 @@ export class Reactor extends AST.ASTNode {
 		let branches = [];
 		branches.push(NEWLINE);
 		this.fields.forEach((branch, index) => {
+      branches.push(<DropTarget />);
 			branches.push(branch.reactElement({key: index}));
-			branches.push(NEWLINE);
+      branches.push(NEWLINE);
 		});
     return (
 			<Node node={this} {...props}>

@@ -941,11 +941,15 @@ const nodeTypes = {
   // data Bind
   "s-bind": function (pos: Loc, _shadows: boolean, id: Name, ann: Ann) {
     // TODO: ignoring shadowing for now.
+    let bgcClassName = annToType(ann);
+    console.log(bgcClassName);
+
     return new Bind(
       pos.from,
       pos.to,
       id,
-      ann);
+      ann,
+      bgcClassName);
   },
   // 's-tuple-bind': function(l: LoadTable, fields: Bind[], as_name: Bind | null) {},
 
