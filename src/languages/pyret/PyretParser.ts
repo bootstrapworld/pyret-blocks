@@ -699,8 +699,14 @@ const nodeTypes = {
 				
 			for(let i = 0; i < lengthDifference; i++){
 				argsBgcClassNames.push("error");
-			}
-		}
+      }
+      
+      if ((args.length == 0) && (argsBgcClassNames.length != 0)) {
+        bgcClassName += " error";
+      }
+    }
+    
+
 
 		let options = { 
 			'aria-label': `${fun} applied to ${args}`, 

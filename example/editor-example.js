@@ -18,7 +18,7 @@ const DELAY = 250;
 
 const smallExampleCode = `
 # provide *
-
+#|
 data Posn:
   | posn(x :: Number, y :: Number) 
   | nice(s :: String)
@@ -28,7 +28,19 @@ data Posn:
   | posn(x :: Number, y :: Number) 
 end
 
-#|
+data World:
+  | world(
+      dangers :: List<Being>,
+      shots :: List<Being>,
+      targets :: List<Being>,
+      player :: Being,
+      bg,
+      score :: Number,
+      title :: String,
+      timer :: Number)
+end
+
+
 reactor:
   seconds-per-tick: 0.1,
   title: "Count by 10",
