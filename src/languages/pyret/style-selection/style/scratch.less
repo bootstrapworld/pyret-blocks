@@ -216,9 +216,6 @@
         display: table-row-group;
         padding: 3px;
         text-align: center;
-				> .blocks-cond-predicate{
-					// min-width: @if-block-min-width;
-				}
         &:focus {
           outline: @editing-border-color @border-width solid;
         }
@@ -335,9 +332,6 @@
       padding: 0.5rem;
       border-radius: 4px;
       background-color: @string-color;
-    }
-    .blocks-literal-char {
-
     }
     .blocks-literal-boolean {
       color: white;
@@ -1090,9 +1084,6 @@
 			table-layout: fixed;
 			/* width: 50%; */
 		}
-              th, td{
-                /* width: 100%; */
-              }
               table, th, td{
                 border: 1px solid black;
                 /* background-color: red; */
@@ -1319,23 +1310,57 @@
 
   // Select
   .blocks-s-table-select {
-    background-color: @table-color;
+
     border-radius: 3px;
-    color: white;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 7px;
+    margin: 0px;
+    margin-bottom: 5px;
     font-weight: bold;
+    
 
     .blocks-table-select-col,
     .blocks-table-select-table{
-      background-color: white;
+      background-color: @table-color;
       border-radius: 1px;
+      max-width: 800px;
+      overflow-wrap: anywhere;
+    }
+    .blocks-table-select-table{
+      margin-left: 5px;
+    }
+    .blocks-table-select-col > .blocks-literal,
+    .blocks-table-select-table > .blocks-literal{
+      background-color: white;
     }
   }
 
+  .blocks-table-select {
+    clip-path: @insert-output-path;
+    background-color: @table-color;
+  }
 
+  .blocks-s-table-select {
+    position: relative;
+    text-align: left;
+  }
 
+  .blocks-s-table-select:after{
+		content: "";
+		background: @table-color;
+		position: absolute;
+		top: 5px;
+		left: 0;
+		height: calc(100% - @height-setoff - 10px);
+		width: @body-left-width;
+  }
 
+  .indent{
+    margin-left: 20px;
+    display: block;
+  }
 
   // Load Table ----------------------------------------
   .blocks-loadTable {
