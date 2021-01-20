@@ -481,7 +481,8 @@
   }
 
   .blocks-block > span > span > .blocks-binop,
-  .blocks-block > span > span > span > .blocks-binop {
+  .blocks-block > span > span > span > .blocks-binop,
+  .blocks-table-filter-body > span > .blocks-binop {
     clip-path: @shiftin-shiftout-path !important;
     border-radius: 0px;
     border-radius: 0px;
@@ -1296,6 +1297,7 @@
   .blocks-s-table-extract {
     position: relative;
     text-align: left;
+    padding-right: 7px;
   }
 
   .blocks-s-table-extract:after{
@@ -1313,12 +1315,9 @@
 
     border-radius: 3px;
     color: black;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 7px;
-    margin: 0px;
-    margin-bottom: 5px;
+    //margin-left: 10px;
     font-weight: bold;
+    //padding-left: 0px;
     
 
     .blocks-table-select-col,
@@ -1327,9 +1326,6 @@
       border-radius: 1px;
       max-width: 800px;
       overflow-wrap: anywhere;
-    }
-    .blocks-table-select-table{
-      margin-left: 5px;
     }
     .blocks-table-select-col > .blocks-literal,
     .blocks-table-select-table > .blocks-literal{
@@ -1340,6 +1336,7 @@
   .blocks-table-select {
     clip-path: @insert-output-path;
     background-color: @table-color;
+    padding: 10px;
   }
 
   .blocks-s-table-select {
@@ -1347,13 +1344,13 @@
     text-align: left;
   }
 
-  .blocks-s-table-select:after{
-		content: "";
+  .blocks-s-table-select:after {
+    content: "";
 		background: @table-color;
 		position: absolute;
-		top: 5px;
+		top: 0;
 		left: 0;
-		height: calc(100% - @height-setoff - 10px);
+		height: calc(100% - @height-setoff);
 		width: @body-left-width;
   }
 
