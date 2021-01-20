@@ -1366,20 +1366,30 @@ export class Data extends AST.ASTNode {
 
   pretty() {
     let header = P.horz(P.txt("data "), this.name, ":");
-    let value = P.sepBy(this.variants, " ", "");
+    let value = P.sepBy(this.variants, "", "");
+    let footer = P.horz(P.txt("end "));
   
     return P.ifFlat(
-      P.horz(header, value, " end"),
+      P.horz(header, " ", value, " ", footer),
       P.vert(header,
              P.horz(INDENT, value),
-             "end"));
-    
+             footer));
   }
 
   render(props) {
+		const NEWLINE = <br />;
+		let variants = [];
+		this.variants.forEach((value, index) => {
+			variants.push(<DropTarget/>);
+			variants.push(value.reactElement({key: index}));
+			variants.push(NEWLINE);
+		});
+
     return <Node node={this} {...props}>
       <div className="blocks-data-type">data {this.name.reactElement()}:</div>
-      <Args>{this.variants}</Args>
+			<span className="blocks-cond-row">
+				{variants}
+			</span>
       <div className="blocks-data-type-footer">end</div>
     </Node>
   }
@@ -2515,7 +2525,7 @@ export class SomeVariantMember extends AST.ASTNode {
 
   render(props) {
     return(<Node node={this} {...props}>
-      <div className="blocks-variant-member">{this.bind.reactElement()}</div>
+      <span className="blocks-variant-member">{this.bind.reactElement()}</span>
   </Node>)
   }
 
@@ -2549,9 +2559,9 @@ export class NewVariant extends AST.ASTNode {
 
   render(props) {
     return(<Node node={this} {...props}>
-      <div className="blocks-variant">
+      <span className="aRow">
         | {this.name.reactElement()}({<Args>{this.members}</Args>})
-        </div>
+			</span>
   </Node>)
   }
 }
