@@ -387,6 +387,7 @@
   .on-target-hover(){
     display: inherit !important;
     margin: 10px;
+    background-color: white;
   }
 
   .target-jigsaw(){
@@ -431,6 +432,7 @@
     .blocks-drop-target{
       display: inherit !important;
       margin: 10px;
+      
     }
   }
 
@@ -439,13 +441,15 @@
   .blocks-table-order-body > .blocks-drop-target,
   .blocks-loadTable > .blocks-drop-target,
   .blocks-cond-table > span > .blocks-drop-target,
-  .blocks-cond-table > .blocks-drop-target {
+  .blocks-cond-table > .blocks-drop-target,
+  .blocks-table-extend-body > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
   .blocks-block > span:hover > span > .blocks-drop-target,
   .blocks-table-order-body:hover > .blocks-drop-target,
-  .blocks-hover > span > .blocks-drop-target{ 
+  .blocks-hover > span > .blocks-drop-target,
+  .blocks-table-extend-body:hover > .blocks-drop-target{ 
     .on-target-hover();
   }
   //Correction for doc strings
@@ -1211,8 +1215,11 @@
     font-weight: bold;
 
     .blocks-s-column-binds {
-      background: white;
       border-radius: 3px;
+      padding-bottom: 10px;
+      .blocks-literal{
+        background: white;
+      }
     }
     
   }
@@ -1316,10 +1323,7 @@
 
     border-radius: 3px;
     color: black;
-    //margin-left: 10px;
     font-weight: bold;
-    //padding-left: 0px;
-    
 
     .blocks-table-select-col,
     .blocks-table-select-table{
@@ -1382,6 +1386,11 @@
     padding-bottom: 22px;
     display: stretch;
     clip-path: @insert-output-path;
+    padding-right: 10px;
+  }
+  .blocks-table-extend-reducer-field > .blocks-literal,
+  .blocks-table-extend-reducer-title > .blocks-literal {
+    background-color: white;
   }
 
   // Load Table ----------------------------------------
@@ -1506,6 +1515,35 @@
 		> span{
 			display: block;
 			text-align: left;
+		}
+	}
+
+	.blocks-reactor{
+    clip-path: @shiftin-shiftout-path !important;
+		background-color: #777777;
+    border-radius: 0px;
+
+    padding-top: @w-scale*18px;
+    padding-bottom: @w-scale*32px;
+    padding-left: 35px !important;
+    padding-right: @w-scale*65px !important;
+    /* margin-top: 0px; */
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+
+		.blocks-reactor-header{
+			&:before{
+				content: "\1F680"
+			}
+		}
+
+		.blocks-reactor-body{
+			text-align: left;
+		}
+
+		.blocks-reactor-footer{
+			margin-top: 20px;
 		}
 	}
 

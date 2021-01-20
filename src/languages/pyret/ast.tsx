@@ -171,8 +171,6 @@ export class Func extends AST.ASTNode {
     this.doc = doc;
     this.body = body;
     this.block = block;
-    this.hoverName = "A ";
-    this.className = "A ";
   }
 
   static spec = Spec.nodeSpec([
@@ -182,8 +180,6 @@ export class Func extends AST.ASTNode {
     Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block'),
-    Spec.value('hoverName'),
-    Spec.value('className')
   ])
 
   longDescription(level) {
@@ -230,7 +226,6 @@ export class Func extends AST.ASTNode {
           doc: {doc}
           </div>
 				</span>
-
         <span className="blocks-func-body-hover" onDragOver={getDragEvent(this, 'blocks-func-body-hover')}>
           <span className="blocks-func-body" >
             {body}
@@ -247,8 +242,7 @@ export class Lambda extends AST.ASTNode {
   name: AST.ASTNode | null;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
-  // doc: AST.ASTNode | null;
-  doc: AST.ASTNode;// string | null;
+  doc: AST.ASTNode;
   body: AST.ASTNode;
   block: boolean
 
@@ -279,11 +273,9 @@ export class Lambda extends AST.ASTNode {
   }
 
   pretty() {
-    // TODO: show doc
     let retAnn = this.retAnn ? P.horz(" -> ", this.retAnn) : "";
     let header_ending = (this.block)? " block:" : ":";
     let prefix = (this.name == null)? ["lam("] : ["lam", "("];
-    // let prefix = (this.name == null)? ["lam("] : ["lam", this.name, "("];
     let header = P.ifFlat(
       P.horz(P.horzArray(prefix), P.sepBy(this.args, ", ", ","), ")", retAnn, header_ending),
       P.vert(P.horzArray(prefix),
@@ -1527,16 +1519,27 @@ export class Reactor extends AST.ASTNode {
   }
 
   render(props) {
-    let branches = this.fields.map((branch, index) => branch.reactElement({key: index}));
+    const NEWLINE = <br />;
+		let branches = [];
+		branches.push(NEWLINE);
+		this.fields.forEach((branch, index) => {
+			branches.push(branch.reactElement({key: index}));
+			branches.push(NEWLINE);
+		});
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-reactor">
-          reactor:
-        </span>
-        <div className="blocks-cond-table">
-          {branches}
-        </div>
-      </Node>
+			<Node node={this} {...props}>
+				<div className="blocks-reactor">
+					<span className="blocks-reactor-header">
+						reactor:
+					</span>
+					<span className="blocks-reactor-body">
+						{branches}
+					</span>
+					<span className="blocks-reactor-footer">
+						end
+					</span>
+				</div>
+			</Node>
     );
   }
 }
@@ -1818,12 +1821,12 @@ export class TableExtendReducer extends AST.ASTNode {
       return this.ann ?
           <Node node={this} {...props}>
             <div className="blocks-table-extend-reducer-field">
-            <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> :: {this.ann.reactElement()} : {this.reducer.reactElement()} of {this.col.reactElement()}
+              <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> :: {this.ann.reactElement()} : {this.reducer.reactElement()} of {this.col.reactElement()}
             </div>
           </Node> :
           <Node node={this} {...props}>
           <div className="blocks-table-extend-reducer-field">
-          <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span>: {this.reducer.reactElement()} of {this.col.reactElement()}
+            <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> : {this.reducer.reactElement()} of {this.col.reactElement()}
           </div>
         </Node>
     }
