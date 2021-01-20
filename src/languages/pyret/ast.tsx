@@ -1917,7 +1917,14 @@ export class TableSelect extends AST.ASTNode {
     return (
       <Node node={this} {...props}>
         <div className="blocks-table-select">
-          select <span className="blocks-table-select-col"><Args>{this.columns}</Args></span> from <span className="blocks-table-select-table">{this.table.reactElement()}</span> end
+          select 
+          <div className="indent">
+            <span className="blocks-table-select-col" style={{display: this.columns.length > 6 ? 'grid' : 'inherit'}}>
+              <Args>{this.columns}</Args>
+            </span> 
+            from <span className="blocks-table-select-table">{this.table.reactElement()}</span> 
+          </div>
+          end
         </div>
       </Node>
     )

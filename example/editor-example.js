@@ -20,8 +20,9 @@ const smallExampleCode = `
 # provide *
 
 
-select name, artists, year, danceability, energy, key,    loudness, mode, 
+select name, artists, year, danceability, energy, key, loudness, mode, 
 speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration-ms, time-signature from my-table end
+select name, artists, year from my-table end
 
 var y = extract name from my-table end
 
