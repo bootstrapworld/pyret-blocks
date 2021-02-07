@@ -459,6 +459,7 @@
       display: inline !important;
     }
   }
+
   
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
@@ -572,6 +573,12 @@
     text-align: left;
     display: block;
     margin-bottom: -7px;
+    > .blocks-empty-doc-string{
+      display: none;
+    }
+  }
+  .blocks-func:hover > .blocks-empty-doc-string{
+    display: block !important;
   }
 
   .blocks-doc-string {

@@ -221,12 +221,14 @@ export class Func extends AST.ASTNode {
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     const NEWLINE = <br />;
+    let docClass = this.doc.value == "" ? "blocks-empty-doc-string" : "blocks-doc-string";
+    console.log("doc:", this.doc);
     return (
       <Node node={this} {...props}>
 				<span className="blocks-func">
 					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}
-          <div className="blocks-doc-string">
-          doc: {doc}
+          <div className={docClass}>
+            doc: {doc}
           </div>
 				</span>
         <span className="blocks-func-body-hover" onDragOver={getDragEvent(this, 'blocks-func-body-hover')}>
