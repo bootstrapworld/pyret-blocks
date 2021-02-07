@@ -932,19 +932,20 @@ export class LoadTable extends AST.ASTNode {
     // therefore "inserting blocks" into loadtable is not possible
 
     return (
-      <Node node={this} {...props}>
+      <Node node={this} {...props} >
         <span className="blocks-load-table">
           load-table
           <span className="blocks-args">
-					{columns}
-				</span>
+            {columns}
+          </span>
         </span>
-				{sources}
+        <span className="blocks-load-table-body" onDragOver={getDragEvent(this, 'blocks-load-table-body')}>
+          {sources} 
+        </span>
         <span className="blocks-load-table-footer">
           end
         </span>
     </Node>
-            /* {this.sources.map((e, i) => e.reactElement({key: i}))} */
     );
   }
 }
@@ -1753,7 +1754,7 @@ export class TableExtend extends AST.ASTNode{
   render(props) {
     return <Node node={this} {...props}>
 			<div className="blocks-table-extend">extend {this.column_binds.reactElement()} </div>
-				<div className="blocks-table-extend-body">
+				<div className="blocks-table-extend-body" onDragOver={getDragEvent(this, "blocks-table-extend-body")}>
 					<Args>
 						{this.extensions}
 					</Args>
