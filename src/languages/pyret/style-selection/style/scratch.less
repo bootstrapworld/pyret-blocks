@@ -408,7 +408,7 @@
   .blocks-check-body,
   .blocks-for-body,
   .blocks-cond-table,
-  .blocks-loadTable,
+  .blocks-load-table-body,
   .blocks-table-extend-body,
   .blocks-table-order-body{
     //Prevent default displaying
@@ -439,19 +439,19 @@
   }
 
   .blocks-block > span > span > .blocks-drop-target,
-  .blocks-loadTable:hover > .blocks-drop-target,
   .blocks-table-order-body > .blocks-drop-target,
-  .blocks-loadTable > .blocks-drop-target,
   .blocks-cond-table > span > .blocks-drop-target,
   .blocks-cond-table > .blocks-drop-target,
-  .blocks-table-extend-body > .blocks-drop-target {
+  .blocks-table-extend-body > .blocks-drop-target,
+  .blocks-load-table-body > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
   .blocks-block > span:hover > span > .blocks-drop-target,
   .blocks-table-order-body:hover > .blocks-drop-target,
   .blocks-hover > span > .blocks-drop-target,
-  .blocks-table-extend-body:hover > .blocks-drop-target{ 
+  .blocks-table-extend-body:hover > .blocks-drop-target,
+  .blocks-load-table-body:hover > .blocks-drop-target{ 
     .on-target-hover();
   }
   //Correction for doc strings
@@ -1400,6 +1400,11 @@
     position: relative;
     text-align: left;
     height: 100%;
+  }
+  .blocks-load-table-body{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
   }
     
   .blocks-loadTable::after {
