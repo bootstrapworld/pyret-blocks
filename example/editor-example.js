@@ -18,11 +18,14 @@ const DELAY = 250;
 
 const smallExampleCode = `
 # provide *
-#|
+
 data Posn:
   | posn(x :: Number, y :: Number) 
   | nice(s :: String)
 end
+
+#|
+
 
 data Posn:
   | posn(x :: Number, y :: Number) 

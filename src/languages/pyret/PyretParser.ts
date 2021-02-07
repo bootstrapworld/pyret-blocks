@@ -795,7 +795,7 @@ const nodeTypes = {
     console.log(check);
 
     let nameNode = new Nodes.Literal({line: l.from.line, ch: l.from.ch+5 }, {line: l.from.line, ch: l.from.ch+5+name.length}, name, "operator", {'aria-label': `${name}`});
-
+    console.log(nameNode);
 
 		// return new Nodes.Literal(l.from, l.to, "s-data", "string", {'aria-label': `s-data`});
 		return new Data(l.from, l.to, nameNode, variants, {'aria-label': 's-data'});
@@ -1166,14 +1166,15 @@ return new TableExtendFd(l.from,
 
   // data Variant
 	's-variant': function(l: Loc, constr_loc: Loc, name: string, members: VariantMember[], with_members: Member[]) {
-    console.log("%c variant called ------------", "background-color: purple");
+    // console.log("%c variant called ------------", "background-color: purple");
+    console.log("------------------ Variant ---------------");
     console.log(l);
     console.log(constr_loc);
     console.log(name);
     console.log(members);
     console.log(with_members);
 
-    let nameNode = new Nodes.Literal(l.from, {line: l.from.line, ch: l.from.ch+name.length}, name, "operator", {'aria-label': `${name}`});
+    let nameNode = new Nodes.Literal(constr_loc.from, {line: constr_loc.from.line, ch: constr_loc.from.ch+name.length}, name, "operator", {'aria-label': `${name}`});
      return new NewVariant(l.from, l.to, nameNode, members, with_members, {'aria-label': `Variant ${name} with ${members}`});
 //		return new Nodes.Literal(l.from, l.to, "pipe placeholder", "string", {'aria-label': `s-variant`});
 	},

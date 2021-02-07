@@ -1383,18 +1383,16 @@ export class Data extends AST.ASTNode {
 		const NEWLINE = <br />;
 		let variants = [];
 		this.variants.forEach((value, index) => {
-			variants.push(<DropTarget/>);
+      variants.push(<DropTarget/>);
+      variants.push(NEWLINE);
 			variants.push(value.reactElement({key: index}));
 			variants.push(NEWLINE);
 		});
 
 		return <Node node={this} {...props}>
-			<div className="blocks-custom-data-type">
-				<span className="blocks-data-type">data {this.name.reactElement()}:</span>
-				{NEWLINE}
-				<span className="blocks-cond-row">{variants}</span>
+				<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.reactElement()}:</span></b></span>
+				<span className="blocks-cond-row">{variants}<DropTarget/></span>
 				<span className="blocks-data-type-footer">end</span>
-			</div>
 	</Node>
   }
 }
@@ -2564,8 +2562,8 @@ export class NewVariant extends AST.ASTNode {
 
   render(props) {
     return(<Node node={this} {...props}>
-      <span className="aRow">
-        | {this.name.reactElement()}({<Args>{this.members}</Args>})
+      <span className="blocks-variant-row">
+        <span className="blocks-variant-title">{this.name.reactElement()}</span>({<Args>{this.members}</Args>})
 			</span>
   </Node>)
   }
