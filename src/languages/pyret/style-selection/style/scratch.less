@@ -35,7 +35,7 @@
   // Settings for _this_ file:
 
 	@literal-number-color: blue;
-	@literal-string-color: green;
+	@literal-string-color: darkgreen;
 	@literal-char-color: orange;
 	@literal-boolean-color: darkred;
 	@literal-symbol-color: steelblue;
@@ -119,7 +119,6 @@
     .blocks-literal-string {
       height: 100px;
       color: @literal-string-color;
-      background-color: white;
     }
     .blocks-literal-char {
       color: @literal-char-color;
@@ -409,7 +408,7 @@
   .blocks-check-body,
   .blocks-for-body,
   .blocks-cond-table,
-  .blocks-loadTable,
+  .blocks-load-table-body,
   .blocks-table-extend-body,
   .blocks-table-order-body{
     //Prevent default displaying
@@ -440,19 +439,19 @@
   }
 
   .blocks-block > span > span > .blocks-drop-target,
-  .blocks-loadTable:hover > .blocks-drop-target,
   .blocks-table-order-body > .blocks-drop-target,
-  .blocks-loadTable > .blocks-drop-target,
   .blocks-cond-table > span > .blocks-drop-target,
   .blocks-cond-table > .blocks-drop-target,
-  .blocks-table-extend-body > .blocks-drop-target {
+  .blocks-table-extend-body > .blocks-drop-target,
+  .blocks-load-table-body > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
   .blocks-block > span:hover > span > .blocks-drop-target,
   .blocks-table-order-body:hover > .blocks-drop-target,
   .blocks-hover > span > .blocks-drop-target,
-  .blocks-table-extend-body:hover > .blocks-drop-target{ 
+  .blocks-table-extend-body:hover > .blocks-drop-target,
+  .blocks-load-table-body:hover > .blocks-drop-target{ 
     .on-target-hover();
   }
   //Correction for doc strings
@@ -461,6 +460,7 @@
       display: inline !important;
     }
   }
+
   
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
@@ -574,6 +574,12 @@
     text-align: left;
     display: block;
     margin-bottom: -7px;
+    > .blocks-empty-doc-string{
+      display: none;
+    }
+  }
+  .blocks-func:hover > .blocks-empty-doc-string{
+    display: block !important;
   }
 
   .blocks-doc-string {
@@ -1410,6 +1416,11 @@
     text-align: left;
     height: 100%;
   }
+  .blocks-load-table-body{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
     
   .blocks-loadTable::after {
     content: "";
@@ -1514,7 +1525,7 @@
 		.blocks-funapp, 
 		.blocks-var>span, 
 		.blocks-let>span.blocks-literal{
-			background-color: @mutable-color; 
+			/* background-color: @mutable-color;  */
 		}
 		&:before, 
 		&:after{
