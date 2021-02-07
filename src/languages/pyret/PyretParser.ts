@@ -71,6 +71,8 @@ export interface Position {
   ch: number;
 }
 
+const FIXED_SIZE_DATATYPES = ["number", "string", "boolean"];
+
 class Loc {
   from: Position;
   to: Position;
@@ -109,7 +111,6 @@ function getLibraryFunctionInfo(name){
 }
 
 function getLibraryFunctionArgTypes(name){
-	let availableTypes = ["number", "string", "boolean"];
 	let results = getLibraryFunctionInfo(name);
 	if (!results){
 		return null;
@@ -118,14 +119,13 @@ function getLibraryFunctionArgTypes(name){
 	let argumentTypes = [];
 	results.argumentTypes.forEach((value) => {
 		let formatted = value.toLowerCase();
-		let aType = availableTypes.includes(formatted) ? formatted : "untyped";
+		let aType = FIXED_SIZE_DATATYPES.includes(formatted) ? formatted : "untyped";
 		argumentTypes.push(aType);
 	});
 	return argumentTypes;
 }
 
 function annToType(ann: Ann) {
-  let fixedSizeDataTypes = ["number", "string", "boolean"];
   let type = ann + "";
   type = type.toLowerCase();
   // keep in specific ordder
@@ -138,7 +138,7 @@ function annToType(ann: Ann) {
 
 
   if ((listPos == -1) && (tuplePos == -1)) {
-    if (fixedSizeDataTypes.includes(type)){
+    if (FIXED_SIZE_DATATYPES.includes(type)){
       return type;
     }
     return "untyped";
@@ -164,13 +164,11 @@ function getReturnType(name){
 		return "untyped";
 	}
 
-	let availableTypes = ["number", "string", "boolean"];
 	let returnType = results.returnType.toLowerCase();
-	return (availableTypes.includes(returnType)) ? returnType : "untyped";
+	return (FIXED_SIZE_DATATYPES.includes(returnType)) ? returnType : "untyped";
 }
 
 function getBackgroundColor(rhs: Expr) {
-  let fixedSizeDataTypes = ["number", "string", "boolean"];
   let tableFunctions = ['s-table-select', 's-table-extend', 's-table-filter', 's-table']
 	// console.log(`%c ${JSON.stringify(PRIMITIVES_CONFIG.primitives, null, 2)}`, "background-color: red");
 	// console.log(`%c ${JSON.stringify(rhs, null, 2)}`, "background-color: red");
@@ -180,7 +178,7 @@ function getBackgroundColor(rhs: Expr) {
 	if (!rhs){
 		return "untyped";
 	}
-	else if (fixedSizeDataTypes.includes(rhs.dataType)){
+	else if (FIXED_SIZE_DATATYPES.includes(rhs.dataType)){
 		return rhs.dataType;
 	}
 	else if (rhs.type === "constructor"){
@@ -695,11 +693,12 @@ const nodeTypes = {
 			let lengthDifference = args.length - argsBgcClassNames.length;
 
 			argsBgcClassNames = argsBgcClassNames.map((value, index) => 
-				(args[index] && value == args[index].dataType) ? value : "error");
+				(args[index] && value == args[index].dataType) ? value : `error ${args[index].dataType}`);
 				
-			for(let i = 0; i < lengthDifference; i++){
-				argsBgcClassNames.push("error");
-      }
+			let correctNumberOfArgs = argsBgcClassNames.length;
+			for(let i = correctNumberOfArgs; i < (correctNumberOfArgs + lengthDifference); i++) {
+				argsBgcClassNames.push(`error ${args[i].dataType}`);
+			}
       
       if ((args.length == 0) && (argsBgcClassNames.length != 0)) {
         bgcClassName += " error";

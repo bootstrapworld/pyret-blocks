@@ -35,7 +35,7 @@
   // Settings for _this_ file:
 
 	@literal-number-color: blue;
-	@literal-string-color: green;
+	@literal-string-color: darkgreen;
 	@literal-char-color: orange;
 	@literal-boolean-color: darkred;
 	@literal-symbol-color: steelblue;
@@ -119,7 +119,6 @@
     .blocks-literal-string {
       height: 100px;
       color: @literal-string-color;
-      background-color: white;
     }
     .blocks-literal-char {
       color: @literal-char-color;
@@ -1505,7 +1504,7 @@
 		.blocks-funapp, 
 		.blocks-var>span, 
 		.blocks-let>span.blocks-literal{
-			background-color: @mutable-color; 
+			/* background-color: @mutable-color;  */
 		}
 		&:before, 
 		&:after{
