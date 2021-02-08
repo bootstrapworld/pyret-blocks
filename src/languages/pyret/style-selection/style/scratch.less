@@ -1538,41 +1538,64 @@
 			display: block;
 			text-align: left;
 		}
-	}
-
-	.blocks-reactor{
-    clip-path: @shiftin-shiftout-path !important;
-    background-color: @util-color;
-	// 	background-color: #777777;
-    border-radius: 0px;
-
-    padding-top: @w-scale*18px;
-    padding-bottom: @w-scale*32px;
-    padding-left: 35px !important;
-    padding-right: @w-scale*65px !important;
-    /* margin-top: 0px; */
-		text-align: left;
-		display: flex;
-		flex-direction: column;
-
-		.blocks-reactor-header{
-			&:before{
-				content: "\1F680"
-			}
-		}
-
-		.blocks-reactor-body{
-			text-align: left;
-		}
-
-		.blocks-reactor-footer{
-			margin-top: 20px;
-		}
   }
+  
+  // Reactor ------------------------------------------------
+	// .blocks-reactor{
+  //   clip-path: @shiftin-shiftout-path !important;
+  //   background-color: @util-color;
+	// // 	background-color: #777777;
+  //   border-radius: 0px;
+
+  //   padding-top: @w-scale*18px;
+  //   padding-bottom: @w-scale*32px;
+  //   padding-left: 35px !important;
+  //   padding-right: @w-scale*65px !important;
+  //   /* margin-top: 0px; */
+	// 	text-align: left;
+	// 	display: flex;
+	// 	flex-direction: column;
+
+	// 	.blocks-reactor-header{
+	// 		&:before{
+	// 			content: "\1F680"
+	// 		}
+	// 	}
+
+	// 	.blocks-reactor-body{
+	// 		text-align: left;
+	// 	}
+
+	// 	.blocks-reactor-footer{
+	// 		margin-top: 20px;
+	// 	}
+  // }
 
   .blocks-s-reactor {
     position: relative;
     text-align: left;
+    padding-left: @body-left-width;
+    	// 	text-align: left;
+  }
+
+  .blocks-reactor-header{
+			&:before{
+				content: "\1F680"
+      }
+      background-color: @util-color;
+      clip-path: @input-shiftout-path;
+      padding: 0.7rem;
+      text-align: left;
+      display: block;
+      margin-bottom: -7px;
+  }
+
+  .blocks-reactor-footer {
+    background-color: @util-color;
+    clip-path: @shiftin-output-path;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
   }
   
   
@@ -1586,7 +1609,55 @@
 		width: @body-left-width;
   }
 
-  // Custom Data ---------------------------------------------------
+  .blocks-s-data-field {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-data-field::after {
+    content: "";
+		background: @util-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  
+  .blocks-data-field {
+    background-color: @util-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+  }
+
+  /*
+  .blocks-let {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+  }
+
+  .blocks-s-let {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-let:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  */
+
+  // Custom Data  Types ---------------------------------------------------
 
   .blocks-data-type{
 
@@ -1627,6 +1698,7 @@
     width: @body-left-width;
   }
 
+  // Custom Data Types => Each Row - Variant Row --------------------------------
 
   .blocks-variant-row {
 		background-color: @untyped-color;
@@ -1663,37 +1735,6 @@
     // border-radius: 3px;
     font-weight: bold;
   }
-
-
-
-	// .blocks-custom-data-type{
-	// 	background-color: @untyped-color;
-  //   clip-path: @shiftin-shiftout-path !important;
-  //   border-radius: 0px;
-
-  //   padding-top: @w-scale*18px;
-  //   padding-bottom: @w-scale*32px;
-  //   padding-left: 35px !important;
-  //   padding-right: @w-scale*65px !important;
-  //   margin-top: 0px;
-  // }
-  
-  // .blocks-s-data {
-  //   font-weight: bold;
-  //   color: white;
-  //   position: relative;
-  //   text-align: left;
-  // }
-
-  // .blocks-s-data:after{
-	// 	content: "";
-	// 	background: @untyped-color;
-	// 	position: absolute;
-	// 	top: 0;
-	// 	left: 0;
-	// 	height: calc(100% - @height-setoff);
-	// 	width: @body-left-width;
-  // }
 
   // -----------------------------------------
 

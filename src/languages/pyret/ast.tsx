@@ -1536,25 +1536,26 @@ export class Reactor extends AST.ASTNode {
   render(props) {
     const NEWLINE = <br />;
 		let branches = [];
-		branches.push(NEWLINE);
 		this.fields.forEach((branch, index) => {
       branches.push(<DropTarget />);
+      branches.push(NEWLINE);
 			branches.push(branch.reactElement({key: index}));
       branches.push(NEWLINE);
 		});
     return (
 			<Node node={this} {...props}>
-				<div className="blocks-reactor">
+				{/* <div className="blocks-reactor"> */}
 					<span className="blocks-reactor-header">
 						reactor:
 					</span>
 					<span className="blocks-reactor-body">
 						{branches}
+            <DropTarget />
 					</span>
 					<span className="blocks-reactor-footer">
 						end
 					</span>
-				</div>
+				{/* </div> */}
 			</Node>
     );
   }

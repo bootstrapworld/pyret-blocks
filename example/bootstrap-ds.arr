@@ -5,6 +5,13 @@ data Posn:
   | nice(s :: String)
 end
 
+reactor:
+  seconds-per-tick: 0.1,
+  title: "Count by 10",
+  on-tick: tencrement,
+  init: 10,
+end
+
 #|
 
 
