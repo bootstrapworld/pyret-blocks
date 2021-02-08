@@ -1394,7 +1394,7 @@ export class Data extends AST.ASTNode {
 
 		return <Node node={this} {...props}>
 				<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.reactElement()}:</span></b></span>
-				<span className="blocks-cond-row">{variants}<DropTarget/></span>
+				<span className="blocks-cond-row" onDragOver={getDragEvent(this, 'blocks-cond-row')}>{variants}<DropTarget/></span>
 				<span className="blocks-data-type-footer">end</span>
 	</Node>
   }
@@ -1548,7 +1548,7 @@ export class Reactor extends AST.ASTNode {
 					<span className="blocks-reactor-header">
 						reactor:
 					</span>
-					<span className="blocks-reactor-body">
+					<span className="blocks-reactor-body" onDragOver={getDragEvent(this, 'blocks-reactor-body')}>
 						{branches}
             <DropTarget />
 					</span>
