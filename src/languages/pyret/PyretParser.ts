@@ -695,11 +695,11 @@ const nodeTypes = {
 			let lengthDifference = args.length - argsBgcClassNames.length;
 
 			argsBgcClassNames = argsBgcClassNames.map((value, index) => 
-				(args[index] && value == args[index].dataType) ? value : "error");
+				(args[index] && value == args[index].dataType) ? value : `${args[index].dataType} error`);
 				
-			for(let i = 0; i < lengthDifference; i++){
-				argsBgcClassNames.push("error");
-      }
+			for (let i = argsBgcClassNames.length; i < args.length; i++) {
+				argsBgcClassNames.push(`${args[i].dataType} error`);
+			}
       
       if ((args.length == 0) && (argsBgcClassNames.length != 0)) {
         bgcClassName += " error";

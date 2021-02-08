@@ -1,5 +1,7 @@
 # provide *
 
+string-length("a", "b")
+string-length(3)
 
 table: name :: List<String>, age :: Number, favorite-color :: String
   row: [list: "B"], 12, "blue"
