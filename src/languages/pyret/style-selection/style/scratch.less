@@ -399,6 +399,7 @@
     margin-bottom: -7px !important;
     margin-top: 0px !important;
     margin-left: 10px;
+    flex-direction: column;
   }
 
   .blocks-func-body,
@@ -408,9 +409,11 @@
   .blocks-check-body,
   .blocks-for-body,
   .blocks-cond-table,
+  .blocks-cond-row,
   .blocks-load-table-body,
   .blocks-table-extend-body,
-  .blocks-table-order-body{
+  .blocks-table-order-body,
+  .blocks-reactor-body{
     //Prevent default displaying
     .blocks-block > span > span {
       display: block;
@@ -430,28 +433,25 @@
     }
   }
 
-  .blocks-hover {
-    .blocks-drop-target{
-      display: inherit !important;
-      margin: 10px;
-      
-    }
-  }
-
   .blocks-block > span > span > .blocks-drop-target,
   .blocks-table-order-body > .blocks-drop-target,
   .blocks-cond-table > span > .blocks-drop-target,
   .blocks-cond-table > .blocks-drop-target,
+  .blocks-cond-row > .blocks-drop-target,
   .blocks-table-extend-body > .blocks-drop-target,
-  .blocks-load-table-body > .blocks-drop-target {
+  .blocks-load-table-body > .blocks-drop-target,
+  .blocks-reactor-body > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
   .blocks-block > span:hover > span > .blocks-drop-target,
   .blocks-table-order-body:hover > .blocks-drop-target,
   .blocks-hover > span > .blocks-drop-target,
+  .blocks-hover > .blocks-drop-target,
   .blocks-table-extend-body:hover > .blocks-drop-target,
-  .blocks-load-table-body:hover > .blocks-drop-target{ 
+  .blocks-load-table-body:hover > .blocks-drop-target,
+  .blocks-cond-row:hover > .blocks-drop-target,
+  .blocks-reactor-body:hover > .blocks-drop-target{ 
     .on-target-hover();
   }
   //Correction for doc strings
@@ -1416,7 +1416,10 @@
     text-align: left;
     height: 100%;
   }
-  .blocks-load-table-body{
+
+  .blocks-cond-row,
+  .blocks-load-table-body,
+  .blocks-reactor-body{
     display: inline-flex;
     flex-direction: column;
     align-items: stretch;
@@ -1706,6 +1709,9 @@
     padding-bottom: 22px;
     display: stretch;
     clip-path: @insert-output-path;
+    .blocks-drop-target{
+      display: inline-flex;
+    }
   }
 
   .blocks-s-variant {
