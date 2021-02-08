@@ -1,5 +1,12 @@
 # provide *
 
+
+table: name :: List<String>, age :: Number, favorite-color :: String
+  row: [list: "B"], 12, "blue"
+  row: [list: "A"], 17, "green"
+  row: [list: "E"], 13, "red"
+end
+
 data Posn:
   | posn(x :: Number, y :: Number) 
   | nice(s :: String)
