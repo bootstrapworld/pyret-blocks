@@ -1393,7 +1393,7 @@ export class Data extends AST.ASTNode {
 		});
 
 		return <Node node={this} {...props}>
-				<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.reactElement()}:</span></b></span>
+				<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.value}:</span></b></span>
 				<span className="blocks-cond-row">{variants}<DropTarget/></span>
 				<span className="blocks-data-type-footer">end</span>
 	</Node>
