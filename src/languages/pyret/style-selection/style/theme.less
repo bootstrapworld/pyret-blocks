@@ -1,0 +1,174 @@
+/* Color palette */
+@util-color: #FF6961;
+@mutable-color: #CD5C5C;
+@number-color: #77dd77;
+@string-color: #C8AD90;
+@boolean-color:  orange;//  #B378D3;
+@table-color: #FFD0FF;
+@binop-color: #FFD0FF; // WE DONT NEED BINOP COLORS ANYMORE
+@lambda-color: rgb(207, 99, 207);
+@constructor-color: #8080FF;
+@untyped-color: #878787;
+
+.util{ 
+	> .blocks-literal, 
+	.blocks-constructor, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal{
+		background-color: @util-color; 
+	}
+}
+.mutable{ 
+	/* .blocks-constructor, .blocks-var, .blocks-s-var:after{ */
+	.blocks-constructor, 
+	> .blocks-literal, 
+	.blocks-var > span:first-child{
+		background-color: @mutable-color; 
+	}
+}
+th.number{ background-color: @number-color; }
+.number{ 
+	> span.blocks-binop, 
+	> .blocks-literal, 
+	.blocks-operator-container, 
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal,
+	.blocks-contract,
+	.blocks-bind{
+		background-color: @number-color; 
+	}
+	
+}
+th.string{ background-color: @string-color; }
+.string{ 
+	> span.blocks-binop, 
+	> .blocks-literal, 
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal,
+	.blocks-contract,
+	.blocks-bind{
+		background-color: @string-color; 
+	}
+}
+th.boolean{ background-color: @boolean-color; }
+.boolean{ 
+	> span.blocks-binop, 
+	> .blocks-literal, 
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-var>span,
+	.blocks-let>span.blocks-literal,
+	.blocks-contract,
+	.blocks-bind{
+		background-color: @boolean-color; 
+	}
+}
+th.binop{ background-color: @binop-color; }
+.binop{ 
+	> .blocks-literal, 
+	.blocks-operator-container, 
+	.blocks-constructor, 
+	.blocks-var, 
+	.blocks-funapp, 
+	.blocks-let>span.blocks-literal{
+		background-color: @binop-color; 
+	}
+}
+th.constructor{ background-color: @constructor-color; }
+.constructor{ 
+	/* .blocks-constructor, .blocks-var, .blocks-let, .blocks-s-let:after{ */
+	> .blocks-literal, 
+	> span.blocks-binop,
+	.blocks-var>span, 
+	.blocks-funapp, 
+	.blocks-let>span:first-child,
+	.blocks-contract,
+	.blocks-bind{
+		background: @constructor-color; 
+	}
+}
+th.untyped{ background-color: @untyped-color; }
+.untyped{ 
+	> .blocks-literal, 
+	.blocks-constructor, 
+	.blocks-var, 
+	.blocks-let, 
+	.blocks-funapp, 
+	.blocks-s-let:after,
+	.blocks-contract,
+	.blocks-bind{
+		background-color: @untyped-color; 
+	}
+	// background-color: rgba(128,255,128,.25);
+	
+	// .blocks-literal{
+	// 	padding: 2px 0;
+	// 	background-color: @untyped-color; 
+	// }
+}
+
+.lambdaExp {
+	.blocks-var>span.blocks-literal,
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-let>span.blocks-literal,
+	.blocks-contract,
+	.blocks-bind{
+		background-color: @lambda-color; 
+	}
+}
+
+.table {
+	.blocks-var>span.blocks-literal,
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-let>span.blocks-literal,
+	.blocks-contract,
+	.blocks-bind{
+		background-color: @table-color; 
+		color: black;
+	}
+}
+
+col.untyped{
+	background-color: @untyped-color;
+}
+
+col.number{
+	background-color: @number-color;
+}
+
+col.string{
+	background-color: @string-color;
+}
+
+col.boolean{
+	background-color: @boolean-color;
+}
+
+// col.mutable {
+// 	background-color: @mutable-color;
+// }
+
+col.constructor{
+	background: @constructor-color; 
+}
+
+.error{ 
+	> span.blocks-binop, 
+	> .blocks-literal, 
+	.blocks-constructor, 
+	.blocks-funapp, 
+	.blocks-var>span, 
+	.blocks-let>span.blocks-literal{
+		// add a background color here
+	}
+	&:before, 
+	&:after{
+    content: "\1F6AB";
+	}
+}

@@ -1,0 +1,1747 @@
+@import "./theme.less";
+
+.CodeMirror{
+  // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane 
+  background-color: white;
+}
+
+#cmb-editor {
+  // Referenced from Gradient Magic and "Complex patterns using CSS gradients" by Kapeel Kokane
+  background-color: #5fdfff;
+  background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.5) 50%);
+  background-size: 25px;
+}
+
+
+.blocks-language-pyret {
+  // Import the default style, using the parameters set below.
+  // Yes, the parameters below here really get passed into the style file imported above them.
+  // @import "../default-style.less";
+  // @import "../../../../less/default-style.less";
+
+  // Set border parameters for default-style.less:
+  @border-radius: 5px;
+  @border-width: 3px;
+  // Color parameters:
+  @comment-color: #ddd;
+  @comment-background-color: #444;
+  @border-color: black;
+  @editing-border-color: orange;
+  @error-border-color: red;
+  @border-hint: rgba(255, 165, 0, 0.3);
+  @drag-drop-background-color: lightblue;
+  @drag-replace-background-color: red;
+
+  // Settings for _this_ file:
+
+	@literal-number-color: blue;
+	@literal-string-color: darkgreen;
+	@literal-char-color: orange;
+	@literal-boolean-color: darkred;
+	@literal-symbol-color: steelblue;
+	@large-border-radius: 15px;
+
+	.blocks-contract {
+    border-radius: 0px;
+  }
+
+  .blocks-node[aria-expanded="false"] { 
+
+    &:before {
+      content: "···";
+      color: white;
+      text-align: center;
+    }
+
+    border: 0.25rem solid black;
+    background: black;
+  }
+
+  // css classes
+  .blocks-ask,
+  .blocks-assign,
+  .blocks-bind,
+  .blocks-bracket,
+  .blocks-check,
+  .blocks-check-test,
+  .blocks-construct,
+  .blocks-contract,
+  .blocks-data-field,
+  .blocks-for,
+  .blocks-func,
+  .blocks-funapp,
+  .blocks-include,
+	.blocks-custom-datatype, 
+  .blocks-if,
+  .blocks-lambda,
+  .blocks-user-blocks,
+  .blocks-let,
+  .blocks-load-table,
+  .blocks-reactor,
+  .blocks-special-import,
+  .blocks-tuple,
+  .blocks-tuple-access,
+  .blocks-var,
+  .blocks-when,
+  .blocks-operator {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    padding: 1px 5px;
+    text-align: center;
+    color: white;
+    > .blocks-white-space:not(.blocks-editing) {
+      min-width: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .blocks-white-space {
+      border-width: 1px;
+      min-width: 10px;
+    }
+    > .blocks-white-space:hover {
+      background: black;
+      border: dotted 2px darkgray;
+    }
+    >.blocks-literal, .blocks-identifierList {
+      box-shadow: none;
+      color: white;
+    }
+    .blocks-literal{ border-width: @border-width; border-style: inset; }
+  }
+
+  .blocks-literal {
+    font-size: 16px;
+    
+    .blocks-literal-number {
+      color: @literal-number-color;
+    }
+    .blocks-literal-string {
+      height: 100px;
+      color: @literal-string-color;
+    }
+    .blocks-literal-char {
+      color: @literal-char-color;
+    }
+    .blocks-literal-boolean {
+      color: @literal-boolean-color;
+    }
+    .blocks-literal-symbol {
+      color: @literal-symbol-color;
+    }
+    .blocks-lambdaExpression {
+      border-radius: @large-border-radius @large-border-radius 0px 0px;
+    }
+  }
+
+  // ast nodes (in constructors)
+  .blocks-s-assign,
+  .blocks-s-bind,
+  .blocks-binop,
+  .blocks-s-bracket,
+  .blocks-s-check,
+  .blocks-checkTest,
+  .blocks-constructor,
+  .blocks-s-contract,
+	.blocks-s-data,
+  .blocks-s-data-field,
+  .blocks-s-for,
+  .blocks-s-for-bind,
+  .blocks-funApp,
+  .blocks-funDef,
+  .blocks-ifPipeExpression,
+  .blocks-ifPipeElseExpression,
+  .blocks-if-Expression,
+  .blocks-if-else-Expression,
+  .blocks-s-include,
+  .blocks-lambdaExp,
+  .blocks-s-let,
+  .blocks-s-variant,
+  .blocks-s-table,
+  .blocks-loadTable,
+  .blocks-s-sanitize,
+  .blocks-s-table-src,
+  .blocks-s-table-extend,
+  .blocks-s-column-binds,
+  .blocks-s-table-extend-field,
+  .blocks-s-table-order,
+  .blocks-s-table-filter,
+  .blocks-s-table-extend-reducer,
+  .blocks-s-table-extract,
+  .blocks-s-table-select,
+  .blocks-s-column-sort,
+  .blocks-s-reactor,
+  .blocks-specialImport,
+  .blocks-s-tuple,
+  .blocks-tuple-get,
+  .blocks-s-var,
+  .blocks-s-when,
+  .blocks-s-user-block
+  {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    color: black;
+    padding-left: @body-left-width;
+    filter: drop-shadow(1px 1px 1px #000000);
+    
+    border-radius: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.5s;
+    margin-bottom: -7px;
+
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+    user-select: none;
+  }
+
+  .blocks-if-else-Expression,
+  .blocks-if-Expression {
+    border-radius: 0px;
+    background: white;
+    > .blocks-if {
+      justify-content: flex-start;
+    }
+    > .blocks-cond-table {
+      display: table;
+      padding: 2px;
+      margin: 1px;
+      .blocks-cond-drop-row {
+        display: table-row;
+        .blocks-white-space, .quarantine { min-width: 100%; margin: 0px; height: 5px; transition: height .5s; }
+        .blocks-white-space:hover, .quarantine { height: 20px; }
+      }
+      .blocks-condClause,
+      .blocks-if-clause {
+        display: table-row-group;
+        padding: 3px;
+        text-align: center;
+        &:focus {
+          outline: @editing-border-color @border-width solid;
+        }
+        .blocks-cond-row {
+          border: 1px solid black;
+          text-align: left;
+          display: table-row;
+          border-top: 1px solid #aaa;
+          .blocks-cond-predicate, .blocks-cond-result {
+            display: inline-block;
+            
+            &.blocks-cond-else {
+              color: #777;
+            }
+          }
+          .blocks-cond-predicate {float: left; }
+          .blocks-cond-result {float: right; }
+        }
+        .blocks-cond-row:first-child {
+          border-top: 0px;
+        }
+      }
+      .blocks-condClause[aria-expanded=false] {
+        display: block;
+        height: 20px;
+        margin: 5px;
+      }
+    }
+  }
+
+
+  /* override default CSS rules */
+  .blocks-condClause .blocks-cond-row { text-align: center !important; }
+
+  .blocks-condClause .blocks-cond-result { float: none !important; }
+
+	@if-block-min-width: 180px;
+
+  @func-background: @constructor-color;
+  @lam-background: rgb(207, 99, 207);
+  @check-background: @util-color;
+  @checkTest-background: @util-color;
+  @let-color: rgb(255, 140, 26);
+  @var-color: @mutable-color;
+  @for-color: green;
+  @body-color: #EEE;
+  // Pathes for the Template
+  @w-scale: 1;
+  @height-setoff: 8px;
+
+  @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @only-output-path: polygon(0% 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @only-input-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
+  @start-finish-path: polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+	
+  @sidebar-width: 1.4rem;
+  @sidebar-path:polygon(0% @height-setoff*1.5, @sidebar-width  @height-setoff*1.5, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
+  @body-offset: 3px;
+  @body-left-width: 10px;
+  @body-right-width: 4px;
+  @body-path: @only-output-path;
+
+  // 1/8 Shape Design
+  @input-shiftout-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), calc(@w-scale*48px + @body-left-width) calc(100% - @height-setoff), calc(@w-scale*36px + @body-left-width) 100%, calc(@w-scale*24px + @body-left-width) 100%, calc(@w-scale*12px + @body-left-width) calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
+  @shiftin-output-path: polygon(0% 0%, calc(@w-scale*12px + @body-left-width) 0%, calc(@w-scale*24px + @body-left-width) @height-setoff, calc(@w-scale*36px + @body-left-width) @height-setoff, calc(@w-scale*48px + @body-left-width) 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
+  @shiftin-shiftout-path: polygon(0% 0%, calc(@w-scale*12px + @body-left-width) 0%, calc(@w-scale*24px + @body-left-width) @height-setoff, calc(@w-scale*36px + @body-left-width) @height-setoff, calc(@w-scale*48px + @body-left-width) 0%, 100% 0%, 100% calc(100% - @height-setoff), calc(@w-scale*48px + @body-left-width) calc(100% - @height-setoff), calc(@w-scale*36px + @body-left-width) 100%, calc(@w-scale*24px + @body-left-width) 100%, calc(@w-scale*12px + @body-left-width) calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
+  @only-shiftin-path:  polygon(0% 0%, calc(@w-scale*12px + @body-left-width) 0%, calc(@w-scale*24px + @body-left-width) @height-setoff, calc(@w-scale*36px + @body-left-width) @height-setoff, calc(@w-scale*48px + @body-left-width) 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
+  @if-adjust: 1.3;
+  @if-shiftin-shiftout-path: polygon(0% 0%, calc(@w-scale*12px + @if-adjust*@body-left-width) 0%, calc(@w-scale*24px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*36px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*48px + @if-adjust*@body-left-width) 0%, 100% 0%, 100% calc(100% - @height-setoff), calc(@w-scale*48px + @if-adjust*@body-left-width) calc(100% - @height-setoff), calc(@w-scale*36px + @if-adjust*@body-left-width) 100%, calc(@w-scale*24px + @if-adjust*@body-left-width) 100%, calc(@w-scale*12px + @if-adjust*@body-left-width) calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
+  @if-shiftin-out-path: polygon(0% 0%, calc(@w-scale*12px + @if-adjust*@body-left-width) 0%, calc(@w-scale*24px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*36px + @if-adjust*@body-left-width) @height-setoff, calc(@w-scale*48px + @if-adjust*@body-left-width) 0%, 100% 0%, 100% calc(100% - @height-setoff), calc(@w-scale*48px) calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));;
+  /* Contract With Types */
+  .blocks-s-contract {
+    padding-left: 0px;
+  }
+
+  .blocks-a-tuple {
+    .blocks-literal-a-tuple{
+      color: white;
+    }
+  }
+
+  .blocks-a-arrow {
+    .blocks-literal-a-arrow {
+      color: white;
+    }
+  }
+
+  .FuncBody {
+    background-color: red;
+  }
+
+  /* Returning Literals in Functions/etc. */
+  .blocks-block > span > span > .blocks-literal,
+  .blocks-block > span > span > span > .blocks-funApp {
+    clip-path: @shiftin-shiftout-path !important;
+    background-color:  @untyped-color;
+    border-radius: 0px;
+    margin-bottom: -7px;
+
+    padding-top: @w-scale*18px;
+    padding-bottom: @w-scale*32px;
+    padding-left: 35px !important;
+    padding-right: @w-scale*65px !important;
+    margin-top: 0px;
+      
+    .blocks-literal-number {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: @number-color;
+    }
+    .blocks-literal-string {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: @string-color;
+    }
+    .blocks-literal-boolean {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background-color: @boolean-color;
+    }
+    .blocks-literal-s-id {
+      color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+  }
+
+  .blocks-block > span > span > .blocks-literal::before,
+  .blocks-block > span > span > span > .blocks-funApp::before {
+    content: "⮑";
+    font-size: 25px;
+    margin-left: @w-scale*-30px;
+    height: 0px;
+  }
+
+  .blocks-block > span > span > span > .blocks-constructor {
+    clip-path: @shiftin-shiftout-path !important;
+    margin-bottom: -7px;
+
+    padding-top: @w-scale*18px;
+    padding-bottom: @w-scale*30px;
+    padding-left: 35px !important;
+    padding-right: @w-scale*65px !important;
+    margin-top: 0px;
+  }
+
+  .blocks-block > span > span > span > .blocks-constructor::before {
+    content: "⮑ ";
+    font-size: 25px;
+    position: absolute;
+    top: calc(40%);
+    left: 0;
+    float: left;
+  }
+
+  .blocks-block > span > span > span > .blocks-constructor:hover{
+    background-color: red;
+  }
+
+  .blocks-block > span > span > .blocks-literal > .blocks-literal-s-id {
+    font-size: 18px;
+  }
+
+  // Drop/hover functionality: hide drop targets when not dropping or hovering over it
+  .on-target-hover(){
+    display: inherit !important;
+    margin: 10px;
+    background-color: white;
+  }
+
+  .target-jigsaw(){
+    clip-path: @insert-output-path;
+    min-height: 30px;
+    min-width: 100px;
+    margin-bottom: -7px !important;
+    margin-top: 0px !important;
+    margin-left: 10px;
+    flex-direction: column;
+  }
+
+  .blocks-func-body,
+  .blocks-user-blocks-body,
+  .blocks-lambda-body,
+  .blocks-cond-result,
+  .blocks-check-body,
+  .blocks-for-body,
+  .blocks-cond-table,
+  .blocks-cond-row,
+  .blocks-load-table-body,
+  .blocks-table-extend-body,
+  .blocks-table-order-body,
+  .blocks-reactor-body{
+    //Prevent default displaying
+    .blocks-block > span > span {
+      display: block;
+    }
+    .blocks-drop-target{
+      display: none;
+    }
+    .blocks-args > .blocks-drop-target{
+      display: inherit;
+      margin: 0px !important;
+      margin-left: 5px !important;
+      margin-right: 5px !important;
+      clip-path: none !important;
+    }
+    br {
+      display: none;
+    }
+  }
+
+  .blocks-block > span > span > .blocks-drop-target,
+  .blocks-table-order-body > .blocks-drop-target,
+  .blocks-cond-table > span > .blocks-drop-target,
+  .blocks-cond-table > .blocks-drop-target,
+  .blocks-cond-row > .blocks-drop-target,
+  .blocks-table-extend-body > .blocks-drop-target,
+  .blocks-load-table-body > .blocks-drop-target,
+  .blocks-reactor-body > .blocks-drop-target {
+    .target-jigsaw();
+  }
+  //General case for drop targets in a block (works for lambda, func, etc...)
+  .blocks-block > span:hover > span > .blocks-drop-target,
+  .blocks-table-order-body:hover > .blocks-drop-target,
+  .blocks-hover > span > .blocks-drop-target,
+  .blocks-hover > .blocks-drop-target,
+  .blocks-table-extend-body:hover > .blocks-drop-target,
+  .blocks-load-table-body:hover > .blocks-drop-target,
+  .blocks-cond-row:hover > .blocks-drop-target,
+  .blocks-reactor-body:hover > .blocks-drop-target{ 
+    .on-target-hover();
+  }
+  //Correction for doc strings
+  .blocks-s-table, .blocks-doc-string {
+    .blocks-editing {
+      display: inline !important;
+    }
+  }
+
+  
+  // ---------------------------------------------------------------------------------------------------------
+  /*   Binary Operations   */
+  .blocks-binop{
+    border-radius: 20px;
+    padding: 6px;
+    border: 1px solid grey;
+
+    .blocks-operator-container{
+      margin: 0px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      
+      *display: inline;
+      vertical-align: middle;
+      color: white;
+    }
+    .blocks-operator-input, .blocks-operator {
+      margin: 2px;
+      display: inline;
+      color: white;
+    }
+    .blocks-operator-text{
+      font-weight: bolder;
+    }
+  }
+
+  .blocks-block > span > span > .blocks-binop,
+  .blocks-block > span > span > span > .blocks-binop,
+  .blocks-table-filter-body > span > .blocks-binop {
+    clip-path: @shiftin-shiftout-path !important;
+    border-radius: 0px;
+    border-radius: 0px;
+    margin-bottom: -7px;
+    margin-top: 0px;
+  }
+
+  /*  xx Binary Operations xx  */
+  // ---------------------------------------------------------------------------------------------------------
+  /* Identifiers 
+    ex. x = 1 */
+  .blocks-let {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+  }
+
+  .blocks-s-let {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-let:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  /* Var
+  ex. var x = 1 */
+  .blocks-var {
+		background-color: @var-color;
+		border: 1rem solid @var-color;
+    clip-path: @insert-output-path;
+    padding-bottom: 12px;
+  }
+
+  .blocks-s-var {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-var:after{
+    content: "";
+    background: @var-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-assign {
+    background-color: #CC3333;
+    padding: 1rem;
+		clip-path: @insert-output-path;
+  }
+
+  .blocks-s-assign:after{
+    content: "";
+    background: #CC3333;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+  // ---------------------------------------------------------------------------------------------------------
+  // Functions
+  .blocks-func {
+    background-color: @func-background;
+    border-bottom-left-radius: 0px;
+
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+    text-align: left;
+    display: block;
+    margin-bottom: -7px;
+    > .blocks-empty-doc-string{
+      display: none;
+    }
+  }
+  .blocks-func:hover > .blocks-empty-doc-string{
+    display: block !important;
+  }
+
+  .blocks-doc-string {
+    text-align: left;
+    max-width: 750px;
+    .blocks-editing {
+      white-space: pre-wrap;
+      word-break: keep-all; 
+    }
+
+    .blocks-node{
+
+      text-align: left;
+      height: 100%;
+      width: 95%;
+      min-height: 20px;
+      .blocks-literal-string,
+      .blocks-literal-operator{
+        
+        white-space: pre-wrap;
+        word-break: keep-all; 
+      }
+    }
+
+  }
+
+  .blocks-func-footer {
+    background-color: @func-background;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
+    clip-path: @shiftin-output-path;
+  }
+
+	.blocks-funapp{
+    border-radius: 5px;
+    margin-bottom: 2px;
+    padding-left: 0;
+    padding-bottom: 5px;
+  }
+
+  .blocks-funApp{
+    padding: 5px;
+  }
+
+	.blocks-funDef{
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-funDef:before {
+    content: "";
+    background: @func-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  // ------------------------------------------------------------------------------------------------------
+  // Lambda - Anonmynous Functions
+  .blocks-lambda {
+    background-color: @lam-background;
+    clip-path: @input-shiftout-path;
+		padding: 0.7rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+  }
+
+  .blocks-lambda-footer {
+    
+    background-color: @lam-background;
+    clip-path: @shiftin-output-path;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
+  }
+
+  .blocks-lambdaExp {
+    position: relative;
+    text-align: left;
+    padding-left: @body-left-width;
+  }
+  
+  
+  /* Main div for border to extend to 50% from bottom left corner */
+  
+  .blocks-lambdaExp:before {
+    content: "";
+    background: @lam-background;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  // ---------------------------------------------------------------------------------------------------------
+  // Blocks
+
+  .blocks-user-blocks-header {
+    background-color: @mutable-color;
+    border-bottom-left-radius: 0px;
+    color: white;
+    font-weight: bold;
+
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+  }
+
+  .blocks-s-user-block {
+    position: relative;
+    text-align: left;
+  }
+  
+  .blocks-s-user-block:after {
+    content: "";
+    background: @mutable-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+
+  .blocks-user-blocks-footer {
+    font-weight: bold;
+    background: @mutable-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
+  }
+
+  // ---------------------------------------------------------------------------------------------------------
+  /*   Check Blocks   */
+  .blocks-check {
+    background-color: @check-background;
+		border-radius: 0px 8px 8px 0px;
+
+		clip-path: @start-finish-path;
+    padding: 0.7rem;
+		text-align: left;
+		display: block;
+	}
+
+  .blocks-checkTest {
+    background-color: @checkTest-background;
+    border-radius: 5px;
+		padding: 1rem;
+		clip-path: @insert-output-path;
+  }
+
+  .blocks-check-footer {
+    background-color: @check-background;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+  }
+
+  .blocks-s-check:after{
+    content: "";
+    background: @check-background;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: calc(100% - @height-setoff - 3px);
+    width: @body-left-width;
+  }
+  /* xx Check Blocks xx */
+  // ---------------------------------------------------------------------------------------------------------
+  /*   Conditional Expressions   */
+  // -------------------------------------------------
+  // If and If Else Expressions:
+	.blocks-if{
+		background-color: @untyped-color;
+    border-bottom-left-radius: 0px;
+    clip-path: @input-shiftout-path;
+
+		padding: 1rem;
+		text-align: left;
+    display: block;
+  }
+	.blocks-if-footer{
+    background-color: @untyped-color;
+    border-radius: 0px 8px 8px 0px;
+    margin-top: -2px;
+    margin-bottom: 1px;
+    padding: 5px;
+    color: white;
+    clip-path:  @if-shiftin-out-path;
+  }
+
+  .blocks-else{
+    background-color: @untyped-color;;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    padding-bottom: 10px;
+    margin-top: -2px;
+    color: white;
+    clip-path: @if-shiftin-shiftout-path;
+  }
+
+  .blocks-if-Expression,
+  .blocks-if-else-Expression,
+  .blocks-ifPipeExpression,
+  .blocks-ifPipeElseExpression{
+    background-color: transparent;
+    position: relative;
+    text-align: left;
+    align-items: left;
+    padding-left: @body-left-width;
+    overflow: visible;
+
+    .blocks-cond-table {
+
+      display: flex;
+      flex-direction: column;
+			align-items: flex-start;
+      white-space: pre-line;
+      
+      .blocks-cond-predicate{
+
+        background-color: @untyped-color;
+        padding-left: 10px;
+        padding-top: 2rem;
+        padding-right: 1.5rem;
+        padding-bottom: 1.8rem;
+        margin-bottom: -6px;
+        margin-left: 0px;
+        padding-right: 10px;
+        clip-path: @shiftin-shiftout-path;
+        float: left;
+      }
+
+      .blocks-cond-predicate::before{
+        content: 'ᚶ';
+        color: white;
+        font-size: 25px;
+        margin-right: @w-scale*10px;
+      }
+
+      .blocks-cond-row {
+        .blocks-cond-result{
+          width: 100%;
+          margin-left: 2px;
+        }
+      }
+    }
+  }
+
+  .blocks-if-Expression:after,
+  .blocks-if-else-Expression:after,
+  .blocks-ifPipeExpression:after,
+  .blocks-ifPipeElseExpression:after{
+    content: "";
+    background: @untyped-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+    // margin-left: 10px;
+  }
+
+  // .blocks-if-Expression:before,
+  // .blocks-if-else-Expression:before,
+  // .blocks-ifPipeExpression:before,
+  // .blocks-ifPipeElseExpression:before {
+  //   content: "";
+  //   background:  @checkTest-background;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-right-width;
+  // }
+
+  // .blocks-if-Expression:before,
+  // .blocks-if-else-Expression:before,
+  // .blocks-ifPipeExpression:before,
+  // .blocks-ifPipeElseExpression:before {
+  //   content: "";
+  //   background: @untyped-color;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-left-width;
+  // }
+
+  // -------------------------------------------------
+  // Ask Expression:
+  // Ask without Otherwise:
+  //.blocks-ifPipeExpression and .blocks-ifPipeElseExpression referenced above ^ already
+  .blocks-ask {
+    background-color: @untyped-color;
+    // border-radius: 8px;
+    // border-bottom-left-radius: 0px;
+    clip-path: @input-shiftout-path;
+    // clip-path: @insert-output-path;
+    // clip-path: @start-finish-path;
+    padding: 1rem;
+    margin-bottom: -7px;
+		text-align: left;
+    display: block;
+  }
+
+  .blocks-ifPipeExpression {
+    background: transparent;
+  }
+
+  .blocks-ask-footer {
+    background-color: @untyped-color;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
+    clip-path: @shiftin-output-path;
+    // clip-path: @insert-output-path;
+    text-align: left;
+  }
+
+
+  .blocks-otherwise {
+    background-color: @untyped-color;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    // clip-path: @shiftin-output-path;
+    clip-path: @shiftin-shiftout-path;
+    text-align: left;
+  }
+  // -------------------------------------------------
+  // When Expression:
+  // polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @when-path: polygon(0% @height-setoff*1.5, @w-scale*16px 0.5*@height-setoff, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 0.5*@height-setoff, @w-scale*64px @height-setoff*1.5, 100% @height-setoff*1.5, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @when-sidebar-path: polygon(0% 1.5*@height-setoff, @sidebar-width 1.5*@height-setoff, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
+  .blocks-when{
+    background-color: @untyped-color; // @checkTest-background;
+    clip-path: @input-shiftout-path;
+    // clip-path: @insert-output-path;
+   //  clip-path: @when-path;
+  }
+
+  .blocks-when-header {
+    margin-top: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .blocks-when-footer{
+    background-color: @untyped-color;// @checkTest-background;
+		border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @shiftin-output-path;
+    // clip-path: @insert-output-path;
+  }
+
+  .blocks-s-when{
+    // border-left: @sidebar-width solid @checkTest-background;
+    // clip-path: @when-sidebar-path;
+    background-color: transparent;
+    position: relative;
+    text-align: left;
+  }
+  
+  .blocks-s-when:after {
+    content: "";
+    background: @untyped-color;// @checkTest-background;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  // .blocks-s-when:before {
+  //   content: "";
+  //   background:  @checkTest-background;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   height: calc(100% - @height-setoff);
+  //   width: @body-left-width;
+  // }
+  /* xx Conditional Expressions xx */
+  // ---------------------------------------------------------------------------------------------------------
+  /*    Constructor    */
+  // Non-fixed-sized Datatypes, ex. Lists, Sets, etc.
+  .blocks-construct {
+		/* background: white; */
+		background-color: @constructor-color;
+  }
+
+  .blocks-constructor {
+    padding-left: 0;
+    border: 1px black dashed;
+  }
+  /* xx Constructor xx */
+
+  /*       Tuple        */
+  // Tuples - ex. {1; 2; true; "A"}
+  .blocks-tuple{
+    color: #e75480;
+    filter: drop-shadow(2px 2px 2px white);
+  }
+
+  .blocks-s-tuple{
+    background: white;
+    padding-left: 0px;
+    .blocks-literal{
+      color: black;
+      filter: drop-shadow(2px 2px 2px white);
+    }
+  }
+
+  //Tuple Get - ex. t = {1; 2; 3}, t.{1} = 2
+  .blocks-tuple-access{
+    color: #e75480;
+    filter: drop-shadow(2px 2px 2px white);
+  }
+
+  .blocks-tuple-get{
+    background: white;
+    .blocks-literal{
+      color: black;
+      filter: drop-shadow(2px 2px 2px white);
+    }
+  }
+  /*   xx  Tuple  xx    */
+  // Bracket - ex. a[0], dict["A"]
+  .blocks-bracket{
+    color: red;
+    filter: drop-shadow(2px 2px 2px white);
+  }
+
+  .blocks-s-bracket{
+    background: white;
+    .blocks-literal{
+      color: black;
+      filter: drop-shadow(2px 2px 2px white);
+    }
+  }
+  /*   xx Bracket xx   */
+ 
+  //---------------------------------------------------------------
+  // For
+
+  .blocks-for {
+    background-color: @for-color;
+    border-bottom-left-radius: 0px;
+
+    // clip-path: @start-finish-path;
+    // clip-path:  @insert-output-path;
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+  }
+
+  .blocks-s-for {
+    position: relative;
+    text-align: left;
+    height: 100%;
+  }
+  
+  .blocks-s-for:after {
+    content: "";
+    background: @for-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-for-footer {
+    background: @for-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
+    // clip-path: @insert-output-path;
+  }
+
+  .blocks-for-bind {
+
+    background: white;
+    border-radius: 3px;
+    color:blue;
+    display: stretch;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .blocks-s-for-bind {
+    padding-left: 0;
+  }
+
+	.blocks-table{
+		/* padding: 3rem; */
+		/* background-color: red; */
+		/* cursor: pointer; */
+		/* display: flex; */
+		table{
+			table-layout: fixed;
+			/* width: 50%; */
+		}
+              table, th, td{
+                border: 1px solid black;
+                /* background-color: red; */
+              }
+            }
+            
+            // -------------------------------------------------------
+            // Table
+            // Kevin Made DropTarget stretch to entire Column
+            .blocks-s-table::after {
+              content: "";
+          background: @table-color;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: calc(100% - @height-setoff);
+          width: @body-left-width;
+            }
+
+
+            .blocks-table {
+              background-color: @table-color;
+              padding-top: 20px;
+              padding-bottom: 20px;
+              padding-right: @body-left-width;
+              clip-path: @insert-output-path;// @shiftin-shiftout-path;
+
+              table {
+                // background-color: red;
+          border-collapse: separate;
+          border-spacing: 0 2rem;
+                box-shadow: 0 2px 15px rgba(64,64,64,.7);
+                border-radius: 9px;
+                overflow: hidden;
+
+          tr{
+          > span{
+                    display: table-cell;
+                    text-align: center;
+                    vertical-align: middle;
+                    padding: @w-scale*6px @w-scale*10px;
+          }
+                }
+              
+                .blocks-drop-target {
+                  background-color: white !important;
+                }
+
+          position: relative;
+          > .blocks-drop-target,
+          > .blocks-editing{
+          display: block;
+          position: absolute;
+          width: 100%;
+          transform: translateY(-10px);
+          margin: 0;
+          }
+
+          .aRow {
+          display: table-row;
+          > span{
+          display: table-cell;
+          }
+          }
+
+          > .blocks-s-table-row{
+          display: table-row;
+          text-align: center;
+          }
+              
+                // .blocks-drop-target {
+                //   background-color: red;
+                // }
+              }}
+
+
+          table{
+          > span{
+          display: table-row;
+          > span{
+          display: table-cell;
+          }
+          }
+          background-color: @table-color;
+          }
+
+  // Table Functions/Operations
+
+  // Extend
+  .blocks-s-table-extend,
+  .blocks-s-table-order,
+  .blocks-s-table-filter{
+    position: relative;
+    text-align: left;
+    height: 100%;
+  }
+
+    
+  .blocks-s-table-extend:after,
+  .blocks-s-table-order:after,
+  .blocks-s-table-filter:after {
+    content: "";
+    background: @table-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-table-order,
+  .blocks-table-extend,
+  .blocks-table-filter {
+    background-color: @table-color;
+    border-bottom-left-radius: 0px;
+
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+    color: black;
+    font-weight: bold;
+
+    .blocks-s-column-binds {
+      border-radius: 3px;
+      padding-bottom: 10px;
+      .blocks-literal{
+        background: white;
+      }
+    }
+    
+  }
+
+  .blocks-table-order-footer,
+  .blocks-table-extend-footer,
+  .blocks-table-filter-footer {
+    background: @table-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: black;
+    clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .blocks-table-order-body > .blocks-s-column-sort{
+    display: block;
+  }
+
+  .blocks-s-table-extend-field,
+  .blocks-s-column-sort {
+    position: relative;
+    text-align: left;
+  }
+  
+  .blocks-s-table-extend-field:after,
+  .blocks-s-column-sort:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+
+  .blocks-table-extend-field,
+  .blocks-column-sort {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+
+
+  }
+
+  .blocks-table-extend-field-title,
+  .blocks-column-sort-title {
+    background: @table-color;
+    color: white;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+
+
+
+  .blocks-table-filter-body{
+
+  }
+
+
+//---------------------------------------------------------------------------------------------------
+  // Extract
+  .blocks-table-extract {
+    background-color: @constructor-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+    color: white;
+    font-weight: bold;
+
+    .blocks-table-extract-col,
+    .blocks-table-extract-table{
+      background-color: white;
+      border-radius: 1px;
+    }
+  }
+
+  .blocks-s-table-extract {
+    position: relative;
+    text-align: left;
+    padding-right: 7px;
+  }
+
+  .blocks-s-table-extract:after{
+		content: "";
+		background: @constructor-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  // Select
+  .blocks-s-table-select {
+
+    border-radius: 3px;
+    color: black;
+    font-weight: bold;
+
+    .blocks-table-select-col,
+    .blocks-table-select-table{
+      background-color: @table-color;
+      border-radius: 1px;
+      max-width: 800px;
+      overflow-wrap: anywhere;
+    }
+
+    .blocks-table-select-col {
+      border: 3px solid white;
+      background-color: black;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+
+    .blocks-table-select-col > .blocks-literal,
+    .blocks-table-select-table > .blocks-literal{
+      background-color: white;
+    }
+  }
+
+  .blocks-table-select {
+    clip-path: @insert-output-path;
+    background-color: @table-color;
+    padding: 10px;
+  }
+
+  .blocks-s-table-select {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-table-select:after {
+    content: "";
+		background: @table-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .indent{
+    margin-left: 20px;
+    display: block;
+  }
+
+  // reducer - --- ~ Let
+  .blocks-s-table-extend-reducer {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-table-extend-reducer:after {
+		content: "";
+		background: @table-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  
+  .blocks-table-extend-reducer-field {
+		background-color: @table-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+    padding-right: 10px;
+  }
+  .blocks-table-extend-reducer-field > .blocks-literal,
+  .blocks-table-extend-reducer-title > .blocks-literal {
+    background-color: white;
+  }
+
+  // Load Table ----------------------------------------
+  .blocks-loadTable {
+    position: relative;
+    text-align: left;
+    height: 100%;
+  }
+
+  .blocks-cond-row,
+  .blocks-load-table-body,
+  .blocks-reactor-body{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+    
+  .blocks-loadTable::after {
+    content: "";
+    background: @table-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  .blocks-load-table {
+    background-color: @table-color;
+    border-bottom-left-radius: 0px;
+    float: left;
+    clip-path: @input-shiftout-path;
+    padding: 1rem;
+		text-align: left;
+    display: block;
+    margin-bottom: -7px;
+  }
+
+  .blocks-load-table-footer {
+    background: @table-color;
+    border-radius: 0px 8px 8px 0px;
+    padding: 5px;
+    color: white;
+    clip-path: @shiftin-output-path;
+    padding-bottom: 10px;
+  }
+
+  .blocks-s-table-src,
+  .blocks-s-sanitize {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-table-src:after,
+  .blocks-s-sanitize::after {
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .blocks-table-source {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+
+    .blocks-table-source-title{
+      background-color: @util-color;
+      border-radius: 3px;
+      color: white;
+    }
+  }
+
+  .blocks-sanitize {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+    color: white;
+
+    .blocks-sanitize-title,
+    .blocks-sanitizer,
+    .blocks-sanitize-ident{
+      background-color: @util-color;
+      border-radius: 3px;
+      color: white;
+    }
+  }
+
+  
+
+  // Include, Import Statements, etc.
+	.blocks-s-include, 
+	.blocks-include {
+    background-color: @util-color;
+    margin-bottom: 4px;
+  }
+  .blocks-specialImport{
+    padding: 5px;
+  }
+
+	.funapp-params{
+		> .blocks-literal{
+			padding: 0 10px;
+		}
+	}
+
+	.error{ 
+		> span.blocks-binop, 
+		> .blocks-literal, 
+		.blocks-constructor, 
+		.blocks-funapp, 
+		.blocks-var>span, 
+		.blocks-let>span.blocks-literal{
+			/* background-color: @mutable-color;  */
+		}
+		&:before, 
+		&:after{
+			content: "\1F6AB";
+		}
+	}
+
+	.blocks-table-extend-body{
+		> span{
+			display: block;
+			text-align: left;
+		}
+  }
+  
+  // Reactor ------------------------------------------------
+	// .blocks-reactor{
+  //   clip-path: @shiftin-shiftout-path !important;
+  //   background-color: @util-color;
+	// // 	background-color: #777777;
+  //   border-radius: 0px;
+
+  //   padding-top: @w-scale*18px;
+  //   padding-bottom: @w-scale*32px;
+  //   padding-left: 35px !important;
+  //   padding-right: @w-scale*65px !important;
+  //   /* margin-top: 0px; */
+	// 	text-align: left;
+	// 	display: flex;
+	// 	flex-direction: column;
+
+	// 	.blocks-reactor-header{
+	// 		&:before{
+	// 			content: "\1F680"
+	// 		}
+	// 	}
+
+	// 	.blocks-reactor-body{
+	// 		text-align: left;
+	// 	}
+
+	// 	.blocks-reactor-footer{
+	// 		margin-top: 20px;
+	// 	}
+  // }
+
+  .blocks-s-reactor {
+    position: relative;
+    text-align: left;
+    padding-left: @body-left-width;
+    	// 	text-align: left;
+  }
+
+  .blocks-reactor-header{
+			&:before{
+				content: "\1F680"
+      }
+      background-color: @util-color;
+      clip-path: @input-shiftout-path;
+      padding: 0.7rem;
+      text-align: left;
+      display: block;
+      margin-bottom: -7px;
+  }
+
+  .blocks-reactor-footer {
+    background-color: @util-color;
+    clip-path: @shiftin-output-path;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
+  }
+  
+  
+  .blocks-s-reactor:after{
+		content: "";
+		background: @util-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .blocks-s-data-field {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-data-field::after {
+    content: "";
+		background: @util-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  
+  .blocks-data-field {
+    background-color: @util-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+  }
+
+  /*
+  .blocks-let {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+  }
+
+  .blocks-s-let {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-let:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+  */
+
+  // Custom Data  Types ---------------------------------------------------
+
+  .blocks-data-type{
+
+    background-color: @untyped-color;
+    clip-path: @input-shiftout-path;
+		padding: 0.7rem;
+		text-align: left;
+    display: block;
+    color: white;
+    margin-bottom: -7px;
+  }
+
+  .blocks-data-name {
+    color: white;
+  }
+
+  .blocks-data-type-footer {
+    background-color: @untyped-color;
+    clip-path: @shiftin-output-path;
+    padding: 5px;
+    padding-bottom: 10px;
+    color: white;
+  }
+
+  .blocks-s-data {
+      position: relative;
+      text-align: left;
+      padding-left: @body-left-width;
+  }
+
+  .blocks-s-data:before {
+    content: "";
+    background: @untyped-color;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    height: calc(100% - @height-setoff);
+    width: @body-left-width;
+  }
+
+  // Custom Data Types => Each Row - Variant Row --------------------------------
+
+  .blocks-variant-row {
+		background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    display: stretch;
+    clip-path: @insert-output-path;
+    .blocks-drop-target{
+      display: inline-flex;
+    }
+  }
+
+  .blocks-s-variant {
+    position: relative;
+    text-align: left;
+  }
+
+  .blocks-s-variant:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .blocks-variant-row::before{
+    content: 'ᛘ';
+    color: white;
+    font-size: 25px;
+    margin-right: @w-scale*10px;
+  }
+
+  .blocks-variant-title {
+    // background-color: white;
+    // border-radius: 3px;
+    font-weight: bold;
+  }
+
+  // -----------------------------------------
+
+}
