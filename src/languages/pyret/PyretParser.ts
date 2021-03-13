@@ -599,9 +599,8 @@ const nodeTypes = {
   // note this name string is "" if anonymous
   "s-lam": function(l: Loc, name: string, _params: Name[], args: Bind[], ann: Ann, doc: string, body: Expr, _check_loc: Loc | null, _check: Expr | null, blocky: boolean) {
     if(DEBUG) console.log(arguments);
-    let fun_from = { line: l.from.line, ch: l.from.ch + 4 };
-    let fun_to = {line: l.from.line, ch: fun_from.ch + name.length};
-    let real_name = (name == "")? null : new Nodes.Literal(fun_from, fun_to, name, 'lambda');
+    let fun_from = { line: l.from.line, ch: l.from.ch   + 0};
+    let fun_to   = { line: l.from.line, ch: fun_from.ch + 3};
 
     let docText = doc ? doc : "";
 
@@ -619,7 +618,7 @@ const nodeTypes = {
     }
 
     console.log("----------- Lambda ------------");
-    console.log(name);
+    console.log(fun_from, fun_to);
     console.log(docText);
     console.log(doc_from);
     console.log(doc_to);
@@ -628,14 +627,11 @@ const nodeTypes = {
 
     let docBlock = new Nodes.Literal(doc_from, doc_to, doc, 'lambda', {'aria-label': `${docText}, the doc-string of this lambda ${name}`});
 
-    console.log(docBlock);
-
     // For some reason docBlock does not have a proper id, but name does, since Lambda does not have names, we decided to pass the 
     // docstring through name and put it in where docstring is
     return new Lambda(
       l.from,
       l.to,
-      new Nodes.Literal(doc_from, doc_to, doc, 'operator'),// new Nodes.Literal(fun_from, fun_to, name, 'lambda'),
       args.map(a => idToLiteral(a)),
       ann,
       docBlock,// docBlock,

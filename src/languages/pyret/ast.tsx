@@ -244,26 +244,23 @@ export class Func extends AST.ASTNode {
   }
 }
 export class Lambda extends AST.ASTNode {
-  name: AST.ASTNode | null;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   doc: AST.ASTNode;
   body: AST.ASTNode;
   block: boolean
 
-  constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
+  constructor(from, to, args, retAnn, doc, body, block, options = {}) {
     // TODO change this from function definition?
     super(from, to, 'lambdaExp', options);
-    this.name = name;
     this.args = args;
     this.retAnn = retAnn;
-    this.doc = doc;
+    this.doc = doc || "\"\"";
     this.body = body;
     this.block = block;
   }
 
   static spec = Spec.nodeSpec([
-    Spec.optional('name'),
     Spec.list('args'),
     Spec.optional('retAnn'),
     Spec.value('doc'),
@@ -274,35 +271,33 @@ export class Lambda extends AST.ASTNode {
   ])
 
   longDescription(level) {
-    return `a lambda expression with ${this.name.describe(level)}, ${this.args} and ${this.body.describe(level)}`;
+    return `a lambda expression with ${this.args} and ${this.body.describe(level)}`;
   }
 
   pretty() {
     let retAnn = this.retAnn ? P.horz(" -> ", this.retAnn) : "";
     let header_ending = (this.block)? " block:" : ":";
-    let prefix = (this.name == null)? ["lam("] : ["lam", "("];
+    let prefix = ["lam("];
     let header = P.ifFlat(
       P.horz(P.horzArray(prefix), P.sepBy(this.args, ", ", ","), ")", retAnn, header_ending),
       P.vert(P.horzArray(prefix),
              P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":")));
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
-      P.horz(header, " ", "doc: \"", this.name, "\" ", this.body, " end"),
+      P.horz(header, " ", "doc: \"", this.doc, "\" ", this.body, " end"),
       // P.horz(header, " ", this.body, " end"),
       P.vert(header,
-             P.horz(INDENT, "doc: \"", this.name, "\""),
+             P.horz(INDENT, "doc: \"", this.doc, "\""),
              P.horz(INDENT, this.body),
              "end"));
   }
 
   render(props) {
-    // TODO: show doc
-    let name = (this.name == null)? null : this.name.reactElement();
     let body = this.body.reactElement();
-    let doc = this.doc.reactElement();
     let args = <span className="blocks-args">
       <Args field="args">{this.args}</Args>
     </span>;
+    let doc = this.doc.reactElement();
     let header_ending = <span>
       {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
@@ -313,7 +308,7 @@ export class Lambda extends AST.ASTNode {
         <span className="blocks-lambda">
           lam&nbsp;({args}){header_ending}:{NEWLINE}
           <div className="blocks-doc-string">
-          doc: {name}
+          doc: {doc}
           </div>
         </span>
         <span className="blocks-lambda-body" onDragOver={getDragEvent(this, 'blocks-lambda-body')}>

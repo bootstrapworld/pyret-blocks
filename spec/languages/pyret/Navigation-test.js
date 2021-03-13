@@ -62,7 +62,7 @@ describe("load-table", function () {
     setup.call(this);
     this.cmb.setValue(`load-table: nth, name, home-state
   source: presidents-sheet.sheet-by-name("presidents", true)
-end`);
+  end`);
     await wait(DELAY);
     let ast = this.cmb.getAst();
     this.root1 = ast.rootNodes[0];
@@ -130,7 +130,6 @@ end`);
     keyDown("Enter"); await wait(DELAY);
     keyDown("Enter"); await wait(DELAY);
   });
-
 });
 
 describe("lets", function () {
@@ -438,7 +437,7 @@ describe("lambdas with return annotations", function () {
       afterEach(function () { teardown(); });
 
       it("should activate arguments, return annotation and body", async function () {
-        // activate fn name
+        // activate the root
         mouseDown(this.root1);
         await wait(DELAY);
         // for each arg, activate and toggle editing
@@ -822,23 +821,7 @@ describe("contracts", function () {
     await wait(DELAY);
   });
 });
-/*
-NOTE(Emmanuel): this appears to be dead code
-const click_expect = async function(to_click, active_node, result, check_editable = false) {
-  mouseDown(to_click);
-  await wait(DELAY);
 
-  keyDown("ArrowDown");
-  expect(active_node()).toBe(result);
-
-  if (check_editable) {
-    keyDown("Enter");
-    await wait(DELAY);
-    keyDown("Enter");
-    await wait(DELAY);
-  }
-};
-*/
 describe("if statements", function () {
   const testify = function (text) {
     describe(text, function () {
@@ -887,30 +870,10 @@ describe("if statements", function () {
     });
   };
 
-  testify(`if x == 4:
-  4
-end`);
-  testify(`if x == 3:
-  2
-else:
-  3
-end`);
-  testify(`if x == 5:
-  5
-else if x >= 5:
-  7
-else if x < 3:
-  2
-end`);
-  testify(`if x == 5:
-  5
-else if x >= 5:
-  7
-else if x < 3:
-  2
-else:
-  0
-end`);
+  testify(`if x == 4: 4 end`);
+  testify(`if x == 3: 2 else: 3 end`);
+  testify(`if x == 5: 5 else if x >= 5: 7 else if x < 3: 2 end`);
+  testify(`if x == 5: 5 else if x >= 5: 7 else if x < 3: 2 else: 0 end`);
 });
 
 describe('parentheses', function() {
