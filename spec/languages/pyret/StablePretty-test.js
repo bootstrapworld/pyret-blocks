@@ -15,7 +15,7 @@ describe('The CodeMirrorBlocks Class', function() {
     });
   });
 
-  fdescribe('small DS programs', function() {
+  describe('small DS programs', function() {
     let testify = function (text, name = text, already_pretty = true) {
       return it(name, async function() {
         let result = this.parser.parse(text).toString();
@@ -100,24 +100,26 @@ end`);
     };
 
     testify("blocky function", `fun f(x) block:
+  doc: ""
   print(x)
   x + 3
 end`);
 
-    testify("ret ann function", `fun f(x) -> Number: x + 3 end`);
+    testify("ret ann function", `fun f(x) -> Number: doc: "" x + 3 end`);
 
     testify("blocky and ret ann function", `fun f(x) -> Number block:
+  doc: ""
   print(x)
   x + 3
 end`);
 
-    testify("default lambda", `lam(x): x + 3 end`);
+    testify("default lambda", `lam(x): doc: "" x + 3 end`);
 
-    testify("lambda with ret ann", `lam(x) -> Number: x + 3 end`);
+    testify("lambda with ret ann", `lam(x) -> Number: doc: "" x + 3 end`);
 
-    testify("lambda with block", `lam(x) block: x + 3 end`);
+    testify("lambda with block", `lam(x) block: doc: "" x + 3 end`);
 
-    testify("lambda with ret ann and block", `lam(x) -> Number block: x + 3 end`);
+    testify("lambda with ret ann and block", `lam(x) -> Number block: doc: "" x + 3 end`);
 
     testify("simple if", `if x == 4:
   4
@@ -169,6 +171,7 @@ end`);
   raise("not an Array")
 end`);
     testify('a-app', `fun f(v :: Array<Number>) block:
+  doc: ""
   when not(is-array(v)):
     raise("not an Array")
   end

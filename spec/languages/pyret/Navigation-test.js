@@ -258,18 +258,18 @@ describe("functions", function () {
       it("should activate function name, arguments, and body", async function () {
         mouseDown(this.root1);
         await wait(DELAY);
-
+        // activate fn name
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
         expect(this.activeNode()).toBe(this.fun_name);
         expect(this.activeNode()).not.toBe(this.body);
-
+        // toggle editing on fn name
         keyDown("Enter");
         await wait(DELAY);
         keyDown("Enter");
         await wait(DELAY);
-
+        // for each arg, activate and toggle editing
         for (let i = 0; i < this.args.length; i++) {
           keyDown("ArrowDown");
           await wait(DELAY);
@@ -277,13 +277,16 @@ describe("functions", function () {
           expect(this.activeNode()).not.toBe(this.fun_name);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
-
+          // toggle editing on arg
           keyDown("Enter");
           await wait(DELAY);
           keyDown("Enter");
           await wait(DELAY);
         }
-
+        // activate doc string
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        // activate body
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
@@ -316,18 +319,19 @@ describe("functions with return annotations", function () {
       it("should activate function name, arguments, return annotation and body", async function () {
         mouseDown(this.root1);
         await wait(DELAY);
-
+        // activate fn name
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
         expect(this.activeNode()).toBe(this.fun_name);
         expect(this.activeNode()).not.toBe(this.body);
-
+        // toggle editing on fn name
         keyDown("Enter");
         await wait(DELAY);
         keyDown("Enter");
         await wait(DELAY);
 
+        // in order, activate args and toggle editing on arg
         for (let i = 0; i < this.args.length; i++) {
           keyDown("ArrowDown");
           await wait(DELAY);
@@ -335,25 +339,29 @@ describe("functions with return annotations", function () {
           expect(this.activeNode()).not.toBe(this.fun_name);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
-
+          // toggle editing on arg
           keyDown("Enter");
           await wait(DELAY);
           keyDown("Enter");
           await wait(DELAY);
         }
 
+        // activate return annotation
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
         expect(this.activeNode()).not.toBe(this.fun_name);
         expect(this.activeNode()).toBe(this.retAnn);
         expect(this.activeNode()).not.toBe(this.body);
-
+        // toggle editing on return annotation
         keyDown("Enter");
         await wait(DELAY);
         keyDown("Enter");
         await wait(DELAY);
-
+        // activate doc string
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        // activate body
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
@@ -363,9 +371,9 @@ describe("functions with return annotations", function () {
       });
     });
   };
-  test("fun f(x) -> Number: x + 3 end");
-  test("fun f(x, jake) -> String: x + jake end");
-  test("fun g() -> Number: 2 * 4 end");
+  test(`fun f(x) -> Number: doc: "" x + 3 end`);
+  test(`fun f(x, jake) -> String: doc: "" x + jake end`);
+  test(`fun g() -> Number: doc: "" 2 * 4 end`);
 });
 
 describe("lambdas", function () {
@@ -385,7 +393,7 @@ describe("lambdas", function () {
       it("should activate arguments, and body", async function () {
         mouseDown(this.root1);
         await wait(DELAY);
-
+        // for each arg, activate and toggle editing
         for (let i = 0; i < this.args.length; i++) {
           keyDown("ArrowDown");
           await wait(DELAY);
@@ -398,7 +406,10 @@ describe("lambdas", function () {
           keyDown("Enter");
           await wait(DELAY);
         }
-
+        // activate doc string
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        // activate body
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
@@ -406,9 +417,9 @@ describe("lambdas", function () {
       });
     });
   };
-  test("lam(x): x + 3 end");
-  test("lam(x, jake): x + jake end");
-  test("lam(): 2 * 4 end");
+  test(`lam(x): doc: "" x + 3 end`);
+  test(`lam(x, jake): doc: "" x + jake end`);
+  test(`lam(): doc: "" 2 * 4 end`);
 });
 
 describe("lambdas with return annotations", function () {
@@ -427,33 +438,37 @@ describe("lambdas with return annotations", function () {
       afterEach(function () { teardown(); });
 
       it("should activate arguments, return annotation and body", async function () {
+        // activate fn name
         mouseDown(this.root1);
         await wait(DELAY);
-
+        // for each arg, activate and toggle editing
         for (let i = 0; i < this.args.length; i++) {
           keyDown("ArrowDown");
           await wait(DELAY);
           expect(this.activeNode()).not.toBe(this.root1);
           expect(this.activeNode()).toBe(this.args[i]);
           expect(this.activeNode()).not.toBe(this.body);
-
+          // toggle editing
           keyDown("Enter");
           await wait(DELAY);
           keyDown("Enter");
           await wait(DELAY);
         }
-
+        // activate return annotation
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
         expect(this.activeNode()).toBe(this.retAnn);
         expect(this.activeNode()).not.toBe(this.body);
-
+        // toggle editing on return annotation
         keyDown("Enter");
         await wait(DELAY);
         keyDown("Enter");
         await wait(DELAY);
-
+        // activate doc string
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        // activate body
         keyDown("ArrowDown");
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
@@ -462,9 +477,9 @@ describe("lambdas with return annotations", function () {
       });
     });
   };
-  test("lam(x) -> Number: x + 3 end");
-  test("lam(x, jake) -> String: x + jake end");
-  test("lam() -> Number: 2 * 4 end");
+  test(`lam(x) -> Number: doc: "" x + 3 end`);
+  test(`lam(x, jake) -> String: doc: "" x + jake end`);
+  test(`lam() -> Number: doc: "" 2 * 4 end`);
 });
 
 describe("method and function applications", function () {
