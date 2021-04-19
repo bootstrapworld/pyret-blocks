@@ -4,20 +4,12 @@ import './example-page.less';
 import dsExampleCode from './bootstrap-ds.arr';
 import { testing }  from "codemirror-blocks";
 
+// HACK: expose ALL test utilities, events, etc
+// so they can be used from the browser console
+import * as t from '../spec/support/test-utils';
+Object.assign(window, t);
 
-/// DEBUGGING STUFF
-import { wait, teardown } from '../spec/support/test-utils';
-import {
-  click,
-  keyDown,
-  _keyPress,
-  _insertText,
-} from '../spec/support/simulate';
-
-const DELAY = 250;
-
-
-const smallExampleCode = `lam(x, jake) -> String: doc: "" x + jake end`;
+const smallExampleCode = `foo.get(x).get(y)`;
 
 const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
@@ -25,7 +17,7 @@ const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 // grab the DOM Node to host the editor, and use it to instantiate
 const container = document.getElementById('cmb-editor');
 const editor = PyretCMB(container, {value: exampleCode, collapseAll: false});
-editor.setBlockMode(true);
+editor.setBlockMode(false);
 
 // Constructs the Style Selector below the Code Monitor
 const selectorBox = document.getElementById('style-selector');
@@ -33,7 +25,8 @@ const selector = new StyleSelector(selectorBox);
 selector.display();
 
 // for debugging purposes
-window.editor = editor
+window.editor = editor;
+window.cmb = editor;
 document.getElementById('testButton').onclick = runTestEvent;
 
 async function runTestEvent(){

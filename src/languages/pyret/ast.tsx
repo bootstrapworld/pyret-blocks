@@ -588,7 +588,7 @@ export class FunctionApp extends AST.ASTNode {
 
   pretty() {
     let header = P.txt(this.func + "(");
-    let values = (this.args.length != 0)? P.sepBy(this.args.map(p => p.pretty()), ", ", ",") : P.txt("");
+    let values = (this.args.length != 0)? P.sepBy(this.args.map(p => p.pretty()), ", ", "") : P.txt("");
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
       P.horz(header, values, ")"),
@@ -599,7 +599,6 @@ export class FunctionApp extends AST.ASTNode {
 
   render(props) {
 		let args = [];
-		args.push(<DropTarget />);
 		this.args.forEach((value, index) => {
 			if (this.isLibFunc){
 				args.push(<span className={`${this.argsBgcClassNames[index]} funapp-params`}>{ value.reactElement({key: index}) }</span>);
@@ -613,9 +612,9 @@ export class FunctionApp extends AST.ASTNode {
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
-					<span className="blocks-funapp">
-						<Args field="func">{[this.func]}</Args>
-					</span>
+          <span className="blocks-operator">
+            {this.func.reactElement()}
+          </span>
 
 					<span className="blocks-args">
 						{ args }
