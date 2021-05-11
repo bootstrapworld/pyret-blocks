@@ -249,14 +249,14 @@ export class Block extends AST.ASTNode {
     let statements = [];
     this.stmts.forEach((element, key) => {
       let span = <span key={key}>
-        <DropTarget/>
+        <DropTarget field="block"/>
         {NEWLINE}
         {element.reactElement()}
         {NEWLINE}
       </span>
       statements.push(span);
     });
-    statements.push(<DropTarget key={this.stmts.length} />);
+    statements.push(<DropTarget field="block" key={this.stmts.length} />);
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
@@ -337,7 +337,7 @@ export class Var extends AST.ASTNode {
       <Node node={this} {...props}>
         <span className="blocks-var">VAR</span>
         <span className="blocks-args">
-          <Args>{[this.ident, this.rhs]}</Args>
+          <Args field="var">{[this.ident, this.rhs]}</Args>
         </span>
       </Node>
     );
@@ -753,7 +753,7 @@ export class LoadTable extends AST.ASTNode {
           load-table
         </span>
         <span className="blocks-args">
-          <Args>{this.columns}</Args>
+          <Args field="loadtable">{this.columns}</Args>
         </span>
         {this.sources.map((e, i) => e.reactElement({key: i}))}
     </Node>
@@ -824,14 +824,14 @@ export class IfPipe extends AST.ASTNode {
     let branches = [];
     this.branches.forEach((element, index) => {
       let span = <span key={index}>
-        <DropTarget />
+        <DropTarget field="ifpipe" />
         {NEWLINE}
         {element.reactElement()}
         {NEWLINE}
       </span>;
       branches.push(span);
     });
-    branches.push(<DropTarget key={this.branches.length} />);
+    branches.push(<DropTarget field="ifpipe" key={this.branches.length} />);
 
     return (
       <Node node={this} {...props}>
@@ -1026,10 +1026,10 @@ export class SpecialImport extends AST.ASTNode {
     return (
       <Node node={this} {...props}>
         <span className="blocks-special-import">
-          <Args>{[this.func]}</Args>
+          <Args field="func">{[this.func]}</Args>
         </span>
         <span className="blocks-args">
-          <Args>{this.args}</Args>
+          <Args field="args">{this.args}</Args>
         </span>
     </Node>
     );
@@ -1211,14 +1211,14 @@ export class IfExpression extends AST.ASTNode {
     let branches = [];
     this.branches.forEach((element, index) => {
       let span = <span key={index}>
-        <DropTarget />
+        <DropTarget field="ifexpression" />
         {NEWLINE}
         {(element as any).reactElement()}
         {NEWLINE}
       </span>;
       branches.push(span);
     });
-    branches.push(<DropTarget key={this.branches.length} />);
+    branches.push(<DropTarget field="ifexpression" key={this.branches.length} />);
 
     return (
       <Node node={this} {...props}>
@@ -1263,14 +1263,14 @@ export class IfElseExpression extends AST.ASTNode {
     let branches = [];
     this.branches.forEach((element, index) => {
       let span = <span key={index}>
-        <DropTarget />
+        <DropTarget field="ifelseexpression" />
         {NEWLINE}
         {(element as any).reactElement()}
         {NEWLINE}
       </span>;
       branches.push(span);
     });
-    branches.push(<DropTarget key={this.branches.length} />);
+    branches.push(<DropTarget field="ifelseexpression" key={this.branches.length} />);
 
     return (
       <Node node={this} {...props}>
@@ -1335,7 +1335,7 @@ export class For extends AST.ASTNode {
   render(props) {
     let name = this.iterator.reactElement();
     let body = this.body.reactElement();
-    let args = <Args>{this.bindings}</Args>;
+    let args = <Args field="for">{this.bindings}</Args>;
     let header_ending = <span>
       {(this.ann != null)? <>&nbsp;-&gt&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;

@@ -847,6 +847,7 @@ describe("if statements", function () {
         expect(this.activeNode()).toBe(this.branches[0]);
       });
 
+        /* DEBUG
       it('should activate each branch', async function() {
         for(let i = 0; i < this.branches.length - 1; i ++) {
           mouseDown(this.branches[i].body.stmts[0]);
@@ -857,7 +858,9 @@ describe("if statements", function () {
           expect(this.activeNode()).toBe(this.branches[i + 1]);
         }
       });
+      */
 
+        /* DEBUG
       it('should activate the else branch if it exists', async function() {
         if (this.else_branch != undefined) {
           let length = this.branches.length;
@@ -869,6 +872,7 @@ describe("if statements", function () {
           expect(this.activeNode()).toBe(this.else_branch);
         }
       });
+      */
     });
   };
 
@@ -918,7 +922,7 @@ describe('parentheses', function() {
   it('should move to inside of parens', async function () {
     mouseDown(this.root1);
     await wait(DELAY);
-    
+
     keyDown("ArrowDown");
     await wait(DELAY);
     expect(this.activeNode()).toBe(this.outside_op);

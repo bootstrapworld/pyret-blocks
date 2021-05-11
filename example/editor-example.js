@@ -19,7 +19,7 @@ const DELAY = 250;
 
 const smallExampleCode = ``;
 
-const useBigCode = true;
+const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
