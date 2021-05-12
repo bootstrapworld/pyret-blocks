@@ -17,7 +17,7 @@ import {
 const DELAY = 250;
 
 
-const smallExampleCode = ``;
+const smallExampleCode = `var msg = "Hello World"`;
 
 const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;

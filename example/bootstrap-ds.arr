@@ -21,8 +21,6 @@ reactor:
   init: 10,
 end
 
-#|
-
 
 data Posn:
   | posn(x :: Number, y :: Number) 
@@ -51,6 +49,10 @@ end
 
 
 can-drive = sieve my-table using age:
+  age >= 16
+end
+
+sieve my-table using age, name:
   age >= 16
 end
 
@@ -149,6 +151,7 @@ z = x + 1
 
 fun add(n): n end
 
+#|
 a = string-length("b")
 a = string-length(5)
 a = string-length("b", "c")
@@ -156,7 +159,7 @@ a = sqr(3)
 a = sqr()
 a = customfunc()
 a = customfunc("A", "b")
-
+|#
 
 batting-avg-and-slugging = extend batting
   using at-bats, singles, doubles, triples, home-runs:
@@ -469,7 +472,6 @@ fun add(n :: Number, s :: String) -> Number:
 end
 
 
-
 fun test(n :: Number) -> Number: doc: "Phil when Wilbur says that he gets sand from fish tanks: YOU NEED TO STOP Phil when Wilbur says that he gets it from crematoriums: bruhh" n end
 
 x = for map(elem from range(0, 3)):
@@ -517,7 +519,9 @@ a = ask:
 | otherwise: 1
 end
 
-f = lam(x): x + 1 end\nx = 1\na = x + 1\n 
+f = lam(x): x + 1 end
+x = 1
+a = x + 1
 
 ask: | x == 3 then: 3| x == 5 then: 5 end
 
@@ -552,6 +556,7 @@ when x > 1:
   y
 end
 
+
 check "test message": 
   3 is 3
   foo-bar-baz() is 12345
@@ -580,7 +585,7 @@ if x > 5:
 else:
   x
 end
-
+#|
 |#
 
 

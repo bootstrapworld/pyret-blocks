@@ -98,6 +98,9 @@ function endOf(srcloc: { endRow: number; endCol: number; }) {
 // getBackgroundColor():: Bind, Expr -> VOID
 // Function used to assign the color type of each block in Block Pyret
 
+
+// Finds the corresponding information of the function name given:
+// finds its argument type and return type
 function getLibraryFunctionInfo(name){
 	let results = null;
 	PRIMITIVES_CONFIG.primitives.forEach(element => {
@@ -108,6 +111,7 @@ function getLibraryFunctionInfo(name){
 	return results;
 }
 
+// Finds the argument types for the function given 
 function getLibraryFunctionArgTypes(name){
 	let availableTypes = ["number", "string", "boolean"];
 	let results = getLibraryFunctionInfo(name);
@@ -687,18 +691,19 @@ const nodeTypes = {
 		let bgcClassName = getReturnType(fun.value.value);
 		let argsBgcClassNames = getLibraryFunctionArgTypes(fun.value.value);
 
-		if (argsBgcClassNames){
+    // If args is empty or does not exist
+    if (argsBgcClassNames){
 			let lengthDifference = args.length - argsBgcClassNames.length;
-
-			argsBgcClassNames = argsBgcClassNames.map((value, index) => 
-				(args[index] && value == args[index].dataType) ? value : `${args[index].dataType} error`);
-				
-			for (let i = argsBgcClassNames.length; i < args.length; i++) {
-				argsBgcClassNames.push(`${args[i].dataType} error`);
-			}
-      
+ 
       if ((args.length == 0) && (argsBgcClassNames.length != 0)) {
         bgcClassName += " error";
+      } else {   
+        argsBgcClassNames = argsBgcClassNames.map((value, index) => 
+          (args[index] && value == args[index].dataType) ? value : `${args[index].dataType} error`);
+          
+        for (let i = argsBgcClassNames.length; i < args.length; i++) {
+          argsBgcClassNames.push(`${args[i].dataType} error`);
+        }
       }
     }
     

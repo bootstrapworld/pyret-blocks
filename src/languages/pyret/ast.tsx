@@ -443,12 +443,19 @@ export class Var extends AST.ASTNode {
 
   render(props) {
     return (
+      // <Node node={this} {...props}>
+      //   <span className="blocks-var">VAR</span>
+      //   <span className="blocks-args">
+      //     <Args field="var">{[this.ident, this.rhs]}</Args>
+      //   </span>
+      // </Node>
+      <span className={this.bgcClassName}>
       <Node node={this} {...props}>
-        <span className="blocks-var">VAR</span>
-        <span className="blocks-args">
-          <Args field="var">{[this.ident, this.rhs]}</Args>
+        <span className={"blocks-var"}>
+          VAR &nbsp;{this.ident.reactElement()} &nbsp;=&nbsp;{this.rhs.reactElement()}
         </span>
       </Node>
+    </span>
     );
   }
 }
