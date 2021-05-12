@@ -357,11 +357,7 @@ export class Block extends AST.ASTNode {
       </span>
       statements.push(span);
     });
-    statements.push(<span className="block-last-drop-target">
-        <DropTarget field="stmts" key={this.stmts.length}>
-          {NEWLINE}{NEWLINE}
-        </DropTarget>
-      </span>);
+    statements.push(<DropTarget field="stmts" key={this.stmts.length}/>);
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
