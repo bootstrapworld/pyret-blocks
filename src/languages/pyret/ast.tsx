@@ -350,14 +350,18 @@ export class Block extends AST.ASTNode {
     let statements = [];
     this.stmts.forEach((element, key) => {
       let span = <span key={key}>
-        <DropTarget field="block"/>
+        <DropTarget field="stmts"/>
         {NEWLINE}
         {element.reactElement()}
         {NEWLINE}
       </span>
       statements.push(span);
     });
-    statements.push(<DropTarget field="block" key={this.stmts.length} />);
+    statements.push(<span className="block-last-drop-target">
+        <DropTarget field="stmts" key={this.stmts.length}>
+          {NEWLINE}{NEWLINE}
+        </DropTarget>
+      </span>);
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
