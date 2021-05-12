@@ -7,7 +7,7 @@ import {
   click, mouseDown, mouseenter, mouseover, mouseleave, doubleClick, blur, 
   paste, cut, copy, dragstart, dragover, drop, dragenter, dragenterSeq, 
   dragend, dragleave, keyDown, keyPress, insertText
-} from '../spec/support/test-utils';
+} from '../../support/test-utils';
 
 // be sure to call with `apply` or `call`
 let setup = function () { activationSetup.call(this, pyret); };

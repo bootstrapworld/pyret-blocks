@@ -231,7 +231,7 @@ export class Func extends AST.ASTNode {
             doc: {doc}
           </div>
 				</span>
-        <span className="blocks-func-body-hover" onDragOver={getDragEvent(this, 'blocks-func-body-hover')}>
+        <span className="blocks-func-body-hover">
           <span className="blocks-func-body" >
             {body}
           </span>
@@ -266,8 +266,6 @@ export class Lambda extends AST.ASTNode {
     Spec.value('doc'),
     Spec.required('body'),
     Spec.value('block')
-    // Spec.value('onDragOver'),
-    // Spec.value('onDragEnd')
   ])
 
   longDescription(level) {
@@ -311,7 +309,7 @@ export class Lambda extends AST.ASTNode {
           doc: {doc}
           </div>
         </span>
-        <span className="blocks-lambda-body" onDragOver={getDragEvent(this, 'blocks-lambda-body')}>
+        <span className="blocks-lambda-body">
           {body}
         </span>
         <span className="blocks-lambda-footer" id="blocks-style-footer">
@@ -357,11 +355,15 @@ export class Block extends AST.ASTNode {
       </span>
       statements.push(span);
     });
-    statements.push(<DropTarget field="stmts" key={this.stmts.length}/>);
+    const isEmpty = this.stmts.length == 0;
+    const className = isEmpty ? "blocks-arguments-empty" : "blocks-arguments";
+    statements.push(<span key={this.stmts.length}>
+        <DropTarget field="stmts"/>
+      </span>);
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
-        <span className="blocks-arguments">
+        <span className={className} onDragOver={getDragEvent(this, className)}>
           {statements}
         </span>
       </Node>
