@@ -222,7 +222,6 @@ export class Func extends AST.ASTNode {
     </span>;
     const NEWLINE = <br />;
     let docClass = this.doc.value == "" ? "blocks-empty-doc-string" : "blocks-doc-string";
-    console.log("doc:", this.doc);
     return (
       <Node node={this} {...props}>
 				<span className="blocks-func">

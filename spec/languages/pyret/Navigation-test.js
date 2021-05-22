@@ -1,4 +1,4 @@
-import pyret from '../../../src/languages/pyret';
+import { Pyret } from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 
 /*eslint no-unused-vars: "off"*/
@@ -10,7 +10,7 @@ import {
 } from '../../support/test-utils';
 
 // be sure to call with `apply` or `call`
-let setup = function () { activationSetup.call(this, pyret); };
+let setup = function () { activationSetup.call(this, Pyret); };
 
 /** //////////////////////////////////////////////////////////
  * Specific navigation tests for programs that use BSDS constructs below
@@ -253,7 +253,7 @@ describe("functions", function () {
 
       afterEach(function () { teardown(); });
 
-      it("should activate function name, arguments, and body", async function () {
+      it("should activate function name, arguments, docsting, and body", async function () {
         mouseDown(this.root1);
         await wait(DELAY);
         // activate fn name
@@ -314,7 +314,7 @@ describe("functions with return annotations", function () {
 
       afterEach(function () { teardown(); });
 
-      it("should activate function name, arguments, return annotation and body", async function () {
+      it("should activate function name, arguments, return annotation, docstring and body", async function () {
         mouseDown(this.root1);
         await wait(DELAY);
         // activate fn name
@@ -322,6 +322,13 @@ describe("functions with return annotations", function () {
         await wait(DELAY);
         expect(this.activeNode()).not.toBe(this.root1);
         expect(this.activeNode()).toBe(this.fun_name);
+        expect(this.activeNode()).not.toBe(this.body);
+        // activate docstring
+        keyDown("ArrowDown");
+        await wait(DELAY);
+        expect(this.activeNode()).not.toBe(this.root1);
+        expect(this.activeNode()).not.toBe(this.fun_name);
+        expect(this.activeNode()).toBe(this.doc);
         expect(this.activeNode()).not.toBe(this.body);
         // toggle editing on fn name
         keyDown("Enter");
