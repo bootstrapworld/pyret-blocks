@@ -395,6 +395,7 @@ describe("lambdas", function () {
         let ast = this.cmb.getAst();
         this.root1 = ast.rootNodes[0];
         this.args = this.root1.args;
+        this.doc = this.root1.doc;
         this.body = this.root1.body;
       });
 
@@ -419,6 +420,9 @@ describe("lambdas", function () {
         // activate doc string
         keyDown("ArrowDown");
         await wait(DELAY);
+        expect(this.activeNode()).not.toBe(this.root1);
+        expect(this.activeNode()).toBe(this.doc);
+        expect(this.activeNode()).not.toBe(this.body);
         // activate body
         keyDown("ArrowDown");
         await wait(DELAY);
