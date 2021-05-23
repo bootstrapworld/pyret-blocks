@@ -243,6 +243,7 @@ export class Func extends AST.ASTNode {
   }
 }
 export class Lambda extends AST.ASTNode {
+  
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   doc: AST.ASTNode;
@@ -262,7 +263,7 @@ export class Lambda extends AST.ASTNode {
   static spec = Spec.nodeSpec([
     Spec.list('args'),
     Spec.optional('retAnn'),
-    Spec.value('doc'),
+    Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block')
   ])

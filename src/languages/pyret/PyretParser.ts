@@ -622,6 +622,8 @@ const nodeTypes = {
     }
 
     console.log("----------- Lambda ------------");
+    console.log(l.from.line);
+    console.log(func_body_ch);
     console.log(fun_from, fun_to);
     console.log(docText);
     console.log(doc_from);
