@@ -345,6 +345,7 @@ export class Block extends AST.ASTNode {
   render(props) {
     const NEWLINE = <br />;
     let statements = [];
+    
     this.stmts.forEach((element, key) => {
       let span = <span key={key}>
         <DropTarget field="stmts"/>

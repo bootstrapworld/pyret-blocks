@@ -309,6 +309,7 @@ describe("functions with return annotations", function () {
         this.fun_name = this.root1.name;
         this.args = this.root1.args;
         this.retAnn = this.root1.retAnn;
+        this.doc = this.root1.doc;
         this.body = this.root1.body;
       });
 
@@ -323,13 +324,13 @@ describe("functions with return annotations", function () {
         expect(this.activeNode()).not.toBe(this.root1);
         expect(this.activeNode()).toBe(this.fun_name);
         expect(this.activeNode()).not.toBe(this.body);
-        // activate docstring
-        keyDown("ArrowDown");
-        await wait(DELAY);
-        expect(this.activeNode()).not.toBe(this.root1);
-        expect(this.activeNode()).not.toBe(this.fun_name);
-        expect(this.activeNode()).toBe(this.doc);
-        expect(this.activeNode()).not.toBe(this.body);
+        // // activate docstring
+        // keyDown("ArrowDown");
+        // await wait(DELAY);
+        // expect(this.activeNode()).not.toBe(this.root1);
+        // expect(this.activeNode()).not.toBe(this.fun_name);
+        // expect(this.activeNode()).toBe(this.doc);
+        // expect(this.activeNode()).not.toBe(this.body);
         // toggle editing on fn name
         keyDown("Enter");
         await wait(DELAY);
@@ -366,6 +367,10 @@ describe("functions with return annotations", function () {
         // activate doc string
         keyDown("ArrowDown");
         await wait(DELAY);
+        expect(this.activeNode()).not.toBe(this.root1);
+        expect(this.activeNode()).not.toBe(this.fun_name);
+        expect(this.activeNode()).toBe(this.doc);
+        expect(this.activeNode()).not.toBe(this.body);
         // activate body
         keyDown("ArrowDown");
         await wait(DELAY);
@@ -376,9 +381,9 @@ describe("functions with return annotations", function () {
       });
     });
   };
-  test(`fun f(x) -> Number: doc: "" x + 3 end`);
-  test(`fun f(x, jake) -> String: doc: "" x + jake end`);
-  test(`fun g() -> Number: doc: "" 2 * 4 end`);
+  test(`fun f(x) -> Number: doc: "A" x + 3 end`);
+  test(`fun f(x, jake) -> String: doc: "A" x + jake end`);
+  test(`fun g() -> Number: doc: "A" 2 * 4 end`);
 });
 
 describe("lambdas", function () {

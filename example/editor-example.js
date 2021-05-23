@@ -17,7 +17,18 @@ import {
 const DELAY = 250;
 
 
-const smallExampleCode = `var msg = "Hello World"`;
+
+const code = `var msg = "Hello World"
+lam(str :: String) -> String:
+  doc: "ABC"
+  y = str + "A"
+  y
+end
+
+x = y + 1
+
+`;
+const smallExampleCode = code;
 
 const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
