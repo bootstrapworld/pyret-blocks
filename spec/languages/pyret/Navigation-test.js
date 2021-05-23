@@ -1,4 +1,4 @@
-import { Pyret } from '../../../src/languages/pyret';
+import Pyret from '../../../src/languages/pyret/index';
 import 'codemirror/addon/search/searchcursor.js';
 
 /*eslint no-unused-vars: "off"*/
