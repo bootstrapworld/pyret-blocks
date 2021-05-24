@@ -314,8 +314,8 @@
   }
 
   /* Returning Literals in Functions/etc. */
-  .blocks-block > span > span > .blocks-literal,
-  .blocks-block > span > span > span > .blocks-funApp {
+  .blocks-block > span  > .blocks-literal,
+  .blocks-block > span  > span > .blocks-funApp {
     clip-path: @shiftin-shiftout-path !important;
     background-color:  @untyped-color;
     border-radius: 0px;
@@ -391,7 +391,7 @@
 
   // Drop/hover functionality: hide drop targets when not dropping or hovering over it
   .on-target-hover(){
-    display: inherit !important;
+    display: block !important;
     background-color: white;
   }
 
@@ -417,10 +417,6 @@
   .blocks-reactor-body,
   .blocks-arguments,
   .blocks-arguments-empty {
-    //Prevent default displaying
-    .blocks-block > span > span {
-      display: block;
-    }
     > span {
       display: block;
     }
@@ -447,19 +443,18 @@
   .blocks-table-extend-body > .blocks-drop-target,
   .blocks-load-table-body > .blocks-drop-target,
   .blocks-reactor-body > .blocks-drop-target,
-  .blocks-arguments > span >.blocks-drop-target,
-  .blocks-arguments-empty > span > .blocks-drop-target {
+  .blocks-arguments >.blocks-drop-target,
+  .blocks-arguments-empty > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
   .blocks-table-order-body:hover > .blocks-drop-target,
-  .blocks-hover > span > .blocks-drop-target,
   .blocks-hover > .blocks-drop-target,
   .blocks-table-extend-body:hover > .blocks-drop-target,
   .blocks-load-table-body:hover > .blocks-drop-target,
   .blocks-cond-row:hover > .blocks-drop-target,
   .blocks-reactor-body:hover > .blocks-drop-target,
-  .blocks-arguments:hover > span > .blocks-drop-target {
+  .blocks-arguments:hover > .blocks-drop-target {
     .on-target-hover();
   }
   //Correction for doc strings

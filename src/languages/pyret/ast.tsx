@@ -344,28 +344,12 @@ export class Block extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />;
-    let statements = [];
-    
-    this.stmts.forEach((element, key) => {
-      let span = <span key={key}>
-        <DropTarget field="stmts"/>
-        {NEWLINE}
-        {element.reactElement()}
-        {NEWLINE}
-      </span>
-      statements.push(span);
-    });
-    const isEmpty = this.stmts.length == 0;
-    const className = isEmpty ? "blocks-arguments-empty" : "blocks-arguments";
-    statements.push(<span key={this.stmts.length}>
-        <DropTarget field="stmts"/>
-      </span>);
+    const className = (this.stmts.length == 0) ? "blocks-arguments-empty" : "blocks-arguments";
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
         <span className={className} onDragOver={getDragEvent(this, className)}>
-          {statements}
+          <Args field="stmts">{this.stmts}</Args>
         </span>
       </Node>
     )
@@ -446,12 +430,6 @@ export class Var extends AST.ASTNode {
 
   render(props) {
     return (
-      // <Node node={this} {...props}>
-      //   <span className="blocks-var">VAR</span>
-      //   <span className="blocks-args">
-      //     <Args field="var">{[this.ident, this.rhs]}</Args>
-      //   </span>
-      // </Node>
       <span className={this.bgcClassName}>
       <Node node={this} {...props}>
         <span className={"blocks-var"}>
@@ -539,12 +517,6 @@ export class Construct extends AST.ASTNode {
   render(props) {
     let construktor = this.construktor.reactElement();
     let values = <Args field="values">{this.values}</Args>;
-			// <span className="constructor">
-			//   <Node node={this} {...props}>
-			//     <span className={`blocks-construct ${this.bgcClassName}`}>{construktor}</span>
-			//     {values}
-			//   </Node>
-			// </span>
     return (
 			<span className={this.bgcClassName}>
 				<Node node={this} {...props}>
@@ -621,7 +593,6 @@ export class FunctionApp extends AST.ASTNode {
           <span className="blocks-operator">
             {this.func.reactElement()}
           </span>
-
 					<span className="blocks-args">
 						{ args }
 					</span>
