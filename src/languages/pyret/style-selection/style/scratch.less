@@ -268,8 +268,11 @@
   // Pathes for the Template
   @w-scale: 1;
   @height-setoff: 8px;
+  @width-offset: 10px;
 
-  @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @insert-output-path: polygon(0% 0%, @w-scale*12px  0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @droptarget-insert-output-path: polygon(0% 0%, (@w-scale*12px + @width-offset) 0%, (@w-scale*24px + @width-offset) @height-setoff, (@w-scale*36px + @width-offset) @height-setoff, (@w-scale*48px + @width-offset) 0%, 100% 0%, 100% calc(100% - @height-setoff), 
+    (@w-scale*48px + @width-offset) calc(100% - @height-setoff), (@w-scale*36px + @width-offset) 100%, (@w-scale*24px + @width-offset) 100%, (@w-scale*12px + @width-offset) calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @only-output-path: polygon(0% 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @only-input-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
   @start-finish-path: polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
@@ -389,17 +392,16 @@
   // Drop/hover functionality: hide drop targets when not dropping or hovering over it
   .on-target-hover(){
     display: inherit !important;
-    margin: 10px;
     background-color: white;
   }
 
   .target-jigsaw(){
-    clip-path: @insert-output-path;
+    clip-path: @droptarget-insert-output-path;
     min-height: 40px;
     min-width: 100px;
     margin-bottom: -7px !important;
     margin-top: 0px !important;
-    //margin-left: 10px;
+    margin-left: 0px;
     flex-direction: column;
   }
 
