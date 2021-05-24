@@ -420,7 +420,6 @@
     > span {
       display: block;
     }
-    
     .blocks-drop-target{
       display: none;
     }
@@ -431,13 +430,9 @@
       margin-right: 5px !important;
       clip-path: none !important;
     }
-    br {
-      display: none;
-    }
   }
 
   .blocks-table-order-body > .blocks-drop-target,
-  .blocks-cond-table > span > .blocks-drop-target,
   .blocks-cond-table > .blocks-drop-target,
   .blocks-cond-row > .blocks-drop-target,
   .blocks-table-extend-body > .blocks-drop-target,
@@ -502,8 +497,8 @@
     }
   }
 
-  .blocks-block > span > span > .blocks-binop,
-  .blocks-block > span > span > span > .blocks-binop,
+  .blocks-arguments > .blocks-binop,
+  .blocks-arguments > span > .blocks-binop,
   .blocks-table-filter-body > span > .blocks-binop {
     clip-path: @shiftin-shiftout-path !important;
     border-radius: 0px;
@@ -864,34 +859,7 @@
     left: 0;
     height: calc(100% - @height-setoff);
     width: @body-left-width;
-    // margin-left: 10px;
   }
-
-  // .blocks-if-Expression:before,
-  // .blocks-if-else-Expression:before,
-  // .blocks-ifPipeExpression:before,
-  // .blocks-ifPipeElseExpression:before {
-  //   content: "";
-  //   background:  @checkTest-background;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-right-width;
-  // }
-
-  // .blocks-if-Expression:before,
-  // .blocks-if-else-Expression:before,
-  // .blocks-ifPipeExpression:before,
-  // .blocks-ifPipeElseExpression:before {
-  //   content: "";
-  //   background: @untyped-color;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-left-width;
-  // }
 
   // -------------------------------------------------
   // Ask Expression:
@@ -899,11 +867,7 @@
   //.blocks-ifPipeExpression and .blocks-ifPipeElseExpression referenced above ^ already
   .blocks-ask {
     background-color: @untyped-color;
-    // border-radius: 8px;
-    // border-bottom-left-radius: 0px;
     clip-path: @input-shiftout-path;
-    // clip-path: @insert-output-path;
-    // clip-path: @start-finish-path;
     padding: 1rem;
     margin-bottom: -7px;
 		text-align: left;
@@ -921,7 +885,6 @@
     padding-bottom: 10px;
     color: white;
     clip-path: @shiftin-output-path;
-    // clip-path: @insert-output-path;
     text-align: left;
   }
 
@@ -930,21 +893,18 @@
     background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
+    margin-bottom: -7px;
     color: white;
-    // clip-path: @shiftin-output-path;
     clip-path: @shiftin-shiftout-path;
     text-align: left;
   }
   // -------------------------------------------------
-  // When Expression:
-  // polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  //When Expression
   @when-path: polygon(0% @height-setoff*1.5, @w-scale*16px 0.5*@height-setoff, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 0.5*@height-setoff, @w-scale*64px @height-setoff*1.5, 100% @height-setoff*1.5, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @when-sidebar-path: polygon(0% 1.5*@height-setoff, @sidebar-width 1.5*@height-setoff, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
   .blocks-when{
-    background-color: @untyped-color; // @checkTest-background;
+    background-color: @untyped-color; 
     clip-path: @input-shiftout-path;
-    // clip-path: @insert-output-path;
-   //  clip-path: @when-path;
   }
 
   .blocks-when-header {
@@ -953,17 +913,14 @@
   }
 
   .blocks-when-footer{
-    background-color: @untyped-color;// @checkTest-background;
+    background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
     clip-path: @shiftin-output-path;
-    // clip-path: @insert-output-path;
   }
 
   .blocks-s-when{
-    // border-left: @sidebar-width solid @checkTest-background;
-    // clip-path: @when-sidebar-path;
     background-color: transparent;
     position: relative;
     text-align: left;
@@ -979,15 +936,6 @@
     width: @body-left-width;
   }
 
-  // .blocks-s-when:before {
-  //   content: "";
-  //   background:  @checkTest-background;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-left-width;
-  // }
   /* xx Conditional Expressions xx */
   // ---------------------------------------------------------------------------------------------------------
   /*    Constructor    */

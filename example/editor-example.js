@@ -27,6 +27,22 @@ end
 
 x = y + 1
 
+ask:
+  | x == 9 then: 1
+  | otherwise: 2
+end
+
+ask:
+  | x == 9 then: 5
+end
+if x == 10:
+  x = 10
+else:
+  t = 9
+end
+if x > 0:
+
+end
 `;
 const smallExampleCode = code;
 

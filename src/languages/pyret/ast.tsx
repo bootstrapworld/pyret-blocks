@@ -886,20 +886,6 @@ export class LoadTable extends AST.ASTNode {
   }
 
   render(props) {
-
-		let sources = [];
-		sources.push(<DropTarget />);
-		this.sources.forEach((e, index) => {
-			sources.push(e.reactElement({key: index}))
-			sources.push(<DropTarget />);
-		});
-
-		let columns = [];
-		columns.push(<DropTarget />);
-		this.columns.forEach((e, index) => {
-			columns.push(e.reactElement({key: index}))
-			columns.push(<DropTarget />);
-    });
     
     // Note that source and sanitize cannot be rendered outside of the loadTable
     // therefore "inserting blocks" into loadtable is not possible
@@ -909,11 +895,11 @@ export class LoadTable extends AST.ASTNode {
         <span className="blocks-load-table">
           load-table
           <span className="blocks-args">
-            {columns}
+            <Args field="columns">{this.columns}</Args>
           </span>
         </span>
         <span className="blocks-load-table-body" onDragOver={getDragEvent(this, 'blocks-load-table-body')}>
-          {sources} 
+          <Args field="sources">{this.sources}</Args>
         </span>
         <span className="blocks-load-table-footer">
           end
@@ -1047,26 +1033,13 @@ export class IfPipe extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-        <DropTarget field="ifpipe" />
-        {NEWLINE}
-        {(element as any).reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget field="ifpipe" key={this.branches.length} />);
-
     return (
       <Node node={this} {...props}>
         <span className="blocks-ask">
           ask:
         </span>
         <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
-          {branches}
+          <Args field="branches">{this.branches}</Args>
         </div>
         <span className="blocks-ask-footer" id="blocks-style-footer">
           end
@@ -1170,7 +1143,6 @@ export class IfPipeElseExpression extends AST.ASTNode {
   pretty() {
     let prefix = "ask:";
     let suffix = "end";
-    // let mainlength = this.branches.length;
     let branches = P.sepBy(this.branches, "", "");
     let otherwise_branch = "| otherwise: "+this.otherwise_branch;
     return P.ifFlat(
@@ -1181,33 +1153,18 @@ export class IfPipeElseExpression extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-        <DropTarget />
-        {NEWLINE}
-        {(element as any).reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget key={this.branches.length} />);
-
     return (
       <Node node={this} {...props}>
         <span className="blocks-ask">
           ask:
         </span>
         <div className="blocks-cond-table">
-          {branches}
-          {NEWLINE}
+          <Args field="branches">{this.branches}</Args>
 				</div>
 				<span className="blocks-otherwise">
 					otherwise:
 				</span>
 				<div className="blocks-cond-table">
-					{NEWLINE}
 					{(this.otherwise_branch as any).reactElement()}
         </div>
         <span className="blocks-ask-footer" id="blocks-style-footer">
@@ -1354,20 +1311,13 @@ export class Data extends AST.ASTNode {
   }
 
   render(props) {
-		const NEWLINE = <br />;
-		let variants = [];
-		this.variants.forEach((value, index) => {
-      variants.push(<DropTarget/>);
-      variants.push(NEWLINE);
-			variants.push(value.reactElement({key: index}));
-			variants.push(NEWLINE);
-		});
-
 		return <Node node={this} {...props}>
 			<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.value}:</span></b></span>
-				<span className="blocks-cond-row" onDragOver={getDragEvent(this, 'blocks-cond-row')}>{variants}<DropTarget/></span>
+				<span className="blocks-cond-row" onDragOver={getDragEvent(this, 'blocks-cond-row')}>
+          <Args field="variants">{this.variants}</Args>
+        </span>
 				<span className="blocks-data-type-footer">end</span>
-	</Node>
+    </Node>
   }
 }
 
@@ -1505,28 +1455,17 @@ export class Reactor extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />;
-		let branches = [];
-		this.fields.forEach((branch, index) => {
-      branches.push(<DropTarget />);
-      branches.push(NEWLINE);
-			branches.push(branch.reactElement({key: index}));
-      branches.push(NEWLINE);
-		});
     return (
 			<Node node={this} {...props}>
-				{/* <div className="blocks-reactor"> */}
 					<span className="blocks-reactor-header">
 						reactor:
 					</span>
 					<span className="blocks-reactor-body" onDragOver={getDragEvent(this, 'blocks-reactor-body')}>
-						{branches}
-            <DropTarget />
+						<Args field="fields">{this.fields}</Args>
 					</span>
 					<span className="blocks-reactor-footer">
 						end
 					</span>
-				{/* </div> */}
 			</Node>
     );
   }
@@ -2132,14 +2071,13 @@ export class IfExpression extends AST.ASTNode {
       branches.push(span);
     });
     branches.push(<DropTarget key={this.branches.length} />);
-    let dragOver = getDragEvent(this, 'blocks-cond-table');
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
           if:
         </span>
-        <div className="blocks-cond-table" onDragOver={dragOver}>
-          {branches}
+        <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
+          <Args field="branches">{this.branches}</Args>
         </div>
         <span className="blocks-if-footer" id="blocks-style-footer">
           end
@@ -2193,14 +2131,12 @@ export class IfElseExpression extends AST.ASTNode {
           if:
         </span>
         <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
-					{branches}
-          {NEWLINE}
+					<Args field="branches">{this.branches}</Args>
 				</div>
 				<span className="blocks-else">
 					else:
 				</span>
 				<div className="blocks-cond-table blocks-cond-table-else" onDragOver={getDragEvent(this, 'blocks-cond-table-else')}>
-					{NEWLINE}
           {(this.else_branch as any).reactElement()}
         </div>
         <span className="blocks-if-footer" id="blocks-style-footer">
