@@ -1,4 +1,4 @@
-import pyret from '../../../src/languages/pyret/index';
+import pyret from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 
 /*eslint no-unused-vars: "off"*/
@@ -10,7 +10,7 @@ import {
 } from '../../support/test-utils';
 
 // be sure to call with `apply` or `call`
-let setup = function () { activationSetup.apply(this, [pyret]); };
+let setup = function () { activationSetup.call(this, pyret); };
 
 /** //////////////////////////////////////////////////////////
  * Specific navigation tests for programs that use BSDS constructs below
