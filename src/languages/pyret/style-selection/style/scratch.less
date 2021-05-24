@@ -199,7 +199,9 @@
   }
 
   .blocks-if-else-Expression,
-  .blocks-if-Expression {
+  .blocks-if-Expression,
+  .blocks-ifPipeElseExpression,
+  .blocks-ifPipeExpression {
     border-radius: 0px;
     background: white;
     > .blocks-if {
@@ -208,7 +210,6 @@
     > .blocks-cond-table {
       display: table;
       padding: 2px;
-      margin: 1px;
       .blocks-cond-drop-row {
         display: table-row;
         .blocks-white-space, .quarantine { min-width: 100%; margin: 0px; height: 5px; transition: height .5s; }
@@ -222,7 +223,7 @@
         &:focus {
           outline: @editing-border-color @border-width solid;
         }
-        .blocks-cond-row {
+        .blocks-cond-result {
           border: 1px solid black;
           text-align: left;
           display: table-row;
@@ -235,7 +236,6 @@
             }
           }
           .blocks-cond-predicate {float: left; }
-          .blocks-cond-result {float: right; }
         }
         .blocks-cond-row:first-child {
           border-top: 0px;
@@ -314,8 +314,8 @@
   }
 
   /* Returning Literals in Functions/etc. */
-  .blocks-block > span  > .blocks-literal,
-  .blocks-block > span  > span > .blocks-funApp {
+  .blocks-arguments > .blocks-literal,
+  .blocks-arguments > span > .blocks-funApp {
     clip-path: @shiftin-shiftout-path !important;
     background-color:  @untyped-color;
     border-radius: 0px;
@@ -352,15 +352,15 @@
     }
   }
 
-  .blocks-block > span > span > .blocks-literal::before,
-  .blocks-block > span > span > span > .blocks-funApp::before {
+  .blocks-block > span > .blocks-literal::before,
+  .blocks-block > span > span > .blocks-funApp::before {
     content: "↳ ";
     font-size: 25px;
     margin-left: @w-scale*-30px;
     height: 0px;
   }
 
-  .blocks-block > span > span > span > .blocks-constructor {
+  .blocks-block > span > span > .blocks-constructor {
     clip-path: @shiftin-shiftout-path !important;
     margin-bottom: -7px;
 
@@ -420,7 +420,7 @@
     > span {
       display: block;
     }
-    .blocks-drop-target{
+    > .blocks-drop-target{
       display: none;
     }
     .blocks-args > .blocks-drop-target{
@@ -771,7 +771,8 @@
   /*   Conditional Expressions   */
   // -------------------------------------------------
   // If and If Else Expressions:
-	.blocks-if{
+	.blocks-if,
+  .blocks-else{
 		background-color: @untyped-color;
     border-bottom-left-radius: 0px;
     clip-path: @input-shiftout-path;
@@ -812,11 +813,6 @@
     overflow: visible;
 
     .blocks-cond-table {
-
-      display: flex;
-      flex-direction: column;
-			align-items: flex-start;
-      white-space: pre-line;
       
       .blocks-cond-predicate{
 
@@ -825,7 +821,7 @@
         padding-top: 2rem;
         padding-right: 1.5rem;
         padding-bottom: 1.8rem;
-        margin-bottom: -6px;
+        margin-bottom: -7px;
         margin-left: 0px;
         padding-right: 10px;
         clip-path: @shiftin-shiftout-path;
@@ -837,13 +833,6 @@
         color: white;
         font-size: 25px;
         margin-right: @w-scale*10px;
-      }
-
-      .blocks-cond-row {
-        .blocks-cond-result{
-          width: 100%;
-          margin-left: 2px;
-        }
       }
     }
   }
@@ -1003,8 +992,6 @@
     background-color: @for-color;
     border-bottom-left-radius: 0px;
 
-    // clip-path: @start-finish-path;
-    // clip-path:  @insert-output-path;
     clip-path: @input-shiftout-path;
     padding: 1rem;
 		text-align: left;
@@ -1035,7 +1022,6 @@
     color: white;
     clip-path: @shiftin-output-path;
     padding-bottom: 10px;
-    // clip-path: @insert-output-path;
   }
 
   .blocks-for-bind {
@@ -1053,13 +1039,8 @@
   }
 
 	.blocks-table{
-		/* padding: 3rem; */
-		/* background-color: red; */
-		/* cursor: pointer; */
-		/* display: flex; */
 		table{
 			table-layout: fixed;
-			/* width: 50%; */
 		}
               table, th, td{
                 border: 1px solid black;

@@ -1053,7 +1053,7 @@ export class IfPipeBranch extends AST.ASTNode {
   test: AST.ASTNode;
   body: AST.ASTNode;
   constructor(from, to, test, body, options) {
-    super(from, to, 'condClause', options);
+    super(from, to, 'if-clause', options);
     this.test = test;
     this.body = body;
   }
@@ -1076,13 +1076,11 @@ export class IfPipeBranch extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
     return (
 			<Node node={this} {...props} >
 				<div className="blocks-cond-predicate" onDragOver={getDragEvent(this, 'blocks-cond-predicate')}>
 					{this.test.reactElement()}
 				</div>
-				{NEWLINE}
 				<div className="blocks-cond-result" onDragOver={getDragEvent(this, 'blocks-cond-result')}>
 					{this.body.reactElement()}
 				</div>
@@ -1990,10 +1988,8 @@ export class IfBranch extends AST.ASTNode {
 				<div className="blocks-cond-predicate">
 					{this.test.reactElement()}
 				</div>
-        <div className="blocks-cond-row">
-          <div className="blocks-cond-result">
-            {this.body.reactElement()}
-          </div>
+        <div className="blocks-cond-result">
+          {this.body.reactElement()}
         </div>
       </Node>
     )
@@ -2059,18 +2055,6 @@ export class IfExpression extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-        <DropTarget field="ifexpression" />
-        {NEWLINE}
-        {(element as any).reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget key={this.branches.length} />);
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
@@ -2113,18 +2097,6 @@ export class IfElseExpression extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-				<DropTarget key={index} field="ifelseexpression" />
-        {NEWLINE}
-        {(element as any).reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget field="ifelseexpression" key={this.branches.length} />);
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
