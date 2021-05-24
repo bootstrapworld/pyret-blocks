@@ -384,6 +384,7 @@
   .blocks-block > span > span > .blocks-literal > .blocks-literal-s-id {
     font-size: 18px;
   }
+  
 
   // Drop/hover functionality: hide drop targets when not dropping or hovering over it
   .on-target-hover(){
@@ -398,7 +399,7 @@
     min-width: 100px;
     margin-bottom: -7px !important;
     margin-top: 0px !important;
-    margin-left: 10px;
+    //margin-left: 10px;
     flex-direction: column;
   }
 
@@ -473,6 +474,10 @@
     }
   }
 
+  //Highlighting for drag-over
+  .blocks-over-target {
+    background-color: @drag-drop-background-color !important;
+  }
   
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
