@@ -9,6 +9,7 @@ import {
 } from 'codemirror-blocks';
 const {
   Blank,
+  Sequence
 } = Nodes
 import {Binop,
   Assign,
@@ -64,7 +65,6 @@ import {Binop,
   AArrow, 
 	ATableRow, 
 } from "./ast";
-// import { AST } from "eslint";
 
 export interface Position {
   line: number;
@@ -414,7 +414,7 @@ const nodeTypes = {
     return new Block(
       pos.from,
       pos.to,
-      stmts,
+      new Sequence(pos.from, pos.to, stmts, ''),
       'block');
   },
 	"s-user-block": function(l: Loc, body: Expr) {
@@ -428,15 +428,6 @@ const nodeTypes = {
     if(DEBUG) console.log(arguments);
 
     let docText = doc ? doc : "";
-    console.log("Function ----------------- DOC: ")
-    console.log(docText);
-    console.log(pos);
-    console.log(_params);
-    console.log(body);
-    console.log(body.from);
-
-    console.log(ann);
-    console.log(args);
 
     let func_head_start = pos.from.line;
     let func_body_start = body.from.line;
@@ -452,11 +443,7 @@ const nodeTypes = {
     }
 
     let docBlock = new Nodes.Literal(doc_from, doc_to, docText, 'operator', {'aria-label': `${docText}, the doc-string of ${name}`});
-    console.log(docBlock);
-		// new Nodes.Literal(fun_from, fun_to, name, 'function'),
-		// new Nodes.Literal(doc_from, doc_to, doc, 'string'),
-		// new Nodes.Literal(doc_from, doc_to, "\"" + doc + "\"", 'string', {'aria-label': `${doc}, a docstring`}),
-		// new Nodes.Literal(doc_from, doc_to, doc, 'string', {'aria-label': `${doc}, a docstring`}),
+    console.log("FUNC IS BLOCK:", docBlock);
     return new Func(
       pos.from,
       pos.to,

@@ -10,6 +10,7 @@ import { render } from 'react-dom';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
+const {Sequence} = Nodes;
 
 // each class has constructor longDescription pretty render
 
@@ -160,7 +161,6 @@ export class Func extends AST.ASTNode {
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
   doc: AST.ASTNode | null;
-  // doc: string | null;
   body: AST.ASTNode;
   block: boolean;
   hoverName: string;
@@ -321,7 +321,7 @@ export class Lambda extends AST.ASTNode {
 }
 
 export class Block extends AST.ASTNode {
-  stmts: AST.ASTNode[];
+  stmts: Nodes.Sequence;
   name: string;
 
   constructor(from, to, stmts, name, options = {}) {
@@ -331,7 +331,7 @@ export class Block extends AST.ASTNode {
   }
 
   static spec = Spec.nodeSpec([
-    Spec.list('stmts'),
+    Spec.required('stmts'),
     Spec.value('name'),
   ])
 
@@ -344,12 +344,11 @@ export class Block extends AST.ASTNode {
   }
 
   render(props) {
-    const className = (this.stmts.length == 0) ? "blocks-arguments-empty" : "blocks-arguments";
     // include name here? is it ever a time when it's not block?
     return (
       <Node node = {this} {...props}>
-        <span className={className} onDragOver={getDragEvent(this, className)}>
-          <Args field="stmts">{this.stmts}</Args>
+        <span className="blocks-block" onDragOver={getDragEvent(this, "blocks-block")}>
+          {this.stmts.reactElement()}
         </span>
       </Node>
     )
