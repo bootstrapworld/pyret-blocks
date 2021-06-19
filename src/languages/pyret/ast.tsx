@@ -340,7 +340,7 @@ export class Block extends AST.ASTNode {
   }
 
   pretty() {
-    return P.vertArray(this.stmts);
+    return P.vertArray(this.stmts.exprs.map(p => p.pretty()));
   }
 
   render(props) {
@@ -1141,6 +1141,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
     let prefix = "ask:";
     let suffix = "end";
     let branches = P.sepBy(this.branches, "", "");
+    console.log('HERE', this.otherwise_branch.toString());
     let otherwise_branch = "| otherwise: "+this.otherwise_branch;
     return P.ifFlat(
       P.horz(prefix, " ", branches, " ", otherwise_branch+" "+suffix),
