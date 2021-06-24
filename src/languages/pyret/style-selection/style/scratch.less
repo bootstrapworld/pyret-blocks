@@ -352,15 +352,19 @@
     }
   }
 
-  .blocks-block > span > .blocks-literal::before,
-  .blocks-block > span > span > .blocks-funApp::before {
+  .blocks-sequence > .blocks-operator{
+    display: none !important;
+  }
+
+  .blocks-sequence > span > .blocks-literal::before,
+  .blocks-sequence > span > span > .blocks-funApp::before {
     content: "↳ ";
     font-size: 25px;
     margin-left: @w-scale*-30px;
     height: 0px;
   }
 
-  .blocks-block > span > span > .blocks-constructor {
+  .blocks-sequence > span > span > .blocks-constructor {
     clip-path: @shiftin-shiftout-path !important;
     margin-bottom: -7px;
 
@@ -371,7 +375,7 @@
     margin-top: 0px;
   }
 
-  .blocks-block > span > span > span > .blocks-constructor::before {
+  .blocks-sequence > span > span > span > .blocks-constructor::before {
     content: "⮑ ";
     font-size: 25px;
     position: absolute;
@@ -380,12 +384,20 @@
     float: left;
   }
 
-  .blocks-block > span > span > span > .blocks-constructor:hover{
+  .blocks-sequence > span > span > span > .blocks-constructor:hover{
     background-color: red;
   }
 
-  .blocks-block > span > span > .blocks-literal > .blocks-literal-s-id {
+  .blocks-sequence > span > span > .blocks-literal > .blocks-literal-s-id {
     font-size: 18px;
+  }
+
+  .blocks-sequence {
+    border: none;
+
+    > .blocks-sequence-exprs {
+      align-items: baseline;
+    }
   }
   
 
@@ -405,6 +417,16 @@
     flex-direction: column;
   }
 
+  //Correction for the block of the main body
+  .react-container > .blocks-sequence > .blocks-sequence-exprs {
+    float: left;
+
+    > .blocks-drop-target{
+      display: none !important;
+      float: left;
+    }
+  }
+
   .blocks-user-blocks-body,
   .blocks-cond-result,
   .blocks-check-body,
@@ -416,7 +438,8 @@
   .blocks-table-order-body,
   .blocks-reactor-body,
   .blocks-arguments,
-  .blocks-arguments-empty {
+  .blocks-arguments-empty,
+  .blocks-sequence-exprs {
     > span {
       display: block;
     }
