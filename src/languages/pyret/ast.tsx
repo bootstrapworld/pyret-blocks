@@ -283,7 +283,6 @@ export class Lambda extends AST.ASTNode {
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
       P.horz(header, " ", "doc: \"", this.doc, "\" ", this.body, " end"),
-      // P.horz(header, " ", this.body, " end"),
       P.vert(header,
              P.horz(INDENT, "doc: \"", this.doc, "\""),
              P.horz(INDENT, this.body),
@@ -320,29 +319,31 @@ export class Lambda extends AST.ASTNode {
   }
 }
 
-export class Block extends AST.ASTNode {
-  stmts: Nodes.Sequence;
-  name: string;
-
+export class Block extends Nodes.Sequence {
+  isTopLevel: boolean;
+  exprs = super.exprs;
+  name = super.name;
+  
   constructor(from, to, stmts, name, options = {}) {
-    super(from, to, 'block', options);
-    this.stmts = stmts;
-    this.name = name;
+    super(from, to, stmts, options);
+    super.exprs = stmts;
+    super.name = name;
+    //this.isTopLevel = options['topLevel'];
+  }
+  
+  getExprs(){
+    return this.exprs;
   }
 
-  static spec = Spec.nodeSpec([
-    Spec.required('stmts'),
-    Spec.value('name'),
-  ])
-
   longDescription(level) {
-    return `a sequence containing ${enumerateList(this.stmts, level)}`;
+    return `a sequence containing ${enumerateList(super.exprs, level)}`;
   }
 
   pretty() {
-    return P.vertArray(this.stmts.exprs.map(p => p.pretty()));
+    return P.vertArray(this.exprs.map(p => p.pretty()));
   }
 
+  /*
   render(props) {
     // include name here? is it ever a time when it's not block?
     return (
@@ -353,6 +354,7 @@ export class Block extends AST.ASTNode {
       </Node>
     )
   }
+  */
 }
 
 export class Let extends AST.ASTNode {

@@ -315,7 +315,7 @@ const nodeTypes = {
 
   // data Program
   "s-program": function(_pos: Loc, _prov: any, _provTy: any, imports: ASTNode[], body: Block) {
-    let rootNodes = imports.concat(body.stmts);
+    let rootNodes = imports.concat(body.getExprs());
     return new AST.AST(rootNodes);
   },
 
@@ -414,7 +414,7 @@ const nodeTypes = {
     return new Block(
       pos.from,
       pos.to,
-      new Sequence(pos.from, pos.to, stmts, ''),
+      stmts,
       'block');
   },
 	"s-user-block": function(l: Loc, body: Expr) {

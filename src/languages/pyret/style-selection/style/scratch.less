@@ -462,7 +462,8 @@
   .blocks-load-table-body > .blocks-drop-target,
   .blocks-reactor-body > .blocks-drop-target,
   .blocks-arguments >.blocks-drop-target,
-  .blocks-arguments-empty > .blocks-drop-target {
+  .blocks-arguments-empty > .blocks-drop-target,
+  .blocks-sequence-exprs > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
@@ -472,7 +473,8 @@
   .blocks-load-table-body:hover > .blocks-drop-target,
   .blocks-cond-row:hover > .blocks-drop-target,
   .blocks-reactor-body:hover > .blocks-drop-target,
-  .blocks-arguments:hover > .blocks-drop-target {
+  .blocks-arguments:hover > .blocks-drop-target,
+  .blocks-sequence-exprs:hover > .blocks-drop-target {
     .on-target-hover();
   }
   //Correction for doc strings
