@@ -314,8 +314,8 @@
   }
 
   /* Returning Literals in Functions/etc. */
-  .blocks-arguments > .blocks-literal,
-  .blocks-arguments > span > .blocks-funApp {
+  .blocks-sequence-exprs > .blocks-literal,
+  .blocks-sequence-exprs > span > .blocks-funApp {
     clip-path: @shiftin-shiftout-path !important;
     background-color:  @untyped-color;
     border-radius: 0px;
@@ -352,19 +352,19 @@
     }
   }
 
-  .blocks-sequence > .blocks-operator{
+  .blocks-sequence > .blocks-operator {
     display: none !important;
   }
 
-  .blocks-sequence > span > .blocks-literal::before,
-  .blocks-sequence > span > span > .blocks-funApp::before {
+  .blocks-sequence-exprs > .blocks-literal::before,
+  .blocks-sequence-exprs > span > .blocks-funApp::before {
     content: "↳ ";
     font-size: 25px;
     margin-left: @w-scale*-30px;
     height: 0px;
   }
 
-  .blocks-sequence > span > span > .blocks-constructor {
+  .blocks-sequence-exprs > span > .blocks-constructor {
     clip-path: @shiftin-shiftout-path !important;
     margin-bottom: -7px;
 
@@ -375,7 +375,7 @@
     margin-top: 0px;
   }
 
-  .blocks-sequence > span > span > span > .blocks-constructor::before {
+  .blocks-sequence-exprs > .blocks-constructor::before {
     content: "⮑ ";
     font-size: 25px;
     position: absolute;
@@ -384,19 +384,22 @@
     float: left;
   }
 
-  .blocks-sequence > span > span > span > .blocks-constructor:hover{
+  .blocks-sequence-exprs > .blocks-constructor:hover{
     background-color: red;
   }
 
-  .blocks-sequence > span > span > .blocks-literal > .blocks-literal-s-id {
+  .blocks-sequence-exprs > .blocks-literal > .blocks-literal-s-id {
     font-size: 18px;
   }
 
   .blocks-sequence {
     border: none;
+    margin: 0px;
+    margin-bottom: -7px;
 
     > .blocks-sequence-exprs {
       align-items: baseline;
+      border: none;
     }
   }
   
@@ -440,9 +443,11 @@
   .blocks-arguments,
   .blocks-arguments-empty,
   .blocks-sequence-exprs {
-    > span {
+    
+    > span:not(.blocks-drop-target) {
       display: block;
     }
+    
     > .blocks-drop-target{
       display: none;
     }

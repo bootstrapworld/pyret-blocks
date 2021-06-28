@@ -3,10 +3,7 @@
 
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
-import { render } from 'react-dom';
 
-
-// import { AST, AST } from 'eslint';
 
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
@@ -300,7 +297,7 @@ export class Lambda extends AST.ASTNode {
     </span>;
     const NEWLINE = <br />;
 
-    return (
+    return  (
       <Node node={this} {...props}>
         <span className="blocks-lambda">
           lam&nbsp;({args}){header_ending}:{NEWLINE}
@@ -315,7 +312,7 @@ export class Lambda extends AST.ASTNode {
           end
         </span>
       </Node>
-    );
+    )
   }
 }
 
@@ -339,6 +336,8 @@ export class Block extends Nodes.Sequence {
     return `a sequence containing ${enumerateList(super.exprs, level)}`;
   }
 
+  // This is the reason that we have to use a block instead of sequence: 
+  // We must override the sequence pretty-printer to make it create the correct code.
   pretty() {
     return P.vertArray(this.exprs.map(p => p.pretty()));
   }

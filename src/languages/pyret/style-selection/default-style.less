@@ -44,7 +44,6 @@
 .blocks-ifExpression,
 .blocks-lambdaExpression,
 .blocks-letLikeExpr,
-.blocks-sequence,
 .blocks-structDefinition,
 .blocks-unknown,
 .blocks-variableDefinition,
@@ -72,9 +71,9 @@
   border-radius: @large-border-radius @large-border-radius 0px 0px;
 }
 
+/*
 .blocks-sequence {
   border-radius: 0px;
-  background: white;
   > .blocks-operator {
     justify-content: flex-start;
   }
@@ -88,11 +87,12 @@
       display: block;
       width: 100%;
       border-width: 2px;
-      /* display a downwards arrow to show sequencing, but not for last child or editing */
+      
       &:not(:last-child):not(.blocks-editing):after { color: gray; content: "\2B07"; }
     }
   }
 }
+*/
 
 .blocks-condExpression,
 .blocks-ifExpression {
