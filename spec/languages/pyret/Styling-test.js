@@ -15,22 +15,28 @@ let setup = function () { activationSetup.call(this, pyret); };
  * Specific navigation tests for programs that use BSDS constructs below
  */
 
+
 describe("functions", function () {
   let test = function (text) {
     describe(text, function () {
       beforeEach(function () {
+        
         setup.call(this);
+        
         this.cmb.setValue(text);
+        
+        
         let ast = this.cmb.getAst();
+        console.log(ast.rootNodes)
         this.literal1 = ast.rootNodes[0];
         this.fun_name = this.literal1.name;
-        this.args = this.literal1.args;
-        this.body = this.literal1.body;
+        
       });
 
       afterEach(function () { teardown(); });
 
-      it("should have a white background for fun name", function () {
+      it("should have a white background for fun name", async function () {
+        await wait(DELAY)
         // console.log("FUNNAME", this.fun_name);
         // expect(this.fun_name.style.background).toEqual('white');
       });
