@@ -342,18 +342,14 @@ export class Block extends Nodes.Sequence {
     return P.vertArray(this.exprs.map(p => p.pretty()));
   }
 
-  /*
   render(props) {
     // include name here? is it ever a time when it's not block?
     return (
-      <Node node = {this} {...props}>
-        <span className="blocks-block" onDragOver={getDragEvent(this, "blocks-block")}>
-          {this.stmts.reactElement()}
-        </span>
-      </Node>
+      <span className="blocks-block" onDragOver={getDragEvent(this, "blocks-sequence-exprs")}>
+        {super.render()}
+      </span>
     )
   }
-  */
 }
 
 export class Let extends AST.ASTNode {
