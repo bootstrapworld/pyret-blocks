@@ -69,12 +69,10 @@
     "test-watch": "karma start",
     "prepare": "npm run build",
     "start": "webpack serve --mode development --config webpack/example.config.js",
-    "heroku-server": "node heroku-server.js",
     "build": "webpack --mode production",
     "build-debug": "webpack --mode development",
     "build-watch": "webpack --watch --mode development",
-    "lint": "eslint src spec --ext .js || true",
-    "site": "jekyll serve --baseurl \"\""
+    "lint": "eslint src spec --ext .js || true"
   },
   "author": "The Bootstrap Team",
   "contributors": [
