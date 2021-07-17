@@ -317,15 +317,14 @@ export class Lambda extends AST.ASTNode {
 }
 
 export class Block extends Nodes.Sequence {
-  isTopLevel: boolean;
   exprs = super.exprs;
   name = super.name;
   
   constructor(from, to, stmts, name, options = {}) {
-    super(from, to, stmts, options);
+    super(from, to, stmts, name, options);
     super.exprs = stmts;
     super.name = name;
-    //this.isTopLevel = options['topLevel'];
+    console.log("NAME:", name);
   }
   
   getExprs(){
@@ -343,7 +342,6 @@ export class Block extends Nodes.Sequence {
   }
 
   render(props) {
-    // include name here? is it ever a time when it's not block?
     return (
       <span className="blocks-block" onDragOver={getDragEvent(this, "blocks-sequence-exprs")}>
         {super.render()}

@@ -415,7 +415,9 @@ const nodeTypes = {
       pos.from,
       pos.to,
       stmts,
-      'block');
+      new Nodes.Literal(pos.from, pos.from, '', 'operator')
+      //"block"
+      );
   },
 	"s-user-block": function(l: Loc, body: Expr) {
 		return new UserBlock(l.from, l.to, body, {[ariaLabel]: "a user block"});
