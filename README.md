@@ -91,7 +91,7 @@ Once you have your style compiled, all you need to insert a new style is to:
 
 #TODO (Check off in commit when complete)
 
-- [ ] Dragging things into the function/lambda body (class `Block`) does not place it in the correct place (cannot append to the top)
+- [x] Dragging things into the function/lambda body (class `Block`) does not place it in the correct place (cannot append to the top)
 - [x] Make drop targets in a `block` properly highlight/respond to hover (might have something to do with appending to the list)
 - [x] Make the drop targets within the functions extend all the way to the left (looks strange otherwise)
 
