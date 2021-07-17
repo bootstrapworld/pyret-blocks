@@ -45,16 +45,17 @@ if x > 0:
 end
 `;
 
-// const code = `
-// fun add(n):
-//   doc: "Nested Function breaks CSS"
-//   fun sub(n): n end
-//   x = y + 1
-// end
-// `;
-const smallExampleCode = code;
+const code1 = `
+load-table: name :: String, age :: Number, favorite-color :: String
+  source: imported-my-table.sheet-by-name("3-rows", true)
+  sanitize name using DS.string-sanitizer
+  sanitize age using DS.strict-num-sanitizer
+  sanitize favorite-color using DS.string-sanitizer
+end
+`;
+const smallExampleCode = code1;
 
-const useBigCode = false;
+const useBigCode = true;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
