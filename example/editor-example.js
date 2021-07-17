@@ -44,6 +44,14 @@ if x > 0:
 
 end
 `;
+
+// const code = `
+// fun add(n):
+//   doc: "Nested Function breaks CSS"
+//   fun sub(n): n end
+//   x = y + 1
+// end
+// `;
 const smallExampleCode = code;
 
 const useBigCode = false;
