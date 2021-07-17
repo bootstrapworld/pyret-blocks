@@ -578,7 +578,7 @@ export class FunctionApp extends AST.ASTNode {
 			else{
 				args.push(value.reactElement({key: index}));
 			}
-			args.push(<DropTarget />);
+			args.push(<DropTarget field="args"/>);
 		});
 
     return (
@@ -1498,7 +1498,7 @@ export class Table extends AST.ASTNode {
   }
 
   render(props) {
-    let headerBranches = <Args>{this.headers}</Args>;
+    let headerBranches = <Args field="rows">{this.headers}</Args>;
     const NEWLINE = <br />;
 		let rowBranches = [];
 		this.rows.forEach((aRow, index) => {
@@ -1533,7 +1533,7 @@ export class Table extends AST.ASTNode {
 						<tr className="blocks-table-header">{headerBranches}</tr>
 			{
 				// rowBranches
-				<Args>{this.rows}</Args>
+				<Args field="rows">{this.rows}</Args>
 			}
 					</table>
 				</span>
@@ -1576,7 +1576,7 @@ export class ATableRow extends AST.ASTNode {
 		return (
 			<Node node={this} {...props}>
 				{/* {branches} */}
-        <Args>{this.elems}</Args>
+        <Args field="elems">{this.elems}</Args>
 			</Node>
 		);
 	}
@@ -1617,7 +1617,7 @@ export class SomeColumnBinds extends AST.ASTNode {
 		return (
 			<Node node={this} {...props}>
         <span className="blocks-column-binds">
-        {this.tableName.reactElement()} using <Args>{this.branches}</Args>:
+        {this.tableName.reactElement()} using <Args field="branches">{this.branches}</Args>:
         </span>
 			</Node>
 		);
@@ -1658,7 +1658,7 @@ export class TableExtend extends AST.ASTNode{
     return <Node node={this} {...props}>
 			<div className="blocks-table-extend">extend {this.column_binds.reactElement()} </div>
 				<div className="blocks-table-extend-body" onDragOver={getDragEvent(this, "blocks-table-extend-body")}>
-					<Args>
+					<Args field="extensions">
 						{this.extensions}
 					</Args>
 				</div>
@@ -1831,7 +1831,7 @@ export class TableOrder extends AST.ASTNode {
         order {this.tableName.reactElement()}:
       </div>
       <div className="blocks-table-order-body">
-        <Args>{this.ordering}</Args>
+        <Args field="ordering">{this.ordering}</Args>
       </div>
       <div className="blocks-table-order-footer">
         end
@@ -1939,7 +1939,7 @@ export class TableSelect extends AST.ASTNode {
           select 
           <div className="indent">
             <span className="blocks-table-select-col" style={{display: this.columns.length > 6 ? 'grid' : 'inherit'}}>
-              <Args>{this.columns}</Args>
+              <Args field="columns">{this.columns}</Args>
             </span> 
             from <span className="blocks-table-select-table">{this.table.reactElement()}</span> 
           </div>
@@ -2440,7 +2440,7 @@ export class NewVariant extends AST.ASTNode {
   render(props) {
     return(<Node node={this} {...props}>
       <span className="blocks-variant-row">
-        <span className="blocks-variant-title">{this.name.reactElement()}</span>({<Args>{this.members}</Args>})
+        <span className="blocks-variant-title">{this.name.reactElement()}</span>({<Args field="members">{this.members}</Args>})
 			</span>
   </Node>)
   }
