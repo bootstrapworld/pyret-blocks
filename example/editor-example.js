@@ -46,6 +46,11 @@ end
 `;
 
 const code1 = `
+data Posn:
+  | posn(x :: Number, y :: Number) 
+  | nice(s :: String)
+end
+
 load-table: name :: String, age :: Number, favorite-color :: String
   source: imported-my-table.sheet-by-name("3-rows", true)
   sanitize name using DS.string-sanitizer
@@ -55,7 +60,7 @@ end
 `;
 const smallExampleCode = code1;
 
-const useBigCode = true;
+const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
