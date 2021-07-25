@@ -342,8 +342,10 @@ export class Block extends Nodes.Sequence {
   }
 
   render(props) {
+    var forceExpand = this.exprs.length == 0;
+    var cssClass = "blocks-block " + (forceExpand ? "blocks-block-expanded" : "");
     return (
-      <span className="blocks-block" onDragOver={getDragEvent(this, "blocks-sequence-exprs")}>
+      <span className={cssClass} onDragOver={getDragEvent(this, "blocks-sequence-exprs")}>
         {super.render()}
       </span>
     )
