@@ -314,9 +314,13 @@ const nodeTypes = {
   // 's-atom': function(base: string, serial: number) {},
 
   // data Program
-  "s-program": function(_pos: Loc, _prov: ASTNode[], _provTy: any, imports: ASTNode[], body: Block) {
-    console.log("Provides in program:", _prov)
-    let rootNodes = imports.concat(body.getExprs()).concat(_prov);
+  "s-program": function(_pos: Loc, _provides: ASTNode, _provTy: any, imports: ASTNode[], body: Block) {
+    console.log("Provides in program:", _provides.length)
+
+    let rootNodes = imports.concat(body.getExprs());
+    if (_provides.value != ""){
+      rootNodes = rootNodes.concat(_provides);
+    }
     return new AST.AST(rootNodes);
   },
 
