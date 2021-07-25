@@ -782,11 +782,18 @@ const nodeTypes = {
     console.log(variants+"");
     console.log(shared_members);
     console.log(check);
+    let nameStartPos = {
+      line: l.from.line, 
+      ch: l.from.ch+5
+    }
+    let nameEndPos = {
+      line: l.from.line, 
+      ch: l.from.ch+5+name.length
+    }
 
-    let nameNode = new Nodes.Literal({line: l.from.line, ch: l.from.ch+5 }, {line: l.from.line, ch: l.from.ch+5+name.length}, name, "operator", {'aria-label': `${name}`});
-    console.log(nameNode);
+    let nameNode = new Nodes.Literal(nameStartPos, nameEndPos, name, "boolean", {'aria-label': `${name}`});
+    console.log("Custom datatype name node:", nameNode);
 
-		// return new Nodes.Literal(l.from, l.to, "s-data", "string", {'aria-label': `s-data`});
 		return new Data(l.from, l.to, nameNode, variants, {'aria-label': 's-data'});
 	},
 	"s-data-expr": function(l: Loc, name: string, namet: Name, params: Name[], mixins: Expr[], variants: Variant[], shared_members: Member[], check: Expr | null) {
@@ -1145,12 +1152,8 @@ return new TableExtendFd(l.from,
     console.log("%c variant member called ------------", "background-color: blue");
     console.log(member_type);
     console.log(bind + "");
-    console.log(JSON.stringify(bind, null, 2))
     
     return new SomeVariantMember(l.from, l.to, bind, {'aria-label': `${bind}`});
-		// return null;
-		// return new AVariantMember(l.from, l.to, bind);
-	// 	return new Nodes.Literal(l.from, l.to, "variant member placeholder", "string", {'aria-label': `s-variant-member`});
 	},
 
   // data Variant
@@ -1358,7 +1361,6 @@ export default class PyretParser {
   parse(text: string) {
     // Tokenize
     console.log('text to be parsed:', text);
-    console.trace();
     const tokenizer = TOK.Tokenizer;
     tokenizer.tokenizeFrom(text);
     // Parse

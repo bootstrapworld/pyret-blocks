@@ -1274,8 +1274,8 @@ export class Include extends AST.ASTNode {
 }
 
 export class Data extends AST.ASTNode {
+  name: Nodes.Literal;
   variants: AST.ASTNode[];
-	name: Nodes.Literal;
 
   constructor(from, to, name, variants, options = {}) {
     super(from, to, 's-data', options);
@@ -1284,7 +1284,7 @@ export class Data extends AST.ASTNode {
   }
 
   static spec = Spec.nodeSpec([
-    Spec.value('name'),
+    Spec.required('name'),
     Spec.list('variants'),
   ])
 
@@ -1293,7 +1293,7 @@ export class Data extends AST.ASTNode {
   }
 
   pretty() {
-    let header = P.horz(P.txt("data "), this.name, ":");
+    let header = P.horz(P.txt("data "), this.name.pretty(), ":");
     let value = P.sepBy(this.variants, "", "");
     let footer = P.horz(P.txt("end "));
   
@@ -1306,7 +1306,7 @@ export class Data extends AST.ASTNode {
 
   render(props) {
 		return <Node node={this} {...props}>
-			<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.value}:</span></b></span>
+			<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.reactElement()}:</span></b></span>
 				<span className="blocks-cond-row" onDragOver={getDragEvent(this, 'blocks-cond-row')}>
           <Args field="variants">{this.variants}</Args>
         </span>
