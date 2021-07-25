@@ -46,11 +46,11 @@ end
 `;
 
 const code1 = `
-provide *
-
-fun x():
-
-end
+# provide *
+data Posn:
+  | posn(x :: Number, y :: Number)
+  | nice(s :: String)
+end 
 `;
 const smallExampleCode = code1;
 

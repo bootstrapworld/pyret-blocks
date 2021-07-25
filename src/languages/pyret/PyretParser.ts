@@ -315,6 +315,7 @@ const nodeTypes = {
 
   // data Program
   "s-program": function(_pos: Loc, _prov: ASTNode[], _provTy: any, imports: ASTNode[], body: Block) {
+    console.log("Provides in program:", _prov)
     let rootNodes = imports.concat(body.getExprs()).concat(_prov);
     return new AST.AST(rootNodes);
   },
@@ -348,16 +349,14 @@ const nodeTypes = {
 		return new ProvideAll(pos.from, pos.to, new Nodes.Literal(pos.from, pos.to, "provide *", 'operator'),options);
 	},
 	"s-provide-none": function(_pos: Loc) { 
-		console.log("%c s provide none called", 'background-color: red');
-		return new Nodes.Literal(_pos.from, _pos.to, "provide (*)", 'operator', {"aria-label": `provide all`});
+		return new Nodes.Literal(_pos.from, _pos.to, "", 'operator', {"aria-label": `provide none`});
 	},
 
   // data ProvideTypes
   // "s-provide-types": function(pos: Loc, ann: AField[]) {},
   // "s-provide-types-all": function(l: Loc) {},
   "s-provide-types-none": function(_l: Loc) { 
-		console.log("%c s provide types none called", 'background-color: red', _l);
-		return new Nodes.Literal(_l.from, _l.to, "provide *", 'operator', {"aria-label": `provide all`});
+		return new Nodes.Literal(_l.from, _l.to, "", 'operator', {"aria-label": `provide none`});
 	},
 
   // data ImportType
