@@ -314,8 +314,8 @@ const nodeTypes = {
   // 's-atom': function(base: string, serial: number) {},
 
   // data Program
-  "s-program": function(_pos: Loc, _prov: any, _provTy: any, imports: ASTNode[], body: Block) {
-    let rootNodes = imports.concat(body.getExprs());
+  "s-program": function(_pos: Loc, _prov: ASTNode[], _provTy: any, imports: ASTNode[], body: Block) {
+    let rootNodes = imports.concat(body.getExprs()).concat(_prov);
     return new AST.AST(rootNodes);
   },
 
@@ -342,23 +342,22 @@ const nodeTypes = {
 	// "s-provide": function(pos: Loc, block: ASTNode) { },
 	// "s-provide-complete": function(pos: Loc, values: ProvidedValue[], ailases: ProvidedAlias[], data_definition: ProvidedDatatype[]) {},
 	"s-provide-all": function(pos: Loc) {
-		console.log('found a provide all!')
-		// console.log("%c !!!!!!!!!!!!!!", "background-color: red");
-		let options = {};
-		options['aria-label'] = `provides all`;
-		return new ProvideAll(pos.from, pos.to, options);
+		let options = {
+      'aria-label': "provide all"
+    };
+		return new ProvideAll(pos.from, pos.to, new Nodes.Literal(pos.from, pos.to, "provide *", 'operator'),options);
 	},
 	"s-provide-none": function(_pos: Loc) { 
-		// console.log("%c s provide none called", 'background-color: red');
-		return new Nodes.Literal(_pos.from, _pos.to, "provide all", 'operator', {"aria-label": `provide all`});
+		console.log("%c s provide none called", 'background-color: red');
+		return new Nodes.Literal(_pos.from, _pos.to, "provide (*)", 'operator', {"aria-label": `provide all`});
 	},
 
   // data ProvideTypes
   // "s-provide-types": function(pos: Loc, ann: AField[]) {},
   // "s-provide-types-all": function(l: Loc) {},
   "s-provide-types-none": function(_l: Loc) { 
-		// console.log("%c s provide types none called", 'background-color: red');
-		return new Nodes.Literal(_l.from, _l.to, "provide all", 'operator', {"aria-label": `provide all`});
+		console.log("%c s provide types none called", 'background-color: red', _l);
+		return new Nodes.Literal(_l.from, _l.to, "provide *", 'operator', {"aria-label": `provide all`});
 	},
 
   // data ImportType
@@ -416,7 +415,6 @@ const nodeTypes = {
       pos.to,
       stmts,
       new Nodes.Literal(pos.from, pos.from, '', 'operator')
-      //"block"
       );
   },
 	"s-user-block": function(l: Loc, body: Expr) {

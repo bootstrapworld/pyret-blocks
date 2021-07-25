@@ -46,22 +46,10 @@ end
 `;
 
 const code1 = `
-table: name :: List<String>, age :: Number, favorite-color :: String
-  row: [list: "B"], 12, "blue"
-  row: [list: "A"], 17, "green"
-  row: [list: "E"], 13, "red"
-end
+provide *
 
-data Posn:
-  | posn(x :: Number, y :: Number) 
-  | nice(s :: String)
-end
+fun x():
 
-load-table: name :: String, age :: Number, favorite-color :: String
-  source: imported-my-table.sheet-by-name("3-rows", true)
-  sanitize name using DS.string-sanitizer
-  sanitize age using DS.strict-num-sanitizer
-  sanitize favorite-color using DS.string-sanitizer
 end
 `;
 const smallExampleCode = code1;

@@ -176,7 +176,8 @@
   .blocks-tuple-get,
   .blocks-s-var,
   .blocks-s-when,
-  .blocks-s-user-block
+  .blocks-s-user-block,
+  .blocks-s-provide-all
   {
     display: inline-flex;
     flex-direction: column;
@@ -1614,31 +1615,6 @@
     clip-path: @insert-output-path;
   }
 
-  /*
-  .blocks-let {
-		background-color: @untyped-color;
-    padding-top: 15px;
-    padding-bottom: 22px;
-    display: stretch;
-    clip-path: @insert-output-path;
-  }
-
-  .blocks-s-let {
-    position: relative;
-    text-align: left;
-  }
-
-  .blocks-s-let:after{
-		content: "";
-		background: @untyped-color;
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: calc(100% - @height-setoff);
-		width: @body-left-width;
-  }
-  */
-
   // Custom Data  Types ---------------------------------------------------
 
   .blocks-data-type{
@@ -1723,5 +1699,32 @@
   }
 
   // -----------------------------------------
+
+  
+  .blocks-provide-all{
+    background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: stretch;
+    clip-path: @insert-output-path;
+    color: white;
+  }
+  
+  .blocks-s-provide-all:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .blocks-s-provide-all {
+    position: relative;
+    text-align: left;
+  }
 
 }

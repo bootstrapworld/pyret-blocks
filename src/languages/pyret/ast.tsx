@@ -2449,13 +2449,16 @@ export class NewVariant extends AST.ASTNode {
 }
 
 export class ProvideAll extends AST.ASTNode {
+  stmt: AST.ASTNode
 
-	constructor(from, to, options = {}) {
-		super(from, to, 'provide-stmt', options);
+	constructor(from, to, stmt, options = {}) {
+		super(from, to, 's-provide-all', options);
 		console.log("%c provide all called", "background-color: blue");
+    this.stmt = stmt;
   }
 
   static spec = Spec.nodeSpec([
+    Spec.required('stmt')
   ])
 
   longDescription(level) {
@@ -2463,13 +2466,12 @@ export class ProvideAll extends AST.ASTNode {
   }
 
   pretty() {
-    return P.horz(P.txt("provide *"));
+    return P.txt("provide *");
   }
 
   render(props) {
-		console.log("%c provide all called from render", "background-color: green");
     return <Node node={this} {...props}>
-      <span>provide hi *</span>
+      <span className="blocks-provide-all">{this.stmt.reactElement()}</span>
     </Node>
   }
 }
