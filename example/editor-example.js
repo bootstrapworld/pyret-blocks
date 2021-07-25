@@ -46,11 +46,10 @@ end
 `;
 
 const code1 = `
-# provide *
-data Posn:
-  | posn(x :: Number, y :: Number)
-  | nice(s :: String)
-end 
+order some-table:
+  column1 ascending,
+  column2 descending
+end
 `;
 const smallExampleCode = code1;
 

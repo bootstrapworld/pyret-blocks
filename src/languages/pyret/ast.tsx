@@ -1875,6 +1875,36 @@ export class TableColumnSort extends AST.ASTNode {
   }
 }
 
+// export class TableColumnSortOrder extends AST.ASTNode {
+//   direction: AST.ASTNode;
+
+//   constructor(from, to, direction, options) {
+//     super(from, to, 's-column-sort', options);
+//     this.direction = direction;
+//   }
+
+//   static spec = Spec.nodeSpec([
+//     Spec.required('direction')
+//   ])
+
+//   longDescription(level) {
+//     return `Direction of ${this.direction} in Ordering the Column`;
+//   }
+
+//   pretty() {
+//     return P.horz(this.direction);
+//   }
+
+//   render(props) {
+//     return (
+//       <Node node={this} {...props}>
+//         <div className="blocks-column-sort-order">
+//         {this.direction.reactElement()}
+//         </div>
+//       </Node>)
+//   }
+// }
+
 // Extract
 export class TableExtract extends AST.ASTNode {
   column: AST.ASTNode;

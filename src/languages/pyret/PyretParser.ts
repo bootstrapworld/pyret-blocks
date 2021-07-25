@@ -46,6 +46,7 @@ import {Binop,
   TableExtendReducer,
   TableOrder,
   TableColumnSort,
+  // TableColumnSortOrder,
   TableExtract,
   TableSelect,
 	UserBlock, 
@@ -1021,6 +1022,15 @@ end
   //   console.log('--------------- S Column Sort Order ----------------');
   //   console.log(direction);
   // },
+  // Attempted Construction:
+  // 's-column-sort-order': function(l: Loc, direction: Name) {
+  //   console.log('--------------- S Column Sort Order ----------------');
+  //   console.log(direction);
+
+  //   return new TableColumnSortOrder(l.from, l.to, direction,
+  //   direction,
+  //   {'aria-label': `Direction of ${directionName} in Ordering the Column`});
+  // },
   
   // data ColumnSort
   // 's-column-sort': function(l: LoadTable, column: Name, direction: ColumnSortOrder) {
@@ -1035,7 +1045,7 @@ end
     let columnName = column + "";
 
     let directionLength = columnsortEnd - columnsortStart - columnName.length - 1;
-    let directionName = (directionLength == 9) ? "descending" : "ascending";
+    let directionName = (directionLength == 10) ? "descending" : "ascending";
     
     console.log(column.from);
     console.log(column.to);
