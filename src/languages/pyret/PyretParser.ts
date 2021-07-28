@@ -3,9 +3,9 @@ import * as P from "./pyret-lang/pyret-parser.js";
 import * as TR from "./pyret-lang/translate-parse-tree.js";
 import {
   AST,
-  ASTNode,
   Nodes,
 } from 'codemirror-blocks';
+type ASTNode = AST.ASTNode;
 const {
   Blank,
 } = Nodes
@@ -42,6 +42,9 @@ import {Binop,
   IfElseExpression,
   AnnotationApp,
 } from "./ast";
+
+// type for things that shouldn't be any, but can be fixed later.
+type $TSFixMe = any;
 
 export interface Position {
   line: number;
@@ -284,7 +287,7 @@ const nodeTypes = {
   "s-contract": function(l: Loc, name: Name, _params: Name[], ann: Ann) {
     if(DEBUG) console.log(arguments);
     // TODO: don't know what params do, using binding for now
-    return new Contract(l.from, l.to, name, ann, {'aria-label': `contract for ${name}: ${ann}`});
+    return new Contract(l.from, l.to, name as $TSFixMe, ann, {'aria-label': `contract for ${name}: ${ann}`});
   },
   "s-when": function(l: Loc, test: Expr, block: Expr, blocky: boolean) {
     if (DEBUG) console.log(arguments);
@@ -487,7 +490,7 @@ const nodeTypes = {
     return new Bind(
       pos.from,
       pos.to,
-      id,
+      id as $TSFixMe,
       ann);
   },
   // 's-tuple-bind': function(l: LoadTable, fields: Bind[], as_name: Bind | null) {},
@@ -513,7 +516,7 @@ const nodeTypes = {
   // data ForBind
   's-for-bind': function(l: Loc, bind: Bind, value: Expr) {
     if (DEBUG || true) console.log(arguments);
-    return new ForBind(l.from, l.to, idToLiteral(bind), value, {aria: `binding for for expression`});
+    return new ForBind(l.from, l.to, idToLiteral(bind) as $TSFixMe, value, {aria: `binding for for expression`});
   },
 
   // data ColumnBinds

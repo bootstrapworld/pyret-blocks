@@ -8,7 +8,7 @@
     "npm": ">=3.x"
   },
   "dependencies": {
-    "codemirror-blocks": "https://github.com/bootstrapworld/codemirror-blocks"
+    "codemirror-blocks": "bootstrapworld/codemirror-blocks#3d2668ae806879c1b7ea138c7d92ccbdccd64ded"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
