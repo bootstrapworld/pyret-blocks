@@ -1,5 +1,6 @@
 // Default parameters. You can override these when importing this file
 // just by declaring the same variable names _after_ the import.
+// .blocks-language-pyret {
 @large-border-radius: 15px;
 @border-radius: 5px;
 @border-width: 2px;
@@ -235,7 +236,7 @@
   }
 
   &.blocks-over-target {
-    background-color: @drag-replace-background-color;
+    background-color: @drag-replace-background-color !important;
   }
 
   * {
@@ -257,6 +258,7 @@
   border-width: 2px;
   border-style: solid;
   border-color: @editing-border-color;
+  clip-path: none;
   outline: 0;
 }
 .blocks-identifierList{
@@ -388,3 +390,4 @@
   content: "\1f512" !important;
   z-index: 99;
 }
+// }

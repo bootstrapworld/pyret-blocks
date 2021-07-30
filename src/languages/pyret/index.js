@@ -26,5 +26,3 @@ export const Pyret = Languages.addLanguage({
 
 const constructor = (container, options) => new CodeMirrorBlocks(container, options, Pyret);
 export default constructor;
-
-module.exports = constructor;

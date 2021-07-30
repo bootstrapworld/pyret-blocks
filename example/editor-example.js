@@ -17,7 +17,41 @@ import {
 const DELAY = 250;
 
 
-const smallExampleCode = ``;
+
+const code = `var msg = "Hello World"
+lam(str :: String) -> String:
+  doc: "ABC"
+  y = str + "A"
+  y
+end
+
+x = y + 1
+
+ask:
+  | x == 9 then: 1
+  | otherwise: 2
+end
+
+ask:
+  | x == 9 then: 5
+end
+if x == 10:
+  x = 10
+else:
+  t = 9
+end
+if x > 0:
+
+end
+`;
+
+const code1 = `
+order some-table:
+  column1 ascending,
+  column2 descending
+end
+`;
+const smallExampleCode = code1;
 
 const useBigCode = false;
 const exampleCode = useBigCode ? dsExampleCode : smallExampleCode;

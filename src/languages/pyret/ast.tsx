@@ -1,8 +1,13 @@
+// Documentations of functions in pretty() can be found on:
+// https://github.com/brownplt/pretty-fast-pretty-printer
+
 import React from 'react';
 import {AST, Pretty as P, DT, Node, Args, Nodes, NodeSpec as Spec} from 'codemirror-blocks';
 
+
 const {pluralize, enumerateList } = AST;
 const {DropTarget} = DT;
+const {Sequence} = Nodes;
 
 // each class has constructor longDescription pretty render
 
@@ -12,19 +17,22 @@ export class Binop extends AST.ASTNode {
   op: AST.ASTNode;
   left: AST.ASTNode;
   right: AST.ASTNode;
+	bgcClassName: string;
 
-  constructor(from, to, op, left, right, options = {}) {
+  constructor(from, to, op, left, right, bgcClassName, options = {}) {
     super(from, to, 'binop', options);
     // op is just a string, so not a part of children
     this.op = op;
     this.left = left;
     this.right = right;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('op'),
     Spec.required('left'),
     Spec.required('right'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -38,13 +46,21 @@ export class Binop extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-operator">
-          {this.op.reactElement()}
-        </span>
-        {this.left.reactElement()}
-        {this.right.reactElement()}
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-operator-container">
+						<span className="blocks-operator-input">
+							{this.left.reactElement()}  
+						</span>
+						<span className="blocks-operator-text">
+							{this.op.reactElement()}
+						</span>
+						<span className="blocks-operator-input">
+							{this.right.reactElement()}
+						</span>
+					</span>
+				</Node>
+			</span>
     );
   }
 }
@@ -52,16 +68,19 @@ export class Binop extends AST.ASTNode {
 export class Bind extends AST.ASTNode {
   ann: AST.ASTNode | null;
   ident: Nodes.Literal;
+  bgcClassName: string;
 
-  constructor(from, to, id: Nodes.Literal, ann, options = {}) {
+  constructor(from, to, id: Nodes.Literal, ann, bgcClassName,  options = {}) {
     super(from, to, 's-bind', options);
     this.ident = id;
     this.ann = ann;
+    this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('ident'),
     Spec.optional('ann'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -70,7 +89,6 @@ export class Bind extends AST.ASTNode {
 
   pretty() {
     let ident = this.ident.pretty();
-    console.log(ident);
     if (this.ann === null) {
       return ident;
     } else {
@@ -80,20 +98,70 @@ export class Bind extends AST.ASTNode {
 
   render(props) {
     return <Node node={this} {...props}>
-      {(this.ann === null) ? <span className="blocks-bind">{this.ident.reactElement()}</span>
+      {(this.ann === null) ? <span className="untyped"><span className="blocks-bind">{this.ident.reactElement()}</span></span>
         :
-        (<span className="blocks-bind">{this.ident.reactElement()} :: {this.ann.reactElement()}</span>)
+        (<span className={this.bgcClassName}><span className="blocks-bind">{this.ident.reactElement()} :: {this.ann.reactElement()}</span></span>)
       }</Node>
   }
+}
+
+export class UserBlock extends AST.ASTNode {
+	body: AST.ASTNode;
+
+	constructor(from, to, body, options) {
+		super(from, to, "s-user-block", options);
+		this.body = body;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('body')
+	])
+
+  longDescription(level) {
+		return `a user block with ${this.body}`;
+  }
+
+	pretty() {
+		// TODO: show doc
+		let header = P.ifFlat(
+			P.horz("block:  "),
+			P.vert(P.horz("block: ")));
+
+		return P.ifFlat(
+			P.horz(header, this.body, " end"),
+			P.vert(header,
+				P.horz(INDENT, this.body),
+				"end"));
+	}
+
+	render(props){
+		let body = this.body.reactElement();
+		return (
+			<Node node={this} {...props}>
+				<span className="blocks-user-blocks-header">
+					blocks:
+          </span>
+					<span className="blocks-user-blocks-body">
+						{body}
+					</span>
+					<span className="blocks-user-blocks-footer">
+						end
+					</span>
+			</Node>
+		);
+	}
+
 }
 
 export class Func extends AST.ASTNode {
   name: AST.ASTNode;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
-  doc: string | null;
+  doc: AST.ASTNode | null;
   body: AST.ASTNode;
-  block: boolean
+  block: boolean;
+  hoverName: string;
+  className: string;
 
   constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
     super(from, to, 'funDef', options);
@@ -109,7 +177,7 @@ export class Func extends AST.ASTNode {
     Spec.required('name'),
     Spec.list('args'),
     Spec.optional('retAnn'),
-    Spec.value('doc'),
+    Spec.optional('doc'),
     Spec.required('body'),
     Spec.value('block'),
   ])
@@ -125,145 +193,161 @@ export class Func extends AST.ASTNode {
     let header = P.ifFlat(
       P.horz("fun ", this.name, "(", P.sepBy(this.args, ", ", ","), ")", retAnn, header_ending),
       P.vert(P.horz("fun ", this.name, "("),
-             P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":")));
+             P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":"),
+             ));
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
-      P.horz(header, " ", this.body, " end"),
+      // P.horz(header, " ", this.body, " end"),
+      P.horz(header, " ", "doc: \"", this.doc, "\" ", this.body, " end"),
       P.vert(header,
-             P.horz(INDENT, this.body),
+            P.horz(INDENT, "doc: \"", this.doc, "\""),
+            P.horz(INDENT, this.body),
              "end"));
-  }
+      }
+
 
   render(props) {
-    // TODO: show doc
     let name = this.name.reactElement();
     let body = this.body.reactElement();
-    let args = <Args field="args">{this.args}</Args>;
-    let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+		let doc = this.doc.reactElement();
+
+    let args = <span className="blocks-args">
+        <Args field="args">{this.args}</Args>
+      </span>;
+		let header_ending = <span>
+      {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
+    const NEWLINE = <br />;
+    let docClass = this.doc.value == "" ? "blocks-empty-doc-string" : "blocks-doc-string";
     return (
       <Node node={this} {...props}>
-        <span className="blocks-func">
-          fun&nbsp;{name}({args}){header_ending}:
+				<span className="blocks-func">
+					fun&nbsp;{name}({args}){header_ending}:{NEWLINE}
+          <div className={docClass}>
+            doc: {doc}
+          </div>
+				</span>
+        <span className="blocks-func-body-hover">
+          <span className="blocks-func-body" >
+            {body}
+          </span>
         </span>
-        {body}
+        <span className="blocks-func-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }
 }
-
 export class Lambda extends AST.ASTNode {
-  name: AST.ASTNode | null;
+  
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
-  doc: string | null;
+  doc: AST.ASTNode;
   body: AST.ASTNode;
   block: boolean
 
-  constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
+  constructor(from, to, args, retAnn, doc, body, block, options = {}) {
     // TODO change this from function definition?
     super(from, to, 'lambdaExp', options);
-    this.name = name;
     this.args = args;
     this.retAnn = retAnn;
-    this.doc = doc;
+    this.doc = doc || "\"\"";
     this.body = body;
     this.block = block;
   }
 
   static spec = Spec.nodeSpec([
-    Spec.optional('name'),
     Spec.list('args'),
     Spec.optional('retAnn'),
-    Spec.value('doc'),
+    Spec.optional('doc'),
     Spec.required('body'),
-    Spec.value('block'),
+    Spec.value('block')
   ])
 
   longDescription(level) {
-    return `a func expression with ${this.name.describe(level)}, ${this.args} and ${this.body.describe(level)}`;
+    return `a lambda expression with ${this.args} and ${this.body.describe(level)}`;
   }
 
   pretty() {
-    // TODO: show doc
     let retAnn = this.retAnn ? P.horz(" -> ", this.retAnn) : "";
     let header_ending = (this.block)? " block:" : ":";
-    let prefix = (this.name == null)? ["lam("] : ["lam ", this.name, "("];
+    let prefix = ["lam("];
     let header = P.ifFlat(
       P.horz(P.horzArray(prefix), P.sepBy(this.args, ", ", ","), ")", retAnn, header_ending),
       P.vert(P.horzArray(prefix),
              P.horz(INDENT, P.sepBy(this.args, ", ", ","), ")", retAnn, ":")));
     // either one line or multiple; helper for joining args together
     return P.ifFlat(
-      P.horz(header, " ", this.body, " end"),
+      P.horz(header, " ", "doc: \"", this.doc, "\" ", this.body, " end"),
       P.vert(header,
+             P.horz(INDENT, "doc: \"", this.doc, "\""),
              P.horz(INDENT, this.body),
              "end"));
   }
 
   render(props) {
-    // TODO: show doc
-    let name = (this.name == null)? null : this.name.reactElement();
     let body = this.body.reactElement();
-    let args = <Args field="args">{this.args}</Args>;
-    let header_ending = <span>
-      {(this.retAnn != null)? <>&nbsp;-&gt&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+    let args = <span className="blocks-args">
+      <Args field="args">{this.args}</Args>
     </span>;
-    return (
+    let doc = this.doc.reactElement();
+    let header_ending = <span>
+      {(this.retAnn != null)? <>&nbsp;-&gt;&nbsp;{this.retAnn.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+    </span>;
+    const NEWLINE = <br />;
+
+    return  (
       <Node node={this} {...props}>
         <span className="blocks-lambda">
-          lam&nbsp;{name}({args}){header_ending}:
+          lam&nbsp;({args}){header_ending}:{NEWLINE}
+          <div className="blocks-doc-string">
+          doc: {doc}
+          </div>
         </span>
-        {body}
+        <span className="blocks-lambda-body">
+          {body}
+        </span>
+        <span className="blocks-lambda-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
-    );
+    )
   }
 }
 
-export class Block extends AST.ASTNode {
-  stmts: AST.ASTNode[];
-  name: string;
-
+export class Block extends Nodes.Sequence {
+  exprs = super.exprs;
+  name = super.name;
+  
   constructor(from, to, stmts, name, options = {}) {
-    super(from, to, 'block', options);
-    this.stmts = stmts;
-    this.name = name;
+    super(from, to, stmts, name, options);
+    super.exprs = stmts;
+    super.name = name;
+    console.log("NAME:", name);
   }
-
-  static spec = Spec.nodeSpec([
-    Spec.list('stmts'),
-    Spec.value('name'),
-  ])
+  
+  getExprs(){
+    return this.exprs;
+  }
 
   longDescription(level) {
-    return `a sequence containing ${enumerateList(this.stmts, level)}`;
+    return `a sequence containing ${enumerateList(super.exprs, level)}`;
   }
 
+  // This is the reason that we have to use a block instead of sequence: 
+  // We must override the sequence pretty-printer to make it create the correct code.
   pretty() {
-    return P.vertArray(this.stmts);
+    return P.vertArray(this.exprs.map(p => p.pretty()));
   }
 
   render(props) {
-    const NEWLINE = <br />;
-    let statements = [];
-    this.stmts.forEach((element, key) => {
-      let span = <span key={key}>
-        <DropTarget field="block"/>
-        {NEWLINE}
-        {element.reactElement()}
-        {NEWLINE}
-      </span>
-      statements.push(span);
-    });
-    statements.push(<DropTarget field="block" key={this.stmts.length} />);
-    // include name here? is it ever a time when it's not block?
+    var forceExpand = this.exprs.length == 0;
+    var cssClass = "blocks-block " + (forceExpand ? "blocks-block-expanded" : "");
     return (
-      <Node node = {this} {...props}>
-        <span className="blocks-arguments">
-          {statements}
-        </span>
-      </Node>
+      <span className={cssClass} onDragOver={getDragEvent(this, "blocks-sequence-exprs")}>
+        {super.render()}
+      </span>
     )
   }
 }
@@ -271,16 +355,19 @@ export class Block extends AST.ASTNode {
 export class Let extends AST.ASTNode {
   ident: AST.ASTNode; // really Bind
   rhs: AST.ASTNode;
+	bgcClassName: string;
 
-  constructor(from, to, id, rhs, options = {}) {
+  constructor(from, to, id, rhs, bgcClassName, options = {}) {
     super(from, to, 's-let', options);
     this.ident = id;
     this.rhs = rhs;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('ident'),
     Spec.required('rhs'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -294,14 +381,16 @@ export class Let extends AST.ASTNode {
              P.horz(INDENT, this.rhs)));
   }
 
-  render(props) {
-    let identifier = this.ident.reactElement();
-    return (
-      <Node node={this} {...props}>
-        <span className="blocks-let">
-          {identifier} &nbsp;=&nbsp; {this.rhs.reactElement()}
-        </span>
-      </Node>
+	render(props) {
+		let identifier = this.ident.reactElement();
+		return (
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className={"blocks-let"}>
+						{identifier} &nbsp;=&nbsp; {this.rhs.reactElement()}
+					</span>
+				</Node>
+			</span>
     );
   }
 }
@@ -309,16 +398,19 @@ export class Let extends AST.ASTNode {
 export class Var extends AST.ASTNode {
   ident: Nodes.Literal;
   rhs: AST.ASTNode;
+	bgcClassName: string;
 
-  constructor(from, to, id, rhs, options = {}) {
+  constructor(from, to, id, rhs, bgcClassName, options = {}) {
     super(from, to, 's-var', options);
     this.ident = id;
     this.rhs = rhs;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('ident'),
     Spec.required('rhs'),
+    Spec.value('bgcClassName'),
   ])
 
   longDescription(level) {
@@ -334,12 +426,13 @@ export class Var extends AST.ASTNode {
 
   render(props) {
     return (
+      <span className={this.bgcClassName}>
       <Node node={this} {...props}>
-        <span className="blocks-var">VAR</span>
-        <span className="blocks-args">
-          <Args field="var">{[this.ident, this.rhs]}</Args>
+        <span className={"blocks-var"}>
+          VAR &nbsp;{this.ident.reactElement()} &nbsp;=&nbsp;{this.rhs.reactElement()}
         </span>
       </Node>
+    </span>
     );
   }
 }
@@ -385,18 +478,21 @@ export class Construct extends AST.ASTNode {
   modifier: any; // TODO: what is this?
   construktor: AST.ASTNode;
   values: AST.ASTNode[];
+	bgcClassName: string;
 
-  constructor(from, to, modifier, construktor, values, options = {}) {
+  constructor(from, to, modifier, construktor, values, bgcClassName, options = {}) {
     super(from, to, 'constructor', options);
     this.modifier = modifier;
     this.construktor = construktor;
     this.values = values;
+		this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.value('modifier'),
     Spec.required('construktor'),
     Spec.list('values'),
+    Spec.value('bgcClassName')
   ])
 
   longDescription(level) {
@@ -418,27 +514,40 @@ export class Construct extends AST.ASTNode {
     let construktor = this.construktor.reactElement();
     let values = <Args field="values">{this.values}</Args>;
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-construct">{construktor}</span>
-        {values}
-      </Node>
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+					<span className="blocks-construct">{construktor}</span>
+					{values}
+				</Node>
+			</span>
     );
   }
 }
 
+
 export class FunctionApp extends AST.ASTNode {
   func: AST.ASTNode;
   args: AST.ASTNode[];
+	bgcClassName: string;
+	argsBgcClassNames: string[];
+	isLibFunc: boolean;
 
-  constructor(from, to, func, args, options={}) {
+  constructor(from, to, func, args, bgcClassName, options={}) {
     super(from, to, 'funApp', options);
     this.func = func;
     this.args = args;
+		this.bgcClassName = bgcClassName;
+
+		this.argsBgcClassNames = options["argsBgcClassNames"];
+		this.isLibFunc = (options["argsBgcClassNames"] !== null);
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('func'),
     Spec.list('args'),
+    Spec.value('bgcClassName'),
+    Spec.value('argsBgcClassNames'),
+    Spec.value('isLibFunc'),
   ])
 
   longDescription(level) {
@@ -463,16 +572,29 @@ export class FunctionApp extends AST.ASTNode {
   }
 
   render(props) {
+		let args = [];
+		this.args.forEach((value, index) => {
+			if (this.isLibFunc){
+				args.push(<span className={`${this.argsBgcClassNames[index]} funapp-params`}>{ value.reactElement({key: index}) }</span>);
+			}
+			else{
+				args.push(value.reactElement({key: index}));
+			}
+			args.push(<DropTarget field="args"/>);
+		});
+
     return (
-      <Node node={this} {...props}>
-        <span className="blocks-funapp">
-          <Args field="func">{[this.func]}</Args>
-        </span>
-        <span className="blocks-args">
-          <Args field="args">{this.args}</Args>
-        </span>
-    </Node>
-    );
+			<span className={this.bgcClassName}>
+				<Node node={this} {...props}>
+          <span className="blocks-operator">
+            {this.func.reactElement()}
+          </span>
+					<span className="blocks-args">
+						{ args }
+					</span>
+				</Node>
+			</span>
+		);
   }
 }
 
@@ -597,15 +719,20 @@ export class Check extends AST.ASTNode {
   }
 
   render(props) {
-    console.log("?", this.body);
     let body = this.body.reactElement();
     return (
       <Node node={this} {...props}>
         <span className="blocks-check">
           {"check" + (this.name != null ? " " + this.name : "")}
         </span>
-        <span className="blocks-args">
-          {body}
+        <span className="blocks-check-body">
+          <span className="blocks-check-left" ></span>
+          <span className="blocks-check-args">
+            {body}
+          </span>
+        </span>
+        <span className="blocks-check-footer" id="blocks-style-footer">
+          end
         </span>
       </Node>
     );
@@ -658,11 +785,11 @@ export class CheckTest extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <span className="blocks-check-test">
-          {this.op.reactElement()}
-        </span>
         <span className="blocks-args">
           {this.lhs.reactElement()}
+					<span className="blocks-check-test">
+						{this.op.reactElement()}
+					</span>
           {this.rhs ? this.rhs.reactElement() : null}
         </span>
       </Node>
@@ -733,32 +860,114 @@ export class LoadTable extends AST.ASTNode {
 
   pretty() {
     let header = P.txt("load-table: ");
-    let row_names = P.sepBy(this.columns.map(e => e.pretty()), ", ", "");
+    let row_names = P.sepBy(this.columns.map(e => e.pretty()), ", ", ", ");
     let row_pretty = P.ifFlat(row_names, P.vertArray(this.columns.map(e => e.pretty())));
-    let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty()), "", "source: "));
+    let sources = P.horz(P.sepBy(this.sources.map(s => s.pretty()), ", ", ""));
+
+    console.log("--- Load Table Pretty --");
+    console.log(row_names);
+    console.log(row_pretty);
+    console.log(sources);
+
+    // let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty())));
+    // let sources = P.horz("source: ", P.sepBy(this.sources.map(s => s.pretty()), "", "source: "));
     let footer = P.txt("end");
     return P.vert(
       P.ifFlat(
-        P.horz(header, row_pretty),
+        P.horz(header, row_names),
         P.vert(header,
-               P.horz(P.txt("  "), row_pretty))),
+               P.horz(P.txt("  "), row_names))),
       P.horz("  ", sources),
       footer);
   }
 
   render(props) {
+    
+    // Note that source and sanitize cannot be rendered outside of the loadTable
+    // therefore "inserting blocks" into loadtable is not possible
+
     return (
-      <Node node={this} {...props}>
+      <Node node={this} {...props} >
         <span className="blocks-load-table">
           load-table
+          <span className="blocks-args">
+            <Args field="columns">{this.columns}</Args>
+          </span>
         </span>
-        <span className="blocks-args">
-          <Args field="loadtable">{this.columns}</Args>
+        <span className="blocks-load-table-body" onDragOver={getDragEvent(this, 'blocks-load-table-body')}>
+          <Args field="sources">{this.sources}</Args>
         </span>
-        {this.sources.map((e, i) => e.reactElement({key: i}))}
+        <span className="blocks-load-table-footer">
+          end
+        </span>
     </Node>
     );
   }
+}
+
+export class TableSource extends AST.ASTNode {
+  source: AST.ASTNode;
+
+    constructor(from, to, source, options = {}) {
+      super(from, to, 's-table-src', options);
+      this.source = source;
+    }
+  
+    static spec = Spec.nodeSpec([
+      Spec.required('source')
+    ])
+  
+    longDescription(level) {
+      return `source getting table from ${this.source}`;
+    }
+  
+    pretty() {
+      return P.horz("source: ", this.source);
+    }
+  
+    render(props) {
+      return (
+          <Node node={this} {...props}>
+            <span className={"blocks-table-source"}>
+              <span className="blocks-table-source-title"><b>source:</b></span> <span className="blocks-table-source-target">{this.source.reactElement()}</span>
+            </span>
+          </Node>
+      );
+    }
+}
+
+export class Sanitize extends AST.ASTNode {
+  name: Nodes.Literal;
+  sanitizer: Nodes.Literal; // AST.ASTNode;
+
+    constructor(from, to, name, sanitizer, options = {}) {
+      super(from, to, 's-sanitize', options);
+      this.name = name;
+      this.sanitizer = sanitizer;
+    }
+  
+    static spec = Spec.nodeSpec([
+      Spec.required('name'),
+      Spec.required('sanitizer')
+    ])
+  
+    longDescription(level) {
+      return `sanitizing ${this.name} with ${this.sanitizer}`;
+    }
+  
+    pretty() {
+      return P.horz("sanitize ", this.name, " using ", this.sanitizer);
+    }
+  
+    render(props) {
+      return (
+          <Node node={this} {...props}>
+            <span className={"blocks-sanitize"}><b>
+              <span className="blocks-sanitize-title">sanitize</span> <span className="blocks-sanitize-ident">{this.name.reactElement()}</span> using <span className="blocks-sanitizer">{this.sanitizer.reactElement()}</span></b>
+            </span>
+          </Node>
+      );
+    }
 }
 
 export class Paren extends AST.ASTNode {
@@ -792,7 +1001,7 @@ export class Paren extends AST.ASTNode {
 }
 
 export class IfPipe extends AST.ASTNode {
-  branches: AST.ASTNode[];
+	branches: IfPipeBranch[];
   blocky: boolean;
   constructor(from, to, branches, blocky, options) {
     super(from, to, 'ifPipeExpression', options);
@@ -820,27 +1029,17 @@ export class IfPipe extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-        <DropTarget field="ifpipe" />
-        {NEWLINE}
-        {element.reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget field="ifpipe" key={this.branches.length} />);
-
     return (
       <Node node={this} {...props}>
         <span className="blocks-ask">
           ask:
         </span>
-        <div className="blocks-cond-table">
-          {branches}
+        <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
+          <Args field="branches">{this.branches}</Args>
         </div>
+        <span className="blocks-ask-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -850,7 +1049,7 @@ export class IfPipeBranch extends AST.ASTNode {
   test: AST.ASTNode;
   body: AST.ASTNode;
   constructor(from, to, test, body, options) {
-    super(from, to, 'condClause', options);
+    super(from, to, 'if-clause', options);
     this.test = test;
     this.body = body;
   }
@@ -874,17 +1073,99 @@ export class IfPipeBranch extends AST.ASTNode {
 
   render(props) {
     return (
-      <Node node={this} {...props}>
-        <div className="blocks-cond-row">
-          <div className="blocks-cond-predicate">
-            {this.test.reactElement()}
-          </div>
-          <div className="blocks-cond-result">
-            {this.body.reactElement()}
-          </div>
-        </div>
+			<Node node={this} {...props} >
+				<div className="blocks-cond-predicate" onDragOver={getDragEvent(this, 'blocks-cond-predicate')}>
+					{this.test.reactElement()}
+				</div>
+				<div className="blocks-cond-result" onDragOver={getDragEvent(this, 'blocks-cond-result')}>
+					{this.body.reactElement()}
+				</div>
       </Node>
     )
+  }
+}
+
+const prettyAsks = function(branches: IfBranch[], _else: AST.ASTNode | undefined, blocky: boolean): P.Doc {
+  // TODO what do do if empty branches?
+  let length = branches.length;
+  if (length == 0) {
+    throw new Error("if constructed with no branches—this should not have parsed(?)");
+  }
+  else if (length == 1) {
+    let prefix = ifPrefix(branches[0]);
+    if (_else != undefined) {
+      return P.vert(prefix, ifElse(_else), "end");
+    }
+    else {
+      return P.vert(P.concat("ask: ", branches[0].pretty()), "end");
+    }
+  }
+  else {
+    let prefix = ifPrefix(branches[0]);
+    let suffix = "end";
+    let pretty_branches = branches.slice(1, length).map(b => P.concat("else if ", b.pretty()));
+    if (_else != undefined) {
+      return P.vert(prefix, ...pretty_branches, ifElse(_else), suffix);
+    }
+    else {
+      return P.vert(prefix, ...pretty_branches, suffix);
+    }
+  }
+};
+export class IfPipeElseExpression extends AST.ASTNode {
+
+  branches: IfPipeBranch[];
+	otherwise_branch: IfPipeBranch;
+  blocky: boolean;
+  constructor(from, to, branches, otherwise_branch, blocky, options) {
+    super(from, to, 'ifPipeElseExpression', options);
+    this.branches = branches;
+    this.otherwise_branch = otherwise_branch;
+    this.blocky = blocky;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.list('branches'),
+    Spec.required('otherwise_branch'),
+    Spec.value('blocky'),
+  ])
+
+  longDescription(level) {
+    return `${enumerateList([this.branches, this.otherwise_branch], level)} in an ask expression with otherwise`;
+  }
+
+  pretty() {
+    let prefix = "ask:";
+    let suffix = "end";
+    let branches = P.sepBy(this.branches, "", "");
+    let otherwise_branch = "| otherwise: "+this.otherwise_branch;
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", otherwise_branch+" "+suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
+
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <span className="blocks-ask">
+          ask:
+        </span>
+        <div className="blocks-cond-table">
+          <Args field="branches">{this.branches}</Args>
+				</div>
+				<span className="blocks-otherwise">
+					otherwise:
+				</span>
+				<div className="blocks-cond-table">
+					{(this.otherwise_branch as any).reactElement()}
+        </div>
+        <span className="blocks-ask-footer" id="blocks-style-footer">
+          end
+        </span>
+      </Node>
+    );
   }
 }
 
@@ -932,16 +1213,19 @@ export class ArrowArgnames extends AST.ASTNode {
 export class Contract extends AST.ASTNode {
   ann: AST.ASTNode;
   name: Nodes.Literal;
+  bgcClassName: string;
 
-  constructor(from, to, id: Nodes.Literal, ann, options = {}) {
+  constructor(from, to, id: Nodes.Literal, ann, bgcClassName, options = {}) {
     super(from, to, 's-contract', options);
     this.name = id;
     this.ann = ann;
+    this.bgcClassName = bgcClassName;
   }
 
   static spec = Spec.nodeSpec([
     Spec.required('name'),
     Spec.required('ann'),
+    Spec.value('bgcClassName')
   ])
 
   longDescription(level) {
@@ -953,8 +1237,11 @@ export class Contract extends AST.ASTNode {
   }
 
   render(props) {
+
     return <Node node={this} {...props}>
+      <span className={this.bgcClassName}>
       <span className="blocks-contract">{this.name.reactElement()} :: {this.ann.reactElement()}</span>
+      </span>
     </Node>
   }
 }
@@ -985,6 +1272,75 @@ export class Include extends AST.ASTNode {
     </Node>
   }
 }
+
+export class Data extends AST.ASTNode {
+  name: Nodes.Literal;
+  variants: AST.ASTNode[];
+
+  constructor(from, to, name, variants, options = {}) {
+    super(from, to, 's-data', options);
+    this.name = name;
+    this.variants = variants;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('name'),
+    Spec.list('variants'),
+  ])
+
+  longDescription(level) {
+    return `custom datatype ${this.name}`;
+  }
+
+  pretty() {
+    let header = P.horz(P.txt("data "), this.name.pretty(), ":");
+    let value = P.sepBy(this.variants, "", "");
+    let footer = P.horz(P.txt("end "));
+  
+    return P.ifFlat(
+      P.horz(header, " ", value, " ", footer),
+      P.vert(header,
+             P.horz(INDENT, value),
+             footer));
+  }
+
+  render(props) {
+		return <Node node={this} {...props}>
+			<span className="blocks-data-type"><b>data <span className="blocks-data-name">{this.name.reactElement()}:</span></b></span>
+				<span className="blocks-cond-row" onDragOver={getDragEvent(this, 'blocks-cond-row')}>
+          <Args field="variants">{this.variants}</Args>
+        </span>
+				<span className="blocks-data-type-footer">end</span>
+    </Node>
+  }
+}
+
+// export class ProvideAll extends AST.ASTNode{
+
+//   constructor(from, to, options = {}) {
+//     super(from, to, 's-provide-all', options);
+//   }
+
+//   static spec = Spec.nodeSpec([
+//     // Spec.required('mod'),
+//   ]);
+
+//   longDescription(level) {
+//     return `provide all statement`;
+//   }
+
+//   pretty() {
+//     return P.horz("provide *");
+//   }
+
+//   render(props) {
+
+//     console.log("provde all !!!!!!!!");
+//     return( <Node node={this} {...props}>
+//       <span className="blocks-provide-all">provide *</span>
+//     </Node>)
+//   }
+// }
 
 export class SpecialImport extends AST.ASTNode {
   func: AST.ASTNode;
@@ -1093,20 +1449,540 @@ export class Reactor extends AST.ASTNode {
   }
 
   render(props) {
-    let branches = this.fields.map((branch, index) => branch.reactElement({key: index}));
+    return (
+			<Node node={this} {...props}>
+					<span className="blocks-reactor-header">
+						reactor:
+					</span>
+					<span className="blocks-reactor-body" onDragOver={getDragEvent(this, 'blocks-reactor-body')}>
+						<Args field="fields">{this.fields}</Args>
+					</span>
+					<span className="blocks-reactor-footer">
+						end
+					</span>
+			</Node>
+    );
+  }
+}
+
+// --------------------------------- Table Render Implemented -------------------------------
+export class Table extends AST.ASTNode {
+  headers: AST.ASTNode[];
+  rows: AST.ASTNode[] | null;
+  
+  constructor(from, to, headers, rows, options) {
+		super(from, to, 's-table', options);
+    this.headers = headers;
+    this.rows = rows;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.list('headers'),
+    Spec.list('rows'),
+  ])
+
+  longDescription(level) {
+    return `${enumerateList(this.headers, level)} in a table`;
+  }
+
+  pretty() {
+    console.log("------------ Table Pretty -------------");
+    
+    let header = P.horz("table: ", P.sepBy(this.headers, ", ", ""));
+    let prefix = "table:";
+    let suffix = "end";
+    let branches = P.sepBy(this.headers, ", ", "");
+    let rowBranches = P.sepBy(this.rows, " ", "");
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", rowBranches, " ", suffix),
+      P.vert(header, P.horz(INDENT, rowBranches), suffix)
+    );
+  }
+
+  render(props) {
+    let headerBranches = <Args field="rows">{this.headers}</Args>;
+    const NEWLINE = <br />;
+		let rowBranches = [];
+		this.rows.forEach((aRow, index) => {
+			let cellElements = [];       
+			rowBranches.push(<span className="">
+        <DropTarget />
+        {NEWLINE}
+        {aRow.reactElement()}
+        {NEWLINE}
+      </span>);
+		});
+
+    let columnBranches = this.headers.map((branch, index) => {
+      let colType = "untyped";
+      let strBranch = String(branch).split(" ");
+      if (strBranch.length == 3) {
+        colType = strBranch[2];
+        if (colType.includes("<") || colType.includes(">")) {
+          colType = "constructor";
+        }
+      }
+      return(<col key={index} span={2} className={colType.toLowerCase()}/>);
+    });
+
     return (
       <Node node={this} {...props}>
-        <span className="blocks-reactor">
-          reactor:
-        </span>
-        <div className="blocks-cond-table">
-          {branches}
-        </div>
+				<span className="blocks-table">
+					<table>
+						<colgroup>
+							{columnBranches}
+						</colgroup>
+						<tr className="blocks-table-header">{headerBranches}</tr>
+			{
+				// rowBranches
+				<Args field="rows">{this.rows}</Args>
+			}
+					</table>
+				</span>
       </Node>
     );
   }
 }
 
+export class ATableRow extends AST.ASTNode {
+	elems: AST.ASTNode[];
+	
+	constructor(from, to, elems, options) {
+		super(from, to, 's-table-row', options);
+		this.elems = elems;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.list('elems'),
+	])
+
+	longDescription(level) {
+		return `${enumerateList(this.elems, level)} in a table row`;
+	}
+
+	pretty() {
+    let prefix = "row:";
+    console.log("TABLE ROW ___________________________")
+    console.log(this.elems);
+    let vertBranches = P.sepBy(this.elems, ", ", ",");
+    let hortBranches = P.sepBy(this.elems, ", ", ",");
+		return P.ifFlat(
+			P.horz(prefix, " ", hortBranches),
+			P.vert(prefix, P.horz(INDENT, vertBranches))
+		);
+	}
+
+	render(props) {
+    let branches = this.elems.map((branch, index) => {return(branch.reactElement())});
+    
+		return (
+			<Node node={this} {...props}>
+				{/* {branches} */}
+        <Args field="elems">{this.elems}</Args>
+			</Node>
+		);
+	}
+}
+
+export class SomeColumnBinds extends AST.ASTNode {
+	branches: AST.ASTNode[];
+	tableName: AST.ASTNode;
+	
+	constructor(from, to, branches, tableName, options) {
+		super(from, to, 's-column-binds', branches, tableName, options);
+		this.branches = branches;
+		this.tableName = tableName;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.list('branches'),
+		Spec.required('tableName'),
+	])
+
+	longDescription(level) {
+		return `${enumerateList(this.branches, level)} in column binds`;
+	}
+
+	pretty() {
+    let prefix = P.horz(this.tableName, " ", "using");
+    let vertBranches = P.sepBy(this.branches, ", ", ",");
+    let hortBranches = P.sepBy(this.branches, ", ", ",");
+		return P.ifFlat(
+			P.horz(prefix, " ", hortBranches, ":"),
+			P.vert(prefix, P.horz(INDENT, vertBranches), ":")
+		);
+	}
+
+	render(props) {
+    let branches = this.branches.map((branch, index) => {return(branch.reactElement())});
+    
+		return (
+			<Node node={this} {...props}>
+        <span className="blocks-column-binds">
+        {this.tableName.reactElement()} using <Args field="branches">{this.branches}</Args>:
+        </span>
+			</Node>
+		);
+	}
+}
+
+export class TableExtend extends AST.ASTNode{
+	column_binds: AST.ASTNode;
+	extensions: AST.ASTNode[];
+
+	constructor(from, to, column_binds, extensions, options) {
+		super(from, to, 's-table-extend', options);
+		this.column_binds = column_binds;
+		this.extensions = extensions;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('column_binds'), 
+		Spec.list('extensions')
+	])
+	
+	longDescription(level) {
+		return `${enumerateList(this.extensions, level)} in table extend`;
+	}
+
+  pretty() {
+    let prefix = P.horz("extend ", this.column_binds);
+    let suffix = "end";
+    let branches = P.sepBy(this.extensions, ", ", ",");
+
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
+  }
+
+  render(props) {
+    return <Node node={this} {...props}>
+			<div className="blocks-table-extend">extend {this.column_binds.reactElement()} </div>
+				<div className="blocks-table-extend-body" onDragOver={getDragEvent(this, "blocks-table-extend-body")}>
+					<Args field="extensions">
+						{this.extensions}
+					</Args>
+				</div>
+        <div className="blocks-table-extend-footer">
+          end
+        </div>
+
+    </Node>
+  }
+}
+
+export class TableExtendFd extends AST.ASTNode {
+    name: Nodes.Literal;
+    value: AST.ASTNode;
+    ann:  AST.ASTNode[] | null;
+  
+      constructor(from, to, name, value, ann, options = {}) {
+        super(from, to, 's-table-extend-field', options);
+        this.name = name;
+        this.value = value;
+        this.ann = ann;
+      }
+    
+      static spec = Spec.nodeSpec([
+        Spec.required('name'),
+        Spec.required('value'),
+        Spec.optional('ann')
+      ])
+    
+      longDescription(level) {
+        return `Field of Extending Table with new column ${this.name} and criteria ${this.value}`;
+      }
+    
+      pretty() {
+        return P.horz(this.name, ": ", this.value);
+      }
+    
+      render(props) {
+        return (
+            <Node node={this} {...props}>
+              <div className="blocks-table-extend-field">
+              <span className="blocks-table-extend-field-title">{this.name.reactElement()}</span>: <span className="blocks-table-extend-field-cond">{this.value.reactElement()}</span>
+              </div>
+            </Node>
+        );
+      }
+}
+
+export class TableExtendReducer extends AST.ASTNode {
+  name: Nodes.Literal;
+  reducer: AST.ASTNode;
+  col:  AST.ASTNode;
+  ann:  AST.ASTNode | null;
+
+    constructor(from, to, name, reducer, col, ann, options = {}) {
+      super(from, to, 's-table-extend-reducer', options);
+      this.name = name;
+      this.reducer = reducer;
+      this.col = col;
+      this.ann = ann;
+    }
+  
+    static spec = Spec.nodeSpec([
+      Spec.required('name'),
+      Spec.required('reducer'),
+      Spec.required('col'),
+      Spec.optional('ann')
+    ])
+  
+    longDescription(level) {
+      return `Field of Extending Table with name  ${this.name} that has the reducer ${this.reducer} and the col ${this.col}`;
+    }
+  
+    pretty() {
+      return this.ann ? P.horz(this.name, " :: ", this.ann, ": ", this.reducer, " of ", this.col) : P.horz(this.name, ": ", this.reducer, " of ", this.col);
+    }
+  
+    render(props) {
+      return this.ann ?
+          <Node node={this} {...props}>
+            <div className="blocks-table-extend-reducer-field">
+              <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> :: {this.ann.reactElement()} : {this.reducer.reactElement()} of {this.col.reactElement()}
+            </div>
+          </Node> :
+          <Node node={this} {...props}>
+          <div className="blocks-table-extend-reducer-field">
+            <span className="blocks-table-extend-reducer-title">{this.name.reactElement()}</span> : {this.reducer.reactElement()} of {this.col.reactElement()}
+          </div>
+        </Node>
+    }
+}
+
+export class TableFilter extends AST.ASTNode{
+	column_binds: AST.ASTNode;
+	predicate: AST.ASTNode;
+
+	constructor(from, to, column_binds, predicate, options) {
+		super(from, to, 's-table-filter', options);
+		this.column_binds = column_binds;
+		this.predicate = predicate;
+	}
+
+	static spec = Spec.nodeSpec([
+		Spec.required('column_binds'), 
+		Spec.required('predicate')
+	])
+	
+	longDescription(level) {
+		return `filtering the table ${this.column_binds} under condition ${this.predicate}`;
+	}
+
+  pretty() {
+    let prefix = P.horz("sieve ", this.column_binds);
+    let suffix = "end";
+    let cond = this.predicate;
+
+    return P.ifFlat(
+      P.horz(prefix, " ", cond, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, cond), suffix)
+    );
+  }
+
+  render(props) {
+    return <Node node={this} {...props}>
+			<div className="blocks-table-filter">sieve {this.column_binds.reactElement()} </div>
+				<div className="blocks-table-filter-body">
+						{this.predicate.reactElement()}
+				</div>
+        <div className="blocks-table-filter-footer">
+          end
+        </div>
+    </Node>
+  }
+}
+
+export class TableOrder extends AST.ASTNode {
+  tableName: AST.ASTNode;
+  ordering: AST.ASTNode;
+
+  constructor(from, to, tableName, ordering, options) {
+    super(from, to, 's-table-order', options);
+    this.tableName = tableName;
+    this.ordering = ordering;
+    // this.orderList = orderList;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('tableName'),
+    Spec.list('ordering')
+  ])
+
+  longDescription(level) {
+    return `Ordering Table ${this.tableName} with directions ${this.ordering}`;
+  }
+
+  pretty() {
+    let prefix = P.horz("order ", this.tableName, ":");
+    let suffix = "end";
+    let branches = P.sepBy(this.ordering, ", ", ",");
+
+    return P.ifFlat(
+      P.horz(prefix, " ", branches, " ", suffix),
+      P.vert(prefix, P.horz(INDENT, branches), suffix)
+    );
+  }
+
+  render(props) {
+    return(<Node node={this} {...props}>
+      <div className="blocks-table-order">
+        order {this.tableName.reactElement()}:
+      </div>
+      <div className="blocks-table-order-body">
+        <Args field="ordering">{this.ordering}</Args>
+      </div>
+      <div className="blocks-table-order-footer">
+        end
+      </div>
+    </Node>);
+  }
+
+}
+export class TableColumnSort extends AST.ASTNode {
+  name: AST.ASTNode;
+  direction: AST.ASTNode;
+
+  constructor(from, to, name, direction, options) {
+    super(from, to, 's-column-sort', options);
+    this.name = name;
+    this.direction = direction;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('name'),
+    Spec.required('direction')
+  ])
+
+  longDescription(level) {
+    return `Column ${this.name} with direction ${this.direction} in Ordering the Table`;
+  }
+
+  pretty() {
+    return P.horz(this.name, " ", this.direction);
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-column-sort">
+        <span className="blocks-column-sort-title">{this.name.reactElement()}</span> <span className="blocks-column-sort-dir">{this.direction.reactElement()}</span>
+        </div>
+      </Node>)
+  }
+}
+
+// export class TableColumnSortOrder extends AST.ASTNode {
+//   direction: AST.ASTNode;
+
+//   constructor(from, to, direction, options) {
+//     super(from, to, 's-column-sort', options);
+//     this.direction = direction;
+//   }
+
+//   static spec = Spec.nodeSpec([
+//     Spec.required('direction')
+//   ])
+
+//   longDescription(level) {
+//     return `Direction of ${this.direction} in Ordering the Column`;
+//   }
+
+//   pretty() {
+//     return P.horz(this.direction);
+//   }
+
+//   render(props) {
+//     return (
+//       <Node node={this} {...props}>
+//         <div className="blocks-column-sort-order">
+//         {this.direction.reactElement()}
+//         </div>
+//       </Node>)
+//   }
+// }
+
+// Extract
+export class TableExtract extends AST.ASTNode {
+  column: AST.ASTNode;
+  table: AST.ASTNode;
+
+  constructor(from, to, column, table, options) {
+    super(from, to, 's-table-extract', options);
+    this.column = column;
+    this.table = table;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('column'),
+    Spec.required('table'),
+  ])
+
+  longDescription(level) {
+    return `extracting the column ${this.column} from the table ${this.table}`;
+  }
+
+  pretty() {
+    return P.horz("extract ", this.column, " from ", this.table, " end");
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-table-extract">
+          extract <span className="blocks-table-extract-col">{this.column.reactElement()}</span> from <span className="blocks-table-extract-table">{this.table.reactElement()}</span> end
+        </div>
+      </Node>
+    )
+  }
+}
+
+
+export class TableSelect extends AST.ASTNode {
+  columns: AST.ASTNode[];
+  table: AST.ASTNode;
+
+  constructor(from, to, columns, table, options) {
+    super(from, to, 's-table-select', options);
+    this.columns = columns;
+    this.table = table;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.list('columns'),
+    Spec.required('table'),
+  ])
+
+  longDescription(level) {
+    return `selecting the columns ${this.columns} from the table ${this.table}`;
+  }
+
+  pretty() {
+    return P.horz("select ", P.sepBy(this.columns, ", ", ","), " from ", this.table, " end");
+  }
+
+  render(props) {
+    return (
+      <Node node={this} {...props}>
+        <div className="blocks-table-select">
+          select 
+          <div className="indent">
+            <span className="blocks-table-select-col" style={{display: this.columns.length > 6 ? 'grid' : 'inherit'}}>
+              <Args field="columns">{this.columns}</Args>
+            </span> 
+            from <span className="blocks-table-select-table">{this.table.reactElement()}</span> 
+          </div>
+          end
+        </div>
+      </Node>
+    )
+  }
+}
+
+// ------------------  xx  ------------ Table Render Implemented ------ xx  ----------------------
 export class IfBranch extends AST.ASTNode {
   test: AST.ASTNode;
   body: AST.ASTNode;
@@ -1135,13 +2011,11 @@ export class IfBranch extends AST.ASTNode {
   render(props) {
     return (
       <Node node={this} {...props}>
-        <div className="blocks-cond-row">
-          <div className="blocks-cond-predicate">
-            {this.test.reactElement()}
-          </div>
-          <div className="blocks-cond-result">
-            {this.body.reactElement()}
-          </div>
+				<div className="blocks-cond-predicate">
+					{this.test.reactElement()}
+				</div>
+        <div className="blocks-cond-result">
+          {this.body.reactElement()}
         </div>
       </Node>
     )
@@ -1207,27 +2081,17 @@ export class IfExpression extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-        <DropTarget field="ifexpression" />
-        {NEWLINE}
-        {(element as any).reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget field="ifexpression" key={this.branches.length} />);
-
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
           if:
         </span>
-        <div className="blocks-cond-table">
-          {branches}
+        <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
+          <Args field="branches">{this.branches}</Args>
         </div>
+        <span className="blocks-if-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -1259,30 +2123,23 @@ export class IfElseExpression extends AST.ASTNode {
   }
 
   render(props) {
-    const NEWLINE = <br />
-    let branches = [];
-    this.branches.forEach((element, index) => {
-      let span = <span key={index}>
-        <DropTarget field="ifelseexpression" />
-        {NEWLINE}
-        {(element as any).reactElement()}
-        {NEWLINE}
-      </span>;
-      branches.push(span);
-    });
-    branches.push(<DropTarget field="ifelseexpression" key={this.branches.length} />);
-
     return (
       <Node node={this} {...props}>
         <span className="blocks-if">
           if:
         </span>
-        <div className="blocks-cond-table">
-          {branches}
-          {NEWLINE}
-          else:{NEWLINE}
+        <div className="blocks-cond-table" onDragOver={getDragEvent(this, 'blocks-cond-table')}>
+					<Args field="branches">{this.branches}</Args>
+				</div>
+				<span className="blocks-else">
+					else:
+				</span>
+				<div className="blocks-cond-table blocks-cond-table-else" onDragOver={getDragEvent(this, 'blocks-cond-table-else')}>
           {(this.else_branch as any).reactElement()}
         </div>
+        <span className="blocks-if-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -1337,14 +2194,19 @@ export class For extends AST.ASTNode {
     let body = this.body.reactElement();
     let args = <Args field="for">{this.bindings}</Args>;
     let header_ending = <span>
-      {(this.ann != null)? <>&nbsp;-&gt&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
+      {(this.ann != null)? <>&nbsp;-&gt;&nbsp;{this.ann.reactElement()}</> : null}{this.block ? <>&nbsp;{"block"}</> : null}
     </span>;
     return (
       <Node node={this} {...props}>
         <span className="blocks-for">
           for&nbsp;{name}({args}){header_ending}:
         </span>
+        <span className="blocks-for-body">
         {body}
+        </span>
+        <span className="blocks-for-footer" id="blocks-style-footer">
+          end
+        </span>
       </Node>
     );
   }
@@ -1416,14 +2278,18 @@ export class When extends AST.ASTNode {
     return (
       <Node node={this} {...props}>
         <div className="blocks-when">
-          when
-          <div className="blocks-cond-predicate">
-            {this.test.reactElement()}
+          <div className="blocks-when-header">
+            <div className="blocks-cond-predicate">
+            when {this.test.reactElement()} :
+            </div>
+            </div>
           </div>
-          <div className="blocks-cond-result">
-            {this.body.reactElement()}
-          </div>
-        </div>
+            <div className="blocks-cond-result">
+              {this.body.reactElement()}
+            </div>
+            <span className="blocks-when-footer" id="blocks-style-footer">
+            end
+            </span>
       </Node>
     )
   }
@@ -1454,7 +2320,216 @@ export class AnnotationApp extends AST.ASTNode {
 
   render(props) {
     return <Node node={this} {...props}>
-      <span className="blocks-a-app">{this.ann.reactElement()} :: </span>
+      <span className="blocks-a-app">{this.ann.reactElement()}
+		{"<"} <Args field="args">{this.args}</Args> {">"}
+      </span>
     </Node>
   }
+}
+
+export class ATuple extends AST.ASTNode {
+
+  fields: AST.ASTNode;
+  // Current Editor Only Supports 1 AST Node with all the Tuples as a single Node Literal
+  // fields: AST.ASTNode[];
+
+  constructor(from, to, fields, options = {}) {
+    super(from, to, 'a-tuple', options);
+    console.log(fields);
+    this.fields = fields;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('fields')
+  ])
+
+  longDescription(level) {
+    return `a tuple with type ${this.fields}`;
+  }
+
+  pretty() {
+    return P.horz(P.txt(this.fields));
+    // return P.horz(P.txt("{"), P.sepBy(this.fields, "; ", ";"), P.txt("}"));
+  }
+
+  render(props) {
+    // let typeArgument = "<" + String(this.args) + ">";
+    return <Node node={this} {...props}>
+    <span className="blocks-a-tuple">
+      {this.fields.reactElement()}
+    </span>
+  </Node>
+    // return <Node node={this} {...props}>
+    //   <span className="blocks-a-tuple">
+		// {"{"} <Args field="args">{this.fields}</Args> {"}"}
+    //   </span>
+    // </Node>
+  }
+
+}
+
+
+export class AArrow extends AST.ASTNode {
+
+  functionLiteral: AST.ASTNode;
+  use_parens: boolean;
+  // Current Editor Only Supports 1 AST Node with the entire Function Retun Type as a single Node Literal
+
+  constructor(from, to, functionLiteral, use_parens, options = {}) {
+    super(from, to, 'a-arrow', options);
+    this.functionLiteral = functionLiteral;
+    this.use_parens = use_parens;
+    console.log(this.use_parens);
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('functionLiteral'),
+    Spec.required('use_parens')
+  ])
+
+  longDescription(level) {
+    return `a function type with signature ${this.functionLiteral}`;
+  }
+
+  pretty() {
+    let result = this.use_parens ? P.horz(P.txt("("), this.functionLiteral, P.txt(")")) : P.horz(P.txt(this.functionLiteral));
+    return result;
+  }
+
+  render(props) {
+    
+    return this.use_parens ? 
+    <Node node={this} {...props}>
+    <span className="blocks-a-arrow">
+     {"("} {this.functionLiteral.reactElement()} {")"}
+    </span>
+  </Node> : 
+  <Node node={this} {...props}>
+    <span className="blocks-a-arrow">
+      {this.functionLiteral.reactElement()}
+    </span>
+  </Node>
+
+  }
+
+}
+
+// CUSTOM DATATYPE
+export class SomeVariantMember extends AST.ASTNode {
+  bind: AST.ASTNode;
+
+  constructor(from, to, bind, options = {}) {
+    super(from, to, 's-variant-member', options);
+    this.bind = bind;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('bind')
+  ])
+
+  longDescription(level) {
+    return `${this.bind}`;
+  }
+
+  pretty() {
+    return P.horz(this.bind);
+  }
+
+  render(props) {
+    return(<Node node={this} {...props}>
+      <span className="blocks-variant-member">{this.bind.reactElement()}</span>
+  </Node>)
+  }
+
+}
+
+export class NewVariant extends AST.ASTNode {
+  name: Nodes.Literal;
+  members: AST.ASTNodes[];
+  with_members: AST.ASTNodes[] | null;
+
+  constructor(from, to, name, members, with_members, options = {}) {
+    super(from, to, 's-variant', options);
+    this.name = name;
+    this.members = members;
+    this.with_members = with_members;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('name'),
+    Spec.list('members'),
+    Spec.list('with_members')
+  ])
+
+  longDescription(level) {
+    return `Variant ${this.name} with ${this.members}`;
+  }
+
+  pretty() {
+    return P.horz("| ", this.name, "(", P.sepBy(this.members, ", ", ","), ")");
+  }
+
+  render(props) {
+    return(<Node node={this} {...props}>
+      <span className="blocks-variant-row">
+        <span className="blocks-variant-title">{this.name.reactElement()}</span>({<Args field="members">{this.members}</Args>})
+			</span>
+  </Node>)
+  }
+}
+
+export class ProvideAll extends AST.ASTNode {
+  stmt: AST.ASTNode
+
+	constructor(from, to, stmt, options = {}) {
+		super(from, to, 's-provide-all', options);
+		console.log("%c provide all called", "background-color: blue");
+    this.stmt = stmt;
+  }
+
+  static spec = Spec.nodeSpec([
+    Spec.required('stmt')
+  ])
+
+  longDescription(level) {
+    return `an application annotation with `;
+  }
+
+  pretty() {
+    return P.txt("provide *");
+  }
+
+  render(props) {
+    return <Node node={this} {...props}>
+      <span className="blocks-provide-all">{this.stmt.reactElement()}</span>
+    </Node>
+  }
+}
+
+//Creates a drag over event handler for blocks, such that when they are dragged over this handler finds the head node
+//and adds the proper corresponding 'blocks-hover' css class to indicate that the node is being dropped over.
+//node: The React node that we want to reference (passed using 'this' in the function itself)
+//className: the classname of the child node we want to find (note: this will only find the first one!)
+function getDragEvent(node : any, className : string){
+  var dragTimeout;
+  function findChild(name : string) {
+    let currentNode = document.getElementById(node.element.id);
+    let cnFuncBody = null;
+    let cnChildren = currentNode.children;
+
+    for (var i = 0; i < cnChildren.length; i++) {
+      if (cnChildren[i].className.includes(name)) {
+        cnFuncBody = cnChildren[i];
+        break;
+      } 
+    }
+    return cnFuncBody;
+  }
+  function onDragOver(){
+    let cnFuncBody = findChild(className);
+    cnFuncBody.classList.add('blocks-hover');
+    clearInterval(dragTimeout);
+    dragTimeout = setTimeout(() => cnFuncBody.classList.remove('blocks-hover'), 250)
+  };
+  return onDragOver;
 }

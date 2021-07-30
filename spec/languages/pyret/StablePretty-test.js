@@ -11,7 +11,7 @@ describe('The CodeMirrorBlocks Class', function() {
       
       // see if pretty-printed now
       expect(this.parser.parse(insert).toString()).not.toBe(insert);
-      expect(this.parser.parse(insert).toString()).toBe("fun f(x): x + 3 end");
+      expect(this.parser.parse(insert).toString()).toBe(`fun f(x): doc: "" x + 3 end`);
     });
   });
 
@@ -42,10 +42,10 @@ end`);
     testify(`3 + 5`);
     testify(`3 - 5`);
     testify(`"hello" + ", there"`);
-    testify("fun f(x): x + 3 end");
-    testify(`fun f(x, jake): x + 3 end`);
-    testify(`fun f(x, jake): x + jake + 3 end`);
-    testify(`fun g(): 2 * 4 end`);
+    testify(`fun f(x): doc: "" x + 3 end`);
+    testify(`fun f(x, jake): doc: "" x + 3 end`);
+    testify(`fun f(x, jake): doc: "" x + jake + 3 end`);
+    testify(`fun g(): doc: "" 2 * 4 end`);
     testify('f(5)');
     testify('f(5, 4)');
     testify('f()');
@@ -66,6 +66,7 @@ end`);
     testify('row[""]');
     testify('row["three word column"]');
     testify(`fun img(animal):
+  doc: ""
   ask:
     | (animal["species"] == "dog") then: dog-img
     | (animal["species"] == "cat") then: cat-img
@@ -78,13 +79,13 @@ end`);
     testify(`include world
 big-bang("inert", [list: ])
 
-fun increment(x): x + 1 end
+fun increment(x): doc: "" x + 1 end
 
 big-bang(10, [list: on-tick(increment)])
 big-bang(10, [list: on-tick-n(increment, 3)])`);
     testify(`include reactors
 
-fun tencrement(x): x + 10 end
+fun tencrement(x): doc: "" x + 10 end
 
 reactor:
   seconds-per-tick: 0.1, title: "Count by 10", on-tick: tencrement, init: 10
@@ -99,24 +100,26 @@ end`);
     };
 
     testify("blocky function", `fun f(x) block:
+  doc: ""
   print(x)
   x + 3
 end`);
 
-    testify("ret ann function", `fun f(x) -> Number: x + 3 end`);
+    testify("ret ann function", `fun f(x) -> Number: doc: "" x + 3 end`);
 
     testify("blocky and ret ann function", `fun f(x) -> Number block:
+  doc: ""
   print(x)
   x + 3
 end`);
 
-    testify("default lambda", `lam(x): x + 3 end`);
+    testify("default lambda", `lam(x): doc: "" x + 3 end`);
 
-    testify("lambda with ret ann", `lam(x) -> Number: x + 3 end`);
+    testify("lambda with ret ann", `lam(x) -> Number: doc: "" x + 3 end`);
 
-    testify("lambda with block", `lam(x) block: x + 3 end`);
+    testify("lambda with block", `lam(x) block: doc: "" x + 3 end`);
 
-    testify("lambda with ret ann and block", `lam(x) -> Number block: x + 3 end`);
+    testify("lambda with ret ann and block", `lam(x) -> Number block: doc: "" x + 3 end`);
 
     testify("simple if", `if x == 4:
   4
@@ -147,6 +150,7 @@ else:
 end`);
 
     testify('if inside of a function', `fun f(x):
+  doc: ""
   if x > 3:
     "hello"
   else:
@@ -167,6 +171,7 @@ end`);
   raise("not an Array")
 end`);
     testify('a-app', `fun f(v :: Array<Number>) block:
+  doc: ""
   when not(is-array(v)):
     raise("not an Array")
   end

@@ -3,6 +3,7 @@ build
 lib
 .coverage
 docs
+example/bootstrap-ds.arr
 npm-debug.log
 dist
 site-build

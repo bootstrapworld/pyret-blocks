@@ -176,7 +176,8 @@
   .blocks-tuple-get,
   .blocks-s-var,
   .blocks-s-when,
-  .blocks-s-user-block
+  .blocks-s-user-block,
+  .blocks-s-provide-all
   {
     display: inline-flex;
     flex-direction: column;
@@ -199,7 +200,9 @@
   }
 
   .blocks-if-else-Expression,
-  .blocks-if-Expression {
+  .blocks-if-Expression,
+  .blocks-ifPipeElseExpression,
+  .blocks-ifPipeExpression {
     border-radius: 0px;
     background: white;
     > .blocks-if {
@@ -208,7 +211,6 @@
     > .blocks-cond-table {
       display: table;
       padding: 2px;
-      margin: 1px;
       .blocks-cond-drop-row {
         display: table-row;
         .blocks-white-space, .quarantine { min-width: 100%; margin: 0px; height: 5px; transition: height .5s; }
@@ -222,7 +224,7 @@
         &:focus {
           outline: @editing-border-color @border-width solid;
         }
-        .blocks-cond-row {
+        .blocks-cond-result {
           border: 1px solid black;
           text-align: left;
           display: table-row;
@@ -235,7 +237,6 @@
             }
           }
           .blocks-cond-predicate {float: left; }
-          .blocks-cond-result {float: right; }
         }
         .blocks-cond-row:first-child {
           border-top: 0px;
@@ -268,8 +269,11 @@
   // Pathes for the Template
   @w-scale: 1;
   @height-setoff: 8px;
+  @width-offset: 10px;
 
-  @insert-output-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @insert-output-path: polygon(0% 0%, @w-scale*12px  0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  @droptarget-insert-output-path: polygon(0% 0%, (@w-scale*12px + @width-offset) 0%, (@w-scale*24px + @width-offset) @height-setoff, (@w-scale*36px + @width-offset) @height-setoff, (@w-scale*48px + @width-offset) 0%, 100% 0%, 100% calc(100% - @height-setoff), 
+    (@w-scale*48px + @width-offset) calc(100% - @height-setoff), (@w-scale*36px + @width-offset) 100%, (@w-scale*24px + @width-offset) 100%, (@w-scale*12px + @width-offset) calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @only-output-path: polygon(0% 0%, 100% 0%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @only-input-path: polygon(0% 0%, @w-scale*12px 0%, @w-scale*24px @height-setoff, @w-scale*36px @height-setoff, @w-scale*48px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
   @start-finish-path: polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
@@ -311,8 +315,8 @@
   }
 
   /* Returning Literals in Functions/etc. */
-  .blocks-block > span > span > .blocks-literal,
-  .blocks-block > span > span > span > .blocks-funApp {
+  .blocks-sequence-exprs > .blocks-literal,
+  .blocks-sequence-exprs > span > .blocks-funApp {
     clip-path: @shiftin-shiftout-path !important;
     background-color:  @untyped-color;
     border-radius: 0px;
@@ -349,15 +353,19 @@
     }
   }
 
-  .blocks-block > span > span > .blocks-literal::before,
-  .blocks-block > span > span > span > .blocks-funApp::before {
-    content: "⮑";
+  .blocks-sequence > .blocks-operator {
+    display: none !important;
+  }
+
+  .blocks-sequence-exprs > .blocks-literal::before,
+  .blocks-sequence-exprs > span > .blocks-funApp::before {
+    content: "↳ ";
     font-size: 25px;
     margin-left: @w-scale*-30px;
     height: 0px;
   }
 
-  .blocks-block > span > span > span > .blocks-constructor {
+  .blocks-sequence-exprs > span > .blocks-constructor {
     clip-path: @shiftin-shiftout-path !important;
     margin-bottom: -7px;
 
@@ -368,7 +376,7 @@
     margin-top: 0px;
   }
 
-  .blocks-block > span > span > span > .blocks-constructor::before {
+  .blocks-sequence-exprs > .blocks-constructor::before {
     content: "⮑ ";
     font-size: 25px;
     position: absolute;
@@ -377,34 +385,53 @@
     float: left;
   }
 
-  .blocks-block > span > span > span > .blocks-constructor:hover{
+  .blocks-sequence-exprs > .blocks-constructor:hover{
     background-color: red;
   }
 
-  .blocks-block > span > span > .blocks-literal > .blocks-literal-s-id {
+  .blocks-sequence-exprs > .blocks-literal > .blocks-literal-s-id {
     font-size: 18px;
   }
 
+  .blocks-sequence {
+    border: none;
+    margin: 0px;
+    margin-bottom: -7px;
+
+    > .blocks-sequence-exprs {
+      align-items: baseline;
+      border: none;
+    }
+  }
+  
+
   // Drop/hover functionality: hide drop targets when not dropping or hovering over it
   .on-target-hover(){
-    display: inherit !important;
-    margin: 10px;
+    display: block !important;
     background-color: white;
   }
 
   .target-jigsaw(){
-    clip-path: @insert-output-path;
-    min-height: 30px;
+    clip-path: @droptarget-insert-output-path;
+    min-height: 40px;
     min-width: 100px;
     margin-bottom: -7px !important;
     margin-top: 0px !important;
-    margin-left: 10px;
+    margin-left: 0px;
     flex-direction: column;
   }
 
-  .blocks-func-body,
+  //Correction for the block of the main body
+  .react-container > .blocks-sequence > .blocks-sequence-exprs {
+    float: left;
+
+    > .blocks-drop-target{
+      display: none !important;
+      float: left;
+    }
+  }
+
   .blocks-user-blocks-body,
-  .blocks-lambda-body,
   .blocks-cond-result,
   .blocks-check-body,
   .blocks-for-body,
@@ -413,12 +440,16 @@
   .blocks-load-table-body,
   .blocks-table-extend-body,
   .blocks-table-order-body,
-  .blocks-reactor-body{
-    //Prevent default displaying
-    .blocks-block > span > span {
+  .blocks-reactor-body,
+  .blocks-arguments,
+  .blocks-arguments-empty,
+  .blocks-sequence-exprs {
+    
+    > span:not(.blocks-drop-target) {
       display: block;
     }
-    .blocks-drop-target{
+    
+    > .blocks-drop-target{
       display: none;
     }
     .blocks-args > .blocks-drop-target{
@@ -428,30 +459,28 @@
       margin-right: 5px !important;
       clip-path: none !important;
     }
-    br {
-      display: none;
-    }
   }
 
-  .blocks-block > span > span > .blocks-drop-target,
   .blocks-table-order-body > .blocks-drop-target,
-  .blocks-cond-table > span > .blocks-drop-target,
   .blocks-cond-table > .blocks-drop-target,
   .blocks-cond-row > .blocks-drop-target,
   .blocks-table-extend-body > .blocks-drop-target,
   .blocks-load-table-body > .blocks-drop-target,
-  .blocks-reactor-body > .blocks-drop-target {
+  .blocks-reactor-body > .blocks-drop-target,
+  .blocks-arguments >.blocks-drop-target,
+  .blocks-arguments-empty > .blocks-drop-target,
+  .blocks-sequence-exprs > .blocks-drop-target {
     .target-jigsaw();
   }
   //General case for drop targets in a block (works for lambda, func, etc...)
-  .blocks-block > span:hover > span > .blocks-drop-target,
   .blocks-table-order-body:hover > .blocks-drop-target,
-  .blocks-hover > span > .blocks-drop-target,
   .blocks-hover > .blocks-drop-target,
   .blocks-table-extend-body:hover > .blocks-drop-target,
   .blocks-load-table-body:hover > .blocks-drop-target,
   .blocks-cond-row:hover > .blocks-drop-target,
-  .blocks-reactor-body:hover > .blocks-drop-target{ 
+  .blocks-reactor-body:hover > .blocks-drop-target,
+  .blocks-arguments:hover > .blocks-drop-target,
+  .blocks-sequence-exprs:hover > .blocks-drop-target {
     .on-target-hover();
   }
   //Correction for doc strings
@@ -461,6 +490,18 @@
     }
   }
 
+  //Correction for empty blocks
+  .blocks-arguments-empty,
+  .blocks-block-expanded > span > span {
+    .blocks-drop-target {
+      display: block;
+    }
+  }
+
+  //Highlighting for drag-over
+  .blocks-over-target {
+    background-color: @drag-drop-background-color !important;
+  }
   
   // ---------------------------------------------------------------------------------------------------------
   /*   Binary Operations   */
@@ -488,8 +529,8 @@
     }
   }
 
-  .blocks-block > span > span > .blocks-binop,
-  .blocks-block > span > span > span > .blocks-binop,
+  .blocks-arguments > .blocks-binop,
+  .blocks-arguments > span > .blocks-binop,
   .blocks-table-filter-body > span > .blocks-binop {
     clip-path: @shiftin-shiftout-path !important;
     border-radius: 0px;
@@ -613,6 +654,7 @@
     padding-bottom: 10px;
     color: white;
     clip-path: @shiftin-output-path;
+    padding-right: 100%;
   }
 
 	.blocks-funapp{
@@ -659,6 +701,7 @@
     padding: 5px;
     padding-bottom: 10px;
     color: white;
+    padding-right: 100%;
   }
 
   .blocks-lambdaExp {
@@ -720,6 +763,7 @@
     color: white;
     clip-path: @shiftin-output-path;
     padding-bottom: 10px;
+    padding-right: 100%;
   }
 
   // ---------------------------------------------------------------------------------------------------------
@@ -746,6 +790,7 @@
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
+    padding-right: 100%;
   }
 
   .blocks-s-check:after{
@@ -762,7 +807,8 @@
   /*   Conditional Expressions   */
   // -------------------------------------------------
   // If and If Else Expressions:
-	.blocks-if{
+	.blocks-if,
+  .blocks-else{
 		background-color: @untyped-color;
     border-bottom-left-radius: 0px;
     clip-path: @input-shiftout-path;
@@ -779,6 +825,7 @@
     padding: 5px;
     color: white;
     clip-path:  @if-shiftin-out-path;
+    padding-right: 100%;
   }
 
   .blocks-else{
@@ -803,11 +850,6 @@
     overflow: visible;
 
     .blocks-cond-table {
-
-      display: flex;
-      flex-direction: column;
-			align-items: flex-start;
-      white-space: pre-line;
       
       .blocks-cond-predicate{
 
@@ -816,7 +858,7 @@
         padding-top: 2rem;
         padding-right: 1.5rem;
         padding-bottom: 1.8rem;
-        margin-bottom: -6px;
+        margin-bottom: -7px;
         margin-left: 0px;
         padding-right: 10px;
         clip-path: @shiftin-shiftout-path;
@@ -828,13 +870,6 @@
         color: white;
         font-size: 25px;
         margin-right: @w-scale*10px;
-      }
-
-      .blocks-cond-row {
-        .blocks-cond-result{
-          width: 100%;
-          margin-left: 2px;
-        }
       }
     }
   }
@@ -850,34 +885,7 @@
     left: 0;
     height: calc(100% - @height-setoff);
     width: @body-left-width;
-    // margin-left: 10px;
   }
-
-  // .blocks-if-Expression:before,
-  // .blocks-if-else-Expression:before,
-  // .blocks-ifPipeExpression:before,
-  // .blocks-ifPipeElseExpression:before {
-  //   content: "";
-  //   background:  @checkTest-background;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-right-width;
-  // }
-
-  // .blocks-if-Expression:before,
-  // .blocks-if-else-Expression:before,
-  // .blocks-ifPipeExpression:before,
-  // .blocks-ifPipeElseExpression:before {
-  //   content: "";
-  //   background: @untyped-color;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-left-width;
-  // }
 
   // -------------------------------------------------
   // Ask Expression:
@@ -885,11 +893,7 @@
   //.blocks-ifPipeExpression and .blocks-ifPipeElseExpression referenced above ^ already
   .blocks-ask {
     background-color: @untyped-color;
-    // border-radius: 8px;
-    // border-bottom-left-radius: 0px;
     clip-path: @input-shiftout-path;
-    // clip-path: @insert-output-path;
-    // clip-path: @start-finish-path;
     padding: 1rem;
     margin-bottom: -7px;
 		text-align: left;
@@ -907,8 +911,8 @@
     padding-bottom: 10px;
     color: white;
     clip-path: @shiftin-output-path;
-    // clip-path: @insert-output-path;
     text-align: left;
+    padding-right: 100%;
   }
 
 
@@ -916,21 +920,18 @@
     background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
+    margin-bottom: -7px;
     color: white;
-    // clip-path: @shiftin-output-path;
     clip-path: @shiftin-shiftout-path;
     text-align: left;
   }
   // -------------------------------------------------
-  // When Expression:
-  // polygon(0% 30%, @w-scale*16px 10%, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 10%, @w-scale*64px 30%, 100% 30%, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
+  //When Expression
   @when-path: polygon(0% @height-setoff*1.5, @w-scale*16px 0.5*@height-setoff, @w-scale*28px 0%, @w-scale*36px 0%, @w-scale*48px 0.5*@height-setoff, @w-scale*64px @height-setoff*1.5, 100% @height-setoff*1.5, 100% calc(100% - @height-setoff), @w-scale*48px calc(100% - @height-setoff), @w-scale*36px 100%, @w-scale*24px 100%, @w-scale*12px calc(100% - @height-setoff), 0% calc(100% - @height-setoff));
   @when-sidebar-path: polygon(0% 1.5*@height-setoff, @sidebar-width 1.5*@height-setoff, calc(@sidebar-width + @w-scale*16px) 0%, 110% 0%, 100% 110%, 0% 110%);
   .blocks-when{
-    background-color: @untyped-color; // @checkTest-background;
+    background-color: @untyped-color; 
     clip-path: @input-shiftout-path;
-    // clip-path: @insert-output-path;
-   //  clip-path: @when-path;
   }
 
   .blocks-when-header {
@@ -939,17 +940,15 @@
   }
 
   .blocks-when-footer{
-    background-color: @untyped-color;// @checkTest-background;
+    background-color: @untyped-color;
 		border-radius: 0px 8px 8px 0px;
     padding: 5px;
     color: white;
     clip-path: @shiftin-output-path;
-    // clip-path: @insert-output-path;
+    padding-right: 100%;
   }
 
   .blocks-s-when{
-    // border-left: @sidebar-width solid @checkTest-background;
-    // clip-path: @when-sidebar-path;
     background-color: transparent;
     position: relative;
     text-align: left;
@@ -965,15 +964,6 @@
     width: @body-left-width;
   }
 
-  // .blocks-s-when:before {
-  //   content: "";
-  //   background:  @checkTest-background;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   height: calc(100% - @height-setoff);
-  //   width: @body-left-width;
-  // }
   /* xx Conditional Expressions xx */
   // ---------------------------------------------------------------------------------------------------------
   /*    Constructor    */
@@ -1041,8 +1031,6 @@
     background-color: @for-color;
     border-bottom-left-radius: 0px;
 
-    // clip-path: @start-finish-path;
-    // clip-path:  @insert-output-path;
     clip-path: @input-shiftout-path;
     padding: 1rem;
 		text-align: left;
@@ -1073,7 +1061,7 @@
     color: white;
     clip-path: @shiftin-output-path;
     padding-bottom: 10px;
-    // clip-path: @insert-output-path;
+    padding-right: 100%;
   }
 
   .blocks-for-bind {
@@ -1091,13 +1079,8 @@
   }
 
 	.blocks-table{
-		/* padding: 3rem; */
-		/* background-color: red; */
-		/* cursor: pointer; */
-		/* display: flex; */
 		table{
 			table-layout: fixed;
-			/* width: 50%; */
 		}
               table, th, td{
                 border: 1px solid black;
@@ -1243,6 +1226,7 @@
     clip-path: @shiftin-output-path;
     padding-bottom: 10px;
     font-weight: bold;
+    padding-right: 100%;
   }
 
   .blocks-table-order-body > .blocks-s-column-sort{
@@ -1284,12 +1268,6 @@
     color: white;
     border-radius: 3px;
     font-weight: bold;
-  }
-
-
-
-  .blocks-table-filter-body{
-
   }
 
 
@@ -1453,6 +1431,7 @@
     color: white;
     clip-path: @shiftin-output-path;
     padding-bottom: 10px;
+    padding-right: 100%;
   }
 
   .blocks-s-table-src,
@@ -1476,7 +1455,7 @@
 		background-color: @untyped-color;
     padding-top: 15px;
     padding-bottom: 22px;
-    display: stretch;
+    display: block;
     clip-path: @insert-output-path;
 
     .blocks-table-source-title{
@@ -1490,7 +1469,7 @@
 		background-color: @untyped-color;
     padding-top: 15px;
     padding-bottom: 22px;
-    display: stretch;
+    display: block;
     clip-path: @insert-output-path;
     color: white;
 
@@ -1599,6 +1578,7 @@
     padding: 5px;
     padding-bottom: 10px;
     color: white;
+    padding-right: 100%;
   }
   
   
@@ -1635,31 +1615,6 @@
     clip-path: @insert-output-path;
   }
 
-  /*
-  .blocks-let {
-		background-color: @untyped-color;
-    padding-top: 15px;
-    padding-bottom: 22px;
-    display: stretch;
-    clip-path: @insert-output-path;
-  }
-
-  .blocks-s-let {
-    position: relative;
-    text-align: left;
-  }
-
-  .blocks-s-let:after{
-		content: "";
-		background: @untyped-color;
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: calc(100% - @height-setoff);
-		width: @body-left-width;
-  }
-  */
-
   // Custom Data  Types ---------------------------------------------------
 
   .blocks-data-type{
@@ -1683,6 +1638,7 @@
     padding: 5px;
     padding-bottom: 10px;
     color: white;
+    padding-right: 100%;
   }
 
   .blocks-s-data {
@@ -1707,7 +1663,7 @@
 		background-color: @untyped-color;
     padding-top: 15px;
     padding-bottom: 22px;
-    display: stretch;
+    display: block;
     clip-path: @insert-output-path;
     .blocks-drop-target{
       display: inline-flex;
@@ -1743,5 +1699,32 @@
   }
 
   // -----------------------------------------
+
+  
+  .blocks-provide-all{
+    background-color: @untyped-color;
+    padding-top: 15px;
+    padding-bottom: 22px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: stretch;
+    clip-path: @insert-output-path;
+    color: white;
+  }
+  
+  .blocks-s-provide-all:after{
+		content: "";
+		background: @untyped-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(100% - @height-setoff);
+		width: @body-left-width;
+  }
+
+  .blocks-s-provide-all {
+    position: relative;
+    text-align: left;
+  }
 
 }
