@@ -2115,7 +2115,7 @@ export class IfElseExpression extends AST.ASTNode {
   ])
 
   longDescription(level) {
-    return `${enumerateList([this.branches, this.else_branch], level)} in an if expression`;
+    return `${enumerateList([...this.branches, this.else_branch], level)} in an if expression`;
   }
 
   pretty() {

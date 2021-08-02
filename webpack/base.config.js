@@ -7,7 +7,7 @@ module.exports = function(config) {
   var plugins = [];
   var rules = [
     {
-      test:/.woff$|.woff2.png$|.jpg$|.jpeg$|.gif$|.svg$|.wav$/, 
+      test:/.woff$|.woff2.png$|.jpg$|.jpeg$|.gif$|.svg$|.wav$|.mp3$/, 
       use: { loader: "url-loader", options: { limit: 10000 } }
     },
     {test:/.ttf$|.eot$/, use: "file-loader"},
