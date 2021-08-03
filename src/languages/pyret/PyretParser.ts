@@ -277,7 +277,7 @@ type ColumnSort = any;
 type ColumnSortOrder = any;
 type DefinedType = any;
 type DefinedValue = any;
-type Expr = ASTNode;
+type Expr = ASTNode & any;
 type FieldName = any;
 type Hint = any;
 type ImportType = Number;
@@ -319,10 +319,10 @@ const nodeTypes = {
 
   // data Program
   "s-program": function(_pos: Loc, _provides: ASTNode, _provTy: any, imports: ASTNode[], body: Block) {
-    console.log("Provides in program:", _provides.length)
+    console.log("Provides in program:", _provides);
 
     let rootNodes = imports.concat(body.getExprs());
-    if (_provides.value != ""){
+    if ((_provides as $TSFixMe).value != ""){
       rootNodes = rootNodes.concat(_provides);
     }
     return new AST.AST(rootNodes);
@@ -996,11 +996,11 @@ const nodeTypes = {
 
   // data ColumnBinds
 	's-column-binds': function(l: Loc, binds: Bind[], table: Expr) {
-    binds = binds.map((aBind, index) => idToLiteral(aBind));
+    const bindLiterals = binds.map((aBind, index) => idToLiteral(aBind));
     console.log("-------------- Column Binds -------------");
     console.log(table);
-    console.log(binds);
-		return new SomeColumnBinds(l.from, l.to, binds, table, {'aria-label': 'column bind'});
+    console.log(bindLiterals);
+		return new SomeColumnBinds(l.from, l.to, bindLiterals, table, {'aria-label': 'column bind'});
 		// return new Nodes.Literal(l.from, l.to, "table-extend", "string", {'aria-label': `table extend`});
 	},
 

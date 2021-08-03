@@ -157,13 +157,23 @@ export class Func extends AST.ASTNode {
   name: AST.ASTNode;
   args: AST.ASTNode[];
   retAnn: AST.ASTNode | null;
-  doc: AST.ASTNode | null;
+  doc: Nodes.Literal | null;
   body: AST.ASTNode;
   block: boolean;
   hoverName: string;
   className: string;
 
-  constructor(from, to, name, args, retAnn, doc, body, block, options = {}) {
+  constructor(
+    from: AST.Pos,
+    to: AST.Pos,
+    name: Func['name'],
+    args: Func['args'],
+    retAnn: Func['retAnn'],
+    doc: Func['doc'],
+    body: Func['body'],
+    block: Func['block'],
+    options = {}
+  ) {
     super(from, to, 'funDef', options);
     this.name = name;
     this.args = args;
@@ -346,7 +356,7 @@ export class Block extends Nodes.Sequence {
     var cssClass = "blocks-block " + (forceExpand ? "blocks-block-expanded" : "");
     return (
       <span className={cssClass} onDragOver={getDragEvent(this, "blocks-sequence-exprs")}>
-        {super.render()}
+        {super.render(props)}
       </span>
     )
   }
@@ -1131,7 +1141,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
   ])
 
   longDescription(level) {
-    return `${enumerateList([this.branches, this.otherwise_branch], level)} in an ask expression with otherwise`;
+    return `${enumerateList([...this.branches, this.otherwise_branch], level)} in an ask expression with otherwise`;
   }
 
   pretty() {
@@ -1159,7 +1169,7 @@ export class IfPipeElseExpression extends AST.ASTNode {
 					otherwise:
 				</span>
 				<div className="blocks-cond-table">
-					{(this.otherwise_branch as any).reactElement()}
+					{this.otherwise_branch.reactElement()}
         </div>
         <span className="blocks-ask-footer" id="blocks-style-footer">
           end
@@ -1506,7 +1516,7 @@ export class Table extends AST.ASTNode {
 		this.rows.forEach((aRow, index) => {
 			let cellElements = [];       
 			rowBranches.push(<span className="">
-        <DropTarget />
+        <DropTarget field="rows"/>
         {NEWLINE}
         {aRow.reactElement()}
         {NEWLINE}
@@ -1589,7 +1599,7 @@ export class SomeColumnBinds extends AST.ASTNode {
 	tableName: AST.ASTNode;
 	
 	constructor(from, to, branches, tableName, options) {
-		super(from, to, 's-column-binds', branches, tableName, options);
+		super(from, to, 's-column-binds', options);
 		this.branches = branches;
 		this.tableName = tableName;
 	}
@@ -1798,7 +1808,7 @@ export class TableFilter extends AST.ASTNode{
 
 export class TableOrder extends AST.ASTNode {
   tableName: AST.ASTNode;
-  ordering: AST.ASTNode;
+  ordering: AST.ASTNode[];
 
   constructor(from, to, tableName, ordering, options) {
     super(from, to, 's-table-order', options);
@@ -2135,7 +2145,7 @@ export class IfElseExpression extends AST.ASTNode {
 					else:
 				</span>
 				<div className="blocks-cond-table blocks-cond-table-else" onDragOver={getDragEvent(this, 'blocks-cond-table-else')}>
-          {(this.else_branch as any).reactElement()}
+          {this.else_branch.reactElement()}
         </div>
         <span className="blocks-if-footer" id="blocks-style-footer">
           end
@@ -2228,7 +2238,7 @@ export class ForBind extends AST.ASTNode {
   ])
 
   longDescription(level) {
-    return `a for binding with ${(this.bind as any).describe(level)} and ${this.value.describe(level)}`;
+    return `a for binding with ${this.bind.describe(level)} and ${this.value.describe(level)}`;
   }
 
   pretty() {
@@ -2238,7 +2248,7 @@ export class ForBind extends AST.ASTNode {
   render(props) {
     return <Node node={this} {...props}>
       <span className="blocks-for-bind">
-        {(this.bind as any).reactElement()}from&nbsp;{this.value.reactElement()}
+        {this.bind.reactElement()}from&nbsp;{this.value.reactElement()}
       </span>
     </Node>
   }
@@ -2445,8 +2455,8 @@ export class SomeVariantMember extends AST.ASTNode {
 
 export class NewVariant extends AST.ASTNode {
   name: Nodes.Literal;
-  members: AST.ASTNodes[];
-  with_members: AST.ASTNodes[] | null;
+  members: AST.ASTNode[];
+  with_members: AST.ASTNode[] | null;
 
   constructor(from, to, name, members, with_members, options = {}) {
     super(from, to, 's-variant', options);
