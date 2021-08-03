@@ -8,7 +8,7 @@
     "npm": ">=3.x"
   },
   "dependencies": {
-    "codemirror-blocks": "bootstrapworld/codemirror-blocks"
+    "codemirror-blocks": "bootstrapworld/codemirror-blocks#b3c36e7a9835810b1324503d787e50860d2c89a5"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -65,7 +65,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "test": "node node_modules/karma/bin/karma start --single-run",
+    "test": "node node_modules/karma/bin/karma start --single-run && tsc --noEmit",
     "test-watch": "karma start",
     "prepare": "npm run build",
     "start": "webpack serve --mode development --config webpack/example.config.js",
