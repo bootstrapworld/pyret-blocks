@@ -1,0 +1,36 @@
+name: CI Tests
+on: [push, pull_request]
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      # This next step is necessary because package-lock.json
+      # points to the codemirror-blocks git repo with git+ssh,
+      # but the github workflows environment in which this is executing
+      # does not have any ssh keys for github.
+      #
+      # See https://github.com/actions/setup-node/issues/214#issuecomment-810829250
+      # for the thread that lead to this hacky fix.
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+
+      - run: sudo apt-get install xvfb
+      - run: export CHROME_BIN=google-chrome-stable
+      - run: google-chrome-stable --disable-gpu http://localhost &
+
+      # Install Node
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: npm ci
+
+      # Run tests
+      - run: npm run test
