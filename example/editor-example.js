@@ -6,13 +6,12 @@ import { testing }  from "codemirror-blocks";
 
 
 /// DEBUGGING STUFF
-import { wait, teardown } from '../spec/support/test-utils';
 import {
+  wait,
+  teardown,
   click,
   keyDown,
-  _keyPress,
-  _insertText,
-} from '../spec/support/simulate';
+} from 'codemirror-blocks/lib/toolkit/test-utils';
 
 const DELAY = 250;
 

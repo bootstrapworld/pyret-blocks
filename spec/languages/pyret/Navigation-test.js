@@ -1,4 +1,4 @@
-import pyret from '../../../src/languages/pyret';
+import {Pyret} from '../../../src/languages/pyret';
 import 'codemirror/addon/search/searchcursor.js';
 
 /*eslint no-unused-vars: "off"*/
@@ -7,10 +7,10 @@ import {
   click, mouseDown, mouseenter, mouseover, mouseleave, doubleClick, blur, 
   paste, cut, copy, dragstart, dragover, drop, dragenter, dragenterSeq, 
   dragend, dragleave, keyDown, keyPress, insertText
-} from '../../support/test-utils';
+} from 'codemirror-blocks/lib/toolkit/test-utils';
 
 // be sure to call with `apply` or `call`
-let setup = function () { activationSetup.call(this, pyret); };
+let setup = function () { activationSetup.call(this, Pyret); };
 
 /** //////////////////////////////////////////////////////////
  * Specific navigation tests for programs that use BSDS constructs below
