@@ -9,7 +9,7 @@ const edge = /Edge\/(\d+)/.exec(userAgent);
 const ios = !edge && /AppleWebKit/.test(userAgent) && /Mobile\/\w+/.test(userAgent);
 
 // pass along all the simulated events
-export * from './simulate';
+export * from 'codemirror-blocks/lib/toolkit/simulate';
 
 // pass along useful constants
 export const mac = ios || /Mac/.test(platform);
