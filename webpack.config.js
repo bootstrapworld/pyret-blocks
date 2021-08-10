@@ -1,8 +1,6 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {
   getWebpackDevServerConfig,
-  getWebpackBundleConfig,
 } = require('codemirror-blocks/lib/toolkit/webpack');
 
 const devServerConfig = getWebpackDevServerConfig({
@@ -11,14 +9,10 @@ const devServerConfig = getWebpackDevServerConfig({
 });
 
 devServerConfig.module.rules.push({ test: /\.arr$/, use: 'raw-loader' });
-devServerConfig.plugins.push(new HtmlWebpackPlugin({
-  filename: 'editor.html',
-  template: 'editor.html',
-  inject: 'body',
-}));
 
 const bundleConfigs = require('./webpack/bundle.config');
 
-module.exports = [devServerConfig, 
+module.exports = [
+  devServerConfig, 
   ...bundleConfigs
 ];
