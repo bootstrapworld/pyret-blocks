@@ -1,6 +1,9 @@
 import PyretCMB from '../src/languages/pyret';
 import StyleSelector from '../src/languages/pyret/style-selection/style-selector';
 import './example-page.less';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/search/search';
+import 'codemirror/addon/search/searchcursor';
 import dsExampleCode from './bootstrap-ds.arr';
 import { testing }  from "codemirror-blocks";
 
@@ -12,6 +15,26 @@ import {
   click,
   keyDown,
 } from 'codemirror-blocks/lib/toolkit/test-utils';
+
+document.body.innerHTML += `
+<div class="container editor-example">
+  <div class="page-header">
+    <h1><a href="/">codemirror-blocks</a> <small>Block Editor Example</small></h1>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+    <div id="theme-selector" class="theme-scratch">
+      <!-- <div id="cmb-editor" class="editor-container"/> -->
+      <div id="cmb-editor" class="editor-container">
+      </div>
+    </div>
+    </div>
+  </div>
+  <input type="button" value="Test click event" id="testButton"/>
+  <div id="style-selector" class="selector-container">
+  </div>
+</div>`;
+
 
 const DELAY = 250;
 

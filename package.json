@@ -58,7 +58,7 @@
     "test": "karma start --single-run && tsc --noEmit",
     "test-watch": "karma start",
     "prepare": "npm run build",
-    "start": "webpack serve --mode development --config webpack/example.config.js",
+    "start": "webpack serve --config-name=devServer",
     "build": "webpack --mode production",
     "build-debug": "webpack --mode development",
     "build-watch": "webpack --watch --mode development",

@@ -41,7 +41,7 @@ Alternatively, you can put it in your `.{bash,zsh}rc`, which will run them autom
 
         npm start
 
-4. browse to http://localhost:8080/editor.html and fire away!
+4. browse to http://localhost:8080/ and fire away!
 
 5. while you work, be sure to run the unit tests (early and often!) with:
 
